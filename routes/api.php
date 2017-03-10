@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Http\Request;
 
 /*
@@ -13,6 +14,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('branches', 'BranchesController@fetch');
+    Route::post('branches/store', 'BranchesController@store');
+    Route::get('branches/{id}', 'BranchesController@edit');
+    Route::patch('branches/{id}', 'BranchesController@update');
+
+    Route::get('users', function () {
+        return User::all();
+    });
+
 });
