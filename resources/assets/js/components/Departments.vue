@@ -19,7 +19,7 @@
                         {id: 'code', title: 'Code', sortable:true},
                         {id: 'name', title: 'Secteur', sortable: true},
                         {id: 'description', title: 'Description', sortable: false},
-                        {id: 'workplace.name', title: 'Lieu', sortable: false},
+                        {id: 'workplace.name', title: 'Lieu', sortable: true},
                         {title: 'Actions', slot:'actions'},
                     ],
                     rows: this.rows,

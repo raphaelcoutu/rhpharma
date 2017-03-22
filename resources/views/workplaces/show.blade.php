@@ -13,6 +13,7 @@
                                 <th>ID</th>
                                 <th>Nom</th>
                                 <th>Code</th>
+                                <th>Options</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -22,6 +23,11 @@
                                 <td>{{ $dep->id }}</td>
                                 <td>{{ $dep->name }}</td>
                                 <td>{{ $dep->code }}</td>
+                                <td>
+                                    <a href="{{ route('departments.edit', $dep->id) }}" class="btn btn-primary">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </td>
                             </tr>
                             @endforeach
                         @else
