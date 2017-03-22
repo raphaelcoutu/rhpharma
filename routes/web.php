@@ -45,6 +45,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('workplaces', 'WorkplacesController@store')->name('workplaces.store');
     Route::get('workplaces/{workplace}', 'WorkplacesController@show')->name('workplaces.show');
 
+    //Departments
+    Route::get('departments', 'DepartmentsController@index')->name('departments.index');
+    Route::get('departments/create', 'DepartmentsController@create')->name('departments.create');
+    Route::post('departments', 'DepartmentsController@store')->name('departments.store');
+
     //Schedules
     Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
