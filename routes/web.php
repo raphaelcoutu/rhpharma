@@ -48,4 +48,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Schedules
     Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
+    //ConstraintTypes
+    Route::get('constraintTypes', 'ConstraintTypesController@index')->name('constraintTypes.index');
+    Route::get('constraintTypes/create', 'ConstraintTypesController@create')->name('constraintTypes.create');
+    Route::post('constraintTypes', 'ConstraintTypesController@store')->name('constraintTypes.store');
 });

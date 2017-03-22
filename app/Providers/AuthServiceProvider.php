@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Branch;
+use App\ConstraintType;
 use App\Department;
 use App\Policies\BranchPolicy;
+use App\Policies\ConstraintTypePolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SchedulePolicy;
@@ -31,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Department::class => DepartmentPolicy::class,
         Role::class => RolePolicy::class,
         Schedule::class => SchedulePolicy::class,
+        ConstraintType::class => ConstraintTypePolicy::class,
     ];
 
     /**

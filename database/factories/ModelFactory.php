@@ -28,3 +28,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'attributes' => ''
     ];
 });
+
+$factory->define(App\ConstraintType::class, function(Faker\Generator $faker) {
+    return [
+        'name' => $faker->word,
+        'description' => $faker->sentence,
+        'code' => $faker->firstName,
+        'is_work' => $faker->boolean(30),
+        'is_single_day' => $faker->boolean(50),
+        'is_group_constraint' => 0,
+        'is_day_in_schedule' => 0,
+        'branch_id' => 1
+    ];
+});

@@ -16,7 +16,7 @@ class CreateConstraintTypesTable extends Migration
         Schema::create('constraint_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->string('code', 5);
             $table->boolean('is_work');
             $table->boolean('is_single_day');

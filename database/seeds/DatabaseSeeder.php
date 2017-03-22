@@ -15,8 +15,9 @@ class DatabaseSeeder extends Seeder
         $this->call(BranchSeeder::class);
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
-        $this->call(ConstraintSeeder::class);
         $this->call(WorkplaceDepartmentSeeder::class);
         $this->call(ScheduleSeeder::class);
+        $this->call(ConstraintTypeSeeder::class);
+        $this->call(ConstraintSeeder::class);
     }
 }
