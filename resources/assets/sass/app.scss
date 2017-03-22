@@ -10,3 +10,25 @@
 
 // Font-Awesome
 @import 'node_modules/font-awesome/scss/font-awesome.scss';
+
+.branchname {
+  color:limegreen!important;
+  font-weight: bold;
+}
+
+th.clickable {
+  cursor:pointer;
+}
+
+.table > thead > tr > th {
+  user-select: none;
+  vertical-align: middle;
+}
+
+#app {
+    padding-bottom: 30px;
+}
+
+.help {
+    color: $input-color-placeholder;
+}
