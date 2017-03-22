@@ -16,6 +16,12 @@ require('./bootstrap');
 import VueFlatpickr from 'vue-flatpickr';
 import 'vue-flatpickr/theme/airbnb.css'
 
+// Vue.component('example', require('./components/Example.vue'));
+Vue.component('rhpharma-branches', require('./components/Branches.vue'));
+Vue.component('rhpharma-users', require('./components/Users.vue'));
+Vue.component('rhpharma-departments', require('./components/Departments.vue'));
+Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));
+Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue'));
 Vue.use(VueFlatpickr);
 
 const app = new Vue({
