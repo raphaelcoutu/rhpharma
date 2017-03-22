@@ -49,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('departments', 'DepartmentsController@index')->name('departments.index');
     Route::get('departments/create', 'DepartmentsController@create')->name('departments.create');
     Route::post('departments', 'DepartmentsController@store')->name('departments.store');
+    Route::get('departments/{department}/edit', 'DepartmentsController@edit')->name('departments.edit');
+    Route::post('departments/{department}', 'DepartmentsController@update')->name('departments.update');
 
     //Schedules
     Route::get('schedules', 'SchedulesController@index')->name('schedules.index');

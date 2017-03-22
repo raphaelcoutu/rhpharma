@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Http\Requests\DepartmentRequest;
 use App\Workplace;
 use Illuminate\Http\Request;
 
@@ -38,15 +39,8 @@ class DepartmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DepartmentRequest $request)
     {
-        $request['branch_id'] = \Auth::user()->branch->id;
-
-        $this->validate($request, [
-            'name' => 'required|unique:departments,name,NULL,NULL,workplace_id,' . $request['workplace_id'] . ',branch_id,' . $request['branch_id'],
-            'code' => 'required',
-        ]);
-
         Department::create($request->all());
 
         return redirect('departments');
@@ -69,9 +63,13 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Department $department)
     {
-        //
+        $this->authorize('write', Department::class);
+
+        $workplaces = Workplace::all();
+
+        return view('departments.edit', ['department' => $department, 'workplaces' => $workplaces]);
     }
 
     /**
@@ -81,9 +79,11 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DepartmentRequest $request, Department $department)
     {
-        //
+        $department->update($request->all());
+
+        return redirect('departments');
     }
 
     /**

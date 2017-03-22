@@ -2,7 +2,7 @@
     <div>
         <rhpharma-sortable-table :columns="sortTable.columns" :rows="sortTable.rows">
             <template slot="actions" scope="props">
-                <a :href="`${modelUrl}/${props.id}`" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                <a :href="`${modelUrl}/${props.id}/edit`" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
             </template>
         </rhpharma-sortable-table>
     </div>
