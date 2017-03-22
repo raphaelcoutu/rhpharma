@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Branch;
 use App\Policies\BranchPolicy;
+use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
+use App\Role;
 use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Branch::class => BranchPolicy::class,
         User::class => UserPolicy::class,
+        Role::class => RolePolicy::class,
     ];
 
     /**
