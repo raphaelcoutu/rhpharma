@@ -13,7 +13,10 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+import VueFlatpickr from 'vue-flatpickr';
+import 'vue-flatpickr/theme/airbnb.css'
+
+Vue.use(VueFlatpickr);
 
 const app = new Vue({
     el: '#app'
