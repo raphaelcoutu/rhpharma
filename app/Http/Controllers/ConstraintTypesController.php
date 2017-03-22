@@ -16,7 +16,7 @@ class ConstraintTypesController extends Controller
     {
         $this->authorize('read', ConstraintType::class);
 
-        $constraintTypes = ConstraintType::all();
+        $constraintTypes = ConstraintType::ownBranch()->get();
 
         return view('constraintTypes.index', compact('constraintTypes'));
     }

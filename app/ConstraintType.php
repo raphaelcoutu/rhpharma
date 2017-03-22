@@ -16,4 +16,9 @@ class ConstraintType extends Model
         'is_day_in_schedule',
         'branch_id'
     ];
+
+    public function scopeOwnBranch($query)
+    {
+        return $query->where('branch_id', \Auth::user()->branch->id);
+    }
 }
