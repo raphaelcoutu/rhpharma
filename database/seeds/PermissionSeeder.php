@@ -20,7 +20,14 @@ class PermissionSeeder extends Seeder
             ['name' => 'WriteUsers'],
             ['name' => 'ReadWorkplaces'],
             ['name' => 'WriteWorkplaces'],
-
+            ['name' => 'ReadDepartments'],
+            ['name' => 'WriteDepartments'],
+            ['name' => 'ReadRoles'],
+            ['name' => 'WriteRoles'],
+            ['name' => 'ReadSchedules'],
+            ['name' => 'WriteSchedules'],
+            ['name' => 'ReadConstraintTypes'],
+            ['name' => 'WriteConstraintTypes'],
         ];
 
         foreach($permissions as $perm) {

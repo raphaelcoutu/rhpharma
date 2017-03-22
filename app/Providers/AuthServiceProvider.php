@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Branch;
+use App\Department;
 use App\Policies\BranchPolicy;
+use App\Policies\DepartmentPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkplacePolicy;
@@ -23,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
         Branch::class => BranchPolicy::class,
         User::class => UserPolicy::class,
         Workplace::class => WorkplacePolicy::class,
+        Department::class => DepartmentPolicy::class,
         Role::class => RolePolicy::class,
     ];
 
