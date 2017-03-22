@@ -21,5 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('branches/{id}', 'BranchesController@edit');
     Route::patch('branches/{id}', 'BranchesController@update');
 
+    Route::get('schedules', 'SchedulesController@fetch');
+    Route::post('schedules/store', 'SchedulesController@store');
 
 });

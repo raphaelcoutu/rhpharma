@@ -7,12 +7,15 @@ use App\Department;
 use App\Policies\BranchPolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\SchedulePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkplacePolicy;
 use App\Role;
+use App\Schedule;
 use App\User;
 use App\Workplace;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Workplace::class => WorkplacePolicy::class,
         Department::class => DepartmentPolicy::class,
         Role::class => RolePolicy::class,
+        Schedule::class => SchedulePolicy::class,
     ];
 
     /**
