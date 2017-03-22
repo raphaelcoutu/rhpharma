@@ -28,7 +28,7 @@ class DepartmentRequest extends FormRequest
         return [
             'name' => 'required|unique:departments,name,' . $this->id . ',id,workplace_id,' . $this->workplace_id 
                     . ',branch_id,' . $this->branch_id,
-            'code' => 'required|unique:departments,code,' . $this->id . ',id,branch_id,' . $this->branch_id
+            'code' => 'required|max:5|unique:departments,code,' . $this->id . ',id,branch_id,' . $this->branch_id
         ];
     }
 }
