@@ -42,5 +42,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'branch_id' => 2
         ]);
+
+        factory(User::class, 40)->create([
+            'is_active' => 1
+        ]);
     }
 }

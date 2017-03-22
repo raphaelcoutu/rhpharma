@@ -21,8 +21,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('branches/{id}', 'BranchesController@edit');
     Route::patch('branches/{id}', 'BranchesController@update');
 
-    Route::get('users', function () {
-        return User::all();
-    });
 
 });

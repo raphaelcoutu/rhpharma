@@ -27,6 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function scopeOwnBranch($query)
+    {
+        return $query->where('branch_id', \Auth::user()->branch->id);
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);
