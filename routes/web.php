@@ -24,7 +24,6 @@ Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
-
 Route::group(['middleware' => 'auth'], function () {
 
     //Branches
@@ -39,4 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     
     //Workplaces
     Route::get('workplaces', 'WorkplacesController@index')->name('workplaces.index');
+    Route::get('workplaces/create', 'WorkplacesController@create')->name('workplaces.create');
+    Route::post('workplaces', 'WorkplacesController@store')->name('workplaces.store');
+    Route::get('workplaces/{workplace}', 'WorkplacesController@show')->name('workplaces.show');
 });
