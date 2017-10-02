@@ -76,7 +76,7 @@
                 }),
                 sortTable: {
                         columns: [
-                            {id: 'name', title: 'Nom de la branche', sortable: true},
+                            {id: 'name', title: 'Nom de l\'horaire', sortable: true},
                             {id: 'constraint_limit_date', title: 'Date contraintes', sortable: true},
                             {id: 'start_date', title: 'Début', sortable: true},
                             {id: 'end_date', title: 'Fin', sortable: true},
