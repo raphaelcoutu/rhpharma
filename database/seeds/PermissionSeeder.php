@@ -28,6 +28,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'WriteSchedules'],
             ['name' => 'ReadConstraintTypes'],
             ['name' => 'WriteConstraintTypes'],
+            ['name' => 'ReadHolidays'],
+            ['name' => 'WriteHolidays'],
         ];
 
         foreach($permissions as $perm) {

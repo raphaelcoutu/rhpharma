@@ -59,4 +59,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('constraintTypes', 'ConstraintTypesController@index')->name('constraintTypes.index');
     Route::get('constraintTypes/create', 'ConstraintTypesController@create')->name('constraintTypes.create');
     Route::post('constraintTypes', 'ConstraintTypesController@store')->name('constraintTypes.store');
+
+    //Holidays
+    Route::get('holidays', 'HolidaysController@index')->name('holidays.index');
 });

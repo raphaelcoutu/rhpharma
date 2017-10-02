@@ -5,7 +5,8 @@
     Auth::user()->can('read', App\Department::class) ||
     Auth::user()->can('read', App\Role::class) ||
     Auth::user()->can('read', App\Schedule::class ||
-    Auth::user()->can('read', App\ConstraintType::class))
+    Auth::user()->can('read', App\ConstraintType::class) ||
+    Auth::user()->can('read', App\Holiday::class))
     )
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -49,6 +50,12 @@
                 <a href="{{ route('constraintTypes.index') }}">Gestion des types de contraintes</a></li>
             </li>
         @endcan
+
+        @can('read', App\Holiday::class)
+            <li>
+                <a href="{{ route('holidays.index') }}">Gestion des fériés</a></li>
+            </li>
+        @endcan        
     </ul>
 </li>
 @endif
