@@ -38,12 +38,11 @@
         data() {
             return {
                 edit:false,
-                list:[],
+                showForm:false,
                 form: new Form({
                     id: '',
                     name: ''
                 }),
-                showForm:false,
                 sortTable: {
                     columns: [
                         {id: 'name', title: 'Nom de la branche', sortable: true},
@@ -54,8 +53,6 @@
                 }
             };
         },
-
-        template: '#branches',
 
         methods: {
             refresh () {
@@ -86,7 +83,7 @@
             },
 
             updateBranch(id) {
-                this.form.patch('api/branches/' + id, this.branch)
+                this.form.patch('api/branches/' + id)
                     .then(() => {
                         this.edit = false;
                         this.showForm = false;
