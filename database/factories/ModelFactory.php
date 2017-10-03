@@ -24,8 +24,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'workdays_per_week' => 5,
         'seniority' => 0,
         'is_active' => 1,
-        'branch_id' => 1,
-        'attributes' => ''
+        'branch_id' => 1
     ];
 });
 

@@ -32,14 +32,14 @@ class User extends Authenticatable
         return $query->where('branch_id', \Auth::user()->branch->id);
     }
 
-    public function roles()
+    public function attributes()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->hasMany(Attribute::class);
     }
 
-    public function permissions()
+    public function branch()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsTo(Branch::class);
     }
 
     public function constraintNotes()
@@ -47,8 +47,13 @@ class User extends Authenticatable
         return $this->belongsToMany(ConstraintNote::class);
     }
 
-    public function branch()
+    public function permissions()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 }

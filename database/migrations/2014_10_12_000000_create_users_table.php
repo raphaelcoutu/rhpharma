@@ -20,10 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('is_active')->default(1);
-            $table->integer('workdays_per_week');
-            $table->integer('seniority');
-            $table->integer('branch_id');
-            $table->string('attributes');
+            $table->unsignedInteger('workdays_per_week');
+            $table->unsignedInteger('seniority');
+            $table->unsignedInteger('branch_id');
             $table->rememberToken();
             $table->timestamps();
         });
