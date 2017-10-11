@@ -55,11 +55,14 @@ Route::group(['middleware' => 'auth'], function () {
     //Schedules
     Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
 
+    //Holidays
+    Route::get('holidays', 'HolidaysController@index')->name('holidays.index');
+
     //ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@index')->name('constraintTypes.index');
     Route::get('constraintTypes/create', 'ConstraintTypesController@create')->name('constraintTypes.create');
     Route::post('constraintTypes', 'ConstraintTypesController@store')->name('constraintTypes.store');
 
-    //Holidays
-    Route::get('holidays', 'HolidaysController@index')->name('holidays.index');
+    Route::get('constraints', 'ConstraintsController@index')->name('constraints.index');
+
 });

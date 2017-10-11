@@ -15,21 +15,21 @@ class CreateConstraintsTable extends Migration
     {
         Schema::create('constraints', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('constrainttype_id');
+            $table->unsignedInteger('user_id');
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime');
+            $table->integer('constraint_type_id');
             $table->boolean('weight');
-            $table->text('comment');
+            $table->text('comment')->nullable();
             $table->integer('status');
             $table->integer('created_by');
-            $table->integer('branch_id');
-            $table->integer('number_of_occurrences');
-            $table->integer('disposition');
-            $table->boolean('is_day_of_week');
-            $table->integer('day');
-            $table->integer('day1');
-            $table->string('discriminator');
+            $table->unsignedInteger('validated_by')->nullable();
+            $table->integer('number_of_occurrences')->nullable();
+//            $table->integer('disposition');
+//            $table->boolean('is_day_of_week');
+//            $table->integer('day');
+//            $table->integer('day1');
+//            $table->string('discriminator');
 
 
             $table->timestamps();

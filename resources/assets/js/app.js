@@ -18,6 +18,7 @@ import 'vue-flatpickr/theme/airbnb.css'
 
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('rhpharma-branches', require('./components/Branches.vue'));
+Vue.component('rhpharma-constraints', require('./components/Constraints.vue'));
 Vue.component('rhpharma-departments', require('./components/Departments.vue'));
 Vue.component('rhpharma-holidays', require('./components/Holidays.vue'));
 Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));

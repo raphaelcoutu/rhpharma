@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\ConstraintType;
+use App\Constraint;
+use App\Schedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ConstraintTypesController extends Controller
+class ConstraintsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,16 +16,16 @@ class ConstraintTypesController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', ConstraintType::class);
+        $fixedConstraints = Constraint::fromLoggedInUser()->get();
 
-        $constraintTypes = ConstraintType::ownBranch()->get();
+        $availabilityConstraints = Constraint::fromLoggedInUser()
+            ->whereHas('constraintType', function($query) {
+                $query->where('is_single_day', '=',1);
+            })->get();
 
-        return view('constraintTypes.index', compact('constraintTypes'));
-    }
+        $schedules = Schedule::where('end_date', '>', Carbon::today())->get();
 
-    public function fetch()
-    {
-        return ConstraintType::all();
+        return view('constraints.index', compact('schedules', 'availabilityConstraints', 'fixedConstraints'));
     }
 
     /**
@@ -33,9 +35,7 @@ class ConstraintTypesController extends Controller
      */
     public function create()
     {
-        $this->authorize('write', ConstraintType::class);
-        
-        return view('constraintTypes.create');
+        //
     }
 
     /**
@@ -46,20 +46,7 @@ class ConstraintTypesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
-            'is_work' => 'required',
-            'is_single_day' => 'required',
-            'is_group_constraint' => 'required',
-            'is_day_in_schedule' => 'required',
-        ]);
-        
-        $request['branch_id'] = \Auth::user()->branch->id;
-
-        ConstraintType::create($request->all());
-
-        return redirect('constraintTypes');
+        //
     }
 
     /**
