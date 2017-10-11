@@ -12,8 +12,14 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label>Date fériée:</label>
-                    <div @click="flatpickrClicked($event.target.name)">
-                        <Flatpickr :options="fpOptions" v-model="form.date" name="date" class="form-control"></Flatpickr>
+                    <div @click="flatpickrClicked($event.target.name)" class="input-group">
+                        <Flatpickr
+                                :config="fpConfig"
+                                v-model="form.date"
+                                name="date"
+                                class="form-control"
+                                placeholder="Sélectionner une date">
+                        </Flatpickr>
                     </div>
                 </div>
             </div>
@@ -43,6 +49,8 @@
 
 <script>
     import Form from '../helpers/Form';
+    import Flatpickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
 
     export default {
         props: {
@@ -50,6 +58,10 @@
                 required:true
             }
 
+        },
+
+        components: {
+            Flatpickr
         },
 
         data() {
@@ -71,7 +83,8 @@
                     ],
                     rows: this.rows
                 },
-                fpOptions: {}
+                fpConfig: {
+                }
             };
         },
 

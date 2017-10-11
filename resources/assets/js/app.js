@@ -15,9 +15,6 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import VueFlatpickr from 'vue-flatpickr';
-import 'vue-flatpickr/theme/airbnb.css'
-
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('rhpharma-branches', require('./components/Branches.vue'));
 Vue.component('rhpharma-constraints', require('./components/Constraints.vue'));
@@ -26,7 +23,6 @@ Vue.component('rhpharma-holidays', require('./components/Holidays.vue'));
 Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));
 Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue'));
 Vue.component('rhpharma-users', require('./components/Users.vue'));
-Vue.use(VueFlatpickr);
 
 const app = new Vue({
     el: '#app'
