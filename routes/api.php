@@ -22,6 +22,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('branches/{id}', 'BranchesController@edit');
     Route::patch('branches/{id}', 'BranchesController@update');
 
+    //Constraints
+    Route::get('constraints/fixed', 'ConstraintsController@fetchFixed');
+    Route::get('constraints/availability', 'ConstraintsController@fetchAvailability');
+    Route::get('constraints/{id}/edit', 'ConstraintsController@edit');
+    Route::post('constraints/store', 'ConstraintsController@store');
+    Route::put('constraints/{id}/update', 'ConstraintsController@update');
+
+    //ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@fetch');
 
     //Schedules

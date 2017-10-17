@@ -21,11 +21,6 @@ class ConstraintTypesController extends Controller
         return view('constraintTypes.index', compact('constraintTypes'));
     }
 
-    public function fetch()
-    {
-        return ConstraintType::all();
-    }
-
     /**
      * Show the form for creating a new resource.
      *

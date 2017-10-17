@@ -1,5 +1,6 @@
 <template>
     <div>
+        Horaire:
         <select>
             <option v-for="schedule in schedules" v-bind:value="schedule.id" >{{ schedule.name }}</option>
         </select>

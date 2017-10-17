@@ -9,6 +9,7 @@
                 <div class="panel-body">
                     <rhpharma-constraints
                         :schedules="{{ $schedules }}"
+                        :constraint-types="{{ $constraintTypes }}"
                         :availability-constraints="{{ $availabilityConstraints }}"
                         :fixed-constraints="{{ $fixedConstraints }}"
                     ></rhpharma-constraints>

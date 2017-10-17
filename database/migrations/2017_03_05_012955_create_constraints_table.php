@@ -22,7 +22,6 @@ class CreateConstraintsTable extends Migration
             $table->boolean('weight');
             $table->text('comment')->nullable();
             $table->integer('status');
-            $table->integer('created_by');
             $table->unsignedInteger('validated_by')->nullable();
             $table->integer('number_of_occurrences')->nullable();
 //            $table->integer('disposition');

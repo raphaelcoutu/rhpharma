@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Constraint;
+use App\ConstraintType;
+use App\Http\Requests\ConstraintRequest;
 use App\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,16 +18,31 @@ class ConstraintsController extends Controller
      */
     public function index()
     {
-        $fixedConstraints = Constraint::fromLoggedInUser()->get();
+        $fixedConstraints = Constraint::with('constraintType')->fixedConstraints()
+            ->fromLoggedInUser()->get();
 
-        $availabilityConstraints = Constraint::fromLoggedInUser()
-            ->whereHas('constraintType', function($query) {
-                $query->where('is_single_day', '=',1);
-            })->get();
+
+        $availabilityConstraints = Constraint::with('constraintType')->availabilityConstraints()
+            ->fromLoggedInUser()->get();
 
         $schedules = Schedule::where('end_date', '>', Carbon::today())->get();
+        $constraintTypes = ConstraintType::all();
 
-        return view('constraints.index', compact('schedules', 'availabilityConstraints', 'fixedConstraints'));
+        return view('constraints.index',
+            compact('schedules', 'constraintTypes', 'availabilityConstraints', 'fixedConstraints')
+        );
+    }
+
+    public function fetchFixed()
+    {
+        return Constraint::with('constraintType')->fixedConstraints()
+            ->fromLoggedInUser()->get();
+    }
+
+    public function fetchAvailability()
+    {
+        return Constraint::with('constraintType')->availabilityConstraints()
+            ->fromLoggedInUser()->get();
     }
 
     /**
@@ -44,9 +61,24 @@ class ConstraintsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ConstraintRequest $request)
     {
-        //
+        $constraint = new Constraint([
+            'user_id' => \Auth::user()->id,
+            'start_datetime' => $request->get('start_datetime'),
+            'end_datetime' => $request->get('end_datetime'),
+            'constraint_type_id' => $request->get('constraint_type_id'),
+            'weight' => $request->get('weight'),
+            'comment' => $request->get('comment'),
+            'status' => 0,
+            'validated_by' => null,
+            'number_of_occurrences' => null
+        ]);
+
+        $constraint->save();
+
+        return $constraint;
+
     }
 
     /**
@@ -68,7 +100,7 @@ class ConstraintsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Constraint::with('constraintType')->findOrFail($id);
     }
 
     /**
@@ -80,7 +112,20 @@ class ConstraintsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $constraint = Constraint::findOrFail($id);
+
+        $constraint->update([
+            'start_datetime' => $request->get('start_datetime'),
+            'end_datetime' => $request->get('end_datetime'),
+            'constraint_type_id' => $request->get('constraint_type_id'),
+            'weight' => $request->get('weight'),
+            'comment' => $request->get('comment'),
+            'status' => 0,
+            'validated_by' => null,
+            'number_of_occurrences' => null
+        ]);
+
+        return $constraint;
     }
 
     /**
