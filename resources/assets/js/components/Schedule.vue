@@ -15,19 +15,19 @@
                 <div class="form-group col-md-2">
                     <label>Date contraintes:</label>
                     <div @click="flatpickrClicked($event.target.name)">
-                        <Flatpickr :options="fpOptions" v-model="form.constraint_limit_date" name="constraint_limit_date" class="form-control" />
+                        <Flatpickr :config="fpOptions" v-model="form.constraint_limit_date" name="constraint_limit_date" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group col-md-2">
                     <label>Date de début:</label>
                     <div @click="flatpickrClicked($event.target.name)">
-                        <Flatpickr :options="fpOptions" v-model="form.start_date" name="start_date" class="form-control"/>
+                        <Flatpickr :config="fpOptions" v-model="form.start_date" name="start_date" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group col-md-2">
                     <label>Date de fin:</label>
                     <div @click="flatpickrClicked($event.target.name)">
-                        <Flatpickr :options="fpOptions" v-model="form.end_date" name="end_date" class="form-control" />
+                        <Flatpickr :config="fpOptions" v-model="form.end_date" name="end_date" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -54,6 +54,8 @@
 
 <script>
     import Form from '../helpers/Form';
+    import Flatpickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
 
     export default {
 
@@ -62,6 +64,10 @@
                 required:true
             }
 
+        },
+
+        components: {
+            Flatpickr
         },
 
         data() {
