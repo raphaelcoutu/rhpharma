@@ -56,15 +56,15 @@
                     <div class="col-md-6 form-inline">
                         <div class="form-group">
                             <label>Date/heure de début</label>
-                            <input type="text" v-model="form.start_date" placeholder="AAAA-MM-JJ" class="form-control" size="12"/>
-                            <input type="text" v-model="form.start_time" class="form-control" placeholder="--:--" size="5"/>
+                            <Flatpickr :config="fpConfig" v-model="form.start_date" placeholder="AAAA-MM-JJ" class="form-control" size="12"/>
+                            <Timepickr v-model="form.start_time" />
                         </div>
                     </div>
                     <div class="col-md-6 form-inline">
                         <div class="form-group">
                             <label>Date/heure de fin</label>
-                            <input type="text" v-show="showEndDate" v-model="form.end_date" placeholder="AAAA-MM-JJ" class="form-control" size="12"/>
-                            <input type="text" v-model="form.end_time"class="form-control" placeholder="--:--" size="5"/>
+                            <Flatpickr :config="fpConfig" v-show="showEndDate" v-model="form.end_date" placeholder="AAAA-MM-JJ" class="form-control" size="12"/>
+                            <Timepickr type="text" v-model="form.end_time"/>
                         </div>
                     </div>
                 </div>
@@ -104,6 +104,10 @@
 
     import moment from 'moment';
     import VueScrollTo from 'vue-scrollTo';
+    import Flatpickr from 'vue-flatpickr-component';
+    import 'flatpickr/dist/flatpickr.css';
+    import Timepickr from './Timepickr.vue'
+
 
     Vue.use(VueScrollTo);
 
@@ -115,6 +119,8 @@
         },
 
         components: {
+            Flatpickr,
+            Timepickr
         },
 
         mounted() {
@@ -135,13 +141,10 @@
                     weight: null,
                     comment: null
                 },
+                formErrors: null,
                 fpConfig: {
-                    mode:'range',
-                    enableTime: true,
-                    time_24hr:true,
-                    defaultHour: 0
-                },
-                formErrors: null
+                    onOpen: this.onFlatpickrOpen
+                }
             }
         },
 
@@ -237,6 +240,7 @@
                            this.refreshData();
                            this.resetForm();
                         }).catch(err => {
+                            console.error(constraint);
                             this.formErrors = err.respose.data.errors;
                     });
                 }
@@ -247,6 +251,12 @@
                     return 'fa-battery-full'
                 } else {
                     return 'fa-battery-empty'
+                }
+            },
+
+            onFlatpickrOpen(selectedDates, dateStr, instance) {
+                if(this.form.start_date == null || this.form.start_date == '') {
+                    instance.jumpToDate(new Date())
                 }
             }
         },
