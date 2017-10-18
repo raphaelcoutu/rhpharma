@@ -81,6 +81,12 @@
 
                 this.mutableValue = valueH + ':' + valueM;
             }
+        },
+
+        watch: {
+            mutableValue(newValue) {
+                this.$emit('input', newValue);
+            }
         }
     }
 </script>
