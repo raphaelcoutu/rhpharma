@@ -9,13 +9,13 @@
     <div class="form-group">
         <label for="firstname" class="col-md-3 control-label">Prénom:</label>
         <div class="col-md-3 {{ $errors->first('firstname') ? 'has-error' : '' }}">
-            <input type="text" id="firstname" name="firstname" class="form-control" value="{{ $user->firstname or old('firstname') }}">
+            <input type="text" id="firstname" name="firstname" class="form-control" value="{{ old('firstname', isset($user) ? $user->firstname : '') }}">
             <span class="help-block">{{ $errors->first('firstname') }}</span>
         </div>
 
         <label for="lastname" class="col-md-3 control-label">Nom:</label>
         <div class="col-md-3 {{ $errors->first('lastname') ? 'has-error' : '' }}">
-            <input type="text" id="lastname" name="lastname" class="form-control" value="{{ $user->lastname or old('lastname') }}">
+            <input type="text" id="lastname" name="lastname" class="form-control" value="{{  old('lastname', isset($user) ? $user->lastname : '') }}">
             <span class="help-block">{{ $errors->first('lastname') }}</span>
         </div>
     </div>
@@ -23,7 +23,7 @@
     <div class="form-group">
         <label for="email" class="col-md-3 control-label">Email:</label>
         <div class="col-md-3 {{ $errors->first('email') ? 'has-error' : '' }}">
-            <input type="email" id="email" name="email" class="form-control" value="{{ $user->email or old('email') }}">
+            <input type="email" id="email" name="email" class="form-control" value="{{ old('email', isset($user) ? $user->email : '') }}">
             <span class="help-block">{{ $errors->first('email') }}</span>
         </div>
 
@@ -53,7 +53,7 @@
 
         <label for="seniority" class="col-md-3 control-label">Ancienneté:</label>
         <div class="col-md-3 {{ $errors->first('seniority') ? 'has-error' : '' }}">
-            <input type="text" id="seniority" name="seniority" class="form-control" value="{{ $user->seniority or old('seniority') }}">
+            <input type="text" id="seniority" name="seniority" class="form-control" value="{{ old('seniority', isset($user) ? $user->seniority : '') }}">
             <span class="help-block">{{ $errors->first('seniority') }}</span>
         </div>
     </div>
