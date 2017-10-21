@@ -22,7 +22,6 @@
                         <th>Ancienneté</th>
                         <th>Branche</th>
                         <th>Statut</th>
-                        <th>Attributs</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,6 +38,9 @@
                     </tbody>
                 </table>
 
+                @can('write', App\User::class)
+                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Modifier l'utilisateur</a>
+                @endcan
                 <h3>Secteurs</h3>
 
                 <ul>

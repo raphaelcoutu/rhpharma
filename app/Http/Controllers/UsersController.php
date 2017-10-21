@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Branch;
+use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -30,7 +32,11 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $this->authorize('write', User::class);
+
+        $branches = Branch::select(['id', 'name'])->get();
+
+        return view('users.create', compact('branches'));
     }
 
     /**
@@ -39,14 +45,13 @@ class UsersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $this->validate($request, [
-            'firstname' => 'required|alpha_dash',
-            'lastname' => 'required|alpha_dash',
-            'email' => 'required|email|unique:users',
-            'workdays_per_week' => 'required|digits:1'
-        ]);
+        $user = new User($request->all());
+        $user->password = bcrypt(uniqid("rhpharma_"));
+        $user->save();
+
+        return redirect()->route('users.index');
     }
 
     /**
@@ -77,7 +82,12 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('write', User::class);
+
+        $user = User::findOrFail($id);
+        $branches = Branch::select(['id', 'name'])->get();
+
+        return view('users.edit', compact('user', 'branches'));
     }
 
     /**
@@ -87,9 +97,12 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+
+        return view('users.show', compact('user'));
     }
 
     /**
