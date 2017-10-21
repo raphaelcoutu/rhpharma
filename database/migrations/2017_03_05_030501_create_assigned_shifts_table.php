@@ -17,6 +17,8 @@ class CreateAssignedShiftsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('shift_id');
+            $table->boolean('is_generated'); //si généré par le script VS inscrit par un gestionnaire
+            $table->boolean('is_published'); //si est public (donc approuvé par gestionnaire et public)
             $table->date('date');
             $table->timestamps();
         });
