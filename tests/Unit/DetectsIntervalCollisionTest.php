@@ -85,20 +85,4 @@ class DetectsIntervalCollisionTest extends TestCase
 
         $this->assertTrue($result);
     }
-
-    /** @test */
-    public function it_should_return_true()
-    {
-        $a_start = Carbon::parse('2017-11-03');
-        $a_end = Carbon::parse('2017-11-17');
-        $b_start = Carbon::parse('2017-11-04');
-        $b_end = Carbon::parse('2017-11-18');
-
-        $result = detectsIntervalCollision($a_start, $a_end, $b_start, $b_end);
-
-        $this->assertTrue($result);
-    }
-
-
-
 }
