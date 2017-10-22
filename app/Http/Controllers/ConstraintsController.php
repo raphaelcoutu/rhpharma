@@ -65,8 +65,8 @@ class ConstraintsController extends Controller
     {
         $constraint = new Constraint([
             'user_id' => \Auth::user()->id,
-            'start_datetime' => $request->get('start_datetime'),
-            'end_datetime' => $request->get('end_datetime'),
+            'start_datetime' => Carbon::parse($request->get('start_datetime')),
+            'end_datetime' => Carbon::parse($request->get('end_datetime')),
             'constraint_type_id' => $request->get('constraint_type_id'),
             'weight' => $request->get('weight'),
             'comment' => $request->get('comment'),
@@ -115,8 +115,8 @@ class ConstraintsController extends Controller
         $constraint = Constraint::findOrFail($id);
 
         $constraint->update([
-            'start_datetime' => $request->get('start_datetime'),
-            'end_datetime' => $request->get('end_datetime'),
+            'start_datetime' => Carbon::parse($request->get('start_datetime')),
+            'end_datetime' => Carbon::parse($request->get('end_datetime')),
             'constraint_type_id' => $request->get('constraint_type_id'),
             'weight' => $request->get('weight'),
             'comment' => $request->get('comment'),

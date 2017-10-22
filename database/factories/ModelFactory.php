@@ -42,3 +42,18 @@ $factory->define(App\ConstraintType::class, function(Faker $faker) {
         'branch_id' => 1
     ];
 });
+
+
+$factory->define(App\Constraint::class, function (Faker $faker) {
+    return [
+        'user_id' => 1,
+        'start_datetime' => \Carbon\Carbon::parse('-2 weeks'),
+        'end_datetime' => \Carbon\Carbon::parse('-2 weeks'),
+        'constraint_type_id' => 1,
+        'weight' => 0,
+        'comment' => '',
+        'status' => 0,
+        'validated_by' => null,
+        'number_of_occurrences' => null,
+    ];
+});
