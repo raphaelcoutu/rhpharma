@@ -16,7 +16,7 @@
             </div>
         </form>
         <rhpharma-sortable-table :columns="sortTable.columns" :rows="sortTable.rows">
-            <template slot="options" slot-scope="props">
+            <template slot="options" scope="props">
                 <button @click="editBranch(props.id)" class="btn btn-primary btn-xs">Edit</button>
                 <button @click="deleteBranch(props.id)" class="btn btn-danger btn-xs">Delete</button>
             </template>

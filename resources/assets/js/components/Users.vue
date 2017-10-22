@@ -4,10 +4,10 @@
         <input type="search" class="form-control" v-model="search" placeholder="Recherche un utilisateur" spellcheck="false">
     </div>
     <rhpharma-sortable-table :columns="sortTable.columns" :rows="sortTable.rows" :search="search">
-        <template slot="is_active" slot-scope="props">
+        <template slot="is_active" scope="props">
             <td>{{ isActive(props.row) }}</td>
         </template>
-        <template slot="options" slot-scope="props">
+        <template slot="options" scope="props">
             <td><a :href="`${modelUrl}/${props.id}`" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
         </template>
     </rhpharma-sortable-table>
