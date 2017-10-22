@@ -86,6 +86,11 @@
         watch: {
             mutableValue(newValue) {
                 this.$emit('input', newValue);
+            },
+            value(newValue) {
+                if(newValue == this.mutableValue) return;
+
+                this.mutableValue = newValue;
             }
         }
     }
