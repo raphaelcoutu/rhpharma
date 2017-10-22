@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Constraint;
+use App\Http\Requests\ScheduleRequest;
 use App\Schedule;
 use Illuminate\Http\Request;
 
@@ -16,9 +18,25 @@ class SchedulesController extends Controller
     {
         $this->authorize('read', Schedule::class);
 
-        $schedules = Schedule::ordered()->get();
+        $schedules = Schedule::orderedDesc()->paginate(15);
+
+        $constraints = Constraint::unvalidated()->inInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
+
+        $constraints_in_schedule = [];
+
+        foreach($schedules as $schedule) {
+            $collision = 0;
+            foreach ($constraints as $constraint) {
+                if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+                    $schedule->start_date->setTime(0,0), $schedule->end_date->setTime(23,59))){
+                    $collision++;
+                }
+            }
+
+            $constraints_in_schedule[$schedule->id] = $collision;
+        }
         
-        return view('schedules.index', compact('schedules'));
+        return view('schedules.index', compact('schedules', 'constraints_in_schedule'));
     }
 
     public function fetch()
@@ -33,7 +51,7 @@ class SchedulesController extends Controller
      */
     public function create()
     {
-        //
+        return view('schedules.create');
     }
 
     /**
@@ -42,26 +60,15 @@ class SchedulesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ScheduleRequest $request)
     {
         $this->authorize('write', Schedule::class);
-        
-        $this->validate($request, [
-            'name' => 'required',
-            'constraint_limit_date' => 'required|date|after:today',
-            'start_date' => 'required|date|after:constraint_limit_date',
-            'end_date' => 'required|date|after:start_date'
-        ], [
-            'name.required' => 'Le nom de l\'horaire est requis.',
-            'constraint_limit_date.required' => 'La date de limite pour les contraintes est requise.',
-            'start_date.required' => 'La date de début est requise.',
-            'end_date.required' => 'Le date de fin est requise.',
-        ]);
 
         $request['branch_id'] = \Auth::user()->branch->id;
 
-
         Schedule::create($request->all());
+
+        return redirect()->route('schedule.index');
     }
 
     /**
@@ -72,7 +79,13 @@ class SchedulesController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('write', Schedule::class);
+
+        $schedule = Schedule::findOrFail($id);
+
+        $constraints_count = Constraint::unvalidated()->inInterval($schedule->start_date, $schedule->end_date)->count();
+
+        return view('schedules.show', compact('schedule','constraints_count'));
     }
 
     /**
@@ -83,7 +96,11 @@ class SchedulesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('write', Schedule::class);
+
+        $schedule = Schedule::findOrFail($id);
+
+        return view('schedules.edit', compact('schedule'));
     }
 
     /**
@@ -93,9 +110,12 @@ class SchedulesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ScheduleRequest $request, $id)
     {
-        //
+        $schedule = Schedule::findOrFail($id);
+        $schedule->update($request->all());
+
+        return redirect()->route('schedules.index');
     }
 
     /**

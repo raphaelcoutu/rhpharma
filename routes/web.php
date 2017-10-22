@@ -56,6 +56,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Schedules
     Route::get('schedules', 'SchedulesController@index')->name('schedules.index');
+    Route::get('schedules/create', 'SchedulesController@create')->name('schedules.create');
+    Route::get('schedules/{schedule}', 'SchedulesController@show')->name('schedules.show');
+    Route::get('schedules/{schedule}/edit', 'SchedulesController@edit')->name('schedules.edit');
+    Route::post('schedules', 'SchedulesController@store')->name('schedules.store');
+    Route::put('schedules/{schedule}', 'SchedulesController@update')->name('schedules.update');
 
     //Holidays
     Route::get('holidays', 'HolidaysController@index')->name('holidays.index');
