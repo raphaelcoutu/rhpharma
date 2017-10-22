@@ -86,6 +86,9 @@ return [
     'uploaded'             => "Le fichier du champ :attribute n'a pu être téléchargé.",
     'url'                  => "Le format de l'URL de :attribute n'est pas valide.",
 
+    'day'                  => 'La :attribute doit être un :day',
+    'unique_interval'      => 'L\'interval de dates ne doit pas chevaucher un horaire existant',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -149,6 +152,8 @@ return [
         'weight'                => 'Importance',
         'start_datetime'        => 'Date/heure de début',
         'end_datetime'          => 'Date/heure de fin',
+        'start_date'            => 'Date de début',
+        'end_date'              => 'Date de fin',
     ],
 
 ];
