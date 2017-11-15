@@ -18,7 +18,7 @@ class UsersController extends Controller
     {
         $this->authorize('read', User::class);
 
-        $users = User::ownBranch()->with('branch')->get();
+        $users = User::ownBranch()->orderBy('lastname')->with('branch')->get();
 
         return view('users.index', compact('users'));
 
