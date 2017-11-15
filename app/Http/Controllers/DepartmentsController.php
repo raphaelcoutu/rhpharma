@@ -63,10 +63,11 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Department $department)
+    public function edit($id)
     {
         $this->authorize('write', Department::class);
 
+        $department = Department::with('users')->findOrFail($id);
         $workplaces = Workplace::all();
 
         return view('departments.edit', ['department' => $department, 'workplaces' => $workplaces]);

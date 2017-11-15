@@ -7,6 +7,15 @@
                 <div class="panel-heading">Éditer un secteur</div>
                 <div class="panel-body">
                     @include('departments.form', ['model' => $department])
+                    <hr>
+                    <h3>Pharmaciens associés au secteur</h3>
+                    <ul>
+                        @forelse($department->users as $pharmacien)
+                            <li><a href="{{ route('users.show', $pharmacien->id) }}">{{ $pharmacien->firstname }} {{ $pharmacien->lastname }}</a></li>
+                        @empty
+                            <li>Aucun pharmacien</li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
         </div>

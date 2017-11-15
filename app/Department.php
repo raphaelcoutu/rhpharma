@@ -20,6 +20,11 @@ class Department extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function workplace()
     {
         return $this->belongsTo(Workplace::class);
