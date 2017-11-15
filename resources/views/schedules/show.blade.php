@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <td>Assigner les derniers soirs de chaque semaine<br/><i>(ex: vendredi soir ou jeudi soir si férié)</i></td>
-                            <td><i class="{{ status($schedule->status_friday_nights) }} fa-2x"></i></td>
+                            <td><i class="{{ status($schedule->status_last_evening) }} fa-2x"></i></td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     <a href="#" class="btn btn-success">Générer</a>
@@ -69,11 +69,7 @@
                             <td>Assigner les secteurs cliniques</td>
                             <td><i class="{{ status($schedule->status_clinical_departments) }} fa-2x"></i></td>
                             <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" class="btn btn-success">Générer</a>
-                                    <a href="#" class="btn btn-primary">Réanalyser</a>
-                                    <a href="#" class="btn btn-danger">Mise à zéro</a>
-                                </div>
+                                <rhpharma-build-buttons schedule-id="{{ $schedule->id }}"></rhpharma-build-buttons>
                             </td>
                         </tr>
                         <tr>

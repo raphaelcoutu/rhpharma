@@ -37,16 +37,16 @@
                                     @endif
                                     <i class="{{ status($schedule->status_holidays) }} fa-2x"></i>
                                     <i class="{{ status($schedule->status_weekends) }} fa-2x"></i>
-                                    <i class="{{ status($schedule->status_friday_nights) }} fa-2x"></i>
+                                    <i class="{{ status($schedule->status_last_evening) }} fa-2x"></i>
                                     <i class="{{ status($schedule->status_clinical_departments) }} fa-2x"></i>
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
                                     <a href="{{ route('schedules.edit', $schedule->id) }}" class="btn btn-warning">
-                                        <i class="fa fa-pencil"> Modifier</i>
+                                        <i class="fa fa-pencil"></i> Modifier
                                     </a>
                                     <a href="{{ route('schedules.show', $schedule->id) }}" class="btn btn-success">
-                                        <i class="fa fa-chevron-circle-right"> Générer</i>
+                                        <i class="fa fa-chevron-circle-right"></i> Générer
                                     </a>
                                     </div>
                                 </td>

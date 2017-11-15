@@ -23,6 +23,7 @@ Vue.component('rhpharma-holidays', require('./components/Holidays.vue'));
 Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));
 Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue'));
 Vue.component('rhpharma-users', require('./components/Users.vue'));
+Vue.component('rhpharma-build-buttons', require('./components/Build-Buttons.vue'));
 
 const app = new Vue({
     el: '#app'
