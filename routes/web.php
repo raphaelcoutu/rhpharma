@@ -72,4 +72,16 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('constraints', 'ConstraintsController@index')->name('constraints.index');
 
+    //Build
+    Route::get('build/{schedule}/clinicalDepartments', function ($schedule) {
+        event(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));
+    });
+
+    //TestJob
+    Route::get('/test/{schedule}', function ($schedule) {
+        $job = new App\Jobs\BuildClinicalDepartments(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));
+
+        return $job->handle();
+    });
+
 });

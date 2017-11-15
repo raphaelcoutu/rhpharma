@@ -27,8 +27,14 @@ class BuildStatusChanged
      */
     public function handle(UpdateBuildStatus $event)
     {
-        // Dispatch job selon le statusId
-        BuildClinicalDepartments::dispatch($event);
-        // Send notification to user
+        //Update Status icon
+        if($event->buildStep == 'clinicalDepartments') {
+            //Pusher update
+        }
+
+        //Build selon le Step
+        if($event->buildStep == 'clinicalDepartments') {
+            BuildClinicalDepartments::dispatch($event);
+        }
     }
 }

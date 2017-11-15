@@ -37,7 +37,7 @@ class Constraint extends Model
 
     public function scopeUnvalidated($query)
     {
-        return $query->whereNull('validated_by');
+        return $query->where('status', 0);
     }
 
     public function scopeInInterval($query, Carbon $start_date, Carbon $end_date)

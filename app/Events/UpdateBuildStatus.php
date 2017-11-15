@@ -14,20 +14,18 @@ class UpdateBuildStatus
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $schedule;
+    public $scheduleId;
     public $buildStep;
-    public $buildStatus;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($schedule, $buildStep, $buildStatus)
+    public function __construct($scheduleId, $buildStep)
     {
-        $this->schedule = $schedule;
+        $this->scheduleId = $scheduleId;
         $this->buildStep = $buildStep;
-        $this->statusId = $buildStatus;
     }
 
     /**

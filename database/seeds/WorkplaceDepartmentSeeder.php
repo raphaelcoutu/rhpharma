@@ -50,27 +50,35 @@ class WorkplaceDepartmentSeeder extends Seeder
         ]);
 
         Department::create([
-            'name' => 'Onco 1',
-            'code' => 'ON1',
-            'description' => 'Gérer les conseils pharmacie d\'onco',
+            'name' => 'Onco',
+            'code' => 'ONCO',
+            'description' => 'Oncologie',
             'branch_id' => '1',
             'workplace_id' => '1'
         ]);
 
         Department::create([
-            'name' => 'Onco 2',
-            'code' => 'ON2',
-            'description' => 'Gérer les conseils aux patients d\'onco',
+            'name' => 'Soins intensifs médicaux',
+            'code' => 'SIM',
+            'description' => 'Patients malades ++',
             'branch_id' => '1',
             'workplace_id' => '1'
         ]);
 
         Department::create([
-            'name' => 'Onco 3',
-            'code' => 'ON3',
-            'description' => 'Vérif d\'onco',
+            'name' => 'Soins intensifs chirurgicaux',
+            'code' => 'SIC',
+            'description' => 'Patients malades ++',
             'branch_id' => '1',
             'workplace_id' => '1'
+        ]);
+
+        Department::create([
+            'name' => 'Soins intensifs HD',
+            'code' => 'SIHD',
+            'description' => 'Patients malades ++',
+            'branch_id' => '1',
+            'workplace_id' => '2'
         ]);
 
         Department::create([
@@ -82,35 +90,11 @@ class WorkplaceDepartmentSeeder extends Seeder
         ]);
 
         Department::create([
-            'name' => 'Distrib',
-            'code' => '8HF',
-            'description' => 'Gérer les patients infectés',
+            'name' => 'SIPA',
+            'code' => 'SIPA',
+            'description' => 'Surveillance des antimicrobiens',
             'branch_id' => '1',
             'workplace_id' => '1'
-        ]);
-
-        Department::create([
-            'name' => 'Pacmed HF',
-            'code' => 'HF1',
-            'description' => 'ATP style',
-            'branch_id' => '2',
-            'workplace_id' => '1'
-        ]);
-
-        Department::create([
-            'name' => 'Pacmed HD',
-            'code' => 'HD1',
-            'description' => 'ATP style',
-            'branch_id' => '2',
-            'workplace_id' => '2'
-        ]);
-
-        Department::create([
-            'name' => 'Saisie HD',
-            'code' => 'HD2',
-            'description' => 'ATP style',
-            'branch_id' => '2',
-            'workplace_id' => '2'
         ]);
     }
 }

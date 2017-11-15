@@ -22,7 +22,7 @@ class CreateSchedulesTable extends Migration
             $table->integer('branch_id');
             $table->tinyInteger('status_holidays')->default(0);
             $table->tinyInteger('status_weekends')->default(0);
-            $table->tinyInteger('status_friday_nights')->default(0);
+            $table->tinyInteger('status_last_evening')->default(0);
             $table->tinyInteger('status_clinical_departments')->default(0);
             $table->timestamps();
         });

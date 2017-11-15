@@ -17,7 +17,7 @@ class ConstraintSeeder extends Seeder
             'content' => 'Allo bobo',
             'user_id' => 1,
             'constraint_id' => 1,
-            'is_secret_note' => 0
+            'is_secret_note' => 0,
         ]);
 
         $note->users()->save(User::find(1));

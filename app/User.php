@@ -49,9 +49,19 @@ class User extends Authenticatable
         return $this->belongsTo(Branch::class);
     }
 
+    public function constraints()
+    {
+        return $this->hasMany(Constraint::class);
+    }
+
     public function constraintNotes()
     {
         return $this->belongsToMany(ConstraintNote::class);
+    }
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class);
     }
 
     public function permissions()

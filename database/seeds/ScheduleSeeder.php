@@ -13,29 +13,38 @@ class ScheduleSeeder extends Seeder
      */
     public function run()
     {
+        $initial = Carbon::parse('last sunday');
+
         Schedule::create([
-            'name' => 'Précédent',
+            'name' => 'Précédent (1 semaine)',
             'branch_id' => 1,
-            'constraint_limit_date' => Carbon::parse('-4 weeks'),
-            'start_date' => Carbon::parse('-3 weeks'),
-            'end_date' => Carbon::parse('-1 week - 1 day'),
+            'constraint_limit_date' => $initial->copy()->subWeek(3),
+            'start_date' => $initial->copy()->subWeek(2),
+            'end_date' => $initial->copy()->subWeek(2)->next(Carbon::SATURDAY),
         ]);
 
         Schedule::create([
-            'name' => 'En cours',
+            'name' => 'En cours (4 semaines)',
             'branch_id' => 1,
-            'constraint_limit_date' => Carbon::parse('-2 weeks'),
-            'start_date' => Carbon::parse('-1 week'),
-            'end_date' => Carbon::parse('+2 week - 1 day'),
+            'constraint_limit_date' => $initial->copy()->subWeek(2),
+            'start_date' => $initial->copy()->subWeek(1),
+            'end_date' => $initial->copy()->addWeek(2)->next(Carbon::SATURDAY),
         ]);
 
         Schedule::create([
-            'name' => 'Prochain',
+            'name' => 'Prochain (6 semaines)',
             'branch_id' => 1,
-            'constraint_limit_date' => Carbon::parse('+1 week'),
-            'start_date' => Carbon::parse('+2 weeks'),
-            'end_date' => Carbon::parse('+4 week - 1 day'),
+            'constraint_limit_date' => $initial->copy()->addWeek(2),
+            'start_date' => $initial->copy()->addWeek(3),
+            'end_date' => $initial->copy()->addWeek(8)->next(Carbon::SATURDAY),
         ]);
 
+        Schedule::create([
+            'name' => 'Prochain d\'après (5 semaines)',
+            'branch_id' => 1,
+            'constraint_limit_date' => $initial->copy()->addWeek(8),
+            'start_date' => $initial->copy()->addWeek(9),
+            'end_date' => $initial->copy()->addWeek(13)->next(Carbon::SATURDAY),
+        ]);
     }
 }
