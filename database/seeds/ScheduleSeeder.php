@@ -46,5 +46,13 @@ class ScheduleSeeder extends Seeder
             'start_date' => $initial->copy()->addWeek(9),
             'end_date' => $initial->copy()->addWeek(13)->next(Carbon::SATURDAY),
         ]);
+
+        Schedule::create([
+            'name' => 'Longue (12 semaines)',
+            'branch_id' => 1,
+            'constraint_limit_date' => $initial->copy()->addWeek(13),
+            'start_date' => $initial->copy()->addWeek(14),
+            'end_date' => $initial->copy()->addWeek(25)->next(Carbon::SATURDAY),
+        ]);
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
+use App\Constraint;
 use App\ConstraintNote;
+use App\Schedule;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class ConstraintSeeder extends Seeder
@@ -13,13 +16,30 @@ class ConstraintSeeder extends Seeder
      */
     public function run()
     {
-        $note = ConstraintNote::create([
-            'content' => 'Allo bobo',
-            'user_id' => 1,
-            'constraint_id' => 1,
-            'is_secret_note' => 0,
+        $scheduleStartDate = Schedule::find(5)->start_date;
+
+        //MJL Blank 1
+        factory(Constraint::class)->create([
+            'user_id' => 35,
+            'start_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(8,0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(14,0),
+            'constraint_type_id' => 2
         ]);
 
-        $note->users()->save(User::find(1));
+        //MJL Blank 2
+        factory(Constraint::class)->create([
+            'user_id' => 35,
+            'start_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(8,0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(14,0),
+            'constraint_type_id' => 2
+        ]);
+
+        //MJL Blank 3
+        factory(Constraint::class)->create([
+            'user_id' => 35,
+            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
+            'constraint_type_id' => 2
+        ]);
     }
 }
