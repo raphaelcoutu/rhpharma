@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class AssignedShift extends Model
 {
-    //
+    protected $dates = ['date'];
 }

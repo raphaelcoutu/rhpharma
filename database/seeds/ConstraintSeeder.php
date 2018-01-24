@@ -18,7 +18,7 @@ class ConstraintSeeder extends Seeder
     {
         $scheduleStartDate = Schedule::find(5)->start_date;
 
-        //MJL Blank 1
+        //MJL Jour
         factory(Constraint::class)->create([
             'user_id' => 35,
             'start_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(8,0),
@@ -26,7 +26,7 @@ class ConstraintSeeder extends Seeder
             'constraint_type_id' => 2
         ]);
 
-        //MJL Blank 2
+        //MJL AM
         factory(Constraint::class)->create([
             'user_id' => 35,
             'start_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(8,0),
@@ -34,12 +34,20 @@ class ConstraintSeeder extends Seeder
             'constraint_type_id' => 2
         ]);
 
-        //MJL Blank 3
+        //MJL PM
         factory(Constraint::class)->create([
             'user_id' => 35,
             'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
             'constraint_type_id' => 2
+        ]);
+
+        //RC JOUR (vendredi sem2)
+        factory(Constraint::class)->create([
+            'user_id' => 44,
+            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
+            'constraint_type_id' => 1
         ]);
     }
 }

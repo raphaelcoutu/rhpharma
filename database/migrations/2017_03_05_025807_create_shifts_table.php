@@ -15,7 +15,6 @@ class CreateShiftsTable extends Migration
     {
         Schema::create('shifts', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
             $table->integer('shift_type_id');
             $table->integer('department_id');
             $table->integer('employees_requirement');

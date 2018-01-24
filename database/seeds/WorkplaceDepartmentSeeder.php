@@ -169,5 +169,13 @@ class WorkplaceDepartmentSeeder extends Seeder
             'branch_id' => '1',
             'workplace_id' => '2',
         ]);
+
+        factory(Department::class)->create([
+            'name' => 'Distribution',
+            'code' => 'DIS',
+            'description' => 'Distribution',
+            'branch_id' => '1',
+            'workplace_id' => '2',
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Builders;
 
+use App\AssignedShift;
 use App\Department;
 use App\Schedule;
 use App\User;
@@ -19,6 +20,7 @@ class Precalculation
     public $departments;
 
     public $schedule;
+    public $assignedShifts;
 
     public $scheduleWeeks;
     public $scheduleDays;
@@ -27,6 +29,9 @@ class Precalculation
     {
         // Récupérer la Schedule
         $this->schedule = Schedule::select('start_date', 'end_date')->where('branch_id', 1)->findOrFail($scheduleId);
+
+        //Récupérer les chiffres déjà assignés pour l'horaire en cours
+        $this->assignedShifts = AssignedShift::where('date', '>=', $this->schedule->start_date)->where('date', '<=', $this->schedule->end_date)->get();
 
         // Récupérer les pharmaciens avec constraintes associées
         $this->pharmaciens = User::with(['constraints' => function ($query) {
@@ -151,6 +156,7 @@ class Precalculation
         $this->generateMainTemplate();
 
         $this->removeConstraintsFromAvailability();
+        $this->removeAssignedShiftsFromAvailability();
         //TODO: filter par attributs aussi!! (maladie, vacances, maternité)
     }
 
@@ -177,6 +183,17 @@ class Precalculation
             }
 
         }
+    }
+
+    private function removeAssignedShiftsFromAvailability() {
+        $this->assignedShifts->each(function ($shift) {
+            $dayInSchedule = $shift->date->diffInDays($this->schedule->start_date);
+
+            $actualAvailability = &$this->availability[$shift->user_id]['days'][$dayInSchedule];
+            $actualAvailability['AM'] = 1;
+            $actualAvailability['PM'] = 1;
+            $actualAvailability['shift'] = $shift->shift_id;
+        });
     }
 
     private function getScoreTable()

@@ -64,6 +64,14 @@ $factory->define(App\Department::class, function (Faker $faker) {
     ];
 });
 
+$factory->define(App\AssignedShift::class, function (Faker $faker) {
+    return [
+        'shift_id' => 1,
+        'is_generated' => 1,
+        'is_published' => 0,
+    ];
+});
+
 $factory->define(App\User::class, function (Faker $faker) {
     static $password;
 

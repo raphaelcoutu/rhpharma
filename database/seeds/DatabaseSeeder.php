@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ScheduleSeeder::class);
         $this->call(ConstraintTypeSeeder::class);
         $this->call(ConstraintSeeder::class);
+        $this->call(AssignedShiftSeeder::class);
     }
 }
