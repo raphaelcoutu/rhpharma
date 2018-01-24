@@ -79,10 +79,12 @@ class ConstraintTest extends TestCase
     public function it_should_retrieve_unvalidated_constraints()
     {
         $constraint_validated = factory(Constraint::class)->create([
+            'status' => 1,
             'validated_by' => 1
         ]);
 
         $constraint_unvalidated = factory(Constraint::class)->create([
+            'status' => 0,
             'validated_by' => null
         ]);
 

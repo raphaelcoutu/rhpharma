@@ -2,44 +2,77 @@
 
 namespace Tests\Feature;
 
+use App\Branch;
+use App\Permission;
+use App\Role;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PermissionTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected $phmAdmin;
+    protected $phmUser;
+    protected $atpAdmin;
+    protected $atpUser;
+
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        Branch::create(['name' => 'Pharmaciens']);
+        Branch::create(['name' => 'Assistants techniques']);
+
+        foreach(\PermissionSeeder::$permissions as $perm) {
+            Permission::create($perm);
+        }
+
+        $gestionnaire = Role::create(['name' => 'Gestionnaire', 'description' => 'Gestionnaire']);
+        $gestionnaire->permissions()->saveMany(Permission::all());
+
+        $this->phmAdmin = factory(User::class)->create(['branch_id' => 1]);
+        $this->phmAdmin->roles()->attach($gestionnaire);
+        $this->phmUser = factory(User::class)->create(['branch_id' => 1]);
+
+        $this->atpAdmin = factory(User::class)->create(['branch_id' => 2]);
+        $this->atpAdmin->roles()->attach($gestionnaire);
+        $this->atpUser = factory(User::class)->create(['branch_id' => 2]);
+    }
 
     public function baseTest($url)
     {
         //PHM-Admin
-        $this->actingAs(User::find(1))
+        $this->actingAs($this->phmAdmin)
             ->get($url)
             ->assertStatus(200);
 
         //PHM-User
-        $this->actingAs(User::find(2))
+        $this->actingAs($this->phmUser)
             ->get($url)
             ->assertStatus(403);
 
         //ATP-Admin
-        $this->actingAs(User::find(3))
+        $this->actingAs($this->atpAdmin)
             ->get($url)
             ->assertStatus(200);
 
         //ATP-Admin
-        $this->actingAs(User::find(4))
+        $this->actingAs($this->atpUser)
             ->get($url)
             ->assertStatus(403);
     }
-    
-    public function testBranches()
+
+    /** @test */
+    public function validating_branches_permissions()
     {
         $this->baseTest('/branches');
     }
 
-    public function testUsers()
+    /** @test */
+    public function validating_users_permissions()
     {
         $this->baseTest('/users');
     }

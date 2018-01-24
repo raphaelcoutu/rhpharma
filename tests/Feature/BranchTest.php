@@ -11,23 +11,5 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class BranchTest extends TestCase
 {
-    /** @test */
-    public function user_can_read_branches() {
-
-    }
-
-    /** @test */
-    public function user_cannot_read_branches() {
-
-    }
-
-    /** @test */
-    public function user_can_write_branches() {
-
-    }
-
-    /** @test */
-    public function user_cannot_write_branches() {
-
-    }
+    //
 }
