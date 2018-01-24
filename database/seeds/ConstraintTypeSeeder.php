@@ -285,7 +285,7 @@ class ConstraintTypeSeeder extends Seeder
 
         factory(ConstraintType::class)->create([
             'name' => 'Visite grossesse en AM',
-            'description' => 'Vise de grossesse pour une matinée',
+            'description' => 'Visite de grossesse pour une matinée',
             'code' => 'VG',
             'is_work' => 1,
             'is_single_day' => 1,
@@ -295,7 +295,7 @@ class ConstraintTypeSeeder extends Seeder
 
         factory(ConstraintType::class)->create([
             'name' => 'Visite grossesse en PM',
-            'description' => 'Vise de grossesse pour une après-midi',
+            'description' => 'Visite de grossesse pour une après-midi',
             'code' => 'VG',
             'is_work' => 1,
             'is_single_day' => 1,
