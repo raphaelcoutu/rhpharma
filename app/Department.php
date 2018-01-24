@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
-    protected $fillable = ['name', 'description', 'code', 'workplace_id', 'branch_id'];
+    protected $fillable = ['name', 'description', 'code', 'workplace_id', 'branch_id',
+        'bonus_weeks', 'bonus_pts', 'malus_weeks', 'malus_pts',
+        'monday_am', 'monday_pm', 'tuesday_am', 'tuesday_pm', 'wednesday_am', 'wednesday_pm',
+        'thursday_am', 'thursday_pm', 'friday_am', 'friday_pm'];
 
     public function scopeOwnBranch($query)
     {
@@ -22,7 +25,8 @@ class Department extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->withPivot(['history', 'planning_long', 'planning_short']);
     }
 
     public function workplace()

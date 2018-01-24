@@ -26,7 +26,7 @@ class ConstraintsController extends Controller
             ->fromLoggedInUser()->get();
 
         $schedules = Schedule::where('end_date', '>', Carbon::today())->get();
-        $constraintTypes = ConstraintType::all();
+        $constraintTypes = ConstraintType::orderBy('name')->get();
 
         return view('constraints.index',
             compact('schedules', 'constraintTypes', 'availabilityConstraints', 'fixedConstraints')

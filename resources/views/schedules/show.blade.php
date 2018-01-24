@@ -27,7 +27,14 @@
                                     <li><strong>Contraintes restantes à valider:</strong> {{ $constraints_count }}</li>
                                 </ul>
                             </td>
-                            <td><i class="fa fa-check-circle-o text-success fa-2x"></i></td>
+                            <td>
+                                @if($constraints_count > 0)
+                                    <i class="fa fa-exclamation-triangle text-warning fa-2x"
+                                       data-toggle="tooltip" title="Il reste {{ $constraints_count }} contrainte(s) à valider"></i>
+                                @else
+                                    <i class="fa fa-check-circle-o text-success fa-2x"></i>
+                                @endif
+                            </td>
                             <td>
                                 <a href="#" class="btn btn-default">Validation des contraintes</a>
                             </td>

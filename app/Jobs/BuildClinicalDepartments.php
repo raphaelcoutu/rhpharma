@@ -17,6 +17,10 @@ class BuildClinicalDepartments implements ShouldQueue
 
     public $event;
 
+    private $precalculation;
+    private $start;
+    private static $timer = false;
+
     /**
      * Create a new job instance.
      *
@@ -50,25 +54,49 @@ class BuildClinicalDepartments implements ShouldQueue
         // - Boucle : jours weekends (mentionner comme étant travaillé)
         // - Passer chacune des contraintes et modifier la matrice
 
-        $start = microtime(true);
+        $this->start = microtime(true);
 
-        $precalculation = new Precalculation($this->event->scheduleId);
+        $this->precalculation = new Precalculation($this->event->scheduleId);
 
         // Obtenir l'ordre des secteurs à générer
         // Boucler pour chaque secteur avec le builder correspondant
 
-        $SIM = new GenericBuilder($precalculation, 4);
-        echo 'Après SIM ' . (microtime(true)-$start) . '<br>';
-        $SIC = new GenericBuilder($precalculation, 5);
-        echo 'Après SIC ' . (microtime(true)-$start) . '<br>';
-        $SIHD = new GenericBuilder($precalculation, 6);
-        echo 'Après SIHD ' . (microtime(true)-$start) . '<br>';
-        $SIPA = new GenericBuilder($precalculation, 8);
-        echo 'Après SIPA ' . (microtime(true)-$start) . '<br>';
-        $MI = new GenericBuilder($precalculation, 2);
-        echo 'Après MI ' . (microtime(true)-$start) . '<br>';
+        $this->generate(4);     //SIM
+        $this->generate(5);     //SIC
+        $this->generate(6);     //SIHD
+        $this->generate(8);     //SIPA
+        $this->generate(11);    //SP
+        $this->generate(2);     //MI
+        $this->generate(9);     //L
+        $this->generate(10);    //IC
+        $this->generate(14);    //ME
+        $this->generate(15);    //PE
+        $this->generate(12);    //CIM
+        $this->generate(16);    //URHF
+        $this->generate(17);    //URHF
+
 
 //        dd($precalculation->scheduleWeeks, $precalculation->getAvailability(), $end-$start);
-        dd($precalculation->scheduleWeeks);
+//        dd($precalculation->scheduleWeeks, $precalculation->getAvailability()[9]);
+
+//        dd($this->precalculation->scheduleWeeks, $SP->getCombinaisons()[1], $this->precalculation->getAllocatedWeeks());
+
+//        dd($this->precalculation->getAllocatedWeeks(11));
+
+        return view('test.test',
+            [
+                'precalculation' => $this->precalculation,
+                'departments' => $this->precalculation->departments,
+                'pharmaciens' => $this->precalculation->pharmaciens
+            ]);
+    }
+
+    private function generate($departmentId)
+    {
+        $builder = new GenericBuilder($this->precalculation, $departmentId);
+        if(self::$timer == true) {
+            echo "Après departmentId {$departmentId} : " . (microtime(true)-$this->start) . "<br>";
+        }
+        return $builder;
     }
 }

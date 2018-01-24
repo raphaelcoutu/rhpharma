@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('workdays_per_week');
             $table->unsignedInteger('seniority');
             $table->unsignedInteger('branch_id');
+            $table->boolean('is_manual')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

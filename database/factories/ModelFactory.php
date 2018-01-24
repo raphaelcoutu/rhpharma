@@ -13,20 +13,17 @@ use Faker\Generator as Faker;
 |
 */
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker $faker) {
-    static $password;
-
+$factory->define(App\Constraint::class, function (Faker $faker) {
     return [
-        'firstname' => $faker->firstName,
-        'lastname' => $faker->lastName,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
-        'workdays_per_week' => 5,
-        'seniority' => 0,
-        'is_active' => 1,
-        'branch_id' => 1
+        'user_id' => 1,
+        'start_datetime' => \Carbon\Carbon::parse('-2 weeks'),
+        'end_datetime' => \Carbon\Carbon::parse('-2 weeks'),
+        'constraint_type_id' => 1,
+        'weight' => 0,
+        'comment' => '',
+        'status' => 1,
+        'validated_by' => null,
+        'number_of_occurrences' => null,
     ];
 });
 
@@ -43,17 +40,45 @@ $factory->define(App\ConstraintType::class, function(Faker $faker) {
     ];
 });
 
-
-$factory->define(App\Constraint::class, function (Faker $faker) {
+$factory->define(App\Department::class, function (Faker $faker) {
     return [
-        'user_id' => 1,
-        'start_datetime' => \Carbon\Carbon::parse('-2 weeks'),
-        'end_datetime' => \Carbon\Carbon::parse('-2 weeks'),
-        'constraint_type_id' => 1,
-        'weight' => 0,
-        'comment' => '',
-        'status' => 0,
-        'validated_by' => null,
-        'number_of_occurrences' => null,
+        'name' => $faker->name,
+        'code' => $faker->countryCode,
+        'description' => '...',
+        'branch_id' => '1',
+        'workplace_id' => '1',
+        'bonus_weeks' => 2,
+        'bonus_pts' => 4,
+        'malus_weeks' => 3,
+        'malus_pts' => 8,
+        'monday_am' => 2,
+        'monday_pm' => 2,
+        'tuesday_am' => 2,
+        'tuesday_pm' => 2,
+        'wednesday_am' => 2,
+        'wednesday_pm' => 2,
+        'thursday_am' => 2,
+        'thursday_pm' => 2,
+        'friday_am' => 2,
+        'friday_pm' => 2
     ];
 });
+
+$factory->define(App\User::class, function (Faker $faker) {
+    static $password;
+
+    return [
+        'firstname' => $faker->firstName,
+        'lastname' => $faker->lastName,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(10),
+        'workdays_per_week' => 5,
+        'seniority' => 0,
+        'is_active' => 1,
+        'branch_id' => 1
+    ];
+});
+
+
+

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Branch;
+use App\Department;
 use App\Http\Requests\UserRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -60,11 +61,14 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
         $this->authorize('read', User::class);
 
-        return view('users.show', compact('user'));
+        $user = User::with('departments')->findOrFail($id);
+        $departments = Department::orderBy('name')->get();
+
+        return view('users.show', compact('user', 'departments'));
     }
 
     public function profile()
@@ -102,7 +106,7 @@ class UsersController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
-        return view('users.show', compact('user'));
+        return $this->show($id);
     }
 
     /**

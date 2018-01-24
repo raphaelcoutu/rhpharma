@@ -6,6 +6,8 @@
 @endif
     {{ csrf_field() }}
 
+    <h3>Paramètres généraux</h3>
+
     <div class="form-group">
         <label for="name" class="col-md-3 control-label">Nom:</label>
         <div class="col-md-9 {{ $errors->first('name') ? 'has-error' : '' }}">
@@ -61,6 +63,8 @@
             <span class="help-block">{{ $errors->first('workplace_id') }}</span>
         </div>
     </div>
+
+    @include('departments.form-score')
 
     <div class="form-group">
         <div class="col-md-3 pull-right">

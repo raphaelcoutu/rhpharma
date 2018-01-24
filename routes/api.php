@@ -41,4 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('holidays/{id}', 'HolidaysController@edit');
     Route::post('holidays/store', 'HolidaysController@store');
     Route::patch('holidays/{id}', 'HolidaysController@update');
+
+    //Users-Departments
+    Route::get('usersDepartments/{id}', 'UsersDepartmentsController@fetch');
+    Route::post('usersDepartments/{id}/store', 'UsersDepartmentsController@store');
+    Route::delete('usersDepartments/{id}', 'UsersDepartmentsController@destroy');
 });

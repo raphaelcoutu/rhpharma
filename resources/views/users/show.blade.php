@@ -41,13 +41,19 @@
                 @can('write', App\User::class)
                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Modifier l'utilisateur</a>
                 @endcan
+
+                @if(Request::segment(1) != 'profile')
                 <h3>Secteurs</h3>
 
-                <ul>
-                    <li>Aucun secteur attribué.</li>
-                </ul>
+                <rhpharma-users-departments
+                        :user-id="{{ $user->id }}"
+                        :departments-prop="{{ $user->departments }}"
+                        :departments-list="{{ $departments }}"
+                ></rhpharma-users-departments>
 
                 <h3>Permissions</h3>
+
+                @endif
 
                 <h3>Attributs</h3>
 

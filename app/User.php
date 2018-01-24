@@ -22,7 +22,8 @@ class User extends Authenticatable
         'workdays_per_week',
         'is_active',
         'seniority',
-        'branch_id'
+        'branch_id',
+        'is_manual'
     ];
 
     /**
@@ -37,6 +38,20 @@ class User extends Authenticatable
     public function scopeOwnBranch($query)
     {
         return $query->where('branch_id', \Auth::user()->branch->id);
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getInitialsAttribute()
+    {
+        $temp = collect(explode(' ', str_replace('-', ' ', $this->getFullnameAttribute())));
+
+        return  $temp->reduce(function ($carry, $partialName) {
+            return $carry . mb_substr($partialName, 0, 1, 'utf-8');
+        });
     }
 
     public function attributes()
@@ -61,7 +76,8 @@ class User extends Authenticatable
 
     public function departments()
     {
-        return $this->belongsToMany(Department::class);
+        return $this->belongsToMany(Department::class)
+            ->withPivot(['history', 'planning_long', 'planning_short']);
     }
 
     public function permissions()
