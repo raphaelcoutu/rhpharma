@@ -4,12 +4,10 @@ namespace App\Builders;
 
 abstract class BaseBuilder
 {
-    protected $weeksPerGroup;
-
+    protected $weeksPerGroup = 4;
     protected $precalculation;
     protected $departmentId;
 
-    protected $selectedSequence;
     protected $combinaisons;
     protected $scores;
 
@@ -18,7 +16,6 @@ abstract class BaseBuilder
     {
         $this->precalculation = $precalculation;
         $this->departmentId = $departmentId;
-        $this->weeksPerGroup = 4;
     }
 
     public function getCombinaisons()

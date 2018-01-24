@@ -3,27 +3,24 @@
 namespace App\Builders;
 
 
+use App\Department;
+
 class GenericBuilder extends BaseBuilder
 {
+    private $bonus;
+    private $malus;
+
+    private $selectedCombinaison;
+
     public function __construct(Precalculation $precalculation, $departmentId)
     {
         parent::__construct($precalculation, $departmentId);
 
         $weeksCount = $precalculation->getWeeksCount();
-
-        // On sélectionne les pharmaciens (> 3 jours/sem) qui font parti de ce secteur
-        $pharmaciensOfDepartment = $this->precalculation->pharmaciens->filter(function ($pharmacien) use ($departmentId) {
-            if($pharmacien->workdays_per_week > 3) {
-                foreach($pharmacien->departments as $department) {
-                    if($department->id == $departmentId) {
-                        return true;
-                    };
-                }
-            }
-        });
+        $this->getBonusMalus();
 
         // On sort les ids des pharmaciens ex: [1, 4]
-        $ids = $pharmaciensOfDepartment->pluck('id')->toArray();
+        $ids = $this->pharmacistsIdsInDepartment($departmentId);
 
         // TODO: faire un filter pour retirer des ids (selon attributes pour toute la durée de l'horaire par exemple)
         // avant de générer les sampling
@@ -38,17 +35,35 @@ class GenericBuilder extends BaseBuilder
         $this->selectSequence();
 
         // Comment For Debug Only:
-        $this->combinaisons = [];
+        //$this->combinaisons = [];
     }
 
     private function selectSequence()
     {
+        $allocatedWeeks = $this->precalculation->getAllocatedWeeks($this->departmentId);
+
         for($group = 0; $group < count($this->combinaisons); $group++) {
             $this->calculateScores($group);
-            //todo: screen les dernières semaines pour déterminer le bonus
+
+            foreach ($this->combinaisons[$group] as &$combinaison) {
+                foreach ($combinaison['count'] as $pharmId => $count) {
+
+                        $diff = $allocatedWeeks[$pharmId] - $count;
+
+                        if ($diff >= 0) {
+                            // Différentiel à allouer supérieur ou égal à la combine
+                            $combinaison['score'] += $count * 5;
+                        } else {
+                            // Différentiel à allouer inférieur à la combine
+                            $combinaison['score'] += $diff * 10;
+                        }
+                }
+            }
 
             if($group == 0) {
+                //todo: screen les dernières semaines pour déterminer le bonus
                 //TODO: aller voir les dernières semaines dans la base de donnée
+
             } else {
                 $this->bonusMalusPrecedingGroup($group);
             }
@@ -57,9 +72,14 @@ class GenericBuilder extends BaseBuilder
 
 
             if (count($this->combinaisons[$group]) != 0) {
-                $this->selectedSequence = $this->combinaisons[$group][0]['sequence'];
+                $this->selectedCombinaison = $this->combinaisons[$group][0];
 
-                $this->precalculation->assignWeekSequence($this->selectedSequence, $this->departmentId);
+                //Retirer les semaines allouées des allocated
+                foreach ($this->selectedCombinaison['count'] as $pharmId => $count) {
+                    $allocatedWeeks[$pharmId] -= $count;
+                }
+
+                $this->precalculation->assignWeekSequence($this->departmentId, $group, $this->selectedCombinaison['sequence']);
             } else {
                 //TODO: generate conflict
                 throw new \Exception("No more pharmacist available to assign. [Department = $this->departmentId]");
@@ -69,9 +89,6 @@ class GenericBuilder extends BaseBuilder
 
     private function bonusMalusPrecedingGroup($group)
     {
-        $bonus = $this->precalculation->bonus;
-        $malus = $this->precalculation->malus;
-
         for($i = 0; $i < count($this->combinaisons[$group]); $i++) {
 
             // Nombre de séquences consécutives (au début de nouvelle séquence)
@@ -101,10 +118,10 @@ class GenericBuilder extends BaseBuilder
             // Pour debug only:
             $this->combinaisons[$group][$i]['consecutive'] = $consecutive;
 
-            if($consecutive >= $bonus['weeks'])
-                $this->combinaisons[$group][$i]['score'] += $bonus['pts'];
-            if($consecutive >= $malus['weeks'])
-                $this->combinaisons[$group][$i]['score'] -= $malus['pts'];
+            if($consecutive >= $this->bonus['weeks'])
+                $this->combinaisons[$group][$i]['score'] += $this->bonus['pts'];
+            if($consecutive >= $this->malus['weeks'])
+                $this->combinaisons[$group][$i]['score'] -= $this->malus['pts'];
         }
     }
 
@@ -138,9 +155,6 @@ class GenericBuilder extends BaseBuilder
 
     private function calculateScores($group)
     {
-        $bonus = $this->precalculation->bonus;
-        $malus  = $this->precalculation->malus;
-
         for ($i = 0; $i < count($this->combinaisons[$group]); $i++) {
             $sequence = explode(',', $this->combinaisons[$group][$i]["sequence"]);
             $result = 0;
@@ -154,12 +168,12 @@ class GenericBuilder extends BaseBuilder
                 if ($id == $lastSeq) {
                     $consecutiveCount++;
 
-                    if ($consecutiveCount >= $bonus['weeks']) {
-                        $result += $bonus['pts'];
+                    if ($consecutiveCount >= $this->bonus['weeks']) {
+                        $result += $this->bonus['pts'];
                     }
 
-                    if ($consecutiveCount >= $malus['weeks']) {
-                        $result -= $malus['pts'];
+                    if ($consecutiveCount >= $this->malus['weeks']) {
+                        $result -= $this->malus['pts'];
                     }
 
                 } else {
@@ -171,6 +185,7 @@ class GenericBuilder extends BaseBuilder
                 $week++;
             }
 
+            $this->combinaisons[$group][$i]["count"] = array_count_values($sequence);
             $this->combinaisons[$group][$i]["score"] = $result;
         }
 
@@ -181,5 +196,27 @@ class GenericBuilder extends BaseBuilder
         usort($this->combinaisons[$group], function ($a, $b) {
             return $b['score'] <=> $a['score'];
         });
+    }
+
+    private function pharmacistsIdsInDepartment($departmentId)
+    {
+        // On sélectionne les pharmaciens (> 3 jours/sem) qui font parti de ce secteur
+        return $this->precalculation->pharmaciens->filter(function ($pharmacien) use ($departmentId) {
+            if ($pharmacien->workdays_per_week > 3 && !$pharmacien->is_manual) {
+                foreach($pharmacien->departments as $department)
+                {
+                    if($department->id == $departmentId)
+                        return true;
+                }
+            }
+        })->pluck('id')->toArray();
+    }
+
+    private function getBonusMalus()
+    {
+        $department = $this->precalculation->departments->find(['id' => $this->departmentId])->first();
+
+        $this->bonus = ['weeks' => $department->bonus_weeks, 'pts' => $department->bonus_pts];
+        $this->malus = ['weeks' => $department->malus_weeks, 'pts' => $department->malus_pts];
     }
 }

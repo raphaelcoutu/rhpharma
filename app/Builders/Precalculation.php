@@ -2,19 +2,23 @@
 
 namespace App\Builders;
 
+use App\Department;
 use App\Schedule;
 use App\User;
 
 class Precalculation
 {
+    private $weeksPerGroup = 4;
+
     private $daysTemplate;
     private $availability;
+    private $scoreTable;
+    private $allocatedWeeks;
 
     public $pharmaciens;
+    public $departments;
 
     public $schedule;
-    public $bonus;
-    public $malus;
 
     public $scheduleWeeks;
     public $scheduleDays;
@@ -27,13 +31,17 @@ class Precalculation
         // Récupérer les pharmaciens avec constraintes associées
         $this->pharmaciens = User::with(['constraints' => function ($query) {
             $query->InInterval($this->schedule->start_date, $this->schedule->end_date)->where('status', 1);
-        }, 'departments'])->select('id', 'workdays_per_week')->where('is_active', 1)->where('branch_id', 1)->get();
+        }, 'departments'])->select('id', 'firstname', 'lastname', 'workdays_per_week', 'is_manual')->where('is_active', 1)->where('branch_id', 1)->get();
+
+        $this->departments = Department::with(['users' => function ($query) {
+            $query->where('is_active', 1)->where('branch_id', 1)->get();
+        }])->get();
+
+        $this->getScoreTable();
 
         $this->generateAvailability();
 
-        //TODO: Coder la page pour setter les bonus/malus
-        $this->bonus = ['weeks' => 2, 'pts' => 4];
-        $this->malus = ['weeks' => 3, 'pts' => 8];
+        $this->calculateAllocation();
     }
 
     public function getWeeksCount()
@@ -46,47 +54,8 @@ class Precalculation
 
     public function calculateScore($ids, $departmentId) {
         if(empty($ids)) {
-            throw new \Exception('No id in this department');
+            throw new \Exception("No id in this department: {$departmentId}");
         }
-
-        //todo: Query le tableau de score via page de paramètres
-        $scoreTable = [
-            2 => [
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2]
-            ],
-            4 => [
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2]
-            ],
-            5 => [
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2]
-            ],
-            6 => [
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2]
-            ],
-            8 => [
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2],
-                [2,2]
-            ],
-        ];
 
         $scores = [];
 
@@ -100,10 +69,10 @@ class Precalculation
                     $day = $i*7+(1+$j);
 
                     if($this->availability[$id]['days'][$day]['AM'] == 0) {
-                        $scoreWeek += $scoreTable[$departmentId][$j][0];
+                        $scoreWeek += $this->scoreTable[$departmentId][$j][0];
                     }
                     if($this->availability[$id]['days'][$day]['PM'] == 0) {
-                        $scoreWeek += $scoreTable[$departmentId][$j][1];
+                        $scoreWeek += $this->scoreTable[$departmentId][$j][1];
                     }
                 }
                 $scoreSchedule[] = $scoreWeek;
@@ -114,28 +83,32 @@ class Precalculation
         return $scores;
     }
 
-    public function assignWeekSequence($sequence, $departmentId)
+    public function assignWeekSequence($departmentId, $group, $sequence)
     {
         $splitSequence = explode(',', $sequence);
         foreach($splitSequence as $seq) {
             $this->scheduleWeeks[$departmentId][] = $seq;
         }
 
-        for($i = 0; $i < count($splitSequence); $i++) {
-            $pharmacienId = $splitSequence[$i];
-            for($j = 0; $j < 5; $j++) {
-                $day = $i*7+($j+1);
+        for($weeks = 0; $weeks < count($splitSequence); $weeks++) {
+            $pharmacienId = $splitSequence[$weeks];
+            for($days = 1; $days <= 5; $days++) {
+                $i = $days+7*($weeks+$group*$this->weeksPerGroup);
 
-                $am = &$this->availability[$pharmacienId]['days'][$day]['AM'];
-                $pm = &$this->availability[$pharmacienId]['days'][$day]['PM'];
+                $day = &$this->availability[$pharmacienId]['days'][$i];
 
-                if($am == 0 && $pm == 0) {
-                    $am = 1;
-                    $pm = 1;
-                } else if($am != 0) {
-                    $pm = 0;
-                } else if($pm != 0) {
-                    $am = 0;
+                if($day['AM'] == 0 && $day['PM'] == 0) {
+                    $day['AM'] = 1;
+                    $day['PM'] = 1;
+
+                    $day['AM_department'] = $departmentId;
+                    $day['PM_department'] = $departmentId;
+                } else if($day['AM'] == 0) {
+                    $day['AM'] = 1;
+                    $day['AM_department'] = $departmentId;
+                } else if($day['PM'] == 0) {
+                    $day['PM'] = 1;
+                    $day['PM_department'] = $departmentId;
                 }
             }
         }
@@ -146,26 +119,14 @@ class Precalculation
         return $this->availability;
     }
 
-    private function generateAvailability()
+    public function getAllocatedWeeks($departmentId = null)
     {
-        $this->generateDaysTemplate();
+        return is_null($departmentId) ? $this->allocatedWeeks : $this->allocatedWeeks[$departmentId];
+    }
 
-        $this->generateMainTemplate();
-
-        foreach($this->pharmaciens as $pharmacien) {
-            foreach ($pharmacien->constraints as $constraint) {
-
-                //TODO: faire pour chacun des types de contrainte disponible
-                if ($constraint->constraint_type_id === 2) {
-                    $dayInSchedule = $constraint->start_datetime->diffInDays($this->schedule->start_date);
-
-                    $this->availability[$pharmacien->id]['days'][$dayInSchedule]['AM'] = 2;
-                    $this->availability[$pharmacien->id]['days'][$dayInSchedule]['PM'] = 2;
-                }
-            }
-
-            //TODO: filter par attributs aussi!! (maladie, vacances, maternité)
-        }
+    public function getDaysTemplate()
+    {
+        return $this->daysTemplate;
     }
 
     private function generateDaysTemplate()
@@ -183,6 +144,16 @@ class Precalculation
         $this->daysTemplate = $daysTemplate;
     }
 
+    private function generateAvailability()
+    {
+        $this->generateDaysTemplate();
+
+        $this->generateMainTemplate();
+
+        $this->removeConstraintsFromAvailability();
+        //TODO: filter par attributs aussi!! (maladie, vacances, maternité)
+    }
+
     private function generateMainTemplate()
     {
         foreach($this->pharmaciens as $pharmacien) {
@@ -192,5 +163,60 @@ class Precalculation
 
             $this->availability[$pharmacien->id] = $temp;
         }
+    }
+
+    private function removeConstraintsFromAvailability()
+    {
+        foreach ($this->pharmaciens as $pharmacien) {
+            foreach ($pharmacien->constraints as $constraint) {
+                $dayInSchedule = $constraint->start_datetime->diffInDays($this->schedule->start_date);
+
+                $actualAvailability = $this->availability[$pharmacien->id]['days'][$dayInSchedule];
+
+                $this->availability[$pharmacien->id]['days'][$dayInSchedule] = ConstraintConverter::make($constraint, $actualAvailability);
+            }
+
+        }
+    }
+
+    private function getScoreTable()
+    {
+        $this->departments->each(function ($department) {
+            $departmentScore = [
+                [$department->monday_am, $department->monday_pm],
+                [$department->tuesday_am, $department->tuesday_pm],
+                [$department->wednesday_am, $department->wednesday_pm],
+                [$department->thursday_am, $department->thursday_pm],
+                [$department->friday_am, $department->friday_pm]
+            ];
+
+            $this->scoreTable[$department->id] = $departmentScore;
+        });
+    }
+
+    //TODO: change to private
+    public function calculateAllocation() {
+        $totalPlanning = $this->departments->mapWithKeys(function ($department) {
+            return [$department->id => $department->users->map(function ($user) {
+                return $user->pivot->planning_short;
+            })->sum()];
+        });
+
+        foreach($this->departments as $department) {
+            foreach($department->users as $user) {
+                if($totalPlanning[$department->id] > 75) {
+                    $planningShort = $user->pivot->planning_short;
+
+                    $allocated = floor(($planningShort + 0.01) / 100 * $this->getWeeksCount());
+                } else {
+                    // BugFix temporaire dû à l'attribution de bonus/malus pour ratio de séquence allouées
+                    $allocated = 1000;
+                }
+
+                $this->allocatedWeeks[$department->id][$user->id] = $allocated;
+            }
+        }
+
+        return $this->allocatedWeeks;
     }
 }
