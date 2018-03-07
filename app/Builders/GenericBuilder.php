@@ -34,6 +34,10 @@ class GenericBuilder extends BaseBuilder
 
         $this->selectSequence();
 
+        $this->correctionForAbsence();
+
+        $this->assignThreeDaysUsers();
+
         // Comment For Debug Only:
         //$this->combinaisons = [];
     }
@@ -218,5 +222,15 @@ class GenericBuilder extends BaseBuilder
 
         $this->bonus = ['weeks' => $department->bonus_weeks, 'pts' => $department->bonus_pts];
         $this->malus = ['weeks' => $department->malus_weeks, 'pts' => $department->malus_pts];
+    }
+
+    private function correctionForAbsence()
+    {
+        //
+    }
+
+    private function assignThreeDaysUsers()
+    {
+        //
     }
 }

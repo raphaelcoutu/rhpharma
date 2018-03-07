@@ -30,6 +30,8 @@ class Precalculation
         // Récupérer la Schedule
         $this->schedule = Schedule::select('start_date', 'end_date')->where('branch_id', 1)->findOrFail($scheduleId);
 
+        $this->cleanUpAssignedShifts();
+
         //Récupérer les chiffres déjà assignés pour l'horaire en cours
         $this->assignedShifts = AssignedShift::where('date', '>=', $this->schedule->start_date)->where('date', '<=', $this->schedule->end_date)->get();
 
@@ -73,10 +75,10 @@ class Precalculation
                 for($j = 0; $j < 5; $j++){
                     $day = $i*7+(1+$j);
 
-                    if($this->availability[$id]['days'][$day]['AM'] == 0) {
+                    if($this->isAvailableBetween($id, $day, '08:00', '12:00')) {
                         $scoreWeek += $this->scoreTable[$departmentId][$j][0];
                     }
-                    if($this->availability[$id]['days'][$day]['PM'] == 0) {
+                    if($this->isAvailableBetween($id, $day, '13:00', '16:00')) {
                         $scoreWeek += $this->scoreTable[$departmentId][$j][1];
                     }
                 }
@@ -86,6 +88,27 @@ class Precalculation
         }
 
         return $scores;
+    }
+
+    private function isAvailableBetween($id, $day, $startTime, $endTime)
+    {
+        $shifts = $this->availability[$id]['days'][$day]['shifts'];
+        $constraints = $this->availability[$id]['days'][$day]['constraints'];
+        $realDate = $this->schedule->start_date->addDays($day)->toDateString();
+
+        $startDateTime = \Carbon\Carbon::parse($realDate . ' ' . $startTime);
+        $endDateTime = \Carbon\Carbon::parse($realDate . ' ' . $endTime);
+
+        //todo: disponibilité pour les shifts
+
+        foreach($constraints as $constraint) {
+            if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+                $startDateTime, $endDateTime)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function assignWeekSequence($departmentId, $group, $sequence)
@@ -99,21 +122,38 @@ class Precalculation
             $pharmacienId = $splitSequence[$weeks];
             for($days = 1; $days <= 5; $days++) {
                 $i = $days+7*($weeks+$group*$this->weeksPerGroup);
+                $realDate = $this->schedule->start_date->addDays($i)->toDateString();
 
                 $day = &$this->availability[$pharmacienId]['days'][$i];
 
-                if($day['AM'] == 0 && $day['PM'] == 0) {
-                    $day['AM'] = 1;
-                    $day['PM'] = 1;
+                if($this->isAvailableBetween($pharmacienId, $i, '08:00', '16:30')) {
+                    AssignedShift::create([
+                        'user_id' => $pharmacienId,
+                        'shift_type_id' => 1,
+                        'department_id' => $departmentId,
+                        'is_generated' => 1,
+                        'is_published' => 0,
+                        'date' => $realDate
+                    ]);
+                } else if($this->isAvailableBetween($pharmacienId, $i, '08:00', '12:00')) {
+                    AssignedShift::create([
+                        'user_id' => $pharmacienId,
+                        'shift_type_id' => 3,
+                        'department_id' => $departmentId,
+                        'is_generated' => 1,
+                        'is_published' => 0,
+                        'date' => $realDate
+                    ]);
 
-                    $day['AM_department'] = $departmentId;
-                    $day['PM_department'] = $departmentId;
-                } else if($day['AM'] == 0) {
-                    $day['AM'] = 1;
-                    $day['AM_department'] = $departmentId;
-                } else if($day['PM'] == 0) {
-                    $day['PM'] = 1;
-                    $day['PM_department'] = $departmentId;
+                } else if($this->isAvailableBetween($pharmacienId, $i, '13:00', '16:30')) {
+                    AssignedShift::create([
+                        'user_id' => $pharmacienId,
+                        'shift_type_id' => 4,
+                        'department_id' => $departmentId,
+                        'is_generated' => 1,
+                        'is_published' => 0,
+                        'date' => $realDate
+                    ]);
                 }
             }
         }
@@ -141,9 +181,10 @@ class Precalculation
 
         for ($i = 0; $i < $number_of_days_in_schedule; $i++) {
             $daysTemplate[$i] = [
-                'AM' => 0,
-                'PM' => 0,
-                'date' => $this->schedule->start_date->addDays($i)];
+                'date' => $this->schedule->start_date->addDays($i),
+                'shifts' => [],
+                'constraints' => []
+            ];
         }
 
         $this->daysTemplate = $daysTemplate;
@@ -155,8 +196,9 @@ class Precalculation
 
         $this->generateMainTemplate();
 
-        $this->removeConstraintsFromAvailability();
-        $this->removeAssignedShiftsFromAvailability();
+        $this->addConstraintsToUser();
+
+        $this->addAssignedShiftsToUser();
         //TODO: filter par attributs aussi!! (maladie, vacances, maternité)
     }
 
@@ -171,28 +213,23 @@ class Precalculation
         }
     }
 
-    private function removeConstraintsFromAvailability()
+    private function addConstraintsToUser()
     {
         foreach ($this->pharmaciens as $pharmacien) {
             foreach ($pharmacien->constraints as $constraint) {
                 $dayInSchedule = $constraint->start_datetime->diffInDays($this->schedule->start_date);
 
-                $actualAvailability = $this->availability[$pharmacien->id]['days'][$dayInSchedule];
-
-                $this->availability[$pharmacien->id]['days'][$dayInSchedule] = ConstraintConverter::make($constraint, $actualAvailability);
+                $this->availability[$pharmacien->id]['days'][$dayInSchedule]['constraints'][] = $constraint;
             }
 
         }
     }
 
-    private function removeAssignedShiftsFromAvailability() {
+    private function addAssignedShiftsToUser() {
         $this->assignedShifts->each(function ($shift) {
             $dayInSchedule = $shift->date->diffInDays($this->schedule->start_date);
 
-            $actualAvailability = &$this->availability[$shift->user_id]['days'][$dayInSchedule];
-            $actualAvailability['AM'] = 1;
-            $actualAvailability['PM'] = 1;
-            $actualAvailability['shift'] = $shift->shift_id;
+            $this->availability[$shift->user_id]['days'][$dayInSchedule]['shifts'][] = $shift;
         });
     }
 
@@ -235,5 +272,15 @@ class Precalculation
         }
 
         return $this->allocatedWeeks;
+    }
+
+    private function cleanUpAssignedShifts()
+    {
+        // On fait le ménage
+        AssignedShift::where('date', '>=', $this->schedule->start_date)
+            ->where('date', '<=', $this->schedule->end_date)
+            ->where('is_generated', 1)
+            ->where('is_published', 0)
+            ->delete();
     }
 }
