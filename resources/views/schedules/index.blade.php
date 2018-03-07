@@ -18,7 +18,7 @@
                             <th>Fin</th>
                             <th>Limite</th>
                             <th>Status</th>
-                            <th width="20%">Action</th>
+                            <th width="30%">Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -42,12 +42,15 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('schedules.edit', $schedule->id) }}" class="btn btn-warning">
-                                        <i class="fa fa-pencil"></i> Modifier
-                                    </a>
-                                    <a href="{{ route('schedules.show', $schedule->id) }}" class="btn btn-success">
-                                        <i class="fa fa-chevron-circle-right"></i> Générer
-                                    </a>
+                                        <a href="#" class="btn btn-default">
+                                            <i class="fa fa-eye"></i> Calendrier
+                                        </a>
+                                        <a href="{{ route('schedules.edit', $schedule->id) }}" class="btn btn-warning">
+                                            <i class="fa fa-pencil"></i> Modifier
+                                        </a>
+                                        <a href="{{ route('schedules.show', $schedule->id) }}" class="btn btn-success">
+                                            <i class="fa fa-chevron-circle-right"></i> Générer
+                                        </a>
                                     </div>
                                 </td>
                             </tr>

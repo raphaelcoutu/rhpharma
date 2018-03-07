@@ -74,21 +74,6 @@ class BuildClinicalDepartments implements ShouldQueue
         $this->generate(12);    //CIM
         $this->generate(16);    //URHF
         $this->generate(17);    //URHF
-
-
-//        dd($precalculation->scheduleWeeks, $precalculation->getAvailability(), $end-$start);
-//        dd($precalculation->scheduleWeeks, $precalculation->getAvailability()[9]);
-
-//        dd($this->precalculation->scheduleWeeks, $SP->getCombinaisons()[1], $this->precalculation->getAllocatedWeeks());
-
-//        dd($this->precalculation->getAllocatedWeeks(11));
-
-        return view('test.test',
-            [
-                'precalculation' => $this->precalculation,
-                'departments' => $this->precalculation->departments,
-                'pharmaciens' => $this->precalculation->pharmaciens
-            ]);
     }
 
     private function generate($departmentId)
