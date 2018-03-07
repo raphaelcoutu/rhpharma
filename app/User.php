@@ -54,6 +54,11 @@ class User extends Authenticatable
         });
     }
 
+    public function assignedShifts()
+    {
+        return $this->hasMany(AssignedShift::class);
+    }
+
     public function attributes()
     {
         return $this->hasMany(Attribute::class);

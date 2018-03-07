@@ -19,7 +19,6 @@ class CreateShiftTypesTable extends Migration
             $table->time('start_time');
             $table->time('end_time');
             $table->integer('branch_id');
-            $table->string('code', 5);
             $table->timestamps();
         });
     }

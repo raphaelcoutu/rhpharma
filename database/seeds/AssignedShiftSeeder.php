@@ -27,18 +27,20 @@ class AssignedShiftSeeder extends Seeder
         $this->addAssignedShifts([17,49,23,20,5], $scheduleStartDate->addDays(6));
         $this->addAssignedShifts([17,49,23,20,5], $scheduleStartDate->addDays(1));
 
-        $this->addAssignedShifts([10,44,40,50,38], $scheduleStartDate->addDays(6));
-        $this->addAssignedShifts([10,44,40,50,38], $scheduleStartDate->addDays(1));
+        $this->addAssignedShifts([10,45,40,50,38], $scheduleStartDate->addDays(6));
+        $this->addAssignedShifts([10,45,40,50,38], $scheduleStartDate->addDays(1));
 
-        $this->addAssignedShifts([31,25,18,26,24], $scheduleStartDate->addDays(6));
-        $this->addAssignedShifts([31,25,18,26,24], $scheduleStartDate->addDays(1));
+        $this->addAssignedShifts([32,25,18,26,24], $scheduleStartDate->addDays(6));
+        $this->addAssignedShifts([32,25,18,26,24], $scheduleStartDate->addDays(1));
     }
 
     private function addAssignedShifts(Array $users, $date) {
         collect($users)->each(function ($user) use ($date) {
             factory(App\AssignedShift::class)->create([
                 'user_id' => $user,
-                'date' => $date
+                'date' => $date,
+                'department_id' => 18,
+                'is_generated' => 0,
             ]);
         });
     }

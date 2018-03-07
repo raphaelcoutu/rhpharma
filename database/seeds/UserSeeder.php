@@ -116,6 +116,14 @@ class UserSeeder extends Seeder
         ]);
         $cleclair->departments()->attach([1,2,4,5,6]);
 
+        $cpelletier = factory(User::class)->create([
+            'firstname' => 'Claudia',
+            'lastname' => 'Pelletier',
+            'email' => 'cpelletier@RHPharma.com',
+            'password' => Hash::make('password')
+        ]);
+        $cpelletier->departments()->attach([14]);
+
         $eboisvert = factory(User::class)->create([
             'firstname' => 'Émilie',
             'lastname' => 'Boisvert',
