@@ -11,7 +11,7 @@ class CalendarController extends Controller
     public function show($scheduleId)
     {
         $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::with('assignedshifts.department')->ownBranch()->get();
+        $pharmaciens = User::with('assignedshifts.department')->ownBranch()->where('is_active', 1)->get();
         $shifts = $this->retreivingShifts($schedule, $pharmaciens);
 
         return view('calendar.show', [

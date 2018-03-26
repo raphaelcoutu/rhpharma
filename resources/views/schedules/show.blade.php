@@ -8,7 +8,12 @@
                 <div class="panel-body">
                     <p>Dates: {{ $schedule->start_date_string }} - {{ $schedule->end_date_string }} ({{ $schedule->duration_in_weeks }} semaines)</p>
 
-                    <a href="#" class="btn btn-success pull-right">Exportation Excel</a>
+                    <div class="pull-right">
+                        <a href="{{ route('calendar.show', ['id' => $schedule->id]) }}" class="btn btn-default">
+                            <i class="fa fa-eye"></i> Calendrier
+                        </a>
+                        <a href="#" class="btn btn-success">Exportation Excel</a>
+                    </div>
 
                     <h3>Processus</h3>
                     <table class="table table-hover">
@@ -36,7 +41,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="#" class="btn btn-default">Validation des contraintes</a>
+                                <a href="{{ route('constraintsValidator.index', ['schedule' => $schedule->id]) }}" class="btn btn-default">Validation des contraintes</a>
                             </td>
                         </tr>
                         <tr>
