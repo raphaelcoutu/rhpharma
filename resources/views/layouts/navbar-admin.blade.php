@@ -14,6 +14,12 @@
     </a>
 
     <ul class="dropdown-menu" role="menu">
+        @can('read', App\Constraint::class)
+            <li>
+                <a href="{{ route('constraintsValidator.index') }}">Validation de contraintes</a>
+            </li>
+            <li role="separator" class="divider"></li>
+        @endcan
         @can('read', App\Branch::class)
             <li>
                 <a href="{{ route('branches.index') }}">Gestion des branches</a>

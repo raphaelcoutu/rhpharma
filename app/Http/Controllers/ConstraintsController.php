@@ -18,15 +18,16 @@ class ConstraintsController extends Controller
      */
     public function index()
     {
+        $schedules = Schedule::where('end_date', '>', Carbon::today())->orderBy('start_date')->get();
+        $constraintTypes = ConstraintType::orderBy('name')->get();
+
         $fixedConstraints = Constraint::with('constraintType')->fixedConstraints()
-            ->fromLoggedInUser()->get();
+            ->fromLoggedInUser()->orderBy('end_datetime', 'desc')->limit(50)->get();
 
 
         $availabilityConstraints = Constraint::with('constraintType')->availabilityConstraints()
-            ->fromLoggedInUser()->get();
+            ->fromLoggedInUser()->orderBy('end_datetime', 'desc')->limit(50)->get();
 
-        $schedules = Schedule::where('end_date', '>', Carbon::today())->get();
-        $constraintTypes = ConstraintType::orderBy('name')->get();
 
         return view('constraints.index',
             compact('schedules', 'constraintTypes', 'availabilityConstraints', 'fixedConstraints')

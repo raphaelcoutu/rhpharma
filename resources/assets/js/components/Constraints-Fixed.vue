@@ -6,15 +6,15 @@
             <tr>
                 <th>ID</th>
                 <th>Type</th>
-                <th>Debut</th>
-                <th>Fin</th>
+                <th width="100px">Debut</th>
+                <th width="100px">Fin</th>
                 <th>Importance</th>
-                <th width="40%">Autres informations</th>
+                <th width="30%">Autres informations</th>
                 <th>Options</th>
             </tr>
             </thead>
             <tbody>
-                <tr v-for="constraint in constraints" :class="{'success' : form.id == constraint.id}">
+                <tr v-for="constraint in filteredConstraints" :class="{'success' : form.id == constraint.id}">
                     <td>{{ constraint.id }}</td>
                     <td><strong>{{ constraint.constraint_type.name }}</strong><br>
                         <i>{{ constraint.constraint_type.description }}</i>
@@ -23,7 +23,7 @@
                     <td>{{ constraint.end_datetime | moment }}</td>
                     <td><i class="fa fa-2x" :class="trans_weight(constraint.weight)"></i></td>
                     <td>
-                        <strong>Status:</strong>{{ constraint.status }}<br>
+                        <strong>Status:</strong> <span v-html="status(constraint.status)"></span><br>
                         <strong>Répétition:</strong>{{ constraint.number_of_occurrences }}<br>
                         <strong>Commentaire:</strong>{{ constraint.comment }}<br>
                     </td>
@@ -107,6 +107,7 @@
     import Flatpickr from 'vue-flatpickr-component';
     import 'flatpickr/dist/flatpickr.css';
     import Timepickr from './Timepickr.vue'
+    import FilterInInterval from './../helpers/FilterInInterval';
 
 
     Vue.use(VueScrollTo);
@@ -125,11 +126,15 @@
 
         mounted() {
             this.constraints = this.constraintsProps;
+            this.$root.$on('schedule', data => {
+                this.schedule = data;
+            });
         },
 
         data() {
             return {
                 constraints: null,
+                schedule: null,
                 showForm: false,
                 form: {
                     id: null,
@@ -254,6 +259,16 @@
                 }
             },
 
+            status(status_id) {
+                if(status_id == 0) {
+                    return "<i class='fa fa-clock-o'></i> En attente";
+                } else if(status_id == 1) {
+                    return "<i class='fa fa-check-circle-o text-success'></i> Approuvé";
+                } else {
+                    return "<i class='fa fa-times-circle-o text-danger'></i> Refusé";
+                }
+            },
+
             onFlatpickrOpen(selectedDates, dateStr, instance) {
                 if(this.form.start_date == null || this.form.start_date == '') {
                     instance.jumpToDate(new Date())
@@ -261,6 +276,17 @@
             }
         },
         computed: {
+            filteredConstraints() {
+                if(this.schedule) {
+                    let schedule_start_date = new Date(this.schedule.start_date);
+                    let schedule_end_date = new Date(this.schedule.end_date);
+
+                    return this.constraints.filter(FilterInInterval(schedule_start_date, schedule_end_date))
+                }
+
+                return this.constraints;
+            },
+
             showEndDate() {
                 if(!this.form.constraint_type.is_single_day) {
                     return true;

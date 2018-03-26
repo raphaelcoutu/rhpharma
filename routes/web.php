@@ -72,6 +72,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('constraints', 'ConstraintsController@index')->name('constraints.index');
 
+    //ConstraintsValidator
+    Route::get('constraintsValidator', 'ConstraintsValidatorController@index')->name('constraintsValidator.index');
+    Route::get('constraintsValidator/history', 'ConstraintsValidatorController@history')->name('constraintsValidator.history');
+
     //Build
     Route::get('build/{schedule}/clinicalDepartments', function ($schedule) {
         event(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));

@@ -23,6 +23,8 @@ class PermissionSeeder extends Seeder
         ['name' => 'WriteConstraintTypes'],
         ['name' => 'ReadHolidays'],
         ['name' => 'WriteHolidays'],
+        ['name' => 'ReadConstraints'],
+        ['name' => 'WriteConstraints'],
     ];
 
     /**

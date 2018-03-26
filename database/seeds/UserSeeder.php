@@ -14,14 +14,14 @@ class UserSeeder extends Seeder
     public function run()
     {
         $phm_admin = factory(User::class)->create([
-            'firstname' => 'PHM',
-            'lastname' => 'Admin',
+            'firstname' => 'SuperUser',
+            'lastname' => 'SuperUser',
             'email' => 'phm_admin@RHPharma.com',
             'password' => Hash::make('password'),
             'is_active' => 0
             ]);
 
-        $phm_user = factory(User::class)->create([
+        /*$phm_user = factory(User::class)->create([
             'firstname' => 'PHM',
             'lastname' => 'User',
             'email' => 'phm_user@RHPharma.com',
@@ -43,7 +43,7 @@ class UserSeeder extends Seeder
             'email' => 'atp_user@RHPharma.com',
             'password' => Hash::make('password'),
             'branch_id' => 2
-        ]);
+        ]);*/
 
         // Pharmaciens
 

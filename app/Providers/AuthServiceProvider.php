@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Branch;
+use App\Constraint;
 use App\ConstraintType;
 use App\Department;
 use App\Holiday;
 use App\Policies\BranchPolicy;
+use App\Policies\ConstraintPolicy;
 use App\Policies\ConstraintTypePolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\HolidayPolicy;
@@ -30,6 +32,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Branch::class => BranchPolicy::class,
+        Constraint::class => ConstraintPolicy::class,
         ConstraintType::class => ConstraintTypePolicy::class,
         Department::class => DepartmentPolicy::class,
         Holiday::class => HolidayPolicy::class,

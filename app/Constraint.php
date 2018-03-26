@@ -16,6 +16,16 @@ class Constraint extends Model
         return $this->belongsTo(ConstraintType::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function validator()
+    {
+        return $this->belongsTo(User::class, 'validated_by');
+    }
+
     public function scopeFromLoggedInUser($query)
     {
         return $query->where('user_id', \Auth::user()->id);

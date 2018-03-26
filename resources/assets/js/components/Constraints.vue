@@ -1,16 +1,26 @@
 <template>
     <div>
-        <constraints-filter :schedules="schedules"
-                            :availability-constraints="availabilityConstraints"
-                            :fixed-constraints="fixedConstraints"
-        ></constraints-filter>
-        <constraint-fixed :constraints-props="fixedConstraints"
-                          :constraint-types="constraintTypes"
-        ></constraint-fixed>
-        <hr>
-        <constraint-availability :constraints-props="availabilityConstraints"
-                                 :constraint-types="constraintTypes"
-        ></constraint-availability>
+        <div class="row">
+            <div class="col-md-3">
+                <constraints-filter :schedules="schedules"
+                                    :availability-constraints="availabilityConstraints"
+                                    :fixed-constraints="fixedConstraints"
+                ></constraints-filter>
+            </div>
+            <div class="col-md-3 col-md-offset-6">
+                <a href="#"><i class="fa fa-eye"></i> Voir anciennes contraintes</a>
+            </div>
+
+            <div class="col-md-12">
+            <constraint-fixed :constraints-props="fixedConstraints"
+                              :constraint-types="constraintTypes"
+            ></constraint-fixed>
+            <hr>
+            <constraint-availability :constraints-props="availabilityConstraints"
+                                     :constraint-types="constraintTypes"
+            ></constraint-availability>
+                </div>
+        </div>
     </div>
 </template>
 

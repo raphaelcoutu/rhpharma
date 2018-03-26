@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth'], function () {
     //ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@fetch');
 
+    //ConstraintValidator
+    Route::put('constraintsValidator/{id}', 'ConstraintsValidatorController@update');
+
     //Schedules
     Route::get('schedules', 'SchedulesController@fetch');
     Route::post('schedules/store', 'SchedulesController@store');

@@ -12,6 +12,19 @@
 
             <div class="panel-body">
 
+                @if(Request::segment(1) == 'profile')
+                    <div class="col-md-3 col-md-offset-9">
+                        <a href="#"><i class="fa fa-eye"></i> Mes anciennes contraintes</a>
+                    </div>
+                @else
+                    <div class="col-md-3 col-md-offset-9">
+                    @can('read', \App\Constraint::class)
+                        <a href="{{ route('constraintsValidator.history', ['user' => $user->id]) }}"><i class="fa fa-eye"></i> Anciennes contraintes de {{ $user->firstname }}</a>
+                    @endcan
+                    </div>
+
+                @endif
+
                 <table class="table table-striped">
                     <thead>
                     <tr>
