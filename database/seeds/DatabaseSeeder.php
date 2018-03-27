@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ConstraintSeeder::class);
         $this->call(ShiftTypeSeeder::class);
         $this->call(AssignedShiftSeeder::class);
+        $this->call(SettingSeeder::class);
     }
 }

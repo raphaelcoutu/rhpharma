@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Builders\Precalculation;
 use App\Builders\GenericBuilder;
 use App\Events\UpdateBuildStatus;
+use App\Setting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -58,22 +59,11 @@ class BuildClinicalDepartments implements ShouldQueue
 
         $this->precalculation = new Precalculation($this->event->scheduleId);
 
-        // Obtenir l'ordre des secteurs à générer
-        // Boucler pour chaque secteur avec le builder correspondant
+        $departments = collect(json_decode(Setting::valueByKey('generation_order')))
+            ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
+                $this->generate($departmentId);
+            });
 
-        $this->generate(4);     //SIM
-        $this->generate(5);     //SIC
-        $this->generate(6);     //SIHD
-        $this->generate(8);     //SIPA
-        $this->generate(11);    //SP
-        $this->generate(2);     //MI
-        $this->generate(9);     //L
-        $this->generate(10);    //IC
-        $this->generate(14);    //ME
-        $this->generate(15);    //PE
-        $this->generate(12);    //CIM
-        $this->generate(16);    //URHF
-        $this->generate(17);    //URHF
     }
 
     private function generate($departmentId)

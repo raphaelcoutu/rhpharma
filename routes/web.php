@@ -85,6 +85,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('calendar/{schedule}', 'CalendarController@show')->name('calendar.show');
     Route::get('calendar/{schedule}/byDepartment/{department}', 'CalendarController@showByDepartment')->name('calendar.showByDepartment');
 
+    //Settings
+    Route::get('settings', 'SettingsController@index')->name('settings.index');
+
     //TestJob
     Route::get('/test/{schedule}', function ($schedule) {
         $job = new App\Jobs\BuildClinicalDepartments(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));
