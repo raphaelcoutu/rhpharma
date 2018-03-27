@@ -64,6 +64,8 @@ class BuildClinicalDepartments implements ShouldQueue
                 $this->generate($departmentId);
             });
 
+        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 'success'));
+
     }
 
     private function generate($departmentId)

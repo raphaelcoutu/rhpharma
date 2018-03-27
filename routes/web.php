@@ -77,8 +77,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('constraintsValidator/history', 'ConstraintsValidatorController@history')->name('constraintsValidator.history');
 
     //Build
-    Route::get('build/{schedule}/clinicalDepartments', function ($schedule) {
-        event(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));
+    Route::get('build/{schedule}', function ($schedule) {
+        event(new \App\Events\UpdateBuildStatus($schedule, 'clinical', 'building'));
     });
 
     //Calendar
@@ -87,12 +87,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Settings
     Route::get('settings', 'SettingsController@index')->name('settings.index');
-
-    //TestJob
-    Route::get('/test/{schedule}', function ($schedule) {
-        $job = new App\Jobs\BuildClinicalDepartments(new \App\Events\UpdateBuildStatus($schedule, 'clinicalDepartments'));
-
-        return $job->handle();
-    });
-
 });
