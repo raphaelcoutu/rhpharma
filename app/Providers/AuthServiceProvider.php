@@ -14,10 +14,12 @@ use App\Policies\DepartmentPolicy;
 use App\Policies\HolidayPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SchedulePolicy;
+use App\Policies\SettingPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkplacePolicy;
 use App\Role;
 use App\Schedule;
+use App\Setting;
 use App\User;
 use App\Workplace;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -38,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         Holiday::class => HolidayPolicy::class,
         Role::class => RolePolicy::class,
         Schedule::class => SchedulePolicy::class,
+        Setting::class => SettingPolicy::class,
         User::class => UserPolicy::class,
         Workplace::class => WorkplacePolicy::class,
     ];

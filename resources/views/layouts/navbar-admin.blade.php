@@ -61,7 +61,12 @@
             <li>
                 <a href="{{ route('holidays.index') }}">Gestion des fériés</a></li>
             </li>
-        @endcan        
+        @endcan
+        @can('read', App\Setting::class)
+            <li>
+                <a href="{{ route('settings.index') }}">Paramètres généraux</a></li>
+            </li>
+        @endcan
     </ul>
 </li>
 @endif
