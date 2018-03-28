@@ -16,87 +16,10 @@
                     </div>
 
                     <h3>Processus</h3>
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Étape</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Validation des contraintes <br>
-                                <ul>
-                                    <li><strong>Limite:</strong> {{ $schedule->constraint_limit_date_string }}</li>
-                                    <li><strong>Contraintes restantes à valider:</strong> {{ $constraints_count }}</li>
-                                </ul>
-                            </td>
-                            <td>
-                                @if($constraints_count > 0)
-                                    <i class="fa fa-exclamation-triangle text-warning fa-2x"
-                                       data-toggle="tooltip" title="Il reste {{ $constraints_count }} contrainte(s) à valider"></i>
-                                @else
-                                    <i class="fa fa-check-circle-o text-success fa-2x"></i>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ route('constraintsValidator.index', ['schedule' => $schedule->id]) }}" class="btn btn-default">Validation des contraintes</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Assigner les fériés</td>
-                            <td><i class="{{ status($schedule->status_holidays) }} fa-2x"></i></td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" class="btn btn-success">Générer</a>
-                                    <a href="#" class="btn btn-primary">Réanalyser</a>
-                                    <a href="#" class="btn btn-danger">Mise à zéro</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Assigner les jours de fins de semaine</td>
-                            <td><i class="{{ status($schedule->status_weekends) }} fa-2x"></i></td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" class="btn btn-success">Générer</a>
-                                    <a href="#" class="btn btn-primary">Réanalyser</a>
-                                    <a href="#" class="btn btn-danger">Mise à zéro</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Assigner les derniers soirs de chaque semaine<br/><i>(ex: vendredi soir ou jeudi soir si férié)</i></td>
-                            <td><i class="{{ status($schedule->status_last_evening) }} fa-2x"></i></td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" class="btn btn-success">Générer</a>
-                                    <a href="#" class="btn btn-primary">Réanalyser</a>
-                                    <a href="#" class="btn btn-danger">Mise à zéro</a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Assigner les secteurs cliniques</td>
-                            <td><i class="{{ status($schedule->status_clinical_departments) }} fa-2x"></i></td>
-                            <td>
-                                <rhpharma-build-buttons schedule-id="{{ $schedule->id }}"></rhpharma-build-buttons>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Assigner la distribution</td>
-                            <td><i>À VENIR</i></td>
-                            <td>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="#" class="btn btn-success">Générer</a>
-                                    <a href="#" class="btn btn-primary">Réanalyser</a>
-                                    <a href="#" class="btn btn-danger">Mise à zéro</a>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <rhpharma-schedule-processus
+                            :schedule="{{ $schedule }}"
+                            :constraints-count="{{ $constraints_count }}"
+                    ></rhpharma-schedule-processus>
 
                     <h3>Conflits</h3>
 

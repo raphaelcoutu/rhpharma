@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'auth'], function () {
 
+    //Build
+    Route::get('build/{scheduleId}/clinical', 'BuildController@buildClinical');
+
     //Branches
     Route::get('branches', 'BranchesController@fetch');
     Route::post('branches/store', 'BranchesController@store');

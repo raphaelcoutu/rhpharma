@@ -7,13 +7,14 @@
                 <div class="panel-heading">Contraintes à valider</div>
 
                 <div class="panel-body">
-                    <div class="row">
+                    <div class="row mb-20">
                         <div class="col-md-3">
                             @isset($schedule)
                                 <p><strong>Filtre</strong> : <a href="{{ route('constraintsValidator.index') }}" class="btn btn-xs btn-default"
                                     data-toggle="tooltip" data-placement="top" title="Cliquer pour retirer le filtre">
                                         Du {{ $schedule->start_date_string }} au {{ $schedule->end_date_string }}</a>
                                 </p>
+                                <p><a href="{{ route('schedules.show', $schedule->id) }}">Retour à la gestion de l'horaire</a></p>
                             @endisset
                         </div>
                         <div class="col-md-6 text-center">

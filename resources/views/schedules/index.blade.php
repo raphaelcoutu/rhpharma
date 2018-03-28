@@ -6,7 +6,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Horaires</div>
                 <div class="panel-body">
-                    {{--<rhpharma-schedule :rows="{{ $schedules }}"></rhpharma-schedule>--}}
 
                     <a href="{{ route('schedules.create') }}" class="btn btn-default pull-right">Ajouter un horaire</a>
 

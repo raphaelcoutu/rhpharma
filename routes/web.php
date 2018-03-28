@@ -76,11 +76,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('constraintsValidator', 'ConstraintsValidatorController@index')->name('constraintsValidator.index');
     Route::get('constraintsValidator/history', 'ConstraintsValidatorController@history')->name('constraintsValidator.history');
 
-    //Build
-    Route::get('build/{schedule}', function ($schedule) {
-        event(new \App\Events\UpdateBuildStatus($schedule, 'clinical', 'building'));
-    });
-
     //Calendar
     Route::get('calendar/{schedule}', 'CalendarController@show')->name('calendar.show');
     Route::get('calendar/{schedule}/byDepartment/{department}', 'CalendarController@showByDepartment')->name('calendar.showByDepartment');

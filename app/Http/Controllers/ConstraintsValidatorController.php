@@ -19,7 +19,7 @@ class ConstraintsValidatorController extends Controller
 
         $constraints = Constraint::with(['constrainttype', 'user']);
         if(request('schedule')) {
-            $schedule = Schedule::select('start_date', 'end_date')->findOrFail(request('schedule'));
+            $schedule = Schedule::select(['id','start_date', 'end_date'])->findOrFail(request('schedule'));
 
             $constraints = $constraints->inInterval($schedule->start_date, $schedule->end_date);
         }

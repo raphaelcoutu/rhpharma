@@ -31,20 +31,21 @@ class BuildStatusChanged
         $schedule = Schedule::findOrFail($event->scheduleId);
 
         if($event->buildStep == 'clinical') {
-            if($event->status == 'building') {
+            if($event->status == 3) {
                 //Update database
                 $schedule->status_clinical_departments = 3;
                 $schedule->update();
 
                 //Start job
                 (new BuildClinicalDepartments($event))->handle();
+                event(new UpdateBuildStatus($event->scheduleId, 'clinical', 1));
 
             }
 
-            if($event->status == 'success') {
+            if($event->status == 1) {
                 //Update database
                 //Update database
-                $schedule->status_clinical_departments = 0;
+                $schedule->status_clinical_departments = 1;
                 $schedule->update();
 
                 //Update schedule.show
@@ -52,7 +53,7 @@ class BuildStatusChanged
                 //Send notification to admins
             }
 
-            if($event->status == 'error') {
+            if($event->status == 2) {
                 //Update database
                 //Update database
                 $schedule->status_clinical_departments = 2;

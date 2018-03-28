@@ -10,6 +10,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+/**
+ * Class UpdateBuildStatus
+ * @package App\Events
+ */
 class UpdateBuildStatus implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
@@ -21,6 +25,12 @@ class UpdateBuildStatus implements ShouldBroadcast
 
     /**
      * Create a new event instance.
+     *
+     * Status :
+     * - 0 : En attente
+     * - 1 : Succès
+     * - 2 : Erreur
+     * - 3 : En cours
      *
      * @return void
      */
