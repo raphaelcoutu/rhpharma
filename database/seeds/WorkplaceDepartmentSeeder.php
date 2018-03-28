@@ -47,6 +47,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Gérer des patients malades',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -63,6 +64,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Patients malades ++',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -71,6 +73,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Patients malades ++',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -79,6 +82,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Patients malades ++',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -87,6 +91,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Gérer les patients infectés',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
 
@@ -96,6 +101,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Surveillance des antimicrobiens',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -104,6 +110,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Santé mentale',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -120,6 +127,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -144,6 +152,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -152,6 +161,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -160,6 +170,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => '1',
             'workplace_id' => '1',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([
@@ -168,6 +179,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => '1',
             'workplace_id' => '2',
+            'department_type_id' => 1,
         ]);
 
         factory(Department::class)->create([

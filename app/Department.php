@@ -29,6 +29,11 @@ class Department extends Model
             ->withPivot(['history', 'planning_long', 'planning_short']);
     }
 
+    public function departmentType()
+    {
+        return $this->belongsTo(DepartmentType::class);
+    }
+
     public function workplace()
     {
         return $this->belongsTo(Workplace::class);
