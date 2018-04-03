@@ -38,7 +38,6 @@ class BuildStatusChanged
 
                 //Start job
                 (new BuildClinicalDepartments($event))->handle();
-                event(new UpdateBuildStatus($event->scheduleId, 'clinical', 1));
 
             }
 

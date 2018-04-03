@@ -11,6 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class BuildClinicalDepartments implements ShouldQueue
 {
@@ -55,6 +56,7 @@ class BuildClinicalDepartments implements ShouldQueue
         // - Boucle : jours weekends (mentionner comme étant travaillé)
         // - Passer chacune des contraintes et modifier la matrice
 
+        Log::info('BuildClinicalDepartments Job: STARTED');
         $this->start = microtime(true);
 
         $this->precalculation = new Precalculation($this->event->scheduleId);
@@ -64,7 +66,16 @@ class BuildClinicalDepartments implements ShouldQueue
                 $this->generate($departmentId);
             });
 
-        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
+        if($departments->count() == 0) {
+            $message = 'No departments found in settings.';
+            Log::info('BuildClinicalDepartments Job: STOPPED - ' . $message);
+            event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 2, $message));
+
+        } else {
+            Log::info('BuildClinicalDepartments Job: FINISHED');
+            event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
+        }
+
 
     }
 
