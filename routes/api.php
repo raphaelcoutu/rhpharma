@@ -54,5 +54,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('usersDepartments/{id}', 'UsersDepartmentsController@destroy');
     
     //Settings
-    Route::patch('settings/order', 'SettingsController@updateOrder');
+    Route::patch('settings/departments', 'SettingsController@updateDepartments');
+    Route::patch('settings/triplets', 'SettingsController@updateTriplets');
 });

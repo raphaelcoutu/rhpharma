@@ -13,14 +13,18 @@
                         <p>Il est également possible de désactiver le secteur de la génération d'horaire en décochant la
                             case appropriée.</p>
 
-                        <rhpharma-settings-order
+                        <rhpharma-settings-departments
                                 :departments="{{ $departments }}"
-                                :order="{{ $order }}"
-                        ></rhpharma-settings-order>
+                                :settings="{{ $settings->firstWhere('key', 'departments_order')->value }}"
+                        ></rhpharma-settings-departments>
 
                         <hr>
 
                         <h3 id="triplets">Triplets</h3>
+                        <rhpharma-settings-triplets
+                                :triplets="{{ $triplets }}"
+                                :settings="{{ $settings->firstWhere('key', 'triplets_order')->value }}"
+                        ></rhpharma-settings-triplets>
                     </div>
                     <div class="col-lg-3 hidden-md">
                         <p>Table des matières</p>

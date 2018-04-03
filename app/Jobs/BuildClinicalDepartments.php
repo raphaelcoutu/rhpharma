@@ -59,7 +59,7 @@ class BuildClinicalDepartments implements ShouldQueue
 
         $this->precalculation = new Precalculation($this->event->scheduleId);
 
-        $departments = collect(json_decode(Setting::valueByKey('generation_order')))
+        $departments = collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
                 $this->generate($departmentId);
             });

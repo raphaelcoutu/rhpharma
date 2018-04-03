@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingsTable extends Migration
+class CreateTripletsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('triplets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('key')->unique();
-            $table->text('value');
-            $table->timestamps('');
+            $table->string('sequence', 17);
+            $table->boolean('work_weekend');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('triplets');
     }
 }

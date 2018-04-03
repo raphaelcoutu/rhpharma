@@ -32,14 +32,7 @@
 <script>
 
     export default {
-        props: {
-            departments: {
-                required: true
-            },
-            order: {
-                required: true
-            }
-        },
+        props: ['departments', 'settings'],
 
         mounted() {
             this.sortDepartments();
@@ -47,21 +40,21 @@
 
         data() {
             return {
-                departmentsWithOrder: []
+                departmentsWithSettings: []
             };
         },
 
         methods: {
             sortDepartments() {
                 let departments = this.departments;
-                let order = this.order;
+                let settings = this.settings;
                 let arrResult = [];
 
 
-                if(order) {
+                if(settings) {
                     // Combiner les paramètres avec les départements actuels
                     arrResult = _.map(departments, function (obj) {
-                        return _.assign(obj, _.find(order, {
+                        return _.assign(obj, _.find(settings, {
                             id: obj.id
                         }));
                     });
@@ -71,7 +64,7 @@
 
                 // Classer les départements en ordre et réattribuer leur index
                 // (au cas si un département est ajouté/retiré)
-                this.departmentsWithOrder = _.each(_.sortBy(arrResult, 'order'), function (obj, i) {
+                this.departmentsWithSettings = _.each(_.sortBy(arrResult, 'order'), function (obj, i) {
                     obj.order = i;
                     if(!obj.hasOwnProperty('active')) obj.active = false;
                 });
@@ -107,10 +100,8 @@
                     return _.pick(obj, ['id', 'active', 'order']);
                 });
 
-                axios.patch('/api/settings/order', data)
-                    .then(res => {
-                        console.log(res);
-                    }).catch(err => {
+                axios.patch('/api/settings/departments', data)
+                    .catch(err => {
                         console.log(err);
                 });
             }
@@ -118,8 +109,8 @@
 
         computed: {
             sortedDepartments() {
-                if(this.departmentsWithOrder.length > 0)
-                    return _.sortBy(this.departmentsWithOrder, 'order');
+                if(this.departmentsWithSettings.length > 0)
+                    return _.sortBy(this.departmentsWithSettings, 'order');
             }
         }
     }
