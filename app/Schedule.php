@@ -6,18 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $fillable = ['name', 'constraint_limit_date', 'start_date', 'end_date', 'branch_id'];
+    protected $fillable = ['name', 'limit_date', 'limit_date_weekends', 'start_date', 'end_date', 'branch_id'];
 
-    protected $dates = ['start_date', 'end_date', 'constraint_limit_date'];
+    protected $dates = ['start_date', 'end_date', 'limit_date', 'limit_date_weekends'];
 
     public function scopeOrderedDesc($query)
     {
         return $query->orderBy('end_date', 'desc')->where('branch_id', \Auth::user()->branch->id);
     }
 
-    public function getConstraintLimitDateStringAttribute()
+    public function getLimitDateStringAttribute()
     {
-        return $this->constraint_limit_date->toDateString();
+        return $this->limit_date->toDateString();
+    }
+
+    public function getLimitDateWeekendsStringAttribute()
+    {
+        return $this->limit_date_weekends->toDateString();
     }
 
     public function getStartDateStringAttribute()

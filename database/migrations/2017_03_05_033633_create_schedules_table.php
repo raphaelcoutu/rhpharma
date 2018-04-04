@@ -16,7 +16,8 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->date('constraint_limit_date');
+            $table->date('limit_date_weekends');
+            $table->date('limit_date');
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('branch_id');

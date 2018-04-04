@@ -15,7 +15,6 @@
                             <th>Description</th>
                             <th>Début</th>
                             <th>Fin</th>
-                            <th>Limite</th>
                             <th>Status</th>
                             <th width="30%">Action</th>
                         </tr>
@@ -26,7 +25,6 @@
                                 <td>{{ $schedule->name }} <a href="{{ route('schedules.edit', $schedule->id) }}"><i class="fa fa-pencil"></i></a></td>
                                 <td>{{ $schedule->start_date_string }}</td>
                                 <td>{{ $schedule->end_date_string }}</td>
-                                <td>{{ $schedule->constraint_limit_date_string }}</td>
                                 <td>
                                     @if($constraints_in_schedule[$schedule->id] > 0)
                                         <i class="fa fa-exclamation-triangle text-warning fa-2x"

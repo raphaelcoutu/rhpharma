@@ -19,7 +19,6 @@ class CreateDepartmentsTable extends Migration
             $table->string('description')->nullable();
             $table->integer('branch_id');
             $table->integer('workplace_id');
-            $table->string('code', 5);
             $table->tinyInteger('department_type_id')->nullable();
             $table->tinyInteger('bonus_weeks');
             $table->tinyInteger('bonus_pts');

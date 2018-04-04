@@ -25,7 +25,8 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'constraint_limit_date' => 'required|date|after:today',
+            'limit_date_weekends' => 'required|date',
+            'limit_date' => 'required|date|after:today',
             'start_date' => 'required|date|after:constraint_limit_date|day:sunday',
             'end_date' => 'required|date|after:start_date|unique_interval:start_date|day:saturday'
         ];
@@ -35,7 +36,8 @@ class ScheduleRequest extends FormRequest
     {
         return [
             'name.required' => 'Le nom de l\'horaire est requis.',
-            'constraint_limit_date.required' => 'La date de limite pour les contraintes est requise.',
+            'limit_date_weekends.required' => 'La date de limite pour les contraintes de fins de semaine est requise.',
+            'limit_date.required' => 'La date de limite pour les contraintes est requise.',
             'start_date.required' => 'La date de début est requise.',
             'end_date.required' => 'Le date de fin est requise.',
         ];

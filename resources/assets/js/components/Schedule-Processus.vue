@@ -11,9 +11,9 @@
             <tbody>
             <tr>
                 <td>
-                    Validation des contraintes
+                    Validation des contraintes des fériés/fins de semaine
                     <ul>
-                        <li><strong>Limite:</strong> {{ formatDate(schedule.constraint_limit_date) }}</li>
+                        <li><strong>Limite:</strong> {{ formatDate(schedule.limit_date_weekends) }}</li>
                         <li><strong>Contraintes restantes à valider:</strong> {{ constraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
                     </ul>
                 </td>
@@ -50,6 +50,21 @@
                     </div>
                 </td>
                 <td>Boutons</td>
+            </tr>
+            <tr>
+                <td>
+                    Validation des contraintes
+                    <ul>
+                        <li><strong>Limite:</strong> {{ formatDate(schedule.limit_date) }}</li>
+                        <li><strong>Contraintes restantes à valider:</strong> {{ constraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
+                    </ul>
+                </td>
+                <td>
+                    <i>Icone</i>
+                </td>
+                <td>
+                    <a :href="validateUrl" class="btn btn-default">Valider les contraintes</a>
+                </td>
             </tr>
             <tr>
                 <td>Assigner les secteurs cliniques</td>

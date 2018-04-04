@@ -29,7 +29,9 @@ class AppServiceProvider extends ServiceProvider
             $schedules = \App\Schedule::select('id','start_date','end_date')->orderBy('end_date', 'desc')->limit(12)->get();
 
             foreach ($schedules as $schedule) {
-                if($schedule->id == $validator->getData()['id']) continue; //Si on édit un horaire, on skip la vérification
+                //Si on édit un horaire, on skip la vérification
+                if(isset($validator->getData()['id']) && $schedule->id == $validator->getData()['id']) continue;
+
                 if(detectsIntervalCollision($a_start, $a_end, $schedule->start_date, $schedule->end_date)) {
                     return false;
                 }

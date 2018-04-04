@@ -68,7 +68,7 @@ class SchedulesController extends Controller
 
         Schedule::create($request->all());
 
-        return redirect()->route('schedule.index');
+        return redirect()->route('schedules.index');
     }
 
     /**

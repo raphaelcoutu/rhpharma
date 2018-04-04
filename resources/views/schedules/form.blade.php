@@ -13,14 +13,21 @@
             <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($schedule) ? $schedule->name : '') }}">
             <span class="help-block">{{ $errors->first('name') }}</span>
         </div>
-
-        <label for="constraint_limit_date" class="col-md-3 control-label">Date limite pour contraintes:</label>
-        <div class="col-md-3 {{ $errors->first('constraint_limit_date') ? 'has-error' : '' }}">
-            <input type="text" id="constraint_limit_date" name="constraint_limit_date" class="form-control"
-                   value="{{ old('constraint_limit_date', isset($schedule) ? $schedule->constraint_limit_date_string : '') }}">
-            <span class="help-block">{{ $errors->first('constraint_limit_date') }}</span>
+    </div>
+    <div class="form-group">
+        <label for="limit_date_weekends" class="col-md-3 control-label">Date limite (fins de semaine):</label>
+        <div class="col-md-3 {{ $errors->first('limit_date_weekends') ? 'has-error' : '' }}">
+            <input type="text" id="limit_date_weekends" name="limit_date_weekends" class="form-control"
+                   value="{{ old('limit_date_weekends', isset($schedule) ? $schedule->limit_date_weekends_string : '') }}">
+            <span class="help-block">{{ $errors->first('limit_date_weekends') }}</span>
         </div>
 
+        <label for="limit_date" class="col-md-3 control-label">Date limite pour contraintes:</label>
+        <div class="col-md-3 {{ $errors->first('limit_date') ? 'has-error' : '' }}">
+            <input type="text" id="limit_date" name="limit_date" class="form-control"
+                   value="{{ old('limit_date', isset($schedule) ? $schedule->limit_date_string : '') }}">
+            <span class="help-block">{{ $errors->first('limit_date') }}</span>
+        </div>
     </div>
 
     <div class="form-group">
