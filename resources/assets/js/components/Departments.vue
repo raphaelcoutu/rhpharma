@@ -16,7 +16,6 @@
             return {
                 sortTable: {
                     columns: [
-                        {id: 'code', title: 'Code', sortable:true},
                         {id: 'name', title: 'Secteur', sortable: true},
                         {id: 'description', title: 'Description', sortable: false},
                         {id: 'workplace.name', title: 'Lieu', sortable: true},

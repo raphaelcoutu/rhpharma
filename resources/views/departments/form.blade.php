@@ -33,16 +33,6 @@
     </div>
 
     <div class="form-group">
-        <label for="code" class="col-md-3 control-label">Code:</label>
-        <div class="col-md-3 {{ $errors->first('code') ? 'has-error' : '' }}">
-        @if(isset($model) && is_null(old('name')))
-            <input type="text" id="code" name="code" class="form-control" value="{{ $model->code }}">
-        @else
-            <input type="text" id="code" name="code" class="form-control" value="{{ old('code') }}">
-        @endif
-            <span class="help-block">{{ $errors->first('code') }}</span>
-        </div>
-
         <label for="workplace_id" class="col-md-3 control-label">Lieu de travail:</label>
         <div class="col-md-3 {{ $errors->first('workplace_id') ? 'has-error' : '' }}">
             <select id="workplace_id" name="workplace_id" class="form-control">
