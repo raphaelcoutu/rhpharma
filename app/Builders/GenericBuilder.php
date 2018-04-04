@@ -4,6 +4,7 @@ namespace App\Builders;
 
 
 use App\Department;
+use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
 {
@@ -37,6 +38,8 @@ class GenericBuilder extends BaseBuilder
         $this->correctionForAbsence();
 
         $this->assignThreeDaysUsers();
+
+        Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo');
 
         // Comment For Debug Only:
         //$this->combinaisons = [];

@@ -68,11 +68,13 @@ class BuildClinicalDepartments implements ShouldQueue
 
         if($departments->count() == 0) {
             $message = 'No departments found in settings.';
-            Log::info('BuildClinicalDepartments Job: STOPPED - ' . $message);
+            Log::warning('BuildClinicalDepartments Job: ' . $message);
+            Log::info('BuildClinicalDepartments Job: STOPPED');
             event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 2, $message));
 
         } else {
-            Log::info('BuildClinicalDepartments Job: FINISHED');
+            $executionTime = round(microtime(true) - $this->start, 2);
+            Log::info('BuildClinicalDepartments Job: FINISHED - ' . $executionTime . ' sec');
             event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
         }
 
