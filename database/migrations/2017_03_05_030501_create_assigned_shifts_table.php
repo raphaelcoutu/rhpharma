@@ -16,8 +16,7 @@ class CreateAssignedShiftsTable extends Migration
         Schema::create('assigned_shifts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('shift_type_id');
-            $table->integer('department_id');
+            $table->integer('shift_id');
             $table->boolean('is_generated'); //si généré par le script VS inscrit par un gestionnaire
             $table->boolean('is_published'); //si est public (donc approuvé par gestionnaire et public)
             $table->date('date');

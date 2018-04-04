@@ -10,8 +10,8 @@ class AssignedShift extends Model
 
     protected $guarded = [];
 
-    public function department()
+    public function shift()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Shift::class);
     }
 }

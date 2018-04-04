@@ -23,6 +23,11 @@ class Department extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class)

@@ -69,7 +69,7 @@ class DepartmentsController extends Controller
     {
         $this->authorize('write', Department::class);
 
-        $department = Department::with('users')->findOrFail($id);
+        $department = Department::with('shifts.shiftType', 'users')->findOrFail($id);
         $workplaces = Workplace::all();
 
         return view('departments.edit', ['department' => $department, 'workplaces' => $workplaces]);

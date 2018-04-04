@@ -36,11 +36,12 @@ class AssignedShiftSeeder extends Seeder
     }
 
     private function addAssignedShifts(Array $users, $date) {
-        collect($users)->each(function ($user) use ($date) {
+        $shifts = [1,2,3,4,7];
+
+        collect($users)->each(function ($user, $key) use ($date, $shifts) {
             AssignedShift::create([
                 'user_id' => $user,
-                'shift_type_id' => 1,
-                'department_id' => 18,
+                'shift_id' => $shifts[$key],
                 'is_generated' => 0,
                 'is_published' => 0,
                 'date' => $date,

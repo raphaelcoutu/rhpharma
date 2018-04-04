@@ -56,7 +56,7 @@
                 @endcan
 
                 @if(Request::segment(1) != 'profile')
-                <h3>Secteurs</h3>
+                <h3>Secteurs cliniques</h3>
 
                 <rhpharma-users-departments
                         :user-id="{{ $user->id }}"

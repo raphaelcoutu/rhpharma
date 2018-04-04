@@ -66,7 +66,9 @@ class UsersController extends Controller
         $this->authorize('read', User::class);
 
         $user = User::with('departments')->findOrFail($id);
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::whereHas('departmentType', function ($query) {
+            $query->where('name', "Clinical");
+        })->orderBy('name')->get();
 
         return view('users.show', compact('user', 'departments'));
     }

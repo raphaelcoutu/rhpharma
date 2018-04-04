@@ -38,7 +38,7 @@
                         <tr>
                             <td class="text-nowrap">{{$pharmacien->id}}-{{ $pharmacien->fullname }}</td>
                             @foreach($shifts[$pharmacien->id] as $shift)
-                                <td>{{ $shift }}</td>
+                                <td>{{ $shift['code'] }}</td>
                             @endforeach
                         </tr>
                     @endforeach

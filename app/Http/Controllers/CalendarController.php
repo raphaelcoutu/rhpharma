@@ -11,7 +11,7 @@ class CalendarController extends Controller
     public function show($scheduleId)
     {
         $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::with('assignedshifts.department')->ownBranch()->where('is_active', 1)->get();
+        $pharmaciens = User::with('assignedShifts.shift')->ownBranch()->where('is_active', 1)->get();
         $shifts = $this->retreivingShifts($schedule, $pharmaciens);
 
         return view('calendar.show', [
@@ -24,7 +24,7 @@ class CalendarController extends Controller
     public function showByDepartment($scheduleId, $departmentId)
     {
         $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::with(['assignedshifts.department'])->whereHas('departments', function ($query) use ($departmentId) {
+        $pharmaciens = User::with(['assignedshifts.shift'])->whereHas('departments', function ($query) use ($departmentId) {
             $query->where('department_id', $departmentId);
         })->ownBranch()->get();
         $shifts = $this->retreivingShifts($schedule, $pharmaciens);
@@ -49,7 +49,7 @@ class CalendarController extends Controller
                 });
 
                 if ($assignedShifts->count() > 0) {
-                    $shifts[$pharmacien->id][$i] = $assignedShifts->first()->department->code;
+                    $shifts[$pharmacien->id][$i] = $assignedShifts->first()->shift;
                 }
             }
         });

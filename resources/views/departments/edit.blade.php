@@ -8,6 +8,15 @@
                 <div class="panel-body">
                     @include('departments.form', ['model' => $department])
                     <hr>
+                    <h3>Quarts de travail associés au secteur</h3>
+                    <ul>
+                    @forelse($department->shifts as $shift)
+                        <li>{{ $shift->code }} ({{ $shift->shiftType->start_time_string }} à {{ $shift->shiftType->end_time_string }})</li>
+                    @empty
+                        <li>Aucun quart de travail.</li>
+                    @endforelse
+                    </ul>
+                    <hr>
                     <h3>Pharmaciens associés au secteur</h3>
                     <ul>
                         @forelse($department->users as $pharmacien)
