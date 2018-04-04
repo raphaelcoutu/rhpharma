@@ -1,7 +1,6 @@
 <?php
 
 use App\Constraint;
-use App\ConstraintNote;
 use App\Schedule;
 use App\User;
 use Carbon\Carbon;
@@ -9,6 +8,21 @@ use Illuminate\Database\Seeder;
 
 class ConstraintSeeder extends Seeder
 {
+    public function create(array $constraint)
+    {
+        return Constraint::create([
+            'user_id' => $constraint['user_id'] ?? 1,
+            'start_datetime' => $constraint['start_datetime'] ?? Carbon::parse('-2 weeks'),
+            'end_datetime' => $constraint['end_datetime'] ?? Carbon::parse('-2 weeks'),
+            'constraint_type_id' => $constraint['constraint_type_id'] ?? 1,
+            'weight' => $constraint['weight'] ?? 0,
+            'comment' => '',
+            'status' => $constraint['status'] ?? 1,
+            'validated_by' => $constraint['validated_by'] ?? null,
+            'number_of_occurrences' => $constraint['number_of_occurences'] ?? null
+        ]);
+    }
+
     /**
      * Run the database seeds.
      *
@@ -24,7 +38,7 @@ class ConstraintSeeder extends Seeder
         $SL = User::whereLastname('Letendre')->first();
 
         //SU - validé (vieil horaire)
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => 1,
             'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
             'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14,0),
@@ -33,7 +47,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //SU - non validé (vieil horaire)
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => 1,
             'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
             'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14,0),
@@ -43,7 +57,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //SU - validé superpose (vieil horaire)
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => 1,
             'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
             'end_datetime' => $pastScheduleStartDate->copy()->addDays(20)->setTime(14,0),
@@ -52,7 +66,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //MJL Jour
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => $MJL->id,
             'start_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(14,0),
@@ -61,7 +75,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //MJL AM
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => $MJL->id,
             'start_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(14,0),
@@ -70,7 +84,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //MJL PM
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => $MJL->id,
             'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
@@ -79,7 +93,7 @@ class ConstraintSeeder extends Seeder
         ]);
 
         //RC JOUR (vendredi sem2)
-        factory(Constraint::class)->create([
+        $this->create([
             'user_id' => $RC->id,
             'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
@@ -87,7 +101,7 @@ class ConstraintSeeder extends Seeder
             'validated_by' => $SL->id
         ]);
 
-        factory(Constraint::class)->create([
+        $this->create([
            'user_id' => $RC->id,
             'start_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(8,0),
             'end_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(16,0),

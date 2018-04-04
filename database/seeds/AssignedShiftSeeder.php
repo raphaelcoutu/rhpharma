@@ -1,5 +1,6 @@
 <?php
 
+use App\AssignedShift;
 use App\Schedule;
 use Illuminate\Database\Seeder;
 
@@ -36,11 +37,13 @@ class AssignedShiftSeeder extends Seeder
 
     private function addAssignedShifts(Array $users, $date) {
         collect($users)->each(function ($user) use ($date) {
-            factory(App\AssignedShift::class)->create([
+            AssignedShift::create([
                 'user_id' => $user,
-                'date' => $date,
+                'shift_type_id' => 1,
                 'department_id' => 18,
                 'is_generated' => 0,
+                'is_published' => 0,
+                'date' => $date,
             ]);
         });
     }

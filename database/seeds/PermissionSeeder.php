@@ -1,7 +1,6 @@
 <?php
 
 use App\Permission;
-use App\User;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder

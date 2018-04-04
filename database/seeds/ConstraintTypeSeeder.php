@@ -5,6 +5,19 @@ use Illuminate\Database\Seeder;
 
 class ConstraintTypeSeeder extends Seeder
 {
+    public function create(array $type)
+    {
+        return ConstraintType::create([
+            'name' => $type['name'],
+            'description' => $type['description'],
+            'code' => $type['code'],
+            'is_work' => $type['is_work'],
+            'is_single_day' => $type['is_single_day'],
+            'is_group_constraint' => $type['is_group_constraint'] ?? 0,
+            'is_day_in_schedule' => $type['is_day_in_schedule'] ?? 0,
+            'branch_id' => $type['branch_id'] ?? 1
+        ]);
+    }
     /**
      * Run the database seeds.
      *
@@ -12,18 +25,7 @@ class ConstraintTypeSeeder extends Seeder
      */
     public function run()
     {
-//        Template
-//        factory(ConstraintType::class)->create([
-//            'name' => '',
-//            'description' => '',
-//            'code' => '',
-//            'is_work' => 0,
-//            'is_single_day' => 0,
-//            'is_group_constraint' => 0,
-//            'is_day_in_schedule' => 0
-//        ]);
-
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Formation fixe jour',
             'description' => 'Formation pour la/les journée(s) complète(s). Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
@@ -33,7 +35,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Formation fixe en AM',
             'description' => 'Formation pour la matinée seulement. Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
@@ -43,7 +45,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Formation fixe en PM',
             'description' => 'Formation pour l\'après-midi seulement. Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
@@ -53,7 +55,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Congé sans solde souhait jour fixe',
             'description' => 'Aimerait être en congé sans solde à une date précide',
             'code' => 'CSS',
@@ -63,7 +65,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 0
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Congé de FDS souhait jour fixe',
             'description' => 'Journée préférée pour congé de fds à une date précise (sélectionner le samedi ou le dimanche correspondant : le congé est valable pour la fds entière)',
             'code' => 'C',
@@ -73,7 +75,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 0
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Reprise de temps souhait fixe jour',
             'description' => 'Aimerait prendre une RT à une date précise et pour la journée complète',
             'code' => 'RT',
@@ -83,7 +85,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Reprise de temps souhait AM',
             'description' => 'Aimerait prendre une RT à une date précise et pour la matinée seulement',
             'code' => 'RTAM',
@@ -93,7 +95,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Reprise de temps souhait PM',
             'description' => 'Aimerait prendre une RT à une date précise et pour l\'après-midi seulement',
             'code' => 'RTPM',
@@ -103,7 +105,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Férié à reprendre fixe jour',
             'description' => 'Aimerait reprendre un férié à une date précise',
             'code' => 'F',
@@ -113,7 +115,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Rayonnement fixe jour',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Journée complète (doit être acceptée au préàlable)',
             'code' => 'RAY',
@@ -123,7 +125,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Rayonnement fixe en AM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Matinée seulement (doit être acceptée au préàlable)',
             'code' => 'RAYAM',
@@ -133,7 +135,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Rayonnement fixe en PM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Après-midi seulement (doit être acceptée au préàlable)',
             'code' => 'RAYPM',
@@ -143,7 +145,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Libération fixe jour',
             'description' => 'Aimerait une libération pour une date déterminée et la journée complète (RPE par exemple)',
             'code' => 'XND',
@@ -153,7 +155,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Libération fixe en AM',
             'description' => 'Aimerait une libération pour une date déterminée et la matinée seulement (comité par exemple)',
             'code' => 'XNDAM',
@@ -163,7 +165,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Libération fixe en PM',
             'description' => 'Aimerait une libération pour une date déterminée et l\'après-midi seulement (comité par exemple)',
             'code' => 'XNDPM',
@@ -173,7 +175,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Comité de pharmaco réunion midi',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la journée complète (RPE par exemple)',
             'code' => 'CPR',
@@ -183,7 +185,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Comité de pharmaco libération fixe AM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la matinée seulement (comité par exemple)',
             'code' => 'CPAM',
@@ -193,7 +195,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Comité de pharmaco libération fixe PM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et l\'après-midi seulement (comité par exemple)',
             'code' => 'CPPM',
@@ -203,7 +205,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'PGTM fixe jour',
             'description' => 'Réunion PGTM prévue pour toute la journée',
             'code' => 'PG',
@@ -213,7 +215,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'PGTM fixe en AM',
             'description' => 'Réunion PGTM prévue pour la matinée seulement',
             'code' => 'PGAM',
@@ -223,7 +225,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'PGTM fixe en PM',
             'description' => 'Réunion PGTM prévue pour l\'après-midi',
             'code' => 'PGPM',
@@ -233,7 +235,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Vacances perlées fixe jour',
             'description' => 'Date souhaitée pour vacances perlées mais si date fixe seulement. Si plusieurs choix de dates, veuillez l\'inscrire dans la section "selon disponibilité"',
             'code' => 'VP',
@@ -243,7 +245,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Ariane fixe jour',
             'description' => 'Demande de temps Ariane pour une journée complète',
             'code' => 'AR',
@@ -253,7 +255,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Ariane fixe en AM',
             'description' => 'Demande de temps Ariane pour une matinée seulement',
             'code' => 'ARAM',
@@ -263,7 +265,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Ariane fixe en PM',
             'description' => 'Demande de temps Ariane pour une après-midi seulement',
             'code' => 'ARPM',
@@ -273,7 +275,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'URE fixe jour',
             'description' => 'Demande de libération à date fixe pour projet URE déjà approuvé',
             'code' => 'URE',
@@ -283,7 +285,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Visite grossesse en AM',
             'description' => 'Visite de grossesse pour une matinée',
             'code' => 'VG',
@@ -293,7 +295,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-        factory(ConstraintType::class)->create([
+        $this->create([
             'name' => 'Visite grossesse en PM',
             'description' => 'Visite de grossesse pour une après-midi',
             'code' => 'VG',

@@ -6,6 +6,29 @@ use Illuminate\Database\Seeder;
 
 class WorkplaceDepartmentSeeder extends Seeder
 {
+    public function create(array $department)
+    {
+        return Department::create([
+            'name' => $department['name'],
+            'description' => $department['description'] ?? '...',
+            'branch_id' => '1',
+            'workplace_id' => $department['workplace_id'] ?? 1,
+            'bonus_weeks' => $department['bonus_weeks'] ?? 2,
+            'bonus_pts' => $department['bonus_pts'] ?? 4,
+            'malus_weeks' => $department['malus_weeks'] ?? 3,
+            'malus_pts' => $department['malus_pts'] ?? 8,
+            'monday_am' => $department['monday_am'] ?? 2,
+            'monday_pm' => $department['monday_pm'] ?? 2,
+            'tuesday_am' => $department['tuesday_am'] ?? 2,
+            'tuesday_pm' => $department['tuesday_pm'] ?? 2,
+            'wednesday_am' => $department['wednesday_am'] ?? 2,
+            'wednesday_pm' => $department['wednesday_pm'] ?? 2,
+            'thursday_am' => $department['thursday_am'] ?? 2,
+            'thursday_pm' => $department['thursday_pm'] ?? 2,
+            'friday_am' => $department['friday_am'] ?? 2,
+            'friday_pm' => $department['friday_pm'] ?? 2
+        ]);
+    }
     /**
      * Run the database seeds.
      *
@@ -33,7 +56,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'postal_code' => 'J1G 2E8'
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Coumadin',
             'code' => 'AC',
             'description' => 'Gérer des INR',
@@ -41,7 +64,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => '2',
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Médecine interne',
             'code' => 'MI',
             'description' => 'Gérer des patients malades',
@@ -50,7 +73,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Onco',
             'code' => 'ONCO',
             'description' => 'Oncologie',
@@ -58,7 +81,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => '1',
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Soins intensifs médicaux',
             'code' => 'SIM',
             'description' => 'Patients malades ++',
@@ -67,7 +90,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Soins intensifs chirurgicaux',
             'code' => 'SIC',
             'description' => 'Patients malades ++',
@@ -76,7 +99,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Soins intensifs HD',
             'code' => 'SIHD',
             'description' => 'Patients malades ++',
@@ -85,7 +108,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'SAMI',
             'code' => 'VIH',
             'description' => 'Gérer les patients infectés',
@@ -95,7 +118,7 @@ class WorkplaceDepartmentSeeder extends Seeder
         ]);
 
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'SIPA',
             'code' => 'SIPA',
             'description' => 'Surveillance des antimicrobiens',
@@ -104,7 +127,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Psychiatrie',
             'code' => 'SM',
             'description' => 'Santé mentale',
@@ -113,7 +136,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Insuffisance cardiaque',
             'code' => 'IC',
             'description' => 'CLIC',
@@ -121,7 +144,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => '2',
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Soins palliatifs',
             'code' => 'SP',
             'description' => '',
@@ -130,7 +153,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Centre d\'informations sur le médicament',
             'code' => 'CIM',
             'description' => '',
@@ -138,7 +161,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => '1',
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Ariane',
             'code' => 'AR',
             'description' => 'Développement Ariane',
@@ -146,7 +169,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => '1',
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Mère-enfant',
             'code' => 'ME',
             'description' => '',
@@ -155,7 +178,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Pédiatrie',
             'code' => 'PE',
             'description' => '',
@@ -164,7 +187,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Urgence HF',
             'code' => 'URHF',
             'description' => '',
@@ -173,7 +196,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Urgence HD',
             'code' => 'URHD',
             'description' => '',
@@ -182,7 +205,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => 1,
         ]);
 
-        factory(Department::class)->create([
+        $this->create([
             'name' => 'Distribution',
             'code' => 'DIS',
             'description' => 'Distribution',
