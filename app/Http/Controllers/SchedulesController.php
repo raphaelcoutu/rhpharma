@@ -20,7 +20,7 @@ class SchedulesController extends Controller
 
         $schedules = Schedule::orderedDesc()->paginate(15);
 
-        $constraints = Constraint::unvalidated()->inInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
+        $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
 
         $constraints_in_schedule = [];
 
@@ -83,7 +83,7 @@ class SchedulesController extends Controller
 
         $schedule = Schedule::findOrFail($id);
 
-        $constraints_count = Constraint::unvalidated()->inInterval($schedule->start_date, $schedule->end_date)->count();
+        $constraints_count = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
 
         return view('schedules.show', compact('schedule','constraints_count'));
     }

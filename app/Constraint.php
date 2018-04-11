@@ -50,7 +50,7 @@ class Constraint extends Model
         return $query->where('status', 0);
     }
 
-    public function scopeInInterval($query, Carbon $start_date, Carbon $end_date)
+    public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
     {
         return $query->where(function ($query) use ($start_date, $end_date) {
             $query->where('start_datetime', '>=', $start_date->setTime(0,0))
@@ -59,6 +59,5 @@ class Constraint extends Model
             $query->where('start_datetime', '<', $end_date->setTime(23,59))
                 ->where('end_datetime', '>', $start_date->setTime(0,0));
         });
-
     }
 }

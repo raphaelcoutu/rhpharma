@@ -37,8 +37,16 @@
                     @foreach($pharmaciens as $pharmacien)
                         <tr>
                             <td class="text-nowrap">{{$pharmacien->id}}-{{ $pharmacien->fullname }}</td>
-                            @foreach($shifts[$pharmacien->id] as $shift)
-                                <td>{{ $shift['code'] }}</td>
+                            @foreach($shifts[$pharmacien->id] as $day)
+                                @if($day)
+                                    <td>
+                                        @foreach($day as $innerDay)
+                                        {{ $innerDay->shift->code }}
+                                        @endforeach
+                                    </td>
+                                @else
+                                    <td></td>
+                                @endif
                             @endforeach
                         </tr>
                     @endforeach
