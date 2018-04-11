@@ -137,6 +137,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'CLIC',
             'branch_id' => 1,
             'workplace_id' => 2,
+            'department_type_id' => 1,
         ]);
 
         $this->create([
@@ -152,6 +153,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => 1,
             'workplace_id' => 1,
+            'department_type_id' => 1,
         ]);
 
         $this->create([
