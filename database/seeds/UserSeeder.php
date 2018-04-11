@@ -180,7 +180,7 @@ class UserSeeder extends Seeder
         $gferland->departments()->attach([15]);
 
         $glanglois = $this->create([
-            'firstname' => 'Gabrielle',
+            'firstname' => 'Geneviève',
             'lastname' => 'Langlois',
             'email' => 'glanglois@RHPharma.com',
         ]);
@@ -390,5 +390,26 @@ class UserSeeder extends Seeder
             'workdays_per_week' => 2
         ]);
         $vlord->departments()->attach([1,4,5,6,12]);
+
+        $mbd = $this->create([
+            'firstname' => 'Marie-Ève',
+            'lastname' => 'Bédard-Dufresne',
+            'email' => 'mebedarddufresne@RHPharma.com',
+            'workdays_per_week' => 5,
+        ]);
+
+        $cdr = $this->create([
+            'firstname' => 'Camille',
+            'lastname' => 'Dufort-Rouleau',
+            'email' => 'cdufort@RHPharma.com',
+            'workdays_per_week' => 5,
+        ]);
+
+        $plr = $this->create([
+            'firstname' => 'Pierre-Luc',
+            'lastname' => 'Ratté',
+            'email' => 'plratte@RHPharma.com',
+            'workdays_per_week' => 5,
+        ]);
     }
 }
