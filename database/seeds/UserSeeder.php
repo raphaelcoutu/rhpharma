@@ -404,6 +404,7 @@ class UserSeeder extends Seeder
             'email' => 'cdufort@RHPharma.com',
             'workdays_per_week' => 5,
         ]);
+        $cdr->departments()->attach(['14']);
 
         $plr = $this->create([
             'firstname' => 'Pierre-Luc',
@@ -411,5 +412,6 @@ class UserSeeder extends Seeder
             'email' => 'plratte@RHPharma.com',
             'workdays_per_week' => 5,
         ]);
+        $plr->departments()->attach(['16','17']);
     }
 }
