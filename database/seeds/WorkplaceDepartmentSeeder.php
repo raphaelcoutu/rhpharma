@@ -11,7 +11,7 @@ class WorkplaceDepartmentSeeder extends Seeder
         return Department::create([
             'name' => $department['name'],
             'description' => $department['description'] ?? '...',
-            'branch_id' => '1',
+            'branch_id' => 1,
             'workplace_id' => $department['workplace_id'] ?? 1,
             'department_type_id' => $department['department_type_id'] ?? null,
             'bonus_weeks' => $department['bonus_weeks'] ?? 2,
@@ -57,57 +57,61 @@ class WorkplaceDepartmentSeeder extends Seeder
             'postal_code' => 'J1G 2E8'
         ]);
 
+        Workplace::create([
+            'name' => 'Gestion'
+        ]);
+
         $this->create([
             'name' => 'Coumadin',
             'description' => 'Gérer des INR',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
         ]);
 
         $this->create([
             'name' => 'Médecine interne',
             'description' => 'Gérer des patients malades',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Onco',
             'description' => 'Oncologie',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Soins intensifs médicaux',
             'description' => 'Patients malades ++',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Soins intensifs chirurgicaux',
             'description' => 'Patients malades ++',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Soins intensifs HD',
             'description' => 'Patients malades ++',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'SAMI',
             'description' => 'Gérer les patients infectés',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
@@ -115,92 +119,100 @@ class WorkplaceDepartmentSeeder extends Seeder
         $this->create([
             'name' => 'SIPA',
             'description' => 'Surveillance des antimicrobiens',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Psychiatrie',
             'description' => 'Santé mentale',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Insuffisance cardiaque',
             'description' => 'CLIC',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
         ]);
 
         $this->create([
             'name' => 'Soins palliatifs',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Centre d\'informations sur le médicament',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Ariane',
             'description' => 'Développement Ariane',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Mère-enfant',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Pédiatrie',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Urgence HF',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Urgence HD',
             'description' => '',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Distribution HF',
             'description' => 'Distribution',
-            'branch_id' => '1',
-            'workplace_id' => '1',
+            'branch_id' => 1,
+            'workplace_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Distribution HD',
             'description' => 'Distribution',
-            'branch_id' => '1',
-            'workplace_id' => '2',
+            'branch_id' => 1,
+            'workplace_id' => 2,
+        ]);
+
+        $this->create([
+            'name' => 'Absences',
+            'description' => 'Gestion des absences',
+            'branch_id' => 1,
+            'workplace_id' => 3,
+            'department_type_id' => 2
         ]);
     }
 }

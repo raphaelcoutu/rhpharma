@@ -16,12 +16,12 @@ class CreateWorkplacesTable extends Migration
         Schema::create('workplaces', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('address');
-            $table->string('city');
-            $table->string('province');
-            $table->string('country');
-            $table->string('postal_code');
-            $table->string('code', 5);
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('code', 5)->nullable();
             $table->timestamps();
         });
     }

@@ -2,15 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Builders\Precalculation;
 use App\Builders\GenericBuilder;
+use App\Builders\Precalculation;
 use App\Events\UpdateBuildStatus;
 use App\Setting;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 class BuildClinicalDepartments implements ShouldQueue
@@ -59,11 +59,13 @@ class BuildClinicalDepartments implements ShouldQueue
         Log::info('BuildClinicalDepartments Job: STARTED');
         $this->start = microtime(true);
 
+        Log::debug('Precalculation - start');
         $this->precalculation = new Precalculation($this->event->scheduleId);
+        Log::debug('Precalculation - end');
 
         $departments = collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
-                $this->generate($departmentId);
+                new GenericBuilder($this->precalculation, $departmentId);
             });
 
         if($departments->count() == 0) {
@@ -79,14 +81,5 @@ class BuildClinicalDepartments implements ShouldQueue
         }
 
 
-    }
-
-    private function generate($departmentId)
-    {
-        $builder = new GenericBuilder($this->precalculation, $departmentId);
-        if(self::$timer == true) {
-            echo "Après departmentId {$departmentId} : " . (microtime(true)-$this->start) . "<br>";
-        }
-        return $builder;
     }
 }

@@ -13,5 +13,6 @@ class DepartmentTypeSeeder extends Seeder
     public function run()
     {
         DepartmentType::create(['name' => 'Clinical']);
+        DepartmentType::create(['name' => 'Management']);
     }
 }

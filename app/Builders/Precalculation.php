@@ -5,7 +5,9 @@ namespace App\Builders;
 use App\AssignedShift;
 use App\Department;
 use App\Schedule;
+use App\Shift;
 use App\User;
+use Carbon\Carbon;
 
 class Precalculation
 {
@@ -35,10 +37,12 @@ class Precalculation
         //Récupérer les chiffres déjà assignés pour l'horaire en cours
         $this->assignedShifts = AssignedShift::where('date', '>=', $this->schedule->start_date)->where('date', '<=', $this->schedule->end_date)->get();
 
-        // Récupérer les pharmaciens avec constraintes associées
+        // Récupérer les pharmaciens avec constraintes associées et les shifts déjà assignés (fériés, fin de semaines, etc..)
         $this->pharmaciens = User::with(['constraints' => function ($query) {
-            $query->InInterval($this->schedule->start_date, $this->schedule->end_date)->where('status', 1);
-        }, 'departments'])->select('id', 'firstname', 'lastname', 'workdays_per_week', 'is_manual')->where('is_active', 1)->where('branch_id', 1)->get();
+            $query->InDateInterval($this->schedule->start_date, $this->schedule->end_date)->where('status', 1);
+        }, 'assignedShifts' => function ($query) {
+            $query->InDateInterval($this->schedule->start_date, $this->schedule->end_date);
+        }, 'assignedShifts.shift.shiftType', 'departments'])->select('id', 'firstname', 'lastname', 'workdays_per_week', 'is_manual')->where('is_active', 1)->where('branch_id', 1)->get();
 
         $this->departments = Department::with(['users' => function ($query) {
             $query->where('is_active', 1)->where('branch_id', 1)->get();
@@ -92,15 +96,27 @@ class Precalculation
 
     private function isAvailableBetween($id, $day, $startTime, $endTime)
     {
-        $shifts = $this->availability[$id]['days'][$day]['shifts'];
+        $assignedShifts = $this->pharmaciens->firstWhere('id', $id)->assignedShifts;
         $constraints = $this->availability[$id]['days'][$day]['constraints'];
         $realDate = $this->schedule->start_date->addDays($day)->toDateString();
 
         $startDateTime = \Carbon\Carbon::parse($realDate . ' ' . $startTime);
         $endDateTime = \Carbon\Carbon::parse($realDate . ' ' . $endTime);
 
-        //todo: disponibilité pour les shifts
+        // Détection si le pharmacien a déjà un shift assigné au même intervalle de temps
+        foreach($assignedShifts as $assignedShift) {
+            $assignedStart = Carbon::parse($assignedShift->date->toDateString() . ' '
+                . $assignedShift->shift->shiftType->start_time);
+            $assignedEnd = Carbon::parse($assignedShift->date->toDateString() . ' '
+                . $assignedShift->shift->shiftType->end_time);
 
+            if(detectsIntervalCollision($assignedStart, $assignedEnd,
+                $startDateTime, $endDateTime)) {
+                return false;
+            }
+        }
+
+        // Détection si le pharmacien a une contrainte au même intervalle de temps
         foreach($constraints as $constraint) {
             if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                 $startDateTime, $endDateTime)) {
@@ -118,8 +134,20 @@ class Precalculation
             $this->scheduleWeeks[$departmentId][] = $seq;
         }
 
+        // Sélectionner les shifts par département / mettre en ordre du plus grand intervalle
+        $shiftsForDepartment = Shift::with('shiftType')->where('department_id', $departmentId)->get();
+        $shiftsForDepartment->map(function ($shift) {
+            $shift->interval = strtotime($shift->shiftType->end_time) - strtotime($shift->shiftType->start_time);
+        })->sortByDesc('interval');
+
+        $newAssignedShifts = [];
+
         for($weeks = 0; $weeks < count($splitSequence); $weeks++) {
             $pharmacienId = $splitSequence[$weeks];
+
+            // Si la semaine attribuée est null (semaine remplie manuellement), on sort de la fonction
+            if(is_null($pharmacienId) || $pharmacienId == "") continue;
+
             for($days = 1; $days <= 5; $days++) {
                 $i = $days+7*($weeks+$group*$this->weeksPerGroup);
                 $realDate = $this->schedule->start_date->addDays($i)->toDateString();
@@ -127,36 +155,20 @@ class Precalculation
                 $day = &$this->availability[$pharmacienId]['days'][$i];
 
                 if($this->isAvailableBetween($pharmacienId, $i, '08:00', '16:30')) {
-                    AssignedShift::create([
+                    $newAssignedShifts[] = [
                         'user_id' => $pharmacienId,
-                        'shift_type_id' => 1,
-                        'department_id' => $departmentId,
+                        'shift_id' => $shiftsForDepartment->first()->id,
                         'is_generated' => 1,
                         'is_published' => 0,
-                        'date' => $realDate
-                    ]);
-                } else if($this->isAvailableBetween($pharmacienId, $i, '08:00', '12:00')) {
-                    AssignedShift::create([
-                        'user_id' => $pharmacienId,
-                        'shift_type_id' => 3,
-                        'department_id' => $departmentId,
-                        'is_generated' => 1,
-                        'is_published' => 0,
-                        'date' => $realDate
-                    ]);
-
-                } else if($this->isAvailableBetween($pharmacienId, $i, '13:00', '16:30')) {
-                    AssignedShift::create([
-                        'user_id' => $pharmacienId,
-                        'shift_type_id' => 4,
-                        'department_id' => $departmentId,
-                        'is_generated' => 1,
-                        'is_published' => 0,
-                        'date' => $realDate
-                    ]);
+                        'date' => $realDate,
+                        'created_at' => new \DateTime(),
+                        'updated_at' => new \DateTime()
+                    ];
                 }
             }
         }
+
+        AssignedShift::insert($newAssignedShifts);
     }
 
     public function getAvailability()

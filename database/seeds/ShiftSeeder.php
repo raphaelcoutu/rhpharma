@@ -25,6 +25,8 @@ class ShiftSeeder extends Seeder
     {
         //Distribution HF = 18, Distribution HD = 19
 
+        $this->create('C', 20, 10);
+
         $this->create('8HF', 18, 1);
         $this->create('9HF', 18, 2);
         $this->create('10HF', 18, 9);

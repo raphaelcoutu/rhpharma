@@ -75,5 +75,12 @@ class ShiftTypeSeeder extends Seeder
             'branch_id' => 1
         ]);
 
+        ShiftType::create([
+            'name' => '00h00-23h59',
+            'start_time' => '00:00',
+            'end_time' => '23:59',
+            'branch_id' => 1
+        ]);
+
     }
 }

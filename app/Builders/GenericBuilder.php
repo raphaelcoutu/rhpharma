@@ -3,7 +3,7 @@
 namespace App\Builders;
 
 
-use App\Department;
+use App\AssignedShift;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
@@ -17,8 +17,13 @@ class GenericBuilder extends BaseBuilder
     {
         parent::__construct($precalculation, $departmentId);
 
+        $start = microtime(true);
+
         $weeksCount = $precalculation->getWeeksCount();
+
         $this->getBonusMalus();
+
+        $this->manualWeeks = $this->getManualWeeks();
 
         // On sort les ids des pharmaciens ex: [1, 4]
         $ids = $this->pharmacistsIdsInDepartment($departmentId);
@@ -35,11 +40,10 @@ class GenericBuilder extends BaseBuilder
 
         $this->selectSequence();
 
-        $this->correctionForAbsence();
-
         $this->assignThreeDaysUsers();
 
-        Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo');
+        Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo'
+            . ' (' . round(microtime(true) - $start, 2) . 's)');
 
         // Comment For Debug Only:
         //$this->combinaisons = [];
@@ -75,11 +79,22 @@ class GenericBuilder extends BaseBuilder
                 $this->bonusMalusPrecedingGroup($group);
             }
 
+            // Trier les séquences par scores desc.
             $this->sortByScores($group);
-
 
             if (count($this->combinaisons[$group]) != 0) {
                 $this->selectedCombinaison = $this->combinaisons[$group][0];
+                // S'il y a un pharmacien ajouté manuellement, vérifier s'il existe dans une séquence
+                for ($i = 0; $i < $this->weeksPerGroup; $i++) {
+                    $this->manualWeeks->each(function ($week) use ($i, $group) {
+                        if(($i + $this->weeksPerGroup * $group) == $week) {
+                            $temp = explode(",", $this->selectedCombinaison["sequence"]);
+                            $temp[$i] = null;
+
+                            $this->selectedCombinaison["sequence"] = implode(",", $temp);
+                        }
+                    });
+                }
 
                 //Retirer les semaines allouées des allocated
                 foreach ($this->selectedCombinaison['count'] as $pharmId => $count) {
@@ -89,7 +104,7 @@ class GenericBuilder extends BaseBuilder
                 $this->precalculation->assignWeekSequence($this->departmentId, $group, $this->selectedCombinaison['sequence']);
             } else {
                 //TODO: generate conflict
-                throw new \Exception("No more pharmacist available to assign. [Department = $this->departmentId]");
+                Log::debug("No more pharmacist available to assign. [Department = {$this->departmentId}]");
             }
         }
     }
@@ -112,6 +127,7 @@ class GenericBuilder extends BaseBuilder
             }
 
             // Nombre de séquences consécutives (à la fin de séquence précédente)
+            if(!isset($this->precalculation->scheduleWeeks[$this->departmentId])) continue;
             $lastSequence = $this->precalculation->scheduleWeeks[$this->departmentId];
             for($j = count($lastSequence) - 1; $j >= 0; $j--) {
                 if($lastSequence[$j] == $first) {
@@ -141,7 +157,8 @@ class GenericBuilder extends BaseBuilder
                 if (!empty($this->precalculation->scheduleWeeks)) {
                     foreach ($this->precalculation->scheduleWeeks as $department) {
                         for ($week = 0; $week < count($splitSequence); $week++) {
-                            if ($department[($group * $this->weeksPerGroup) + $week] == $splitSequence[$week]) {
+                            if (isset($department[($group * $this->weeksPerGroup) + $week])
+                                && $department[($group * $this->weeksPerGroup) + $week] == $splitSequence[$week]) {
                                 $combinaisonsToUnset[] = $i;
                             }
                         }
@@ -227,9 +244,14 @@ class GenericBuilder extends BaseBuilder
         $this->malus = ['weeks' => $department->malus_weeks, 'pts' => $department->malus_pts];
     }
 
-    private function correctionForAbsence()
+    private function getManualWeeks()
     {
-        //
+        return AssignedShift::whereHas('shift', function ($query) {
+            $query->where('department_id', $this->departmentId);
+        })->get()
+            ->map(function ($shift) {
+                return $shift['week'] = $shift->date->diffInWeeks($this->precalculation->schedule->start_date);
+            })->unique();
     }
 
     private function assignThreeDaysUsers()
