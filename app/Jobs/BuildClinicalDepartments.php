@@ -65,6 +65,7 @@ class BuildClinicalDepartments implements ShouldQueue
 
         $departments = collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
+                set_time_limit(30);
                 new GenericBuilder($this->precalculation, $departmentId);
             });
 

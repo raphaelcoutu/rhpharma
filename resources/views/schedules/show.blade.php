@@ -12,7 +12,7 @@
                         <a href="{{ route('calendar.show', ['id' => $schedule->id]) }}" class="btn btn-default">
                             <i class="fa fa-eye"></i> Calendrier
                         </a>
-                        <a href="#" class="btn btn-success">Exportation Excel</a>
+                        <a href="{{ route('export', $schedule->id) }}" class="btn btn-success">Exportation Excel</a>
                     </div>
 
                     <h3>Processus</h3>
