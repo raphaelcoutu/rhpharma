@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -17,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        setlocale(LC_ALL, 'fr_CA');
+        Carbon::setLocale('fr');
 
         Validator::extend('unique_interval', function ($attribute, $value, $parameters, $validator) {
             if(count($parameters) < 1) {

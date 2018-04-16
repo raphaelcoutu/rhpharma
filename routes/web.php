@@ -82,4 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Settings
     Route::get('settings', 'SettingsController@index')->name('settings.index');
+
+    //Exports
+    Route::get('export/{schedule}', 'ExportsController@export')->name('export');
 });
