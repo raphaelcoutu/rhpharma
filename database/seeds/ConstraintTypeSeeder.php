@@ -305,5 +305,34 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
+        $this->create([
+            'name' => 'Travailler de jour (avant 16h30)',
+            'description' => 'Doit terminer max à 16h30. Pas de SCAS, ni de Coumadin, ni ON3',
+            'code' => 'J',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Travailler de jour(avant 17h)',
+            'description' => 'Doit terminer max à 17h. Pas de Coumadin.',
+            'code' => 'JS',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Travailler de jour (avant 17h30)',
+            'description' => 'Doit terminer max à 17h30. Coumadin et SCAS OK.',
+            'code' => 'JSA',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
