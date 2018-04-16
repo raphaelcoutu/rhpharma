@@ -41,7 +41,11 @@
                                 @if($day)
                                     <td>
                                         @foreach($day as $innerDay)
-                                        {{ $innerDay->shift->code }}
+                                            @if($innerDay instanceof \App\AssignedShift)
+                                                {{ $innerDay->shift->code }}
+                                            @elseif ($innerDay instanceof \App\Constraint)
+                                                {{ $innerDay->constraintType->code }}
+                                            @endif
                                         @endforeach
                                     </td>
                                 @else

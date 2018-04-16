@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AssignedShift;
+use App\Constraint;
 use App\Schedule;
 use App\User;
 use Illuminate\Http\Request;
@@ -14,12 +15,23 @@ class CalendarController extends Controller
         $schedule = Schedule::findOrFail($scheduleId);
         $pharmaciens = User::ownBranch()->where('is_active', 1)->get();
         $shifts = $this->createShifts($schedule, $pharmaciens);
-
         $assignedShifts = AssignedShift::with('shift')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
+        $constraints = Constraint::with('constraintType')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
 
         $assignedShifts->each(function ($assignedShift) use (&$shifts, $schedule) {
             $diff = $assignedShift->date->diffInDays($schedule->start_date);
             $shifts[$assignedShift->user_id][$diff][] = $assignedShift;
+        });
+
+        $constraints->each(function ($constraint) use (&$shifts, $schedule) {
+            $diffToScheduleStart = $constraint->start_datetime->diffInDays($schedule->start_date);
+            // On met l'heure de fin de la contrainte à 23h59 pour être certain que tous les jours soient affichés
+            // Exemple : Contrainte de moins de 24h mais débutant le soir la veille
+            $constraintDuration = $constraint->end_datetime->copy()->setTime(23,59)->diffInDays($constraint->start_datetime) + 1;
+
+            for ($i = 0; $i < $constraintDuration; $i++) {
+                $shifts[$constraint->user_id][$diffToScheduleStart+$i][] = $constraint;
+            }
         });
 
         return view('calendar.show', [
