@@ -316,7 +316,7 @@ class ConstraintTypeSeeder extends Seeder
         ]);
 
         $this->create([
-            'name' => 'Travailler de jour(avant 17h)',
+            'name' => 'Travailler de jour (avant 17h)',
             'description' => 'Doit terminer max à 17h. Pas de Coumadin.',
             'code' => 'JS',
             'is_work' => 1,
@@ -333,6 +333,26 @@ class ConstraintTypeSeeder extends Seeder
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Vacances',
+            'description' => 'Période de vacances',
+            'code' => 'V',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Contrainte de FDS',
+            'description' => 'Ne peut pas travailler cette fin de semaine',
+            'code' => 'NFDS',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
         ]);
     }
 }

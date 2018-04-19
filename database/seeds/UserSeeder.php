@@ -413,5 +413,13 @@ class UserSeeder extends Seeder
             'workdays_per_week' => 5,
         ]);
         $plr->departments()->attach(['16','17']);
+
+        $ia = $this->create([
+            'firstname' => 'Isabelle',
+            'lastname' => 'Audet',
+            'email' => 'iaudet@RHPharma.com',
+            'workdays_per_week' => 5,
+            'is_active' => 0,
+        ]);
     }
 }
