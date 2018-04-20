@@ -244,7 +244,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Lorraine',
             'lastname' => 'Legeleux',
             'email' => 'llegeleux@RHPharma.com',
-            'is_active' => 0
+            'is_active' => 1
         ]);
         $llegeleux->departments()->attach([8]);
 
@@ -337,7 +337,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Sabrina',
             'lastname' => 'Bergeron-Wolff',
             'email' => 'sbergeron@RHPharma.com',
-            'is_active' => 0
+            'is_active' => 1
         ]);
         $sbergeron->departments()->attach([7]);
 
