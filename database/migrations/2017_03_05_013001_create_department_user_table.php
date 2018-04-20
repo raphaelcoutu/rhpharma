@@ -14,14 +14,17 @@ class CreateDepartmentUserTable extends Migration
     public function up()
     {
         Schema::create('department_user', function (Blueprint $table) {
-            $table->integer('department_id');
-            $table->integer('user_id');
+            $table->unsignedInteger('department_id');
+            $table->unsignedInteger('user_id');
             $table->decimal('history', 4, 2)->default(0);
             $table->decimal('planning_long', 4, 2)->default(0);
             $table->decimal('planning_short', 4, 2)->default(0);
 
             $table->primary(['department_id', 'user_id']);
             $table->index(['user_id', 'department_id']);
+
+            $table->foreign('department_id')->references('id')->on('departments');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

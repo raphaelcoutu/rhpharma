@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'password' => $password ?: $password = Hash::make('password'),
             'remember_token' => str_random(10),
             'workdays_per_week' => $user['workdays_per_week'] ?? 5,
-            'seniority' => 0,
+            'seniority' => null,
             'is_active' => $user['is_active'] ?? 1,
             'is_manual' => $user['is_manual'] ?? 0,
             'branch_id' => $user['branch_id'] ?? 1,

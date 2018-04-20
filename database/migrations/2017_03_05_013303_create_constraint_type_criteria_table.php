@@ -14,11 +14,14 @@ class CreateConstraintTypeCriteriaTable extends Migration
     public function up()
     {
         Schema::create('constraint_type_criteria', function (Blueprint $table) {
-            $table->integer('constraint_type_id');
-            $table->integer('criteria_id');
+            $table->unsignedInteger('constraint_type_id');
+            $table->unsignedInteger('criterion_id');
 
-            $table->primary(['constraint_type_id', 'criteria_id']);
-            $table->index(['criteria_id', 'constraint_type_id']);
+            $table->primary(['constraint_type_id', 'criterion_id']);
+            $table->index(['criterion_id', 'constraint_type_id']);
+
+            $table->foreign('constraint_type_id')->references('id')->on('constraint_types');
+            $table->foreign('criterion_id')->references('id')->on('criteria');
         });
     }
 

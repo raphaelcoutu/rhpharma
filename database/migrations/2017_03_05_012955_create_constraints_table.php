@@ -18,7 +18,7 @@ class CreateConstraintsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
-            $table->integer('constraint_type_id');
+            $table->unsignedInteger('constraint_type_id');
             $table->boolean('weight');
             $table->text('comment')->nullable();
             $table->integer('status');
@@ -28,10 +28,13 @@ class CreateConstraintsTable extends Migration
 //            $table->boolean('is_day_of_week');
 //            $table->integer('day');
 //            $table->integer('day1');
-//            $table->string('discriminator');
-
-
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('constraint_type_id')->references('id')->on('constraint_types');
+            $table->foreign('validated_by')->references('id')->on('users');
+
+
         });
     }
 

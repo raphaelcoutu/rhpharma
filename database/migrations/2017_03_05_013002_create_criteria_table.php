@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCriteriasTable extends Migration
+class CreateCriteriaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateCriteriasTable extends Migration
      */
     public function up()
     {
-        Schema::create('criterias', function (Blueprint $table) {
+        Schema::create('criteria', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('department_id');
-            $table->integer('shifttype_id');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->integer('workplace_id');
-            $table->string('discriminator');
+            $table->unsignedInteger('criterionable_id');
+            $table->string('criterionable_type');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateCriteriasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('criterias');
+        Schema::dropIfExists('criteria');
     }
 }

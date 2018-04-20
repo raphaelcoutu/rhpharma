@@ -14,11 +14,14 @@ class CreateConstraintNoteUserTable extends Migration
     public function up()
     {
         Schema::create('constraint_note_user', function (Blueprint $table) {
-            $table->integer('constraint_note_id');
-            $table->integer('user_id');
+            $table->unsignedInteger('constraint_note_id');
+            $table->unsignedInteger('user_id');
 
             $table->primary(['constraint_note_id', 'user_id']);
             $table->index(['user_id', 'constraint_note_id']);
+
+            $table->foreign('constraint_note_id')->references('id')->on('constraint_notes');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

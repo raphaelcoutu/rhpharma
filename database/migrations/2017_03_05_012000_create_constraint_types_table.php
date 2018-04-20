@@ -22,8 +22,10 @@ class CreateConstraintTypesTable extends Migration
             $table->boolean('is_single_day');
             $table->boolean('is_group_constraint');
             $table->boolean('is_day_in_schedule');
-            $table->integer('branch_id');
+            $table->unsignedInteger('branch_id');
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

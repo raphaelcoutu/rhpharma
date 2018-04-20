@@ -18,8 +18,10 @@ class CreateShiftTypesTable extends Migration
             $table->string('name');
             $table->time('start_time');
             $table->time('end_time');
-            $table->integer('branch_id');
+            $table->unsignedInteger('branch_id');
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

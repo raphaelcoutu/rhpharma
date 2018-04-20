@@ -20,12 +20,14 @@ class CreateSchedulesTable extends Migration
             $table->date('limit_date');
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('branch_id');
+            $table->unsignedInteger('branch_id');
             $table->tinyInteger('status_holidays')->default(0);
             $table->tinyInteger('status_weekends')->default(0);
             $table->tinyInteger('status_last_evening')->default(0);
             $table->tinyInteger('status_clinical_departments')->default(0);
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
         });
     }
 

@@ -21,6 +21,8 @@ class CreateAttributesTable extends Migration
             $table->date('end_date');
             $table->string('description');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -17,9 +17,9 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('branch_id');
-            $table->integer('workplace_id');
-            $table->tinyInteger('department_type_id')->nullable();
+            $table->unsignedInteger('branch_id');
+            $table->unsignedInteger('workplace_id');
+            $table->unsignedInteger('department_type_id')->nullable();
             $table->tinyInteger('bonus_weeks');
             $table->tinyInteger('bonus_pts');
             $table->tinyInteger('malus_weeks');
@@ -35,6 +35,10 @@ class CreateDepartmentsTable extends Migration
             $table->tinyInteger('friday_am');
             $table->tinyInteger('friday_pm');
             $table->timestamps();
+
+            $table->foreign('branch_id')->references('id')->on('branches');
+            $table->foreign('workplace_id')->references('id')->on('workplaces');
+            $table->foreign('department_type_id')->references('id')->on('department_types');
         });
     }
 

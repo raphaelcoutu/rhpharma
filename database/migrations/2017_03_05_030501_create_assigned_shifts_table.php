@@ -15,12 +15,15 @@ class CreateAssignedShiftsTable extends Migration
     {
         Schema::create('assigned_shifts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('shift_id');
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('shift_id');
             $table->boolean('is_generated'); //si généré par le script VS inscrit par un gestionnaire
             $table->boolean('is_published'); //si est public (donc approuvé par gestionnaire et public)
             $table->date('date');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('shift_id')->references('id')->on('shifts');
         });
     }
 
