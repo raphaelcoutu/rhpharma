@@ -12,7 +12,7 @@ class ImportCsvCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'import:csv';
+    protected $signature = 'import:csv {file} {--s|separator=;}';
 
     /**
      * The console command description.
@@ -85,9 +85,27 @@ class ImportCsvCommand extends Command
             1083 => 51
         ];
         $this->constraintsIds = [
-            61 => 4,
             67 => 32,
-            53 => 33
+            53 => 33,
+            //79 (Travailler FDS)
+            62 => 5,
+            61 => 4,
+            68 => 29,
+            97 => 22,
+            130 => 34,
+            59 => 35,
+            96 => 38,
+            66 => 9,
+            92 => 39,
+            58 => 36,
+            69 => 30,
+            72 => 40,
+            76 => 13,
+            136 => 41,
+            118 => 42,
+            121 => 43,
+            138 => 45,
+            77 => 14
         ];
 
     }
@@ -103,8 +121,8 @@ class ImportCsvCommand extends Command
 
         ini_set('auto_detect_line_endings',TRUE);
         $row = 1;
-        if (($handle = fopen("public/Constraint_csv_20180416.csv", "r")) !== FALSE) {
-            while (($data = fgetcsv($handle)) !== FALSE) {
+        if (($handle = fopen($this->argument('file'), "r")) !== FALSE) {
+            while (($data = fgetcsv($handle, null, $this->option('separator'))) !== FALSE) {
                 // On enlève le header
                 if($row == 1) {
                     $row++; continue;
@@ -136,5 +154,7 @@ class ImportCsvCommand extends Command
         ini_set('auto_detect_line_endings', FALSE);
 
         \DB::table('constraints')->insert($constraints);
+
+        $this->info('Done. ' . count($constraints) . ' contraintes importées.');
     }
 }

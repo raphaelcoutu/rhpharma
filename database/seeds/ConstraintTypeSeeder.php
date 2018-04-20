@@ -354,5 +354,135 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 0
         ]);
+
+        $this->create([
+            'name' => 'Férié travaillé',
+            'description' => 'Travaille le férié',
+            'code' => 'T',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Congé parental',
+            'description' => '',
+            'code' => 'PAREN',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Congé de maternité',
+            'description' => '',
+            'code' => 'MAT',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Congé paternité 5 semaines',
+            'description' => '',
+            'code' => 'PAT',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Congé différé',
+            'description' => '',
+            'code' => 'CTD',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Contrainte de garde',
+            'description' => '',
+            'code' => 'PDG',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Travailler de soir (14 seul)',
+            'description' => '',
+            'code' => '14',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Comité de coordination',
+            'description' => '',
+            'code' => '/G',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Journée supplémentaire proposée',
+            'description' => '',
+            'code' => 'JP',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Soirée supplémentaire proposée',
+            'description' => '',
+            'code' => 'S+',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Comité de gestion CIUSSS am',
+            'description' => '',
+            'code' => 'G/',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Comité de gestion CIUSSS pm',
+            'description' => '',
+            'code' => '/G',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Comité de gestion jour fixe',
+            'description' => '',
+            'code' => 'G',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
