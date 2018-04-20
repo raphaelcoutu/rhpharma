@@ -13,10 +13,13 @@ class CalendarController extends Controller
     public function show($scheduleId)
     {
         $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::ownBranch()->where('is_active', 1)->get();
+        $pharmaciens = User::ownBranch()->where('is_active', 1)->orderBy('lastname')->get();
         $shifts = $this->createShifts($schedule, $pharmaciens);
         $assignedShifts = AssignedShift::with('shift')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
-        $constraints = Constraint::with('constraintType')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
+        $constraints = Constraint::with('constraintType')
+            ->InDateInterval($schedule->start_date, $schedule->end_date)
+            ->where('status', 1)
+            ->get();
 
         $assignedShifts->each(function ($assignedShift) use (&$shifts, $schedule) {
             $diff = $assignedShift->date->diffInDays($schedule->start_date);
@@ -24,10 +27,22 @@ class CalendarController extends Controller
         });
 
         $constraints->each(function ($constraint) use (&$shifts, $schedule) {
-            $diffToScheduleStart = $constraint->start_datetime->diffInDays($schedule->start_date);
             // On met l'heure de fin de la contrainte à 23h59 pour être certain que tous les jours soient affichés
             // Exemple : Contrainte de moins de 24h mais débutant le soir la veille
             $constraintDuration = $constraint->end_datetime->copy()->setTime(23,59)->diffInDays($constraint->start_datetime) + 1;
+
+            // On ajuste si la contrainte débutait avant le début de l'horaire
+            if($constraint->start_datetime->lt($schedule->start_date)) {
+                $diffToScheduleStart = 0;
+                $constraintDuration -= $schedule->start_date->diffInDays($constraint->start_datetime) + 1;
+            } else {
+                $diffToScheduleStart = $constraint->start_datetime->diffInDays($schedule->start_date);
+            }
+
+            // On ajuste la durée si la contrainte continue après la fin de l'horaire
+            if($constraint->end_datetime->gt($schedule->end_date->setTime(23,59))) {
+                $constraintDuration -= $constraint->end_datetime->diffInDays($schedule->end_date);
+            }
 
             for ($i = 0; $i < $constraintDuration; $i++) {
                 $shifts[$constraint->user_id][$diffToScheduleStart+$i][] = $constraint;

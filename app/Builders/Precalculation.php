@@ -229,9 +229,21 @@ class Precalculation
     {
         foreach ($this->pharmaciens as $pharmacien) {
             foreach ($pharmacien->constraints as $constraint) {
-                $dayInSchedule = $constraint->start_datetime->diffInDays($this->schedule->start_date);
+                // Si la contrainte débute avant l'horaire, on ajuste les jours. Sinon, on laisse idem.
+                if($constraint->start_datetime->lt($this->schedule->start_date)) {
+                    $dayInSchedule = 0;
+                    $duration = $constraint->end_datetime->diffInDays($constraint->start_datetime) + 1;
+                    $duration -= $this->schedule->start_date->diffInDays($constraint->start_datetime) + 1;
+                } else {
+                    $dayInSchedule = $constraint->start_datetime->diffInDays($this->schedule->start_date);
+                    $duration = $constraint->end_datetime->diffInDays($constraint->start_datetime) + 1;
+                }
 
-                $this->availability[$pharmacien->id]['days'][$dayInSchedule]['constraints'][] = $constraint;
+                // Ajouter la contrainte à chacun des jours qu'elle est impliquée.
+                for ($day = $dayInSchedule; $day < ($dayInSchedule + $duration); $day++) {
+                    $this->availability[$pharmacien->id]['days'][$day]['constraints'][] = $constraint;
+                }
+
             }
 
         }
