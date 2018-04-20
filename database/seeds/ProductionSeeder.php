@@ -1,6 +1,7 @@
 <?php
 
 use App\Schedule;
+use App\Setting;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -24,6 +25,11 @@ class ProductionSeeder extends Seeder
         $this->call(ShiftSeeder::class);
         $this->call(SettingSeeder::class);
         $this->call(TripletSeeder::class);
+
+        $departmentsSettings = Setting::where('key', 'departments_order')->get()->first();
+        $departmentsSettings->value = '[{"id":4,"active":true,"order":0},{"id":5,"active":true,"order":1},{"id":8,"active":true,"order":2},{"id":6,"active":true,"order":3},{"id":2,"active":true,"order":4},{"id":7,"active":false,"order":5},{"id":9,"active":true,"order":6},{"id":11,"active":true,"order":7},{"id":14,"active":true,"order":8},{"id":15,"active":true,"order":9},{"id":16,"active":true,"order":10},{"id":17,"active":true,"order":11},{"id":10,"active":true,"order":12},{"id":12,"active":true,"order":13}]';
+        $departmentsSettings->save();
+
 
         Schedule::create([
             'name' => '2018-05-13 au 2018-06-23',
