@@ -1,6 +1,7 @@
 <?php
 
 use App\ConstraintType;
+use App\Criterion;
 use Illuminate\Database\Seeder;
 
 class ConstraintTypeSeeder extends Seeder
@@ -29,7 +30,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Formation fixe jour',
             'description' => 'Formation pour la/les journée(s) complète(s). Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -39,7 +40,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Formation fixe en AM',
             'description' => 'Formation pour la matinée seulement. Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -49,7 +50,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Formation fixe en PM',
             'description' => 'Formation pour l\'après-midi seulement. Doit être approuvée par coordo à l\'enseignement',
             'code' => 'FOR',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -119,7 +120,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Rayonnement fixe jour',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Journée complète (doit être acceptée au préàlable)',
             'code' => 'RAY',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -129,7 +130,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Rayonnement fixe en AM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Matinée seulement (doit être acceptée au préàlable)',
             'code' => 'RAYAM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -139,7 +140,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Rayonnement fixe en PM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Après-midi seulement (doit être acceptée au préàlable)',
             'code' => 'RAYPM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -149,7 +150,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Libération fixe jour',
             'description' => 'Aimerait une libération pour une date déterminée et la journée complète (RPE par exemple)',
             'code' => 'XND',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -159,7 +160,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Libération fixe en AM',
             'description' => 'Aimerait une libération pour une date déterminée et la matinée seulement (comité par exemple)',
             'code' => 'XNDAM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -169,7 +170,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Libération fixe en PM',
             'description' => 'Aimerait une libération pour une date déterminée et l\'après-midi seulement (comité par exemple)',
             'code' => 'XNDPM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -179,7 +180,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Comité de pharmaco réunion midi',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la journée complète (RPE par exemple)',
             'code' => 'CPR',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -189,7 +190,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Comité de pharmaco libération fixe AM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la matinée seulement (comité par exemple)',
             'code' => 'CPAM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -199,7 +200,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Comité de pharmaco libération fixe PM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et l\'après-midi seulement (comité par exemple)',
             'code' => 'CPPM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -209,7 +210,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'PGTM fixe jour',
             'description' => 'Réunion PGTM prévue pour toute la journée',
             'code' => 'PG',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -219,7 +220,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'PGTM fixe en AM',
             'description' => 'Réunion PGTM prévue pour la matinée seulement',
             'code' => 'PGAM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -229,7 +230,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'PGTM fixe en PM',
             'description' => 'Réunion PGTM prévue pour l\'après-midi',
             'code' => 'PGPM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -249,7 +250,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Ariane fixe jour',
             'description' => 'Demande de temps Ariane pour une journée complète',
             'code' => 'AR',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -259,7 +260,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Ariane fixe en AM',
             'description' => 'Demande de temps Ariane pour une matinée seulement',
             'code' => 'ARAM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -269,7 +270,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Ariane fixe en PM',
             'description' => 'Demande de temps Ariane pour une après-midi seulement',
             'code' => 'ARPM',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -279,7 +280,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'URE fixe jour',
             'description' => 'Demande de libération à date fixe pour projet URE déjà approuvé',
             'code' => 'URE',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -289,7 +290,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Visite grossesse en AM',
             'description' => 'Visite de grossesse pour une matinée',
             'code' => 'VG',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -299,7 +300,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Visite grossesse en PM',
             'description' => 'Visite de grossesse pour une après-midi',
             'code' => 'VG',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -309,27 +310,30 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Travailler de jour (avant 16h30)',
             'description' => 'Doit terminer max à 16h30. Pas de SCAS, ni de Coumadin, ni ON3',
             'code' => 'J',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
-        ]);
+        ])->criteria()
+            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class]));
+
 
         $this->create([
             'name' => 'Travailler de jour (avant 17h)',
             'description' => 'Doit terminer max à 17h. Pas de Coumadin.',
             'code' => 'JS',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
-        ]);
+        ])->criteria()
+            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class]));
 
         $this->create([
             'name' => 'Travailler de jour (avant 17h30)',
             'description' => 'Doit terminer max à 17h30. Coumadin et SCAS OK.',
             'code' => 'JSA',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
@@ -419,7 +423,7 @@ class ConstraintTypeSeeder extends Seeder
             'name' => 'Travailler de soir (14 seul)',
             'description' => '',
             'code' => '14',
-            'is_work' => 1,
+            'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 0
@@ -441,7 +445,7 @@ class ConstraintTypeSeeder extends Seeder
             'code' => 'JP',
             'is_work' => 1,
             'is_single_day' => 1,
-            'is_group_constraint' => 0,
+            'is_group_constraint' => 1,
             'is_day_in_schedule' => 1
         ]);
 
@@ -451,7 +455,7 @@ class ConstraintTypeSeeder extends Seeder
             'code' => 'S+',
             'is_work' => 1,
             'is_single_day' => 1,
-            'is_group_constraint' => 0,
+            'is_group_constraint' => 1,
             'is_day_in_schedule' => 1
         ]);
 
@@ -482,6 +486,81 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Libération selon dispo (jour complet)',
+            'description' => '',
+            'code' => 'X',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Travailler de soir (12 ou 14)',
+            'description' => '',
+            'code' => '1214',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'Demande de secteur fixe jour',
+            'description' => '',
+            'code' => 'SEC',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ])->criteria()
+            ->attach([
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+            ]);
+
+        $this->create([
+            'name' => 'Demande de secteur fixe en am',
+            'description' => '',
+            'code' => 'SEC',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ])->criteria()
+            ->attach([
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+            ]);
+
+        $this->create([
+            'name' => 'Demande de secteur fixe en pm',
+            'description' => '',
+            'code' => 'SEC',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ])->criteria()
+            ->attach([
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+            ]);
+
+        $this->create([
+            'name' => 'Vacances perlées sans date précise',
+            'description' => '',
+            'code' => 'V',
+            'is_work' => 0,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
             'is_day_in_schedule' => 1
         ]);
     }

@@ -105,7 +105,13 @@ class ImportCsvCommand extends Command
             118 => 42,
             121 => 43,
             138 => 45,
-            77 => 14
+            77 => 14,
+            82 => 47,
+            71 => 48,
+            55 => 49,
+            56 => 50,
+            57 => 51,
+            117 => 52
         ];
 
     }
@@ -128,18 +134,26 @@ class ImportCsvCommand extends Command
                     $row++; continue;
                 }
 
-                $typeId = $data[14];
+                $typeId = $data[15];
 
                 if(array_key_exists($typeId, $this->constraintsIds)) {
+                    $weight = ($data[6] === "TRUE") ? 1 : (($data[6] == "FALSE") ? 0 : $data[6]);
+
+                    // On doit regarder dans la variable "day" ou "day1"...
+                    $day = ($data[12] !== "") ? $data[12] : ($data[13] !== "") ? $data[13] : null;
+
                     $constraint = [
                         'user_id' => $this->userIds[$data[0]],
                         'start_datetime' => $data[4],
                         'end_datetime' => $data[5],
                         'constraint_type_id' => $this->constraintsIds[$typeId],
-                        'weight' => $data[6],
+                        'weight' => $weight,
                         'status' => $data[8],
                         'comment' => $data[7],
                         'validated_by' => 1,
+                        'number_of_occurrences' => ($data[9] !== "") ? $data[9] : null,
+                        'day' => $day,
+                        'disposition' => ($data[10] !== "") ? $data[10] : null,
                         'created_at' => now(),
                         'updated_at' => now()
                     ];

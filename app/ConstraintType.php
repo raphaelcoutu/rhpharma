@@ -17,6 +17,11 @@ class ConstraintType extends Model
         'branch_id'
     ];
 
+    public function criteria()
+    {
+        return $this->belongsToMany(Criterion::class);
+    }
+
     public function scopeOwnBranch($query)
     {
         return $query->where('branch_id', \Auth::user()->branch->id);

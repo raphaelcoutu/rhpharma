@@ -24,10 +24,8 @@ class CreateConstraintsTable extends Migration
             $table->integer('status');
             $table->unsignedInteger('validated_by')->nullable();
             $table->integer('number_of_occurrences')->nullable();
-//            $table->integer('disposition');
-//            $table->boolean('is_day_of_week');
-//            $table->integer('day');
-//            $table->integer('day1');
+            $table->integer('day')->nullable();
+            $table->integer('disposition')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
