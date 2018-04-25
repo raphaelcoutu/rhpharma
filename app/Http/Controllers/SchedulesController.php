@@ -81,7 +81,7 @@ class SchedulesController extends Controller
     {
         $this->authorize('write', Schedule::class);
 
-        $schedule = Schedule::findOrFail($id);
+        $schedule = Schedule::with('conflicts.department')->findOrFail($id);
 
         $constraints_count = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
 

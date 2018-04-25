@@ -10,6 +10,11 @@ class Schedule extends Model
 
     protected $dates = ['start_date', 'end_date', 'limit_date', 'limit_date_weekends'];
 
+    public function conflicts()
+    {
+        return $this->hasMany(Conflict::class);
+    }
+
     public function scopeOrderedDesc($query)
     {
         return $query->orderBy('end_date', 'desc')->where('branch_id', \Auth::user()->branch->id);

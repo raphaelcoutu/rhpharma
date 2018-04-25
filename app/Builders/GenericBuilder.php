@@ -4,6 +4,7 @@ namespace App\Builders;
 
 
 use App\AssignedShift;
+use App\Conflict;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
@@ -18,6 +19,8 @@ class GenericBuilder extends BaseBuilder
         parent::__construct($precalculation, $departmentId);
 
         $start = microtime(true);
+
+        $this->clean();
 
         $weeksCount = $precalculation->getWeeksCount();
 
@@ -42,11 +45,13 @@ class GenericBuilder extends BaseBuilder
 
         $this->assignThreeDaysUsers();
 
+        Analyzer::conflicts($precalculation->schedule, $departmentId);
+
         Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo'
             . ' (' . round(microtime(true) - $start, 2) . 's)');
 
         // Comment For Debug Only:
-        //$this->combinaisons = [];
+        $this->combinaisons = [];
     }
 
     private function selectSequence()
@@ -257,5 +262,14 @@ class GenericBuilder extends BaseBuilder
     private function assignThreeDaysUsers()
     {
         //
+    }
+
+    private function clean()
+    {
+        // On retire les conflits associés au département
+        Conflict::where('department_id', $this->departmentId)
+            ->where('date', '>=', $this->precalculation->schedule->start_date)
+            ->where('date', '<=', $this->precalculation->schedule->end_date)
+            ->delete();
     }
 }

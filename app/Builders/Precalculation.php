@@ -30,19 +30,22 @@ class Precalculation
     public function __construct($scheduleId)
     {
         // Récupérer la Schedule
-        $this->schedule = Schedule::select('start_date', 'end_date')->where('branch_id', 1)->findOrFail($scheduleId);
+        $this->schedule = Schedule::select('id', 'start_date', 'end_date')->where('branch_id', 1)->findOrFail($scheduleId);
 
-        $this->cleanUpAssignedShifts();
+        $this->clean();
 
         //Récupérer les chiffres déjà assignés pour l'horaire en cours
         $this->assignedShifts = AssignedShift::where('date', '>=', $this->schedule->start_date)->where('date', '<=', $this->schedule->end_date)->get();
 
         // Récupérer les pharmaciens avec constraintes associées et les shifts déjà assignés (fériés, fin de semaines, etc..)
         $this->pharmaciens = User::with(['constraints' => function ($query) {
-            $query->InDateInterval($this->schedule->start_date, $this->schedule->end_date)->where('status', 1);
+            $query->InDateInterval($this->schedule->start_date, $this->schedule->end_date)
+                ->where('status', 1);
         }, 'assignedShifts' => function ($query) {
             $query->InDateInterval($this->schedule->start_date, $this->schedule->end_date);
-        }, 'assignedShifts.shift.shiftType', 'departments'])->select('id', 'firstname', 'lastname', 'workdays_per_week', 'is_manual')->where('is_active', 1)->where('branch_id', 1)->get();
+        }, 'constraints.constraintType', 'assignedShifts.shift.shiftType', 'departments'])
+            ->select('id', 'firstname', 'lastname', 'workdays_per_week', 'is_manual')
+            ->where('is_active', 1)->where('branch_id', 1)->get();
 
         $this->departments = Department::with(['users' => function ($query) {
             $query->where('is_active', 1)->where('branch_id', 1)->get();
@@ -117,10 +120,19 @@ class Precalculation
         }
 
         // Détection si le pharmacien a une contrainte au même intervalle de temps
+        // Et il faut que ce soit une contrainte fixe
         foreach($constraints as $constraint) {
             if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                 $startDateTime, $endDateTime)) {
-                return false;
+                //Si la contrainte est selon dispo, on ignore
+                if($constraint->constraintType->is_group_constraint == 1) continue;
+
+                // On regarde si la contrainte contient un jour en particulier
+
+                // TempFix : Si la contrainte est "Doit travailler de jour" on l'ignore
+                if(!in_array($constraint->constraint_type_id, [29,30])) {
+                    return false;
+                }
             }
         }
 
@@ -298,9 +310,9 @@ class Precalculation
         return $this->allocatedWeeks;
     }
 
-    private function cleanUpAssignedShifts()
+    private function clean()
     {
-        // On fait le ménage
+        // On retire les shifts déjà générés pour mieux générer à nouveua
         AssignedShift::where('date', '>=', $this->schedule->start_date)
             ->where('date', '<=', $this->schedule->end_date)
             ->where('is_generated', 1)
