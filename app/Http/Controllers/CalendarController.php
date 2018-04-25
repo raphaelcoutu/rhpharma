@@ -12,12 +12,44 @@ class CalendarController extends Controller
 {
     public function show($scheduleId)
     {
+        list($schedule, $pharmaciens, $shifts) = $this->query($scheduleId);
+
+        return view('calendar.show', [
+            'schedule' => $schedule,
+            'pharmaciens' => $pharmaciens,
+            'shifts' => $shifts
+        ]);
+    }
+
+    public function showByDepartment($scheduleId, $departmentId)
+    {
+
+        list($schedule, $pharmaciens, $shifts) = $this->query($scheduleId, $departmentId);
+
+        return view('calendar.show', [
+            'schedule' => $schedule,
+            'pharmaciens' => $pharmaciens,
+            'shifts' => $shifts
+        ]);
+    }
+
+    private function query($scheduleId, $departmentId = null) {
         $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::ownBranch()->where('is_active', 1)->orderBy('lastname')->get();
+
+        $pharmaciens = User::ownBranch()->where('is_active', 1);
+        if($departmentId) {
+            $pharmaciens = $pharmaciens->whereHas('departments', function ($query) use ($departmentId) {
+                $query->where('department_id', $departmentId);
+            });
+        }
+        $pharmaciens = $pharmaciens->orderBy('lastname')->get();
+
+
         $shifts = $this->createShifts($schedule, $pharmaciens);
         $assignedShifts = AssignedShift::with('shift')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
-        $constraints = Constraint::with('constraintType')
-            ->InDateInterval($schedule->start_date, $schedule->end_date)
+        $constraints = Constraint::whereHas('constraintType', function ($query) {
+            $query->where('is_group_constraint', 0);
+        })->InDateInterval($schedule->start_date, $schedule->end_date)
             ->where('status', 1)
             ->get();
 
@@ -45,44 +77,22 @@ class CalendarController extends Controller
             }
 
             for ($i = 0; $i < $constraintDuration; $i++) {
-                $shifts[$constraint->user_id][$diffToScheduleStart+$i][] = $constraint;
+                if($constraint->day !== NULL && $i % 7 !== $constraint->day) {
+                    $shifts[$constraint->user_id][$diffToScheduleStart+$i][] = null;
+                } else {
+                    $shifts[$constraint->user_id][$diffToScheduleStart+$i][] = $constraint;
+                }
             }
         });
 
-        return view('calendar.show', [
-            'schedule' => $schedule,
-            'pharmaciens' => $pharmaciens,
-            'shifts' => $shifts
-        ]);
-    }
-
-    public function showByDepartment($scheduleId, $departmentId)
-    {
-        $schedule = Schedule::findOrFail($scheduleId);
-        $pharmaciens = User::ownBranch()->where('is_active', 1)->whereHas('departments', function ($query) use ($departmentId) {
-            $query->where('department_id', $departmentId);
-        })->get();
-        $shifts = $this->createShifts($schedule, $pharmaciens);
-
-        $assignedShifts = AssignedShift::with('shift')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
-
-        $assignedShifts->each(function ($assignedShift) use (&$shifts, $schedule) {
-            $diff = $assignedShift->date->diffInDays($schedule->start_date);
-            $shifts[$assignedShift->user_id][$diff][] = $assignedShift;
-        });
-
-        return view('calendar.show', [
-            'schedule' => $schedule,
-            'pharmaciens' => $pharmaciens,
-            'shifts' => $shifts
-        ]);
+        return [$schedule, $pharmaciens, $shifts];
     }
 
     private function createShifts($schedule, $pharmaciens) {
         $shifts = [];
         $pharmaciens->each(function ($pharmacien) use ($schedule, &$shifts) {
             $shifts[$pharmacien->id] = [];
-            for ($i = 0; $i <= $schedule->duration_in_weeks * 7; $i++) {
+            for ($i = 0; $i < $schedule->duration_in_weeks * 7; $i++) {
                 $shifts[$pharmacien->id][$i] = null;
             }
         });
