@@ -21,7 +21,6 @@ class BuildClinicalDepartments implements ShouldQueue
 
     private $precalculation;
     private $start;
-    private static $timer = false;
 
     /**
      * Create a new job instance.
@@ -31,6 +30,11 @@ class BuildClinicalDepartments implements ShouldQueue
     public function __construct(UpdateBuildStatus $event)
     {
         $this->event = $event;
+        $this->start = microtime(true);
+
+        Log::debug('Precalculation - start');
+        $this->precalculation = new Precalculation($event->scheduleId);
+        Log::debug('Precalculation - end');
     }
 
     /**
@@ -57,11 +61,6 @@ class BuildClinicalDepartments implements ShouldQueue
         // - Passer chacune des contraintes et modifier la matrice
 
         Log::info('BuildClinicalDepartments Job: STARTED');
-        $this->start = microtime(true);
-
-        Log::debug('Precalculation - start');
-        $this->precalculation = new Precalculation($this->event->scheduleId);
-        Log::debug('Precalculation - end');
 
         $departments = collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
@@ -69,7 +68,7 @@ class BuildClinicalDepartments implements ShouldQueue
                 new GenericBuilder($this->precalculation, $departmentId);
             });
 
-        if($departments->count() == 0) {
+        if ($departments->count() == 0) {
             $message = 'No departments found in settings.';
             Log::warning('BuildClinicalDepartments Job: ' . $message);
             Log::info('BuildClinicalDepartments Job: STOPPED');
@@ -80,7 +79,6 @@ class BuildClinicalDepartments implements ShouldQueue
             Log::info('BuildClinicalDepartments Job: FINISHED - ' . $executionTime . ' sec');
             event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
         }
-
 
     }
 }
