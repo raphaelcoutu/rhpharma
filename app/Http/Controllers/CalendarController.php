@@ -47,7 +47,7 @@ class CalendarController extends Controller
 
         $shifts = $this->createShifts($schedule, $pharmaciens);
         $assignedShifts = AssignedShift::with('shift')->InDateInterval($schedule->start_date, $schedule->end_date)->get();
-        $constraints = Constraint::whereHas('constraintType', function ($query) {
+        $constraints = Constraint::with('constraintType')->whereHas('constraintType', function ($query) {
             $query->where('is_group_constraint', 0);
         })->InDateInterval($schedule->start_date, $schedule->end_date)
             ->where('status', 1)
@@ -61,12 +61,12 @@ class CalendarController extends Controller
         $constraints->each(function ($constraint) use (&$shifts, $schedule) {
             // On met l'heure de fin de la contrainte à 23h59 pour être certain que tous les jours soient affichés
             // Exemple : Contrainte de moins de 24h mais débutant le soir la veille
-            $constraintDuration = $constraint->end_datetime->copy()->setTime(23,59)->diffInDays($constraint->start_datetime) + 1;
+            $constraintDuration = $constraint->end_datetime->copy()->setTime(23,59)->diffInDays($constraint->start_datetime->copy()->setTime(0,0)) + 1;
 
             // On ajuste si la contrainte débutait avant le début de l'horaire
             if($constraint->start_datetime->lt($schedule->start_date)) {
                 $diffToScheduleStart = 0;
-                $constraintDuration -= $schedule->start_date->diffInDays($constraint->start_datetime) + 1;
+                $constraintDuration -= $schedule->start_date->diffInDays($constraint->start_datetime->setTime(0,0));
             } else {
                 $diffToScheduleStart = $constraint->start_datetime->diffInDays($schedule->start_date);
             }
