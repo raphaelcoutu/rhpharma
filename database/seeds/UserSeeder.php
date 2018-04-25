@@ -88,7 +88,7 @@ class UserSeeder extends Seeder
         $ameunier = $this->create([
             'firstname' => 'Annie',
             'lastname' => 'Meunier',
-            'workdays_per_week' => 5
+            'workdays_per_week' => 3
         ]);
         $ameunier->departments()->attach([1,11]);
 
@@ -143,7 +143,7 @@ class UserSeeder extends Seeder
             'lastname' => 'Dubuc',
             'email' => 'edubuc@RHPharma.com',
         ]);
-        $edubuc->departments()->attach([1,7]);
+        $edubuc->departments()->attach([1,4,5,6,7]);
 
         $edufort = $this->create([
             'firstname' => 'Émilie',
@@ -163,7 +163,7 @@ class UserSeeder extends Seeder
             'lastname' => 'Dorais',
             'email' => 'gdorais@RHPharma.com',
         ]);
-        $gdorais->departments()->attach([1,10,16,17]);
+        $gdorais->departments()->attach([1,3,10]);
 
         $gduplain = $this->create([
             'firstname' => 'Geneviève',
@@ -197,6 +197,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Jodianne',
             'lastname' => 'Couture',
             'email' => 'jcouture@RHPharma.com',
+            'weekdays_per_week' => 3
         ]);
         $jcouture->departments()->attach([1,10]);
 
@@ -204,6 +205,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Joëlle',
             'lastname' => 'Desbiens',
             'email' => 'jdesbiens@RHPharma.com',
+            'weekdays_per_week' => 3
         ]);
         $jdesbiens->departments()->attach([16,17]);
 
@@ -225,6 +227,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Josée',
             'lastname' => 'Proulx',
             'email' => 'jproulx@RHPharma.com',
+            'weekdays_per_week' => 3
         ]);
 
         $jleblond = $this->create([
@@ -239,12 +242,12 @@ class UserSeeder extends Seeder
             'lastname' => 'Quenneville',
             'email' => 'jquenneville@RHPharma.com',
         ]);
+        $jquenneville->departments()->attach([9,11]);
 
         $llegeleux = $this->create([
             'firstname' => 'Lorraine',
             'lastname' => 'Legeleux',
             'email' => 'llegeleux@RHPharma.com',
-            'is_active' => 1
         ]);
         $llegeleux->departments()->attach([8]);
 
@@ -259,7 +262,6 @@ class UserSeeder extends Seeder
             'firstname' => 'Marie-France',
             'lastname' => 'Beauchesne',
             'email' => 'mfbeauchesne@RHPharma.com',
-            'is_active' => 1,
             'is_manual' => 1
         ]);
         $mfbeauchesne->departments()->attach([2]);
@@ -331,13 +333,12 @@ class UserSeeder extends Seeder
             'lastname' => 'Coutu',
             'email' => 'rcoutu@RHPharma.com',
         ]);
-        $rcoutu->departments()->attach([2]);
+        $rcoutu->departments()->attach([2,3]);
 
         $sbergeron = $this->create([
             'firstname' => 'Sabrina',
             'lastname' => 'Bergeron-Wolff',
             'email' => 'sbergeron@RHPharma.com',
-            'is_active' => 1
         ]);
         $sbergeron->departments()->attach([7]);
 
@@ -387,7 +388,6 @@ class UserSeeder extends Seeder
             'firstname' => 'Vicky',
             'lastname' => 'Lord',
             'email' => 'vlord@RHPharma.com',
-            'workdays_per_week' => 2
         ]);
         $vlord->departments()->attach([1,4,5,6,12]);
 
