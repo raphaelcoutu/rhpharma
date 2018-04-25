@@ -9,9 +9,28 @@
                     <p>Dates: {{ $schedule->start_date_string }} - {{ $schedule->end_date_string }} ({{ $schedule->duration_in_weeks }} semaines)</p>
 
                     <div class="pull-right">
-                        <a href="{{ route('calendar.show', ['id' => $schedule->id]) }}" class="btn btn-default">
-                            <i class="fa fa-eye"></i> Calendrier
-                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Calendrier <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ route('calendar.show', $schedule->id) }}">Complète</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 12]) }}">C.I.M.</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 1]) }}">Coumadin</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 10]) }}">Insuffisance cardiaque</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 2]) }}">Médecine interne</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 14]) }}">Mère enfant</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 3]) }}">Oncologie</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 15]) }}">Pédiatrie</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 9]) }}">Psychiatrie</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 8]) }}">SIPA</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 4]) }}">Soins intensifs</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 11]) }}">Soins palliatifs</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 16]) }}">Urgence</a></li>
+                                <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 7]) }}">VIH</a></li>
+                            </ul>
+                        </div>
                         <a href="{{ route('export', $schedule->id) }}" class="btn btn-success">Exportation Excel</a>
                     </div>
 
@@ -21,24 +40,10 @@
                             :constraints-count="{{ $constraints_count }}"
                     ></rhpharma-schedule-processus>
 
-                    <h3>Conflits</h3>
-
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Étape du processus</th>
-                            <th>Sévérité</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center">
-                            <td colspan="4">Aucun conflit pour l'instant</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+                    <rhpharma-schedule-output
+                            :schedule="{{ $schedule }}"
+                            :conflicts="{{ $schedule->conflicts }}"
+                    ></rhpharma-schedule-output>
                 </div>
             </div>
         </div>

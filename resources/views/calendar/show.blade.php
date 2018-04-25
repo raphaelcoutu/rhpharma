@@ -16,15 +16,25 @@
                 <ul class="dropdown-menu">
                     <li><a href="{{ route('calendar.show', $schedule->id) }}">Complète</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 1]) }}">Antico</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 12]) }}">C.I.M.</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 1]) }}">Coumadin</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 10]) }}">Insuffisance cardiaque</a></li>
                     <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 2]) }}">Médecine interne</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 14]) }}">Mère enfant</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 3]) }}">Oncologie</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 15]) }}">Pédiatrie</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 9]) }}">Psychiatrie</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 8]) }}">SIPA</a></li>
                     <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 4]) }}">Soins intensifs</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 11]) }}">Soins palliatifs</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 16]) }}">Urgence</a></li>
+                    <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 7]) }}">VIH</a></li>
                 </ul>
             </div>
         </div>
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
                         <th>Pharmacien</th>
@@ -37,19 +47,27 @@
                     @foreach($pharmaciens as $pharmacien)
                         <tr>
                             <td class="text-nowrap">{{$pharmacien->id}}-{{ $pharmacien->fullname }}</td>
-                            @foreach($shifts[$pharmacien->id] as $day)
+                            @foreach($shifts[$pharmacien->id] as $index => $day)
                                 @if($day)
+                                    @if($index % 7 == 0 || $index % 7 == 6)
+                                    <td class="alert-info">
+                                    @else
                                     <td>
+                                    @endif
                                         @foreach($day as $innerDay)
                                             @if($innerDay instanceof \App\AssignedShift)
                                                 {{ $innerDay->shift->code }}
                                             @elseif ($innerDay instanceof \App\Constraint)
-                                                {{ $innerDay->constraintType->code }}
+                                                <span class="text-danger">{{ $innerDay->constraintType->code }}</span>
                                             @endif
                                         @endforeach
                                     </td>
                                 @else
-                                    <td></td>
+                                    @if($index % 7 == 0 || $index % 7 == 6)
+                                        <td class="alert-info"></td>
+                                    @else
+                                        <td></td>
+                                    @endif
                                 @endif
                             @endforeach
                         </tr>
