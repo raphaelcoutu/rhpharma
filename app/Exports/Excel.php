@@ -35,36 +35,36 @@ class Excel
             $nbCalendars = $duration / 3;
             $divideBy = 3;
         } else {
-            return new \Exception('Nombre de semaines à l\'horaire non divisible par 3 ou 4.');
+            if($duration < 3) {
+                $nbCalendars = 1;
+            } else {
+                throw \Exception('Nombre de semaines à l\'horaire non divisible par 3 ou 4.');
+            }
         }
 
-        for ($i = 0; $i < $nbCalendars; $i++) {
-            $start = $this->schedule->start_date->addDays($i * $divideBy * 7);
-            $end = $this->schedule->start_date->addDays(($i+1) * $divideBy * 7 - 1);
+        if($nbCalendars > 1) {
+            for ($i = 0; $i < $nbCalendars; $i++) {
+                $start = $this->schedule->start_date->addDays($i * $divideBy * 7);
+                $end = $this->schedule->start_date->addDays(($i+1) * $divideBy * 7 - 1);
+
+                $calendar = new Calendar($start, $end, $this->users);
+
+                $this->calendars[] = $calendar;
+            }
+        } else {
+            $start = $this->schedule->start_date;
+            $end = $this->schedule->end_date;
 
             $calendar = new Calendar($start, $end, $this->users);
-            $calendar->create();
 
             $this->calendars[] = $calendar;
         }
+
     }
 
     public function download(string $fileName = 'Horaire')
     {
-        if (count($this->calendars) > 1) {
-            return $this->zip($fileName);
-        } else {
-            $timestamp = date('Ymd-His');
-            $writer = new Xlsx($this->calendars[0]->getSpreadSheet());
-            $tmpFile = sys_get_temp_dir() . 'laravel-calendar_' . $timestamp . '.xlsx';
-
-            $writer->save($tmpFile);
-
-            $this->calendars[0]->clear();
-
-            return response()->download($tmpFile, $fileName . '_' . $timestamp . '.xlsx')
-                ->deleteFileAfterSend(true);
-        }
+        return $this->zip($fileName);
     }
 
     public function zip(string $fileName)
@@ -77,6 +77,7 @@ class Excel
             $timestamp = date('Ymd-His');
             $tmpFiles = [];
 
+            // Création des différents horaires en xlsx
             foreach ($this->calendars as $index => $calendar) {
                 $writer = new Xlsx($calendar->getSpreadsheet());
                 $tmpFiles[$index] = sys_get_temp_dir() . 'laravel-calendar'. $index .'_' . $timestamp . '.xlsx';
@@ -87,6 +88,24 @@ class Excel
 
                 $calendar->clear();
             }
+
+            // Ajout du fichier des libérations
+            $liberations = new Liberation($this->schedule, $this->users);
+            $writer = new Xlsx($liberations->getSpreadsheet());
+
+            $tmpFiles['liberations'] = sys_get_temp_dir() . 'liberations_' . $timestamp . '.xlsx';
+            $writer->save($tmpFiles['liberations']);
+            $zip->addFile($tmpFiles['liberations'], 'Liberations_' . $timestamp . '.xlsx');
+            $liberations->clear();
+
+            // Ajout du fichier des conflits
+            $conflicts = new Conflict($this->schedule);
+            $writer = new Xlsx($conflicts->getSpreadsheet());
+
+            $tmpFiles['conflits'] = sys_get_temp_dir() . 'conflits_' . $timestamp . '.xlsx';
+            $writer->save($tmpFiles['conflits']);
+            $zip->addFile($tmpFiles['conflits'], 'Conflits_' . $timestamp . '.xlsx');
+            $conflicts->clear();
 
             $zip->close();
 

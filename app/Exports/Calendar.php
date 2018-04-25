@@ -23,17 +23,17 @@ class Calendar
         $this->startDate = $startDate;
         $this->endDate = $endDate->setTime(23,59,59);
         $this->users = $users;
+
+        $this->create();
     }
 
-    public function create()
+    private function create()
     {
         $title = 'Horaire';
         $this->spreadsheet->getActiveSheet()->setTitle($title);
         $this->addDefaultStyle();
         $this->addHeading();
         $this->addUsers();
-
-        return $this;
     }
 
     private function addDefaultStyle()
@@ -105,6 +105,9 @@ class Calendar
             }
 
             foreach($user->constraints as $constraint) {
+                // Ne pas afficher les constraintes selon dispo sur le calendrier
+                if($constraint->constraintType->is_group_constraint == 1) continue;
+
                 if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                     $this->startDate, $this->endDate)) {
 
@@ -121,18 +124,21 @@ class Calendar
                     $constraintDuration = $constraintAdjEndDate->diffInDays($constraintAdjStartDate) + 1;
 
                     for ($i = 0; $i < $constraintDuration; $i++) {
-                        $col = $constraintAdjStartDate->copy()->addDays($i)->diffInDays($this->startDate) + $colStart;
+                        $iterateDay = $constraintAdjStartDate->copy()->addDays($i);
+                        $col = $iterateDay->diffInDays($this->startDate) + $colStart;
 
                         $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
 
-                        $value = $cell->getValue();
-                        $text = $constraint->constraintType->code;
+                        $value = ($cell->getValue() !== NULL) ? [$cell->getValue()] : [];
+                        $value[] = $constraint->constraintType->code;
 
-                        // Si la case n'est pas vide, on ajoute un tiret pour séparer les contraintes
-                        if($value != null) {
-                            $cell->setValue($value.'-'.$text);
-                        } else {
-                            $cell->setValue($text);
+                        // Si la contrainte contient un jour ET que celui-ci n'est pas celui de l'itération => on l'enlève
+                        if ($constraint->day !== NULL && $iterateDay->dayOfWeek !== $constraint->day) {
+                            array_pop($value);
+                        }
+
+                        if (!empty($value)) {
+                            $cell->setValue(implode("-", $value));
                         }
                     }
                 }
