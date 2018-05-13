@@ -33,13 +33,14 @@ class CalendarController extends Controller
         ]);
     }
 
-    private function query($scheduleId, $departmentId = null) {
+    private function query($scheduleId, $departmentIds = null) {
         $schedule = Schedule::findOrFail($scheduleId);
 
         $pharmaciens = User::ownBranch()->where('is_active', 1);
-        if($departmentId) {
-            $pharmaciens = $pharmaciens->whereHas('departments', function ($query) use ($departmentId) {
-                $query->where('department_id', $departmentId);
+        if($departmentIds) {
+            $departmentIds = explode(",", $departmentIds);
+            $pharmaciens = $pharmaciens->whereHas('departments', function ($query) use ($departmentIds) {
+                $query->whereIn('department_id', $departmentIds);
             });
         }
         $pharmaciens = $pharmaciens->orderBy('lastname')->get();
