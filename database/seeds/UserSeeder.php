@@ -66,7 +66,6 @@ class UserSeeder extends Seeder
             'lastname' => 'Longpré',
             'email' => 'aalongpre@RHPharma.com',
         ]);
-        $aalongpre->departments()->attach([1,8,15]);
 
         $acoulombe = $this->create([
             'firstname' => 'Alexandrine',
@@ -75,7 +74,6 @@ class UserSeeder extends Seeder
             'workdays_per_week' => 3,
             'is_active' => 0,
         ]);
-        $acoulombe->departments()->attach([1,9,12]);
 
         $adubuc = $this->create([
             'firstname' => 'Annie',
@@ -83,21 +81,18 @@ class UserSeeder extends Seeder
             'email' => 'adubuc@RHPharma.com',
             'workdays_per_week' => 3
         ]);
-        $adubuc->departments()->attach([1,4,5,6]);
 
         $ameunier = $this->create([
             'firstname' => 'Annie',
             'lastname' => 'Meunier',
             'workdays_per_week' => 3
         ]);
-        $ameunier->departments()->attach([1,11]);
 
         $bbeloin = $this->create([
             'firstname' => 'Bianca',
             'lastname' => 'Beloin-Jubinville',
             'is_active' => 0
         ]);
-        $bbeloin->departments()->attach([2,8]);
 
         $bboilard = $this->create([
             'firstname' => 'Brigitte',
@@ -109,21 +104,18 @@ class UserSeeder extends Seeder
             'lastname' => 'Desaulniers',
             'workdays_per_week' => 3
         ]);
-        $cdesaulniers->departments()->attach([14,15]);
 
         $cleclair = $this->create([
             'firstname' => 'Christian',
             'lastname' => 'Leclair',
             'email' => 'cleclair@RHPharma.com',
         ]);
-        $cleclair->departments()->attach([1,2,4,5,6]);
 
         $cpelletier = $this->create([
             'firstname' => 'Claudia',
-            'lastname' => 'Pelletier',
+            'lastname' => 'Pelletier-Mayette',
             'email' => 'cpelletier@RHPharma.com',
         ]);
-        $cpelletier->departments()->attach([14]);
 
         $eboisvert = $this->create([
             'firstname' => 'Émilie',
@@ -136,21 +128,18 @@ class UserSeeder extends Seeder
             'lastname' => 'Bouchard',
             'email' => 'ebouchard@RHPharma.com',
         ]);
-        $ebouchard->departments()->attach([2,4,5,6]);
 
         $edubuc = $this->create([
             'firstname' => 'Émilie',
             'lastname' => 'Dubuc',
             'email' => 'edubuc@RHPharma.com',
         ]);
-        $edubuc->departments()->attach([1,4,5,6,7]);
 
         $edufort = $this->create([
             'firstname' => 'Émilie',
             'lastname' => 'Dufort-Rouleau',
             'email' => 'edufort@RHPharma.com',
         ]);
-        $edufort->departments()->attach([1,11]);
 
         $gberard = $this->create([
             'firstname' => 'Ghislain',
@@ -163,21 +152,18 @@ class UserSeeder extends Seeder
             'lastname' => 'Dorais',
             'email' => 'gdorais@RHPharma.com',
         ]);
-        $gdorais->departments()->attach([1,3,10]);
 
         $gduplain = $this->create([
             'firstname' => 'Geneviève',
             'lastname' => 'Duplain-Cyr',
             'email' => 'gduplain@RHPharma.com',
         ]);
-        $gduplain->departments()->attach([7]);
 
         $gferland = $this->create([
             'firstname' => 'Gabrielle',
             'lastname' => 'Ferland',
             'email' => 'gferland@RHPharma.com',
         ]);
-        $gferland->departments()->attach([15]);
 
         $glanglois = $this->create([
             'firstname' => 'Geneviève',
@@ -191,7 +177,6 @@ class UserSeeder extends Seeder
             'lastname' => 'Blain',
             'email' => 'hblain@RHPharma.com',
         ]);
-        $hblain->departments()->attach([1,4,5,6]);
 
         $jcouture = $this->create([
             'firstname' => 'Jodianne',
@@ -199,7 +184,6 @@ class UserSeeder extends Seeder
             'email' => 'jcouture@RHPharma.com',
             'weekdays_per_week' => 3
         ]);
-        $jcouture->departments()->attach([1,10]);
 
         $jdesbiens = $this->create([
             'firstname' => 'Joëlle',
@@ -207,21 +191,18 @@ class UserSeeder extends Seeder
             'email' => 'jdesbiens@RHPharma.com',
             'weekdays_per_week' => 3
         ]);
-        $jdesbiens->departments()->attach([16,17]);
 
         $jdion = $this->create([
             'firstname' => 'Jocelyn',
             'lastname' => 'Dion',
             'email' => 'jdion@RHPharma.com',
         ]);
-        $jdion->departments()->attach([1,4,5,6,8]);
 
         $jduchesneau = $this->create([
             'firstname' => 'Josée',
             'lastname' => 'Duchesneau',
             'email' => 'jduchesneau@RHPharma.com',
         ]);
-        $jduchesneau->departments()->attach([1,9]);
 
         $jproulx = $this->create([
             'firstname' => 'Josée',
@@ -235,28 +216,24 @@ class UserSeeder extends Seeder
             'lastname' => 'Leblond',
             'email' => 'jleblond@RHPharma.com',
         ]);
-        $jleblond->departments()->attach([1]);
 
         $jquenneville = $this->create([
             'firstname' => 'Julie',
             'lastname' => 'Quenneville',
             'email' => 'jquenneville@RHPharma.com',
         ]);
-        $jquenneville->departments()->attach([9,11]);
 
         $llegeleux = $this->create([
             'firstname' => 'Lorraine',
             'lastname' => 'Legeleux',
             'email' => 'llegeleux@RHPharma.com',
         ]);
-        $llegeleux->departments()->attach([8]);
 
         $mberteau = $this->create([
             'firstname' => 'Mathieu',
             'lastname' => 'Berteau',
             'email' => 'mberteau@RHPharma.com',
         ]);
-        $mberteau->departments()->attach([2,11]);
 
         $mfbeauchesne = $this->create([
             'firstname' => 'Marie-France',
@@ -264,35 +241,30 @@ class UserSeeder extends Seeder
             'email' => 'mfbeauchesne@RHPharma.com',
             'is_manual' => 1
         ]);
-        $mfbeauchesne->departments()->attach([2]);
 
         $mgilbert = $this->create([
             'firstname' => 'Mélanie',
             'lastname' => 'Gilbert',
             'email' => 'mgilbert@RHPharma.com',
         ]);
-        $mgilbert->departments()->attach([4,5,6,8]);
 
         $mguay = $this->create([
             'firstname' => 'Marianne',
             'lastname' => 'Guay',
             'email' => 'mguay@RHPharma.com',
         ]);
-        $mguay->departments()->attach([1,9,10]);
 
         $mjlachance = $this->create([
             'firstname' => 'Marie-Josée',
             'lastname' => 'Lachance',
             'email' => 'mjlachance@RHPharma.com',
         ]);
-        $mjlachance->departments()->attach([1,12]);
 
         $mlacerte = $this->create([
             'firstname' => 'Mélanie',
             'lastname' => 'Lacerte',
             'email' => 'mlacerte@RHPharma.com',
         ]);
-        $mlacerte->departments()->attach([4,5,6]);
 
         $mprousseau = $this->create([
             'firstname' => 'Marie-Pierre',
@@ -305,42 +277,36 @@ class UserSeeder extends Seeder
             'lastname' => 'Turgeon',
             'email' => 'mturgeon@RHPharma.com',
         ]);
-        $mturgeon->departments()->attach([4,5,6]);
 
         $ndaviau = $this->create([
             'firstname' => 'Nathalie',
             'lastname' => 'Daviau',
             'email' => 'ndaviau@RHPharma.com',
         ]);
-        $ndaviau->departments()->attach([16,17]);
 
         $ngoettel = $this->create([
             'firstname' => 'Nicolas',
             'lastname' => 'Goettel',
             'email' => 'ngoettel@RHPharma.com',
         ]);
-        $ngoettel->departments()->attach([1,4,5,6,16,17]);
 
         $rbournival = $this->create([
             'firstname' => 'Roxanne',
             'lastname' => 'Bournival',
             'email' => 'rbournival@RHPharma.com',
         ]);
-        $rbournival->departments()->attach([7]);
 
         $rcoutu = $this->create([
             'firstname' => 'Raphaël',
             'lastname' => 'Coutu',
             'email' => 'rcoutu@RHPharma.com',
         ]);
-        $rcoutu->departments()->attach([2,3]);
 
         $sbergeron = $this->create([
             'firstname' => 'Sabrina',
             'lastname' => 'Bergeron-Wolff',
             'email' => 'sbergeron@RHPharma.com',
         ]);
-        $sbergeron->departments()->attach([7]);
 
 
         $scloutier = $this->create([
@@ -348,14 +314,12 @@ class UserSeeder extends Seeder
             'lastname' => 'Cloutier',
             'email' => 'scloutier@RHPharma.com',
         ]);
-        $scloutier->departments()->attach([14]);
 
         $slamontagne = $this->create([
             'firstname' => 'Sophie',
             'lastname' => 'Lamontagne',
             'email' => 'slamontagne@RHPharma.com',
         ]);
-        $slamontagne->departments()->attach([16,17]);
 
         $sletendre = $this->create([
             'firstname' => 'Sara',
@@ -375,21 +339,18 @@ class UserSeeder extends Seeder
             'email' => 'vchiasson@RHPharma.com',
             'workdays_per_week' => 3
         ]);
-        $vchiasson->departments()->attach([1,14,16,17]);
 
         $vclement = $this->create([
             'firstname' => 'Valérie',
             'lastname' => 'Clément',
             'email' => 'vclement@RHPharma.com',
         ]);
-        $vclement->departments()->attach([1,10]);
 
         $vlord = $this->create([
             'firstname' => 'Vicky',
             'lastname' => 'Lord',
             'email' => 'vlord@RHPharma.com',
         ]);
-        $vlord->departments()->attach([1,4,5,6,12]);
 
         $mbd = $this->create([
             'firstname' => 'Marie-Ève',
@@ -404,7 +365,6 @@ class UserSeeder extends Seeder
             'email' => 'cdufort@RHPharma.com',
             'workdays_per_week' => 5,
         ]);
-        $cdr->departments()->attach(['14']);
 
         $plr = $this->create([
             'firstname' => 'Pierre-Luc',
@@ -412,7 +372,6 @@ class UserSeeder extends Seeder
             'email' => 'plratte@RHPharma.com',
             'workdays_per_week' => 5,
         ]);
-        $plr->departments()->attach(['16','17']);
 
         $ia = $this->create([
             'firstname' => 'Isabelle',
