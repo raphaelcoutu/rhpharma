@@ -162,17 +162,19 @@ class Precalculation
 
             for($days = 1; $days <= 5; $days++) {
                 $i = $days+7*($weeks+$group*$this->weeksPerGroup);
-                $realDate = $this->schedule->start_date->addDays($i)->toDateString();
+                $realDate = $this->schedule->start_date->addDays($i);
 
                 $day = &$this->availability[$pharmacienId]['days'][$i];
 
                 if($this->isAvailableBetween($pharmacienId, $i, '08:00', '16:30')) {
+                    // TODO (tout refaire la structure) : bug fix temp enlever vendredi pour SAMI
+                    if($departmentId == 7 && $realDate->dayOfWeek == 5) continue;
                     $newAssignedShifts[] = [
                         'user_id' => $pharmacienId,
                         'shift_id' => $shiftsForDepartment->first()->id,
                         'is_generated' => 1,
                         'is_published' => 0,
-                        'date' => $realDate,
+                        'date' => $realDate->toDateString(),
                         'created_at' => new \DateTime(),
                         'updated_at' => new \DateTime()
                     ];

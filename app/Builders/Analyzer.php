@@ -4,6 +4,8 @@ namespace app\Builders;
 
 use App\AssignedShift;
 use App\Schedule;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class Analyzer
 {
@@ -49,6 +51,13 @@ class Analyzer
                 'created_at' => new \DateTime,
                 'updated_at' => new \DateTime
             ];
+        })->reject(function ($item) {
+            //todo: bug fix temp pour enlever conflit si vendredi en VIH
+            if($this->departmentId == 7) {
+                return Carbon::parse($item['date'])->dayOfWeek == 5;
+            }
+
+            return false;
         });
 
         \App\Conflict::insert($diff->toArray());
