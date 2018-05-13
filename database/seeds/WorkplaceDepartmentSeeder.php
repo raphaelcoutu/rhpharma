@@ -77,10 +77,11 @@ class WorkplaceDepartmentSeeder extends Seeder
         ]);
 
         $this->create([
-            'name' => 'Onco',
+            'name' => 'Onco Coordo',
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
+            'department_type_id' => 3
         ]);
 
         $this->create([
@@ -237,6 +238,38 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => '',
             'branch_id' => 1,
             'workplace_id' => 2
+        ]);
+
+        $this->create([
+            'name' => 'Onco-A',
+            'description' => 'Oncologie',
+            'branch_id' => 1,
+            'workplace_id' => 1,
+            'department_type_id' => 3
+        ]);
+
+        $this->create([
+            'name' => 'Onco-B',
+            'description' => 'Oncologie',
+            'branch_id' => 1,
+            'workplace_id' => 1,
+            'department_type_id' => 3
+        ]);
+
+        $this->create([
+            'name' => 'Onco-C',
+            'description' => 'Oncologie',
+            'branch_id' => 1,
+            'workplace_id' => 1,
+            'department_type_id' => 3
+        ]);
+
+        $this->create([
+            'name' => 'Onco-D',
+            'description' => 'Oncologie',
+            'branch_id' => 1,
+            'workplace_id' => 1,
+            'department_type_id' => 3
         ]);
     }
 }

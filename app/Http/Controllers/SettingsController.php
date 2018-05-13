@@ -11,9 +11,7 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        $departments = Department::whereHas('departmentType', function ($query) {
-            $query->where('name', 'Clinical');
-        })->select(['id', 'name'])->get();
+        $departments = Department::whereIn('department_type_id', [1,3])->select(['id', 'name'])->get();
 
         $triplets = Triplet::all();
 
