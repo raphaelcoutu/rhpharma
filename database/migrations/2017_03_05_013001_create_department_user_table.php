@@ -16,9 +16,9 @@ class CreateDepartmentUserTable extends Migration
         Schema::create('department_user', function (Blueprint $table) {
             $table->unsignedInteger('department_id');
             $table->unsignedInteger('user_id');
-            $table->decimal('history', 4, 2)->default(0);
-            $table->decimal('planning_long', 4, 2)->default(0);
-            $table->decimal('planning_short', 4, 2)->default(0);
+            $table->tinyInteger('history')->default(0);
+            $table->tinyInteger('planning_long')->default(0);
+            $table->tinyInteger('planning_short')->default(0);
 
             $table->primary(['department_id', 'user_id']);
             $table->index(['user_id', 'department_id']);
