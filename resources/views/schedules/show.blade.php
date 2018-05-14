@@ -22,9 +22,9 @@
 
                     <h3>Processus</h3>
                     <rhpharma-schedule
-                            :schedule="{{ $schedule }}"
-                            :constraints-count="{{ $constraints_count }}"
-                            :conflicts="{{ $schedule->conflicts }}"
+                            :data-schedule="{{ $schedule }}"
+                            :data-constraints-count="{{ $constraints_count }}"
+                            :data-conflicts="{{ $schedule->conflicts }}"
                     ></rhpharma-schedule>
                 </div>
             </div>

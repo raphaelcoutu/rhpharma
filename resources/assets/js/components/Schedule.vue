@@ -1,35 +1,35 @@
 <template>
     <div>
-        <Processus
-                :schedule="schedule"
-                :constraints-count="constraintCount"
-                :statuses="statuses"
-                v-on:updateBuildStatus="buildStatusUpdated"
-        ></Processus>
-        <Output
-                :data-schedule="schedule"
-                :data-conflicts="conflicts"
+        <schedule-processus
+                :data-schedule="dataSchedule"
+                :data-constraints-count="dataConstraintCount"
                 :data-statuses="statuses"
-        ></Output>
+                v-on:updateBuildStatus="buildStatusUpdated"
+        ></schedule-processus>
+        <schedule-output
+                :data-schedule="dataSchedule"
+                :data-conflicts="dataConflicts"
+                :data-statuses="statuses"
+        ></schedule-output>
     </div>
 </template>
 
 <script>
-    import Processus from './Schedule-Processus';
-    import Output from './Schedule-Output';
+    import ScheduleProcessus from './Schedule-Processus';
+    import ScheduleOutput from './Schedule-Output';
 
     export default {
         components: {
-            Processus,
-            Output
+            ScheduleOutput,
+            ScheduleProcessus,
         },
 
-        props: ['schedule', 'constraint-count', 'conflicts'],
+        props: ['dataSchedule', 'dataConstraintCount', 'dataConflicts'],
 
         mounted() {
             Echo.channel('build-status')
                 .listen('UpdateBuildStatus', (e) => {
-                    if(e.scheduleId === this.schedule.id) {
+                    if(e.scheduleId === this.dataSchedule.id) {
                         this.buildStatusUpdated(e);
                     }
                 });
@@ -38,10 +38,10 @@
         data() {
             return {
                 statuses: {
-                    holidays: this.schedule.status_holidays,
-                    weekends: this.schedule.status_weekends,
-                    lastEvening: this.schedule.status_last_evening,
-                    clinical: this.schedule.status_clinical_departments
+                    holidays: this.dataSchedule.status_holidays,
+                    weekends: this.dataSchedule.status_weekends,
+                    lastEvening: this.dataSchedule.status_last_evening,
+                    clinical: this.dataSchedule.status_clinical_departments
                 }
             }
         },

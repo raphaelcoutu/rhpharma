@@ -13,8 +13,8 @@
                 <td>
                     Validation des contraintes des fériés/fins de semaine
                     <ul>
-                        <li><strong>Limite:</strong> {{ formatDate(schedule.limit_date_weekends) }}</li>
-                        <li><strong>Contraintes restantes à valider:</strong> {{ constraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
+                        <li><strong>Limite:</strong> {{ formatDate(dataSchedule.limit_date_weekends) }}</li>
+                        <li><strong>Contraintes restantes à valider:</strong> {{ dataConstraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
                     </ul>
                 </td>
                 <td>
@@ -28,7 +28,7 @@
                 <td>Assigner les fériés</td>
                 <td>
                     <div class="fa fa-2x"
-                         :class="statusIcon(statuses.holidays)">
+                         :class="statusIcon(dataStatuses.holidays)">
                     </div>
                 </td>
                 <td>Boutons</td>
@@ -37,7 +37,7 @@
                 <td>Assigner les fins de semaine</td>
                 <td>
                     <div class="fa fa-2x"
-                         :class="statusIcon(statuses.weekends)">
+                         :class="statusIcon(dataStatuses.weekends)">
                     </div>
                 </td>
                 <td>Boutons</td>
@@ -46,7 +46,7 @@
                 <td>Assigner les derniers soirs de semaine</td>
                 <td>
                     <div class="fa fa-2x"
-                         :class="statusIcon(statuses.lastEvening)">
+                         :class="statusIcon(dataStatuses.lastEvening)">
                     </div>
                 </td>
                 <td>Boutons</td>
@@ -55,8 +55,8 @@
                 <td>
                     Validation des contraintes
                     <ul>
-                        <li><strong>Limite:</strong> {{ formatDate(schedule.limit_date) }}</li>
-                        <li><strong>Contraintes restantes à valider:</strong> {{ constraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
+                        <li><strong>Limite:</strong> {{ formatDate(dataSchedule.limit_date) }}</li>
+                        <li><strong>Contraintes restantes à valider:</strong> {{ dataConstraintsCount }} <i class="fa fa-refresh" style="margin-left: 10px"></i></li>
                     </ul>
                 </td>
                 <td>
@@ -70,14 +70,14 @@
                 <td>Assigner les secteurs cliniques</td>
                 <td>
                     <div class="fa fa-2x"
-                         :class="statusIcon(statuses.clinical)">
+                         :class="statusIcon(dataStatuses.clinical)">
                     </div>
                 </td>
                 <td>
                     <schedule-processus-buttons
-                            :scheduleId="schedule.id"
-                            buildStep="clinical"
-                            :status="statuses.clinical"
+                            :data-schedule-id="dataSchedule.id"
+                            data-build-step="clinical"
+                            :data-status="dataStatuses.clinical"
                             v-on:updateBuildStatus="buildStatusChanged"
                     ></schedule-processus-buttons>
                 </td>
@@ -97,7 +97,7 @@
     import ScheduleProcessusButtons from './Schedule-Processus-Buttons.vue';
 
     export default {
-        props: ['schedule', 'constraintsCount', 'statuses'],
+        props: ['dataSchedule', 'dataConstraintsCount', 'dataStatuses'],
 
         components: {
             ScheduleProcessusButtons
@@ -105,7 +105,7 @@
 
         data() {
             return {
-                validateUrl: '/constraintsValidator?schedule=' + this.schedule.id,
+                validateUrl: '/constraintsValidator?schedule=' + this.dataSchedule.id,
             }
         },
 

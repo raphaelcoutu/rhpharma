@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="btn-group btn-group-sm" v-if="status !== 3">
-            <button class="btn btn-success" @click="build()">Générer</button>
+        <div class="btn-group btn-group-sm" v-if="dataStatus !== 3">
+            <button class="btn btn-success" @click="build">Générer</button>
             <button class="btn btn-primary">Réanalyser</button>
             <button class="btn btn-danger">Mise à zéro</button>
         </div>
@@ -12,21 +12,15 @@
 <script>
     export default {
 
-        props: ['scheduleId', 'buildStep', 'status'],
-
-        data() {
-            return {
-
-            }
-        },
+        props: ['dataScheduleId', 'dataBuildStep', 'dataStatus'],
 
         methods: {
             build() {
                 this.$emit('updateBuildStatus', {
-                    buildStep: this.buildStep,
+                    buildStep: this.dataBuildStep,
                     status: 3
                 });
-                axios.get('/api/build/' + this.scheduleId + '/' + this.buildStep);
+                axios.get('/api/build/' + this.dataScheduleId + '/' + this.dataBuildStep);
             }
         }
     }
