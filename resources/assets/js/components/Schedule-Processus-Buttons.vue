@@ -22,7 +22,7 @@
 
         methods: {
             build() {
-                this.$emit('buildStatusUpdated', {
+                this.$emit('updateBuildStatus', {
                     buildStep: this.buildStep,
                     status: 3
                 });

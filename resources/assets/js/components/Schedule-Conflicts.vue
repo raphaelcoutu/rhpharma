@@ -12,8 +12,8 @@
                 <th>Message</th>
             </tr>
             </thead>
-            <tbody v-if="conflicts.length">
-            <tr v-for="conflict in conflicts" v-if="conflicts">
+            <tbody v-if="dataConflicts.length">
+            <tr v-for="conflict in dataConflicts" v-if="dataConflicts">
                 <td>{{ conflict.id }}</td>
                 <td></td>
                 <td></td>
@@ -24,7 +24,7 @@
             </tbody>
             <tbody v-else>
                 <tr class="text-center">
-                    <td colspan="5">Aucun conflit pour l'instant</td>
+                    <td colspan="6">Aucun conflit pour l'instant</td>
                 </tr>
             </tbody>
         </table>
@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        props: ['schedule', 'conflicts'],
+        props: ['dataSchedule', 'dataConflicts'],
         date() {
             return {
             }
@@ -41,7 +41,7 @@
 
         methods: {
             departmentHref(id) {
-                return "/calendar/" + this.schedule.id + "/byDepartment/" + id;
+                return "/calendar/" + this.dataSchedule.id + "/byDepartment/" + id;
             }
         }
     }

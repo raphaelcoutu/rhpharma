@@ -74,12 +74,12 @@
                     </div>
                 </td>
                 <td>
-                    <build-buttons
+                    <schedule-processus-buttons
                             :scheduleId="schedule.id"
                             buildStep="clinical"
                             :status="statuses.clinical"
-                            v-on:buildStatusUpdated="updateBuildIcon"
-                    ></build-buttons>
+                            v-on:updateBuildStatus="buildStatusChanged"
+                    ></schedule-processus-buttons>
                 </td>
             </tr>
             <tr>
@@ -94,33 +94,18 @@
 
 <script>
 
-    import BuildButtons from './Build-Buttons.vue';
+    import ScheduleProcessusButtons from './Schedule-Processus-Buttons.vue';
 
     export default {
-        props: ['schedule', 'constraintsCount'],
+        props: ['schedule', 'constraintsCount', 'statuses'],
 
         components: {
-            BuildButtons
-        },
-
-        mounted() {
-            Echo.channel('build-status')
-                .listen('UpdateBuildStatus', (e) => {
-                    if(e.scheduleId === this.schedule.id) {
-                        this.updateBuildIcon(e);
-                    }
-                });
+            ScheduleProcessusButtons
         },
 
         data() {
             return {
                 validateUrl: '/constraintsValidator?schedule=' + this.schedule.id,
-                statuses: {
-                    holidays: this.schedule.status_holidays,
-                    weekends: this.schedule.status_weekends,
-                    lastEvening: this.schedule.status_last_evening,
-                    clinical: this.schedule.status_clinical_departments
-                }
             }
         },
 
@@ -133,10 +118,9 @@
                 else return '';
             },
 
-            updateBuildIcon(event) {
-                if(event.buildStep === 'clinical') {
-                    this.statuses.clinical = event.status;
-                }
+            buildStatusChanged(event) {
+                // Émettre l'event au parent "Schedule"
+                this.$emit('updateBuildStatus', event)
             },
 
             formatDate(dateStr) {

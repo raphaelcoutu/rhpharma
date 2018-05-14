@@ -23,8 +23,6 @@ Vue.component('rhpharma-constraints-validator', require('./components/Constraint
 Vue.component('rhpharma-departments', require('./components/Departments.vue'));
 Vue.component('rhpharma-holidays', require('./components/Holidays.vue'));
 Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));
-Vue.component('rhpharma-schedule-output', require('./components/Schedule-Output.vue'));
-Vue.component('rhpharma-schedule-processus', require('./components/Schedule-Processus.vue'));
 Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue'));
 Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue'));
 Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue'));

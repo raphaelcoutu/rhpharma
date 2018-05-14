@@ -21,15 +21,11 @@
                     </div>
 
                     <h3>Processus</h3>
-                    <rhpharma-schedule-processus
+                    <rhpharma-schedule
                             :schedule="{{ $schedule }}"
                             :constraints-count="{{ $constraints_count }}"
-                    ></rhpharma-schedule-processus>
-
-                    <rhpharma-schedule-output
-                            :schedule="{{ $schedule }}"
                             :conflicts="{{ $schedule->conflicts }}"
-                    ></rhpharma-schedule-output>
+                    ></rhpharma-schedule>
                 </div>
             </div>
         </div>
