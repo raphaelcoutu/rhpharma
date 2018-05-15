@@ -17,6 +17,9 @@ window.Vue = require('vue');
 
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('rhpharma-branches', require('./components/Branches.vue'));
+Vue.component('rhpharma-calendar', require('./components/Calendar.vue'));
+Vue.component('rhpharma-calendar-cell', require('./components/Calendar-Cell.vue'));
+Vue.component('rhpharma-calendar-usermodal', require('./components/Calendar-UserModal.vue'));
 Vue.component('rhpharma-constraints', require('./components/Constraints.vue'));
 Vue.component('rhpharma-constraints-count', require('./components/Constraints-Count.vue'));
 Vue.component('rhpharma-constraints-validator', require('./components/Constraints-Validator.vue'));

@@ -10,4 +10,9 @@ class Shift extends Model
     {
         return $this->belongsTo(ShiftType::class);
     }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

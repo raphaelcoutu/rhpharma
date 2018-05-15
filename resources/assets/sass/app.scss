@@ -40,3 +40,5 @@ th.clickable {
 .mb-20 {
   margin-bottom: 20px;
 }
+
+[v-cloak] > * { display:none }

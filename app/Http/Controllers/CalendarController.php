@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\AssignedShift;
 use App\Constraint;
 use App\Schedule;
+use App\Shift;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
@@ -31,6 +33,66 @@ class CalendarController extends Controller
             'pharmaciens' => $pharmaciens,
             'shifts' => $shifts
         ]);
+    }
+
+    // API
+    public function getUserData($userId, $date)
+    {
+        $parsedDate = Carbon::parse($date);
+
+        $user = User::with(['constraints' => function ($query) use ($parsedDate) {
+            $query->InDateInterval($parsedDate->setTime(0,0), $parsedDate->setTime(23,59));
+        }, 'constraints.constraintType' => function ($query) {
+            $query->select('id', 'name');
+        }, 'assignedShifts' => function ($query) use ($parsedDate) {
+            $query->where('date', $parsedDate);
+        }])->find($userId);
+        $shifts = Shift::orderBy('code')->get();
+
+        return [
+            'user' => $user,
+            'assignedShifts' => $user->assignedShifts,
+            'constraints' => $user->constraints,
+            'shifts' => $shifts,
+        ];
+    }
+
+    // API
+    public function setUserData(Request $request)
+    {
+        $actualShifts = AssignedShift::select('shift_id')->where('date', $request->date)
+            ->where('user_id', $request->user_id)->get()->pluck('shift_id');
+
+        // On regarde les shiftsType identiques
+        $intersect = $actualShifts->whereIn(null, $request->shifts);
+
+        // On compare différentiellement chacun des collections avec l'intersect
+        $shiftsToAdd = collect($request->shifts)->whereNotIn(null, $intersect);
+        $actualShiftsToRemove = $actualShifts->whereNotIn(null, $intersect);
+
+        if($shiftsToAdd->count() > 0) {
+            $add = [];
+            foreach($shiftsToAdd as $shift) {
+                $add[] = [
+                    'user_id' => $request->user_id,
+                    'shift_id' => $shift,
+                    'is_generated' => 0,
+                    'is_published' => 0,
+                    'date' => $request->date,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
+
+            AssignedShift::insert($add);
+        }
+
+        if($actualShiftsToRemove->count() > 0) {
+            AssignedShift::where('user_id', $request->user_id)
+                ->where('date', $request->date)
+                ->whereIn('shift_id', $actualShiftsToRemove)
+                ->delete();
+        }
     }
 
     private function query($scheduleId, $departmentIds = null) {
