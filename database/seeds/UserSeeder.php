@@ -72,7 +72,6 @@ class UserSeeder extends Seeder
             'lastname' => 'Coulombe',
             'email' => 'acoulombe@RHPharma.com',
             'workdays_per_week' => 3,
-            'is_active' => 0,
         ]);
 
         $adubuc = $this->create([
@@ -91,7 +90,7 @@ class UserSeeder extends Seeder
         $bbeloin = $this->create([
             'firstname' => 'Bianca',
             'lastname' => 'Beloin-Jubinville',
-            'is_active' => 0
+            'workdays_per_week' => 3
         ]);
 
         $bboilard = $this->create([
@@ -109,6 +108,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Christian',
             'lastname' => 'Leclair',
             'email' => 'cleclair@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $cpelletier = $this->create([
@@ -133,6 +133,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Émilie',
             'lastname' => 'Dubuc',
             'email' => 'edubuc@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $edufort = $this->create([
@@ -157,6 +158,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Geneviève',
             'lastname' => 'Duplain-Cyr',
             'email' => 'gduplain@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $gferland = $this->create([
@@ -183,14 +185,14 @@ class UserSeeder extends Seeder
             'firstname' => 'Jodianne',
             'lastname' => 'Couture',
             'email' => 'jcouture@RHPharma.com',
-            'weekdays_per_week' => 3
+            'workdays_per_week' => 3
         ]);
 
         $jdesbiens = $this->create([
             'firstname' => 'Joëlle',
             'lastname' => 'Desbiens',
             'email' => 'jdesbiens@RHPharma.com',
-            'weekdays_per_week' => 3
+            'workdays_per_week' => 3
         ]);
 
         $jdion = $this->create([
@@ -209,19 +211,21 @@ class UserSeeder extends Seeder
             'firstname' => 'Josée',
             'lastname' => 'Proulx',
             'email' => 'jproulx@RHPharma.com',
-            'weekdays_per_week' => 3
+            'workdays_per_week' => 3
         ]);
 
         $jleblond = $this->create([
             'firstname' => 'Julie',
             'lastname' => 'Leblond',
             'email' => 'jleblond@RHPharma.com',
+            'workdays_per_week' => 3
         ]);
 
         $jquenneville = $this->create([
             'firstname' => 'Julie',
             'lastname' => 'Quenneville',
             'email' => 'jquenneville@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $llegeleux = $this->create([
@@ -234,6 +238,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Mathieu',
             'lastname' => 'Berteau',
             'email' => 'mberteau@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $mfbeauchesne = $this->create([
@@ -247,6 +252,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Mélanie',
             'lastname' => 'Gilbert',
             'email' => 'mgilbert@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $mguay = $this->create([
@@ -259,18 +265,21 @@ class UserSeeder extends Seeder
             'firstname' => 'Marie-Josée',
             'lastname' => 'Lachance',
             'email' => 'mjlachance@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $mlacerte = $this->create([
             'firstname' => 'Mélanie',
             'lastname' => 'Lacerte',
             'email' => 'mlacerte@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $mprousseau = $this->create([
             'firstname' => 'Marie-Pierre',
             'lastname' => 'Rousseau',
             'email' => 'mprousseau@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $mturgeon = $this->create([
@@ -283,6 +292,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Nathalie',
             'lastname' => 'Daviau',
             'email' => 'ndaviau@RHPharma.com',
+            'workdays_per_week' => 4
         ]);
 
         $ngoettel = $this->create([
