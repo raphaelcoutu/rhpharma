@@ -176,7 +176,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Hugues',
             'lastname' => 'Blain',
             'email' => 'hblain@RHPharma.com',
-            'workdays_per_week' => 3
+            'workdays_per_week' => 4
         ]);
 
         $jcouture = $this->create([
