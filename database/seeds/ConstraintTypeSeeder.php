@@ -89,7 +89,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Reprise de temps souhait AM',
             'description' => 'Aimerait prendre une RT à une date précise et pour la matinée seulement',
-            'code' => 'RTAM',
+            'code' => 'RT/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -99,7 +99,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Reprise de temps souhait PM',
             'description' => 'Aimerait prendre une RT à une date précise et pour l\'après-midi seulement',
-            'code' => 'RTPM',
+            'code' => '/RT',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -129,7 +129,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Rayonnement fixe en AM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Matinée seulement (doit être acceptée au préàlable)',
-            'code' => 'RAYAM',
+            'code' => 'RAY/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -139,7 +139,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Rayonnement fixe en PM',
             'description' => 'Présentation ou cours lors de séminaire, congrès, université. Après-midi seulement (doit être acceptée au préàlable)',
-            'code' => 'RAYPM',
+            'code' => '/RAY',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -159,7 +159,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Libération fixe en AM',
             'description' => 'Aimerait une libération pour une date déterminée et la matinée seulement (comité par exemple)',
-            'code' => 'XNDAM',
+            'code' => 'XND/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -169,7 +169,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Libération fixe en PM',
             'description' => 'Aimerait une libération pour une date déterminée et l\'après-midi seulement (comité par exemple)',
-            'code' => 'XNDPM',
+            'code' => '/XND',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -189,7 +189,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Comité de pharmaco libération fixe AM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la matinée seulement (comité par exemple)',
-            'code' => 'CPAM',
+            'code' => 'CP/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -199,7 +199,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Comité de pharmaco libération fixe PM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et l\'après-midi seulement (comité par exemple)',
-            'code' => 'CPPM',
+            'code' => '/CP',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -219,7 +219,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'PGTM fixe en AM',
             'description' => 'Réunion PGTM prévue pour la matinée seulement',
-            'code' => 'PGAM',
+            'code' => 'PG/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -229,7 +229,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'PGTM fixe en PM',
             'description' => 'Réunion PGTM prévue pour l\'après-midi',
-            'code' => 'PGPM',
+            'code' => '/PG',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -259,7 +259,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Ariane fixe en AM',
             'description' => 'Demande de temps Ariane pour une matinée seulement',
-            'code' => 'ARAM',
+            'code' => 'AR/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -269,7 +269,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Ariane fixe en PM',
             'description' => 'Demande de temps Ariane pour une après-midi seulement',
-            'code' => 'ARPM',
+            'code' => '/AR',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
