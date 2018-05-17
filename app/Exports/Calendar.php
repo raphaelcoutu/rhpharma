@@ -4,6 +4,9 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use PhpOffice\PhpSpreadsheet\RichText\RichText;
+use PhpOffice\PhpSpreadsheet\RichText\TextElement;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -38,9 +41,10 @@ class Calendar
 
     private function addDefaultStyle()
     {
-        $this->spreadsheet->getDefaultStyle()->getFont()->setName('Arial');
-        $this->spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(15);
-        $this->spreadsheet->getActiveSheet()->freezePaneByColumnAndRow(3,3);
+        $sheet = $this->spreadsheet;
+        $sheet->getDefaultStyle()->getFont()->setName('Arial');
+        $sheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(15);
+        $sheet->getActiveSheet()->freezePaneByColumnAndRow(3,3);
     }
 
     private function addHeading()
@@ -83,6 +87,13 @@ class Calendar
         $colStart = 3;
         $sheet = $this->spreadsheet->getActiveSheet();
 
+        // Mettre les bordures sur les cases
+        $duration = $this->endDate->diffInDays($this->startDate);
+        $lastColumn = $sheet->getCellByColumnAndRow($colStart + $duration, $rowStart)->getColumn();
+
+        $sheet->getStyle('B' . ($rowStart) . ':' . $lastColumn . ($this->users->count()+$rowStart-1))
+            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+
         foreach($this->users as $index => $user) {
             $cell = $sheet->getCellByColumnAndRow(2, $index + $rowStart);
             $cell->setValue(mb_strtoupper($user->lastname) . ', ' . mb_strtoupper($user->firstname));
@@ -95,6 +106,8 @@ class Calendar
                     $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
                     $value = $cell->getValue();
                     $text = $assignedShift->shift->code;
+
+                    $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
                     if($value != null) {
                         $cell->setValue($value.'-'.$text);
@@ -128,22 +141,48 @@ class Calendar
                         $col = $iterateDay->diffInDays($this->startDate) + $colStart;
 
                         $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
+                        $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-                        $value = ($cell->getValue() !== NULL) ? [$cell->getValue()] : [];
-                        $value[] = $constraint->constraintType->code;
-
-                        // Si la contrainte contient un jour ET que celui-ci n'est pas celui de l'itération => on l'enlève
-                        if ($constraint->day !== NULL && $iterateDay->dayOfWeek !== $constraint->day) {
-                            array_pop($value);
-                        }
-
-                        if (!empty($value)) {
-                            $cell->setValue(implode("-", $value));
+                        if ($constraint->day !== NULL) {
+                            // Si la contrainte contient un jour spécisé, on l'inscrit seulement dans celui-ci
+                            if($iterateDay->dayOfWeek === $constraint->day) {
+                                $this->addConstraintValue($cell, $constraint);
+                            }
+                        } else {
+                           $this->addConstraintValue($cell, $constraint);
                         }
                     }
                 }
             }
         }
+    }
+
+    private function addConstraintValue($cell, $constraint)
+    {
+        $value = ($cell->getValue()) ?? "";
+        $asteriskPos = strpos($value, "*");
+
+        $value = ($asteriskPos === false) ? $value . "*" : $value;
+        if ($value !== "*" && $value{-1} !== "*") {
+            $value .= "-";
+        }
+
+        $value .= $constraint->constraintType->code;
+        $cell->getStyle()
+            ->getFill()->setFillType(Fill::FILL_SOLID)
+            ->getStartColor()->setARGB('E8FFFE');
+
+        $richText = new RichText();
+        $splitValue = explode("*", $value);
+        $beforeAsterisk = $splitValue[0];
+        $afterAsterisk = $splitValue[1];
+        if($beforeAsterisk != "") {
+            $richText->createText($beforeAsterisk . '-');
+        }
+        $boldText = $richText->createTextRun($afterAsterisk);
+        $boldText->getFont()->setSize(12)
+            ->getColor()->setARGB('CC1F1A');
+        $cell->setValue($richText);
     }
 
     public function getSpreadsheet()
