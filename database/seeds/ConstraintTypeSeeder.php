@@ -39,7 +39,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Formation fixe en AM',
             'description' => 'Formation pour la matinée seulement. Doit être approuvée par coordo à l\'enseignement',
-            'code' => 'FOR',
+            'code' => 'FOR/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -49,7 +49,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Formation fixe en PM',
             'description' => 'Formation pour l\'après-midi seulement. Doit être approuvée par coordo à l\'enseignement',
-            'code' => 'FOR',
+            'code' => '/FOR',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -179,7 +179,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Comité de pharmaco réunion midi',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la journée complète (RPE par exemple)',
-            'code' => 'CPR',
+            'code' => 'CPHR',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -239,7 +239,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Vacances perlées fixe jour',
             'description' => 'Date souhaitée pour vacances perlées mais si date fixe seulement. Si plusieurs choix de dates, veuillez l\'inscrire dans la section "selon disponibilité"',
-            'code' => 'VP',
+            'code' => 'V',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -289,7 +289,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Visite grossesse en AM',
             'description' => 'Visite de grossesse pour une matinée',
-            'code' => 'VG',
+            'code' => 'VP/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -299,7 +299,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Visite grossesse en PM',
             'description' => 'Visite de grossesse pour une après-midi',
-            'code' => 'VG',
+            'code' => '/VP',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -542,7 +542,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Demande de secteur fixe en pm',
             'description' => '',
-            'code' => 'SEC',
+            'code' => '/SEC',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -570,7 +570,87 @@ class ConstraintTypeSeeder extends Seeder
             'code' => 'T',
             'is_work' => 1,
             'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Présentation ou réunion sur heure diner',
+            'description' => '',
+            'code' => 'midi',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'URE selon dispo (demi-journée)',
+            'description' => '',
+            'code' => 'URE/',
+            'is_work' => 1,
+            'is_single_day' => 1,
             'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'URE selon dispo (journée complète)',
+            'description' => '',
+            'code' => 'URE',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Libération selon dispo (demi-journée)',
+            'description' => '',
+            'code' => 'X/',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Mariage',
+            'description' => '',
+            'code' => 'MAR',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Enseignement fixe jour',
+            'description' => '',
+            'code' => 'ENS',
+            'is_work' => 1,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Enseignement fixe en AM',
+            'description' => '',
+            'code' => 'ENS/',
+            'is_work' => 1,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Enseignement fixe en PM',
+            'description' => '',
+            'code' => '/ENS',
+            'is_work' => 1,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
         ]);
     }
