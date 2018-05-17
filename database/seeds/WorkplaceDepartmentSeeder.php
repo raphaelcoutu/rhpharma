@@ -16,7 +16,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'department_type_id' => $department['department_type_id'] ?? null,
             'bonus_weeks' => $department['bonus_weeks'] ?? 1,
             'bonus_pts' => $department['bonus_pts'] ?? 4,
-            'malus_weeks' => $department['malus_weeks'] ?? 2,
+            'malus_weeks' => $department['malus_weeks'] ?? 3,
             'malus_pts' => $department['malus_pts'] ?? 8,
             'monday_am' => $department['monday_am'] ?? 2,
             'monday_pm' => $department['monday_pm'] ?? 2,
