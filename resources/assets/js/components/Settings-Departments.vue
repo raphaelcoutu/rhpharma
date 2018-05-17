@@ -3,9 +3,15 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th></th>
-                <th>Département</th>
-                <th>Actif</th>
+                <th width="10%"></th>
+                <th width="70%">Département</th>
+                <th width="20%" class="text-center">
+                    <div>Actif</div>
+                    <div class="btn-group btn-group-xs">
+                        <button @click="selectAll" class="btn btn-default">Tous</button>
+                        <button @click="selectNone" class="btn btn-default">Aucun</button>
+                    </div>
+                </th>
             </tr>
             </thead>
             <tbody v-if="sortedDepartments">
@@ -18,7 +24,7 @@
                     <td :class="{ 'text-bold' : item.active }">
                         {{ item.name }}
                     </td>
-                    <td>
+                    <td class="text-center">
                         <input type="checkbox" v-model="item.active">
                     </td>
                 </tr>
@@ -103,6 +109,16 @@
                 axios.patch('/api/settings/departments', data)
                     .catch(err => {
                         console.log(err);
+                });
+            },
+            selectAll() {
+                _.each(this.sortedDepartments, function (item) {
+                    item.active = true;
+                });
+            },
+            selectNone() {
+                _.each(this.sortedDepartments, function (item) {
+                    item.active = false;
                 });
             }
         },
