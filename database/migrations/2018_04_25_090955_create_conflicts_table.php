@@ -17,7 +17,7 @@ class CreateConflictsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('schedule_id');
             $table->unsignedInteger('department_id');
-            $table->date('date');
+            $table->string('date');
             $table->string('message');
             $table->timestamps();
 
