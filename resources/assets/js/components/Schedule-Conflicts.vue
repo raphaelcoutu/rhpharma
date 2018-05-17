@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Conflits</h3>
+        <h3>Conflits ({{ dataConflicts.length }})</h3>
         <table class="table table-hover">
             <thead>
             <tr>
