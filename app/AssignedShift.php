@@ -16,6 +16,11 @@ class AssignedShift extends Model
         return $this->belongsTo(Shift::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
     {
         return $query->where(function ($query) use ($start_date, $end_date) {

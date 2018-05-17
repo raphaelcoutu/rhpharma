@@ -13,4 +13,14 @@ class Holiday extends Model
     {
         return $query->orderBy('date', 'asc')->where('date', '>=', Carbon::today());
     }
+
+    public function scopeFrom($query, $date)
+    {
+        return $query->where('date', '>=', $date);
+    }
+
+    public function scopeTo($query, $date)
+    {
+        return $query->where('date', '<=', $date);
+    }
 }

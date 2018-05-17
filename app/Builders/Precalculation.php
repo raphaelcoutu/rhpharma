@@ -4,6 +4,7 @@ namespace App\Builders;
 
 use App\AssignedShift;
 use App\Department;
+use App\Holiday;
 use App\Schedule;
 use App\Shift;
 use App\User;
@@ -21,6 +22,7 @@ class Precalculation
     public $pharmaciens;
     public $departments;
 
+    public $holidays;
     public $schedule;
     public $assignedShifts;
 
@@ -50,6 +52,8 @@ class Precalculation
         $this->departments = Department::with(['users' => function ($query) {
             $query->where('is_active', 1)->where('branch_id', 1)->get();
         }])->get();
+
+        $this->holidays = Holiday::from($this->schedule->start_date)->to($this->schedule->end_date)->get();
 
         $this->getScoreTable();
 
@@ -97,14 +101,15 @@ class Precalculation
         return $scores;
     }
 
-    private function isAvailableBetween($id, $day, $startTime, $endTime)
+    public function isAvailableBetween($id, $day, $startTime, $endTime)
     {
         $assignedShifts = $this->pharmaciens->firstWhere('id', $id)->assignedShifts;
         $constraints = $this->availability[$id]['days'][$day]['constraints'];
-        $realDate = $this->schedule->start_date->addDays($day)->toDateString();
+        $realDate = $this->schedule->start_date->addDays($day);
+        $realDateString = $realDate->toDateString();
 
-        $startDateTime = \Carbon\Carbon::parse($realDate . ' ' . $startTime);
-        $endDateTime = \Carbon\Carbon::parse($realDate . ' ' . $endTime);
+        $startDateTime = \Carbon\Carbon::parse($realDateString . ' ' . $startTime);
+        $endDateTime = \Carbon\Carbon::parse($realDateString . ' ' . $endTime);
 
         // Détection si le pharmacien a déjà un shift assigné au même intervalle de temps
         foreach($assignedShifts as $assignedShift) {
@@ -128,9 +133,26 @@ class Precalculation
                 if($constraint->constraintType->is_group_constraint == 1) continue;
 
                 // On regarde si la contrainte contient un jour en particulier
+                if($constraint->day !== null) {
 
-                // TempFix : Si la contrainte est "Doit travailler de jour" on l'ignore
-                if(!in_array($constraint->constraint_type_id, [29,30])) {
+                    if($realDate->dayOfWeek === $constraint->day) {
+                        //TODO: fix pour la contrainte de gestion
+                        if($constraint->constraintType->id === 41) {
+                            if($startTime === '12:00') return false;
+                        }
+
+                        // TempFix : Si la contrainte est "Doit travailler de jour" on l'ignore
+                        if(in_array($constraint->constraint_type_id, [29,30,39,50])) {
+                            continue;
+                        }
+                    }
+                } else {
+                    // On détecte une collision et pas de jour de précisé
+                    // Donc, on retourne non disponible
+                    if(in_array($constraint->constraint_type_id, [29,30,39,50])) {
+                        continue;
+                    }
+
                     return false;
                 }
             }
@@ -163,6 +185,9 @@ class Precalculation
             for($days = 1; $days <= 5; $days++) {
                 $i = $days+7*($weeks+$group*$this->weeksPerGroup);
                 $realDate = $this->schedule->start_date->addDays($i);
+
+                // Si c'est une journée férié, on passe au suivant.
+                if($this->holidays->pluck('date')->contains($realDate->format('Y-m-d'))) continue;
 
                 $day = &$this->availability[$pharmacienId]['days'][$i];
 

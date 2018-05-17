@@ -5,6 +5,7 @@ namespace App\Builders;
 
 use App\AssignedShift;
 use App\Conflict;
+use App\Department;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
@@ -43,7 +44,8 @@ class GenericBuilder extends BaseBuilder
 
         $this->selectSequence();
 
-        $this->assignThreeDaysUsers();
+        // Correction pour les 4 jours par semaine
+        $this->partialTimeCorrection();
 
         Analyzer::conflicts($precalculation->schedule, $departmentId);
 
@@ -108,8 +110,13 @@ class GenericBuilder extends BaseBuilder
 
                 $this->precalculation->assignWeekSequence($this->departmentId, $group, $this->selectedCombinaison['sequence']);
             } else {
-                //TODO: generate conflict
                 Log::debug("No more pharmacist available to assign. [Department = {$this->departmentId}]");
+                Conflict::create([
+                    'schedule_id' => $this->precalculation->schedule->id,
+                    'department_id' => $this->departmentId,
+                    'date' => '',
+                    'message' => 'Aucun pharmacien disponible!'
+                ]);
             }
         }
     }
@@ -259,9 +266,130 @@ class GenericBuilder extends BaseBuilder
             })->unique();
     }
 
-    private function assignThreeDaysUsers()
+    private function partialTimeCorrection()
     {
-        //
+        // On parcours chacune des semaines
+
+        // On évite le secteur VIH, car secteur à 4 jours par semaine.
+        if($this->departmentId === 7) return;
+
+        // Définir les variables pertinentes && requêtes à la BD
+        $schedule = $this->precalculation->schedule;
+        $holidays = $this->precalculation->holidays->pluck('date');
+        $assignedShifts = AssignedShift::with('user', 'shift')
+            ->inDateInterval($schedule->start_date, $schedule->end_date)->get();
+
+        // Itération de toutes les semaines
+        for ($i = 0; $i < $schedule->durationInWeeks; $i++) {
+            $day = $i * 7 + 1; // Correspond au lundi
+            $firstWorkday = $schedule->start_date->addDays($day);
+            $previousWorkday = $schedule->start_date->addDays($day - 3);
+
+            $lastWorkday = $schedule->start_date->addDays($day + 4);
+            $nextWorkday = $schedule->start_date->addDays($day + 7);
+
+            $departmentAssignedShifts = $assignedShifts->where('shift.department_id', $this->departmentId);
+
+            $firstAssignedShift = $departmentAssignedShifts->where('date', $firstWorkday)->first();
+            $previousAssignedShift = $departmentAssignedShifts->where('date', $previousWorkday)->first();
+
+            $lastAssignedShift = $departmentAssignedShifts->where('date', $lastWorkday)->first();
+            $nextAssignedShift = $departmentAssignedShifts->where('date', $nextWorkday)->first();
+
+            // Si le pharmacien n'est pas à 4 jours/sem, on passe à la prochaine semaine.
+            if(!$firstAssignedShift || $firstAssignedShift->user->workdays_per_week !== 4) continue;
+
+            // On regarde le nombre de jours attribué à notre pharmacien 4 jr/sem. (utile plus loin)
+            $userAssignedShifts = $assignedShifts->where('user_id', $firstAssignedShift->user->id)
+                ->where('date', '>=', $firstAssignedShift->date->startOfWeek()->addDays(-1))
+                ->where('date', '<=', $firstAssignedShift->date->endOfWeek()->addDays(-1));
+
+            // PARTIE : DÉBUT DE LA SEMAINE
+            // Si on a été capable de savoir à qui appartient la semaine
+            if($firstAssignedShift) {
+
+                // On regarde qui était le pharmacien le vendredi avant (s'il y en avait un)
+                // et si ce pharmacien n'est pas lui-même
+                // Puis, s'il est disponible, on le prend.
+                if($previousAssignedShift && $firstAssignedShift->user->id !== $previousAssignedShift->user->id) {
+                    $previousUser = $previousAssignedShift->user;
+                    $firstWorkdayInt = $schedule->start_date->diffInDays($firstWorkday);
+
+                    // On regarde s'il est disponible
+                    if(!$this->precalculation->isAvailableBetween($previousUser->id, $firstWorkdayInt, '08:00', '16:30')) continue;
+
+                    // On regarde les jours attribué à la personne (samedi à dimanche)
+                    $previousUserAssignedShifts = $assignedShifts->where('user_id', $previousUser->id)
+                        ->where('date', '>=', $firstAssignedShift->date->startOfWeek()->addDays(-1))
+                        ->where('date', '<=', $firstAssignedShift->date->endOfWeek()->addDays(-1));
+
+                    // Si le nombre de jours est inférieur à son nombre dispo par semaine:
+                    // On fait l'échange de shift et on passe à la prochaine itération (pour pas lui enlever le vendredi)
+                    if($previousUserAssignedShifts->count() < $previousUser->workdays_per_week) {
+
+                        // Cas où on aurait un CPSS en lundi. Donc, horaire "fitte" pour notre 4jr/sem
+                        // mais il manque une journée à notre secteur!
+                        if($userAssignedShifts->count() <= 4) {
+                            // Déterminer que le jour manquant est vraiment le lundi.
+                            if($firstWorkday->dayOfWeek !== 2) continue;
+
+                            $newShift = AssignedShift::create([
+                                'user_id' => $previousUser->id,
+                                'shift_id' => $firstAssignedShift->shift_id,
+                                'is_generated' => 1,
+                                'is_published' => 0,
+                                'date' => $firstWorkday->addDays(-1),
+                            ]);
+                            $this->precalculation->pharmaciens->firstWhere('id', $previousUser->id)->assignedShifts->push($newShift);
+                        }
+
+                        // Cas classique où on doit donner le quart à la personne précédente.
+                        else {
+                            $firstAssignedShift->user_id = $previousUser->id;
+                            $firstAssignedShift->save();
+
+                            $this->precalculation->pharmaciens->firstWhere('id', $previousUser->id)->assignedShifts->push($firstAssignedShift);
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            // PARTIE : FIN DE LA SEMAINE
+            // Si on a été capable de savoir à qui appartient la semaine
+            if($lastAssignedShift) {
+                if($nextAssignedShift && $lastAssignedShift->user->id !== $nextAssignedShift->user->id) {
+                    $nextUser = $nextAssignedShift->user;
+                    $lastWorkdayInt = $schedule->start_date->diffInDays($lastWorkday);
+
+                    // On regarde s'il a une contrainte
+                    if(!$this->precalculation->isAvailableBetween($nextUser->id, $lastWorkdayInt, '08:00', '16:30')) continue;
+
+                    // On regarde les jours attribué à la personne
+                    $nextUserAssignedShifts = $assignedShifts->where('user_id', $nextUser->id)
+                        ->where('date', '>=', $lastAssignedShift->date->startOfWeek()->addDays(-1))
+                        ->where('date', '<=', $lastAssignedShift->date->endOfWeek()->addDays(-1));
+
+                    if($nextUserAssignedShifts->count() < $nextUser->workdays_per_week) {
+                        $lastAssignedShift->user_id = $nextUser->id;
+                        $lastAssignedShift->save();
+
+                        $this->precalculation->pharmaciens->firstWhere('id', $nextUser->id)->assignedShifts->push($lastAssignedShift);
+                        continue;
+                    }
+
+                }
+            }
+
+            // Si je me suis rendu ici, ça veut dire que je n'ai pas été capable de combler le trou
+            // Donc, on génère un conflit.
+            Conflict::create([
+                'schedule_id' => $this->precalculation->schedule->id,
+                'department_id' => $this->departmentId,
+                'date' => $firstAssignedShift->date->startOfWeek()->addDays(-1)->toDateString() . ' au ' . $firstAssignedShift->date->endOfWeek()->addDays(-1)->toDateString(),
+                'message' => $firstAssignedShift->user->fullname . ' devrait travailler 4 jours!'
+            ]);
+        }
     }
 
     private function clean()

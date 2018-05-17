@@ -3,6 +3,7 @@
 namespace app\Builders;
 
 use App\AssignedShift;
+use App\Holiday;
 use App\Schedule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -11,6 +12,7 @@ class Analyzer
 {
     protected $schedule;
     protected $departmentId;
+    protected $holidays;
 
     private function __construct(Schedule $schedule, $departmentId)
     {
@@ -25,6 +27,7 @@ class Analyzer
 
     private function analyzeConflicts()
     {
+        $this->holidays = Holiday::from($this->schedule->start_date)->to($this->schedule->end_date)->get()->pluck('date');
         $shifts = AssignedShift::whereHas('shift', function ($query) {
             $query->where('department_id', $this->departmentId);
         })->inDateInterval($this->schedule->start_date, $this->schedule->end_date)
@@ -42,7 +45,19 @@ class Analyzer
             }
         }
 
-        $diff = $days->diff($shifts)->map(function ($date) {
+        $diff = $days->diff($shifts)->reject(function ($date) {
+            // TODO: Ne pas poper d'alarmes si c'est un jour férié (pour l'instant)
+            if($this->holidays->contains($date)) {
+                return true;
+            }
+
+            //todo: bug fix temp pour enlever conflit si vendredi en VIH
+            if($this->departmentId == 7) {
+                return Carbon::parse($date)->dayOfWeek == 5;
+            }
+
+            return false;
+        })->map(function ($date) {
             return [
                 'schedule_id' => $this->schedule->id,
                 'department_id' => $this->departmentId,
@@ -51,13 +66,6 @@ class Analyzer
                 'created_at' => new \DateTime,
                 'updated_at' => new \DateTime
             ];
-        })->reject(function ($item) {
-            //todo: bug fix temp pour enlever conflit si vendredi en VIH
-            if($this->departmentId == 7) {
-                return Carbon::parse($item['date'])->dayOfWeek == 5;
-            }
-
-            return false;
         });
 
         \App\Conflict::insert($diff->toArray());
