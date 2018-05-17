@@ -35,7 +35,7 @@
                     <tbody>
                     @foreach($pharmaciens as $pharmacien)
                         <tr>
-                            <td class="text-nowrap">{{$pharmacien->id}}-{{ $pharmacien->fullname }}</td>
+                            <td class="text-nowrap">{{$pharmacien->id}}-{{ $pharmacien->fullname }} ({{ $pharmacien->workdays_per_week }})</td>
                             @foreach($shifts[$pharmacien->id] as $index => $day)
                                 <td is="rhpharma-calendar-cell"
                                     @open="openModal"
