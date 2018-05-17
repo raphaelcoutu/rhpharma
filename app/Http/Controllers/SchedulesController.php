@@ -39,11 +39,6 @@ class SchedulesController extends Controller
         return view('schedules.index', compact('schedules', 'constraints_in_schedule'));
     }
 
-    public function fetch()
-    {
-        return Schedule::ordered()->get();
-    }
-
     /**
      * Show the form for creating a new resource.
      *
