@@ -152,6 +152,11 @@ class ProductionSeeder extends Seeder
         $this->createShift('2018-06-26', 11, [12]);
         $this->createShift('2018-06-27', 11, [12]);
         $this->createShift('2018-06-28', 11, [12]);
+
+        $this->createShift('2018-08-13', 11, [30]);
+        $this->createShift('2018-08-14', 11, [30]);
+        $this->createShift('2018-08-15', 11, [30]);
+        $this->createShift('2018-08-17', 11, [30]);
     }
 
     private function createDayOff(string $date, array $userIds)
