@@ -85,4 +85,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Exports
     Route::get('export/{schedule}', 'ExportsController@export')->name('export');
+
+    if(App::environment('local')) {
+        Route::get('build/{scheduleId}', function ($scheduleId) {
+            $event = new \App\Events\UpdateBuildStatus($scheduleId, 3, 3);
+            dispatch(new \App\Jobs\BuildClinicalDepartments($event));
+        });
+    }
 });
