@@ -15,7 +15,11 @@ class ExportsController extends Controller
             $query->InDateInterval($schedule->start_date, $schedule->end_date)->where('status', 1);
         }, 'assignedShifts' => function ($query) use ($schedule) {
             $query->InDateInterval($schedule->start_date, $schedule->end_date);
-        },'constraints.constraintType', 'assignedShifts.shift'])->where('is_active', 1)->orderBy('lastname')->get();
+        },'constraints.constraintType', 'assignedShifts.shift'])
+            ->where('is_active', 1)
+            ->orderBy('lastname')
+            ->orderBy('firstname')
+            ->get();
 
         $export = new Excel($schedule, $users);
 
