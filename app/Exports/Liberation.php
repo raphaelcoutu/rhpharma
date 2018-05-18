@@ -3,9 +3,7 @@
 namespace App\Exports;
 
 use App\Schedule;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;

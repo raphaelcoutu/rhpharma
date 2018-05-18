@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\Excel;
 use App\Schedule;
 use App\User;
-use Illuminate\Http\Request;
 
 class ExportsController extends Controller
 {

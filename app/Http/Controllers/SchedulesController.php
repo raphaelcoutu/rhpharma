@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Constraint;
 use App\Http\Requests\ScheduleRequest;
 use App\Schedule;
-use Illuminate\Http\Request;
 
 class SchedulesController extends Controller
 {

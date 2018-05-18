@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Department;
 use App\Http\Requests\DepartmentRequest;
 use App\Workplace;
-use Illuminate\Http\Request;
 
 class DepartmentsController extends Controller
 {

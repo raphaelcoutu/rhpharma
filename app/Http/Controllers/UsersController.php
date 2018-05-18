@@ -6,7 +6,6 @@ use App\Branch;
 use App\Department;
 use App\Http\Requests\UserRequest;
 use App\User;
-use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {

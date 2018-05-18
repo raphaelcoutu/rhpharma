@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Branch;
-use App\Workplace;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model

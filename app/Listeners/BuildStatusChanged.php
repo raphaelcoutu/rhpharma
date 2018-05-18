@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\UpdateBuildStatus;
 use App\Jobs\BuildClinicalDepartments;
 use App\Schedule;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BuildStatusChanged
 {

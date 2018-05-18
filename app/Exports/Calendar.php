@@ -4,9 +4,7 @@ namespace App\Exports;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
-use PhpOffice\PhpSpreadsheet\RichText\TextElement;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;

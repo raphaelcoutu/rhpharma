@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Constraint;
 use Illuminate\Console\Command;
 
 class ImportCsvCommand extends Command

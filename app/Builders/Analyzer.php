@@ -6,7 +6,6 @@ use App\AssignedShift;
 use App\Holiday;
 use App\Schedule;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class Analyzer
 {

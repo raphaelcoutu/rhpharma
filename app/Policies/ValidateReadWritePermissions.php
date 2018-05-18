@@ -4,7 +4,6 @@ namespace App\Policies;
 
 
 use App\User;
-use Illuminate\Support\Collection;
 
 trait ValidateReadWritePermissions
 {

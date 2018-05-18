@@ -2,10 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
-use App\Branch;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Collection;
 
 class BranchPolicy
 {
