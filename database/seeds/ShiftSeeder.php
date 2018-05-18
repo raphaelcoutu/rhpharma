@@ -67,7 +67,7 @@ class ShiftSeeder extends Seeder
 
         $this->create('ME', 14, 1);
 
-        $this->create('P', 15, 1);
+        $this->create('PE', 15, 1);
 
         $this->create('URHF', 16, 1);
 
