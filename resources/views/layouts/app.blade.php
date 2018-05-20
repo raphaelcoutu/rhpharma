@@ -29,6 +29,7 @@
         <div class="container">
             @yield('content')
         </div>
+        @yield('below-container')
     </div>
 
     <!-- Scripts -->

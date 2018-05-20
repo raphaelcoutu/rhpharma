@@ -1,17 +1,12 @@
 <template>
-    <td class="pointer" @click="$emit('open', {dataUserId, dataDayId})">
-        <slot></slot>
+    <td @click="$emit('open', {dataUserId, dataDate})">
+        <slot name="assignedShifts"><div>&nbsp;</div></slot>
+        <slot name="constraints"><div>&nbsp;</div></slot>
     </td>
 </template>
 
-<style>
-    .pointer {
-        cursor: pointer;
-    }
-</style>
-
 <script>
     export default {
-        props: ['dataUserId', 'dataDayId']
+        props: ['dataUserId', 'dataDate'],
     }
 </script>

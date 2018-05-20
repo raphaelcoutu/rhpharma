@@ -1,7 +1,5 @@
 <?php
 
-use App\User;
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('branches/{id}', 'BranchesController@update');
 
     //Calendar
-    Route::get('calendar/{userId}/{date}', 'CalendarController@getUserData');
+    Route::get('calendar/getUserData', 'CalendarController@getUserData');
     Route::post('calendar', 'CalendarController@setUserData');
 
     //Conflicts

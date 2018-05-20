@@ -191,7 +191,7 @@
                 let shiftsIds = _.map(_.filter(this.$refs.userModalShifts.$data.shifts, ['active', true]), 'id');
                 this.$emit('save', {
                     user_id: this.dataModal.user.id,
-                    date: this.dataModal.date.format("YYYY-MM-DD"),
+                    date: this.dataModal.date,
                     shifts: shiftsIds
                 });
             }
