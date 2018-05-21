@@ -105,7 +105,6 @@
 
         methods: {
             openModal(e) {
-                this.showModal = true;
                 //Obtenir le pharmacien et tous les renseignements
                 axios.get('/api/calendar/getUserData', {
                     params : {
@@ -113,6 +112,7 @@
                         date: e.dataDate.format("YYYYMMDD")
                     }
                 }).then(res => {
+                        this.showModal = true;
                         this.dataModal = {
                             date: e.dataDate,
                             user: res.data.user,
