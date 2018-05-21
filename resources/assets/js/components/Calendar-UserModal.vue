@@ -28,7 +28,7 @@
                             <h4>Contraintes</h4>
                             <div v-if="dataModal.constraints.length > 0">
                             <li v-for="constraint in dataModal.constraints">
-                                {{ constraint.constraint_type.name }}
+                                {{ constraint.constraint_type.name }} <span v-if="constraint.day">- {{ dayOfWeek(constraint.day) }}</span>
                                 <div style="padding-left:5px;font-size: small">
                                     ({{ constraint.start_datetime}}  - {{ constraint.end_datetime}})
                                 </div>
@@ -194,6 +194,10 @@
                     date: this.dataModal.date,
                     shifts: shiftsIds
                 });
+            },
+            dayOfWeek(value) {
+                let weekDays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                return weekDays[value];
             }
         }
     }
