@@ -30,7 +30,7 @@ class ProductionSeeder extends Seeder
         $this->call(TripletSeeder::class);
 
         $departmentsSettings = Setting::where('key', 'departments_order')->get()->first();
-        $departmentsSettings->value = '[{"id":4,"active":true,"order":0},{"id":5,"active":true,"order":1},{"id":8,"active":true,"order":2},{"id":6,"active":true,"order":3},{"id":2,"active":true,"order":4},{"id":7,"active":true,"order":5},{"id":9,"active":true,"order":6},{"id":11,"active":true,"order":7},{"id":14,"active":true,"order":8},{"id":15,"active":true,"order":9},{"id":16,"active":true,"order":10},{"id":17,"active":true,"order":11},{"id":10,"active":true,"order":12},{"id":12,"active":true,"order":13},{"id":3,"active":true,"order":14},{"id":21,"active":true,"order":15},{"id":24,"active":true,"order":16},{"id":25,"active":true,"order":17},{"id":26,"active":true,"order":18},{"id":27,"active":false,"order":19}]';
+        $departmentsSettings->value = '[{"id":4,"active":true,"order":0},{"id":7,"active":true,"order":1},{"id":5,"active":true,"order":2},{"id":8,"active":true,"order":3},{"id":2,"active":true,"order":4},{"id":11,"active":true,"order":5},{"id":6,"active":true,"order":6},{"id":9,"active":true,"order":7},{"id":14,"active":true,"order":8},{"id":15,"active":true,"order":9},{"id":16,"active":true,"order":10},{"id":17,"active":true,"order":11},{"id":10,"active":true,"order":12},{"id":12,"active":true,"order":13},{"id":3,"active":true,"order":14},{"id":21,"active":true,"order":15},{"id":24,"active":true,"order":16},{"id":25,"active":true,"order":17},{"id":26,"active":true,"order":18},{"id":27,"active":false,"order":19}]';
         $departmentsSettings->save();
 
         Holiday::create(['description' => 'St-Jean-Baptiste 2018', 'date' => '2018-06-25']);
@@ -85,22 +85,22 @@ class ProductionSeeder extends Seeder
         $this->createAssignedShift('2018-07-15', [15,8,5,49,24]);
         $this->createDayOff('2018-07-16', [15,49]);
         $this->createDayOff('2018-07-17', [15,49]);
-        $this->createDayOff('2018-07-19', [5,8,24]);
+        $this->createDayOff('2018-07-19', [5,8,24,18]);
         $this->createDayOff('2018-07-20', [5,8,24]);
 
         $this->createAssignedShift('2018-07-21', [23,42,37,18,39]);
         $this->createAssignedShift('2018-07-22', [42,37,23,39,18]);
         $this->createDayOff('2018-07-23', [42,39]);
-        $this->createDayOff('2018-07-24', [42,39]);
-        $this->createDayOff('2018-07-26', [23,37,18]);
-        $this->createDayOff('2018-07-27', [23,37,18]);
+        $this->createDayOff('2018-07-24', [42,39,18]);
+        $this->createDayOff('2018-07-26', [23,37,13]);
+        $this->createDayOff('2018-07-27', [23,37]);
 
         $this->createAssignedShift('2018-07-28', [16,11,13,9,35]);
         $this->createAssignedShift('2018-07-29', [11,13,16,35,9]);
         $this->createDayOff('2018-07-30', [11,35]);
-        $this->createDayOff('2018-07-31', [11,35]);
-        $this->createDayOff('2018-08-02', [16,13,9]);
-        $this->createDayOff('2018-08-03', [16,13,9]);
+        $this->createDayOff('2018-07-31', [11,35,13]);
+        $this->createDayOff('2018-08-02', [16,9]);
+        $this->createDayOff('2018-08-03', [16,9]);
 
         $this->createAssignedShift('2018-08-04', [47,31,22,38,51]);
         $this->createAssignedShift('2018-08-05', [31,22,47,51,38]);
@@ -143,8 +143,8 @@ class ProductionSeeder extends Seeder
         $this->createAssignedShift('2018-09-09', [7,20,8,9,49]);
         $this->createDayOff('2018-09-10', [7,9]);
         $this->createDayOff('2018-09-11', [7,9]);
-        $this->createDayOff('2018-09-13', [7,20,49]);
-        $this->createDayOff('2018-09-14', [7,20,49]);
+        $this->createDayOff('2018-09-13', [8,20,49]);
+        $this->createDayOff('2018-09-14', [8,20,49]);
 
         $this->createAssignedShift('2018-09-15', [42,47,39,32,38]);
 

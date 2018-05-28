@@ -9,6 +9,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 class Calendar
 {
@@ -41,8 +42,17 @@ class Calendar
     {
         $sheet = $this->spreadsheet;
         $sheet->getDefaultStyle()->getFont()->setName('Arial');
-        $sheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(15);
         $sheet->getActiveSheet()->freezePaneByColumnAndRow(3,3);
+        $sheet->getActiveSheet()->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
+        $sheet->getActiveSheet()->getPageSetup()->setFitToPage(true);
+        $sheet->getActiveSheet()->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_STANDARD_2);
+        $sheet->getActiveSheet()->getPageMargins()->setTop(0);
+        $sheet->getActiveSheet()->getPageMargins()->setHeader(0);
+        $sheet->getActiveSheet()->getPageMargins()->setBottom(0);
+        $sheet->getActiveSheet()->getPageMargins()->setFooter(0);
+        $sheet->getActiveSheet()->getPageMargins()->setLeft(0);
+        $sheet->getActiveSheet()->getPageMargins()->setRight(0);
     }
 
     private function addHeading()
@@ -60,21 +70,21 @@ class Calendar
 
         for($i = 0; $i < $duration; $i++)
         {
-            $sheet->getColumnDimensionByColumn($i + 3)->setWidth(6);
+            $sheet->getColumnDimensionByColumn($i + 3)->setWidth(7);
             $cell = $sheet->getCellByColumnAndRow($i + 3, 2);
             $cell->setValue($this->startDate->copy()->addDays($i)->format('j'));
             $cellStyle = $cell->getStyle();
-            $cellStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $cellStyle->getFill()->setFillType(Fill::FILL_SOLID)
                 ->getStartColor()->setRGB('DAE1E7');
             $cellStyle->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
+            $cellStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
             // Coloration pour la fin de semaine
             if($i % 7 === 0 || $i % 7 === 6) {
                 $column = $cell->getColumn();
                 $sheet->getStyle($column . '2:' . $column . ($this->users->count()+2))->getFill()
                     ->setFillType(Fill::FILL_SOLID)
-                    ->getStartColor()->setRGB('BCDEFA');
+                    ->getStartColor()->setRGB('bfbfbf');
             }
         }
     }
@@ -89,23 +99,28 @@ class Calendar
         $duration = $this->endDate->diffInDays($this->startDate);
         $lastColumn = $sheet->getCellByColumnAndRow($colStart + $duration, $rowStart)->getColumn();
 
-        $sheet->getStyle('B' . ($rowStart) . ':' . $lastColumn . ($this->users->count()+$rowStart-1))
-            ->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $rowStyle = $sheet->getStyle('B' . ($rowStart) . ':' . $lastColumn . ($this->users->count()+$rowStart-1));
+        $rowStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
         foreach($this->users as $index => $user) {
+            // Set la hauteur de la rangée
+            $sheet->getRowDimension($rowStart + $index)->setRowHeight(17);
+
             $cell = $sheet->getCellByColumnAndRow(2, $index + $rowStart);
             $cell->setValue(mb_strtoupper($user->lastname) . ', ' . mb_strtoupper($user->firstname));
             $cell->getStyle()->getFont()->setSize(7);
+            $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
             foreach ($user->assignedShifts as $assignedShift) {
                 if($assignedShift->date->gte($this->startDate) && $assignedShift->date->lte($this->endDate)) {
                     $col = $assignedShift->date->diffInDays($this->startDate) + $colStart;
 
                     $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
+                    $cell->getStyle()->getFont()->setSize(9);
+                    $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+                    $cell->getStyle()->getAlignment()->setShrinkToFit(true);
                     $value = $cell->getValue();
                     $text = $assignedShift->shift->code;
-
-                    $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
                     if($value != null) {
                         $cell->setValue($value.'-'.$text);
@@ -139,7 +154,6 @@ class Calendar
                         $col = $iterateDay->diffInDays($this->startDate) + $colStart;
 
                         $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
-                        $cell->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
                         if ($constraint->day !== NULL) {
                             // Si la contrainte contient un jour spécisé, on l'inscrit seulement dans celui-ci
@@ -168,7 +182,7 @@ class Calendar
         $value .= $constraint->constraintType->code;
         $cell->getStyle()
             ->getFill()->setFillType(Fill::FILL_SOLID)
-            ->getStartColor()->setARGB('E8FFFE');
+            ->getStartColor()->setRGB('b7dee8');
 
         $richText = new RichText();
         $splitValue = explode("*", $value);
@@ -178,9 +192,13 @@ class Calendar
             $richText->createText($beforeAsterisk . '-');
         }
         $boldText = $richText->createTextRun($afterAsterisk);
-        $boldText->getFont()->setSize(12)
-            ->getColor()->setARGB('CC1F1A');
+        $boldText->getFont()->getColor()->setARGB('CC1F1A');
+        $boldText->getFont()->setName('Arial');
+        $boldText->getFont()->setSize(9);
         $cell->setValue($richText);
+        $cell->getStyle()->getFont()->setSize(9);
+        $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        $cell->getStyle()->getAlignment()->setShrinkToFit(true);
     }
 
     public function getSpreadsheet()
