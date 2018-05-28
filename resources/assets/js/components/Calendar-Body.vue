@@ -1,7 +1,7 @@
 <template>
     <tbody>
     <tr v-for="user in dataUsers">
-        <td>{{ user.lastname }}, {{ user.firstname }}</td>
+        <td>{{ user.lastname }}, {{ user.firstname }} ({{user.workdays_per_week}})</td>
         <td v-for="(date, index) in dataDates"
             :class="{'alert-info': ['0','6'].includes(date.format('e')) }"
             is="calendar-cell"
@@ -9,7 +9,9 @@
             :data-user-id="user.id"
             :data-date="date"
         >
-            <div slot="assignedShifts" v-if="getAssignedShiftByDay(user.id, date)">{{ getAssignedShiftByDay(user.id, date) }}</div>
+            <div slot="assignedShifts" v-if="getAssignedShiftByDay(user.id, date)">
+                <span v-html="getAssignedShiftByDay(user.id, date)"></span>
+            </div>
             <div slot="constraints" class="text-danger" v-if="getConstraintsByDay(user.id, date)">{{ getConstraintsByDay(user.id, date) }}</div>
         </td>
     </tr>
@@ -41,16 +43,28 @@
             },
             getConstraintsByDay(userId, date) {
                 return _.map(_.filter(this.dataConstraints, function (constraint) {
+                    let dateStart = parseInt(date.format('x'));
+                    let dateEnd = dateStart + 86400000 - 1;
+                    let constraintStart = new Date(constraint.start_datetime).getTime();
+                    let constraintEnd = new Date(constraint.end_datetime).getTime();
+
                     if(constraint.user_id === userId
-                        && date >= new Date(constraint.start_datetime) && date <= new Date(constraint.end_datetime)) {
+                        && ((constraintStart >= dateStart && constraintStart <= dateEnd)
+                            || (constraintStart < dateEnd && constraintEnd > dateStart))) {
                         if(constraint.day) {
                             return constraint.day === parseInt(date.format('e'));
                         } else {
                             return true;
                         }
                     }
-
-                }), 'constraint_type.code').join('-');
+                }), function (constraint) {
+                    let code = constraint.constraint_type.code;
+                    if(constraint.weight) {
+                        return '['+code+']';
+                    } else {
+                        return code;
+                    }
+                }).join('-');
             }
         }
     }
