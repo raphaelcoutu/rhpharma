@@ -13,12 +13,15 @@
             </tr>
             </thead>
             <tbody v-if="dataConflicts.length">
-            <tr v-for="conflict in dataConflicts" v-if="dataConflicts">
+            <tr v-for="conflict in conflicts" v-if="dataConflicts">
                 <td>{{ conflict.id }}</td>
                 <td></td>
-                <td></td>
-                <td><a :href="departmentHref(conflict.department.id)">{{ conflict.department.name }} ({{ conflict.department.id }})</a></td>
-                <td>{{ conflict.date }}</td>
+                <td>{{ conflict.severity }}</td>
+                <td v-if="conflict.department"><a :href="departmentHref(conflict.department.id)">{{ conflict.department.name }} ({{ conflict.department.id }})</a></td>
+                <td v-else></td>
+                <td>
+                    {{ conflict.start_date.substring(0,10) }} <span v-if="conflict.end_date"> - {{ conflict.end_date.substring(0,10) }}</span>
+                </td>
                 <td>{{ conflict.message }}</td>
             </tr>
             </tbody>
@@ -42,6 +45,12 @@
         methods: {
             departmentHref(id) {
                 return "/calendar/" + this.dataSchedule.id + "/byDepartment/" + id;
+            }
+        },
+
+        computed: {
+            conflicts() {
+                return _.orderBy(this.dataConflicts, 'severity', 'desc');
             }
         }
     }

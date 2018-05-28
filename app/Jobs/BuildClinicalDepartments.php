@@ -2,9 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Builders\DepartmentAnalyzer;
 use App\Builders\GenericBuilder;
 use App\Builders\Precalculation;
+use App\Builders\UserAnalyzer;
+use App\Conflict;
 use App\Events\UpdateBuildStatus;
+use App\Schedule;
 use App\Setting;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -62,11 +66,22 @@ class BuildClinicalDepartments implements ShouldQueue
 
         Log::info('BuildClinicalDepartments Job: STARTED');
 
+        Conflict::clearSchedule($this->precalculation->schedule);
+
         $departments = collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) {
                 set_time_limit(30);
-                new GenericBuilder($this->precalculation, $departmentId);
+                $status = Schedule::find($this->event->scheduleId)->status_clinical_departments;
+                if($status === 3) {
+                    new GenericBuilder($this->precalculation, $departmentId);
+                    DepartmentAnalyzer::run($this->precalculation->schedule, $departmentId);
+                } else {
+                    $this->stopJob($status);
+                    return false;
+                }
             });
+
+        UserAnalyzer::run($this->precalculation->schedule);
 
         if ($departments->count() == 0) {
             $message = 'No departments found in settings.';
@@ -80,5 +95,15 @@ class BuildClinicalDepartments implements ShouldQueue
             event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
         }
 
+    }
+
+    public function stopjob(int $status)
+    {
+        if($status === 4) {
+            Log::warning('BuildClinicalDepartments Job: Stopped by user.');
+        } elseif ($status === 5) {
+            Log::warning('BuildClinicalDepartments Job: Reset by user.');
+        }
+        return false;
     }
 }

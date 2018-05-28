@@ -115,6 +115,9 @@
                 else if(status === 1) return {'fa-check-circle-o text-success': true};
                 else if(status === 2) return {'fa-exclamation-triangle text-warning' : true};
                 else if(status === 3) return {'fa-refresh fa-spin fa-fw text-primary' : true};
+                else if(status === 4) return {'fa-stop-circle text-danger' : true};
+                else if(status === 5) return {'fa-clock-o' : true};
+                else if(status === 6) return {'fa-refresh fa-spin fa-fw text-primary' : true};
                 else return '';
             },
 

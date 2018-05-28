@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UpdateBuildStatus;
+use App\Jobs\AnalyzeClinicalDepartments;
 use App\Jobs\BuildClinicalDepartments;
 use App\Schedule;
 
@@ -29,40 +30,20 @@ class BuildStatusChanged
         $schedule = Schedule::findOrFail($event->scheduleId);
 
         if($event->buildStep == 'clinical') {
-            if($event->status == 3) {
-                //Update database
-                $schedule->status_clinical_departments = 3;
+            //On update database (peu importe le status, tant qu'il existe!)
+            if($event->status >= 0 && $event->status <= 6) {
+                $schedule->status_clinical_departments = $event->status;
                 $schedule->update();
+            }
 
+            if ($event->status === 3) {
                 //Start job
                 (new BuildClinicalDepartments($event))->handle();
-
             }
 
-            if($event->status == 1) {
-                //Update database
-                //Update database
-                $schedule->status_clinical_departments = 1;
-                $schedule->update();
-
-                //Update schedule.show
-
-                //Send notification to admins
-            }
-
-            if($event->status == 2) {
-                //Update database
-                //Update database
-                $schedule->status_clinical_departments = 2;
-                $schedule->update();
-
-                //Update schedule.show
-
-                //Send notification to admins
+            if ($event->status === 6) {
+                (new AnalyzeClinicalDepartments($event))->handle();
             }
         }
-
-
-
     }
 }

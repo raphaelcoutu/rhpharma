@@ -4,7 +4,6 @@ namespace App\Builders;
 
 
 use App\AssignedShift;
-use App\Conflict;
 use App\Department;
 use Illuminate\Support\Facades\Log;
 
@@ -20,8 +19,6 @@ class GenericBuilder extends BaseBuilder
         parent::__construct($precalculation, $departmentId);
 
         $start = microtime(true);
-
-        $this->clean();
 
         $weeksCount = $precalculation->getWeeksCount();
 
@@ -46,8 +43,6 @@ class GenericBuilder extends BaseBuilder
 
         // Correction pour les 4 jours par semaine
         $this->partialTimeCorrection();
-
-        Analyzer::conflicts($precalculation->schedule, $departmentId);
 
         Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo'
             . ' (' . round(microtime(true) - $start, 2) . 's)');
@@ -111,12 +106,6 @@ class GenericBuilder extends BaseBuilder
                 $this->precalculation->assignWeekSequence($this->departmentId, $group, $this->selectedCombinaison['sequence']);
             } else {
                 Log::debug("No more pharmacist available to assign. [Department = {$this->departmentId}]");
-                Conflict::create([
-                    'schedule_id' => $this->precalculation->schedule->id,
-                    'department_id' => $this->departmentId,
-                    'date' => '',
-                    'message' => 'Aucun pharmacien disponible!'
-                ]);
             }
         }
     }
@@ -380,24 +369,6 @@ class GenericBuilder extends BaseBuilder
 
                 }
             }
-
-            // Si je me suis rendu ici, ça veut dire que je n'ai pas été capable de combler le trou
-            // Donc, on génère un conflit.
-            Conflict::create([
-                'schedule_id' => $this->precalculation->schedule->id,
-                'department_id' => $this->departmentId,
-                'date' => $firstAssignedShift->date->startOfWeek()->addDays(-1)->toDateString() . ' au ' . $firstAssignedShift->date->endOfWeek()->addDays(-1)->toDateString(),
-                'message' => $firstAssignedShift->user->fullname . ' devrait travailler 4 jours!'
-            ]);
         }
-    }
-
-    private function clean()
-    {
-        // On retire les conflits associés au département
-        Conflict::where('department_id', $this->departmentId)
-            ->where('date', '>=', $this->precalculation->schedule->start_date)
-            ->where('date', '<=', $this->precalculation->schedule->end_date)
-            ->delete();
     }
 }

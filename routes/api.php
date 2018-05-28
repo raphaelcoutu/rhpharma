@@ -14,9 +14,6 @@
 
 Route::group(['middleware' => 'auth'], function () {
 
-    //Build
-    Route::get('build/{scheduleId}/clinical', 'BuildController@buildClinical');
-
     //Branches
     Route::get('branches', 'BranchesController@fetch');
     Route::post('branches/store', 'BranchesController@store');
@@ -49,12 +46,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('holidays/store', 'HolidaysController@store');
     Route::patch('holidays/{id}', 'HolidaysController@update');
 
+    //Schedule
+    Route::post('schedules/updateStatus', 'BuildController@updateStatus');
+
+    //Settings
+    Route::patch('settings/departments', 'SettingsController@updateDepartments');
+    Route::patch('settings/triplets', 'SettingsController@updateTriplets');
+
     //Users-Departments
     Route::get('usersDepartments/{id}', 'UsersDepartmentsController@fetch');
     Route::post('usersDepartments/{id}/store', 'UsersDepartmentsController@store');
     Route::delete('usersDepartments/{id}', 'UsersDepartmentsController@destroy');
-    
-    //Settings
-    Route::patch('settings/departments', 'SettingsController@updateDepartments');
-    Route::patch('settings/triplets', 'SettingsController@updateTriplets');
 });

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class BuildController extends Controller
 {
-    public function buildClinical(int $scheduleId)
+    public function updateStatus(Request $request)
     {
-        event(new UpdateBuildStatus($scheduleId, 'clinical', 3));
+        event(new UpdateBuildStatus($request->scheduleId, $request->buildStep, $request->status));
 
         return response("OK", 200);
     }

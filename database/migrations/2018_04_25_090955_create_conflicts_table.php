@@ -16,8 +16,10 @@ class CreateConflictsTable extends Migration
         Schema::create('conflicts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('schedule_id');
-            $table->unsignedInteger('department_id');
-            $table->string('date');
+            $table->unsignedInteger('department_id')->nullable();
+            $table->integer('severity')->default(0);
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->string('message');
             $table->timestamps();
 

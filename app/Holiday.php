@@ -9,6 +9,8 @@ class Holiday extends Model
 {
     protected $fillable = ['description', 'date'];
 
+    protected $dates = ['date'];
+
     public function scopeByDate($query)
     {
         return $query->orderBy('date', 'asc')->where('date', '>=', Carbon::today());
