@@ -20,7 +20,6 @@ class ProductionSeeder extends Seeder
         $this->call(BranchSeeder::class);
         $this->call(DepartmentTypeSeeder::class);
         $this->call(WorkplaceDepartmentSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(ConstraintTypeSeeder::class);
