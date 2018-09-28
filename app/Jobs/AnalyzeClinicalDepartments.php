@@ -2,9 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Builders\BuildStatus;
 use App\Builders\DepartmentAnalyzer;
 use App\Builders\UserAnalyzer;
 use App\Conflict;
+use App\Events\BuildMessageGenerated;
 use App\Events\UpdateBuildStatus;
 use App\Schedule;
 use App\Setting;
@@ -39,9 +41,10 @@ class AnalyzeClinicalDepartments implements ShouldQueue
     public function handle()
     {
         $start = microtime(true);
-        Log::debug('AnalyzerJob : begins');
-
         $schedule = Schedule::find($this->event->scheduleId);
+
+        Log::debug('AnalyzerJob : begins');
+        event(new BuildMessageGenerated($schedule, 'Analyse a débuté...'));
 
         Conflict::clearSchedule($schedule);
 
@@ -52,8 +55,10 @@ class AnalyzeClinicalDepartments implements ShouldQueue
 
         UserAnalyzer::run($schedule);
 
-        Log::debug('AnalyzeJob : finishes (' . number_format(microtime(true) - $start, 2) . 's)');
+        $end = number_format(microtime(true) - $start, 2);
+        Log::debug('AnalyzeJob : finishes (' . $end . 's)');
 
-        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', 1));
+        event(new BuildMessageGenerated($schedule, 'Analyse est terminée (' . $end . 's)'));
+        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Success));
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Listeners;
 
+use App\Builders\BuildStatus;
 use App\Events\UpdateBuildStatus;
 use App\Jobs\AnalyzeClinicalDepartments;
 use App\Jobs\BuildClinicalDepartments;
+use App\Jobs\ResetClinicalDepartments;
 use App\Schedule;
 
 class BuildStatusChanged
@@ -36,13 +38,17 @@ class BuildStatusChanged
                 $schedule->update();
             }
 
-            if ($event->status === 3) {
+            if($event->status === BuildStatus::Build) {
                 //Start job
                 (new BuildClinicalDepartments($event))->handle();
             }
 
-            if ($event->status === 6) {
+            if($event->status === BuildStatus::Analyze) {
                 (new AnalyzeClinicalDepartments($event))->handle();
+            }
+
+            if($event->status === BuildStatus::Reset) {
+                (new ResetClinicalDepartments($event))->handle();
             }
         }
     }
