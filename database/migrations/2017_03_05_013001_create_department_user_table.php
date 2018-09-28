@@ -19,6 +19,7 @@ class CreateDepartmentUserTable extends Migration
             $table->tinyInteger('history')->default(0);
             $table->tinyInteger('planning_long')->default(0);
             $table->tinyInteger('planning_short')->default(0);
+            $table->boolean('active')->default(true);
 
             $table->primary(['department_id', 'user_id']);
             $table->index(['user_id', 'department_id']);

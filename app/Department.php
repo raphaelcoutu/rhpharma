@@ -29,7 +29,7 @@ class Department extends Model
     public function users()
     {
         return $this->belongsToMany(User::class)
-            ->withPivot(['history', 'planning_long', 'planning_short']);
+            ->withPivot(['active', 'history', 'planning_long', 'planning_short']);
     }
 
     public function departmentType()

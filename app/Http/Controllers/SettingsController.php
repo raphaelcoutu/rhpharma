@@ -20,10 +20,34 @@ class SettingsController extends Controller
         return view('settings.index', compact('departments', 'triplets', 'settings'));
     }
 
+    public function departments()
+    {
+        $departments = Department::with('users')
+            ->whereHas('departmentType', function ($departmentType) {
+                $departmentType->whereIn('name', ['Clinique','Oncologie']);
+            })->orderBy('name')->get();
+
+        return view('settings.departments', compact('departments'));
+    }
+
     public function updateDepartments(Request $request) {
         $setting = Setting::where('key', 'departments_order')->firstOrFail();
 
         $setting->update(['value' => json_encode($request->all())]);
+
+        return "OK";
+    }
+
+    public function updateDepartmentUser(Request $request)
+    {
+        $departmentId = $request['departmentId'];
+        $userId = $request['userId'];
+        $userActive = $request['userActive'];
+        $userPlanning = $request['userPlanning'];
+
+        $department = Department::find($departmentId);
+        $department->users()
+            ->updateExistingPivot($userId, ['active' => $userActive, 'planning_short' => $userPlanning]);
 
         return "OK";
     }
