@@ -1,23 +1,32 @@
 <template>
-    <Conflicts v-show="showConflicts"
-            :data-schedule="dataSchedule"
-            :data-conflicts="conflicts"
-    ></Conflicts>
+    <div>
+        <a @click="changeTab(0)">Log</a>
+        <a @click="changeTab(1)">Conflits ({{ conflicts.length }})</a>
+        <Log v-show="tabIndex === 0"
+             :data-schedule="dataSchedule"
+        ></Log>
+        <Conflicts v-show="tabIndex === 1"
+                :data-schedule="dataSchedule"
+                :data-conflicts="conflicts"
+        ></Conflicts>
+    </div>
 </template>
 
 <script>
     import Conflicts from './Schedule-Conflicts.vue'
+    import Log from './Schedule-Log'
 
     export default {
         props: ['dataSchedule', 'dataConflicts', 'dataStatuses'],
 
         components: {
-            Conflicts
+            Conflicts,
+            Log
         },
 
         data() {
             return {
-                showConflicts: true,
+                tabIndex: 0,
                 conflicts: this.dataConflicts
             }
         },
@@ -47,6 +56,10 @@
                         .then(res => resolve(res))
                         .catch(err => reject(err));
                 })
+            },
+
+            changeTab(index) {
+                this.tabIndex = index;
             }
         }
 
