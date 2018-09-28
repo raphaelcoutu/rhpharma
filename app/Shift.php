@@ -15,4 +15,9 @@ class Shift extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function assignedShifts()
+    {
+        return $this->hasMany(AssignedShift::class);
+    }
 }
