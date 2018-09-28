@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="search" class="form-control" v-model="search" placeholder="Rechercher" @keyup="filterShifts">
+        <input type="search" class="form-control" v-model="search" placeholder="Rechercher" @keyup="filterShifts" ref="searchBar">
         <div id="shifts">
             <li v-for="shift in filteredShifts">
                 <div @click="toggleActive(shift)">
@@ -33,6 +33,7 @@
         mounted() {
             this.parseShifts();
             this.filterShifts();
+            this.$refs.searchBar.focus();
         },
 
         data() {
