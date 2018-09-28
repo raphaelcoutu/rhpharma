@@ -127,6 +127,14 @@ class ImportCsvCommand extends Command
             144 => 59,
             145 => 60,
             146 => 61,
+            54 => 1,
+            73 => 10,
+            74 => 11,
+            75 => 12,
+            84 => 62,
+            103 => 26,
+            123 => 63,
+            127 => 21
         ];
 
     }
@@ -155,7 +163,15 @@ class ImportCsvCommand extends Command
                     $weight = ($data[6] === "TRUE") ? 1 : (($data[6] == "FALSE") ? 0 : $data[6]);
 
                     // On doit regarder dans la variable "day" ou "day1"...
-                    $day = ($data[12] !== "") ? $data[12] : ($data[13] !== "") ? $data[13] : null;
+
+                    if($data[12] !== "") {
+                        $day = $data[12];
+
+                    } else if($data[13] !== "") {
+                        $day = $data[13];
+                    } else {
+                        $day = null;
+                    }
 
                     $constraint = [
                         'user_id' => $this->userIds[$data[0]],
