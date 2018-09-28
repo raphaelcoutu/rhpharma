@@ -31,7 +31,9 @@ class CalendarController extends Controller
         $parsedDate = Carbon::parse($request->date);
 
         $user = User::with(['constraints' => function ($query) use ($parsedDate) {
-            $query->InDateInterval($parsedDate, $parsedDate);
+            $query->InDateInterval($parsedDate, $parsedDate)->whereHas('constraintType', function ($constraintType) {
+                $constraintType->where('is_group_constraint', 0);
+            });
         }, 'constraints.constraintType' => function ($query) {
             $query->select('id', 'name');
         }, 'assignedShifts' => function ($query) use ($parsedDate) {

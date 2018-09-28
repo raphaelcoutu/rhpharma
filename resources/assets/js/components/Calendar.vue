@@ -76,6 +76,8 @@
         },
 
         mounted() {
+            $('[data-toggle="tooltip"]').tooltip();
+
             let that = this;
             window.addEventListener('keyup', (event) => {
                 if(event.code === 'Escape' && this.showModal === true) {

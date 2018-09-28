@@ -12,7 +12,12 @@
             <div slot="assignedShifts" v-if="getAssignedShiftByDay(user.id, date)">
                 <span v-html="getAssignedShiftByDay(user.id, date)"></span>
             </div>
-            <div slot="constraints" class="text-danger" v-if="getConstraintsByDay(user.id, date)">{{ getConstraintsByDay(user.id, date) }}</div>
+            <div slot="constraints"
+                 class="text-danger"
+                 v-if="getConstraintsByDay(user.id, date)"
+            >
+                {{ getConstraintsByDay(user.id, date) }}
+            </div>
         </td>
     </tr>
     </tbody>
