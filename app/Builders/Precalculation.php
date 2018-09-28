@@ -339,11 +339,7 @@ class Precalculation
 
     private function clean()
     {
-        // On retire les shifts déjà générés pour mieux générer à nouveua
-        AssignedShift::where('date', '>=', $this->schedule->start_date)
-            ->where('date', '<=', $this->schedule->end_date)
-            ->where('is_generated', 1)
-            ->where('is_published', 0)
-            ->delete();
+        // On retire les shifts déjà générés pour mieux générer à nouveau
+        AssignedShift::clearSchedule($this->schedule);
     }
 }
