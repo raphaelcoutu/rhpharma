@@ -320,8 +320,8 @@ class Precalculation
         });
 
         foreach($this->departments as $department) {
-            foreach($department->users as $user) {
-                if($totalPlanning[$department->id] > 75) {
+            foreach($department->users->where('is_active', 1) as $user) {
+                if($totalPlanning[$department->id] >= 0) {
                     $planningShort = $user->pivot->planning_short;
 
                     $allocated = floor(($planningShort + 0.01) / 100 * $this->getWeeksCount());
