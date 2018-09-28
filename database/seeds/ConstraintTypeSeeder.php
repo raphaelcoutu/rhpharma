@@ -673,5 +673,35 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
         ]);
+
+        $this->create([
+            'name' => 'Congé sans solde 4 semaines',
+            'description' => '',
+            'code' => 'AA',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'URE fixe en AM',
+            'description' => '',
+            'code' => 'URE/',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'URE fixe en PM',
+            'description' => '',
+            'code' => '/URE',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
