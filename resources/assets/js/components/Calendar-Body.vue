@@ -3,11 +3,14 @@
     <tr v-for="user in dataUsers">
         <td>{{ user.lastname }}, {{ user.firstname }} ({{user.workdays_per_week}})</td>
         <td v-for="(date, index) in dataDates"
-            :class="{'alert-info': ['0','6'].includes(date.format('e')) }"
+            class="noselect"
+            :class="{'alert-info': ['0','6'].includes(date.format('e'))}"
             is="calendar-cell"
             @open="$emit('openModal', $event)"
+            @select="toggleSelect"
             :data-user-id="user.id"
             :data-date="date"
+            :data-key="`${user.id}_${dataFirstDay+index}`"
         >
             <div slot="assignedShifts" v-if="getAssignedShiftByDay(user.id, date)">
                 <span v-html="getAssignedShiftByDay(user.id, date)"></span>
@@ -32,6 +35,7 @@
             'dataAssignedShifts',
             'dataConstraints',
             'dataDates',
+            'dataFirstDay',
             'dataUsers',
             'dataWeeksCount',
             ],
@@ -39,6 +43,10 @@
         components: {
             CalendarCell
         },
+
+        data: () => ({
+            selected: []
+        }),
 
         methods: {
             getAssignedShiftByDay(userId, date) {
@@ -70,6 +78,14 @@
                         return code;
                     }
                 }).join('-');
+            },
+            toggleSelect(key) {
+                let index = this.selected.indexOf(key);
+                if(index !== -1) {
+                    this.selected.splice(index, 1)
+                } else {
+                    this.selected.push(key)
+                }
             }
         }
     }

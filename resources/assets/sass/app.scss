@@ -41,4 +41,12 @@ th.clickable {
   margin-bottom: 20px;
 }
 
+.bg-red {
+  background-color: red !important;
+}
+
+.noselect {
+  user-select: none;
+}
+
 [v-cloak] > * { display:none }

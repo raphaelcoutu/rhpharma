@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div class="col-md-10 col-md-offset-1">
+            <button>Action(0)</button>
+            <button>Clear</button>
+        </div>
         <table class="table-bordered calendar">
             <calendar-header
                     :data-dates="dates"
@@ -13,6 +17,7 @@
                     :data-assigned-shifts="assignedShifts"
                     :data-constraints="constraints"
                     :data-dates="dates"
+                    :data-first-day="firstDay"
                     :data-users="users"
                     :data-weeks-count="weeksCount"
                     v-on:openModal="openModal"
