@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constraint;
 use App\Http\Requests\ScheduleRequest;
 use App\Schedule;
+use Illuminate\Http\Request;
 
 class SchedulesController extends Controller
 {
@@ -110,6 +111,13 @@ class SchedulesController extends Controller
         $schedule->update($request->all());
 
         return redirect()->route('schedules.index');
+    }
+
+    public function updateNotes(Request $request, $id)
+    {
+        $schedule = Schedule::findOrFail($id);
+        $schedule->notes = $request->notes;
+        $schedule->save();
     }
 
     /**

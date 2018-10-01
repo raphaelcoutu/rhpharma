@@ -25,6 +25,7 @@ class CreateSchedulesTable extends Migration
             $table->tinyInteger('status_weekends')->default(0);
             $table->tinyInteger('status_last_evening')->default(0);
             $table->tinyInteger('status_clinical_departments')->default(0);
+            $table->text('notes')->nullable();
             $table->timestamps();
 
             $table->foreign('branch_id')->references('id')->on('branches');

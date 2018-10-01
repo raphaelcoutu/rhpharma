@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Schedule
     Route::post('schedules/updateStatus', 'BuildController@updateStatus');
+    Route::put('schedules/{id}/updateNotes', 'SchedulesController@updateNotes');
 
     //Settings
     Route::patch('settings/departments', 'SettingsController@updateDepartments');

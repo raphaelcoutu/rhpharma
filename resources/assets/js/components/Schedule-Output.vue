@@ -1,27 +1,35 @@
 <template>
     <div>
-        <a @click="changeTab(0)" :class="{'text-bold': tabIndex === 0}">Log</a>
-        <a @click="changeTab(1)" :class="{'text-bold': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
+        <div class="bg-light-grey">
+        <a @click="changeTab(0)" class="btn" :class="{'text-bold btn-default': tabIndex === 0}">Log</a>
+        <a @click="changeTab(1)" class="btn" :class="{'text-bold btn-default': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
+        <a @click="changeTab(2)" class="btn" :class="{'text-bold btn-default': tabIndex === 2}">Notes</a>
+        </div>
         <Log v-show="tabIndex === 0"
              :data-schedule="dataSchedule"
         ></Log>
         <Conflicts v-show="tabIndex === 1"
-                :data-schedule="dataSchedule"
-                :data-conflicts="conflicts"
+                   :data-schedule="dataSchedule"
+                   :data-conflicts="conflicts"
         ></Conflicts>
+        <Notes v-show="tabIndex === 2"
+               :data-schedule="dataSchedule"
+        ></Notes>
     </div>
 </template>
 
 <script>
     import Conflicts from './Schedule-Conflicts.vue'
     import Log from './Schedule-Log'
+    import Notes from './Schedule-Notes'
 
     export default {
         props: ['dataSchedule', 'dataConflicts', 'dataStatuses'],
 
         components: {
             Conflicts,
-            Log
+            Log,
+            Notes
         },
 
         data() {
