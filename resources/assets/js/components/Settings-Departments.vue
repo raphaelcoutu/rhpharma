@@ -3,8 +3,8 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th width="10%"></th>
-                <th width="70%">Département</th>
+                <th width="20%"></th>
+                <th width="60%">Département</th>
                 <th width="20%" class="text-center">
                     <div>Actif</div>
                     <div class="btn-group btn-group-xs">
@@ -18,8 +18,10 @@
                 <tr v-for="(item, index) in sortedDepartments">
                     <td>
                         <span class="btn-group-xs">
-                        <a class="btn btn-primary" @click="moveUp(item)" :class="{ 'disabled' : item.order == 0}"><i class="fa fa-arrow-up"></i></a>
-                        <a class="btn btn-primary" @click="moveDown(item)" :class="{ 'disabled' : item.order == sortedDepartments.length - 1 }"><i class="fa fa-arrow-down"></i></a>
+                            <a class="btn btn-primary" @click="moveTop(item)" :class="{ 'disabled' : item.order == 0}"><i class="fa fa-level-up"></i></a>
+                            <a class="btn btn-primary" @click="moveUp(item)" :class="{ 'disabled' : item.order == 0}"><i class="fa fa-arrow-up"></i></a>
+                            <a class="btn btn-primary" @click="moveDown(item)" :class="{ 'disabled' : item.order == sortedDepartments.length - 1 }"><i class="fa fa-arrow-down"></i></a>
+                            <a class="btn btn-primary" @click="moveBottom(item)" :class="{ 'disabled' : item.order == sortedDepartments.length - 1 }"><i class="fa fa-level-down"></i></a>
                         </span></td>
                     <td :class="{ 'text-bold' : item.active }">
                         {{ item.name }}
@@ -44,11 +46,9 @@
             this.sortDepartments();
         },
 
-        data() {
-            return {
-                departmentsWithSettings: []
-            };
-        },
+        data: () => ({
+            departmentsWithSettings: []
+        }),
 
         methods: {
             sortDepartments() {
@@ -76,13 +76,30 @@
                 });
             },
 
+            moveTop(item) {
+                let itemOrder = item.order;
+
+                // Si on est au top, on fait rien
+                if(itemOrder === 0) return;
+
+                // Filtrer les items plus hauts et les descendre de 1
+                _.forEach(_.filter(this.sortedDepartments, i => {
+                    return i.order < itemOrder;
+                }), i => {
+                    return i.order++;
+                });
+
+                //Finalement, on met notre item en haut de liste
+                item.order = 0;
+            },
+
             moveUp(item) {
                 let itemOrder = item.order;
 
                 // On fait rien si l'item est déjà le plus haut
-                if(itemOrder == 0) return;
+                if(itemOrder === 0) return;
 
-                let itemBefore = _.find(this.sortedDepartments, {"order": item.order - 1})
+                let itemBefore = _.find(this.sortedDepartments, {"order": item.order - 1});
 
                 itemBefore.order = itemOrder;
                 item.order = itemOrder - 1;
@@ -92,12 +109,29 @@
                 let itemOrder = item.order;
 
                 // On fait rien si l'item est déjà le plus bas
-                if(itemOrder == this.sortedDepartments.length - 1) return;
+                if(itemOrder === this.sortedDepartments.length - 1) return;
 
-                let itemAfter = _.find(this.sortedDepartments, {"order": item.order + 1})
+                let itemAfter = _.find(this.sortedDepartments, {"order": item.order + 1});
 
                 itemAfter.order = itemOrder;
                 item.order = itemOrder + 1;
+            },
+
+            moveBottom(item) {
+                let itemOrder = item.order;
+
+                // On fait rien si l'item est déjà le plus bas
+                if(itemOrder === this.sortedDepartments.length - 1) return;
+
+                // Filtrer les items plus hauts et les monter de 1
+                _.forEach(_.filter(this.sortedDepartments, i => {
+                    return i.order > itemOrder;
+                }), i => {
+                    return i.order--;
+                });
+
+                //Finalement, on met notre item en bas
+                item.order = this.sortedDepartments.length - 1;
             },
 
             save() {
@@ -111,11 +145,13 @@
                         console.log(err);
                 });
             },
+
             selectAll() {
                 _.each(this.sortedDepartments, function (item) {
                     item.active = true;
                 });
             },
+
             selectNone() {
                 _.each(this.sortedDepartments, function (item) {
                     item.active = false;
