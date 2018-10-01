@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="bg-light-grey">
-        <a @click="changeTab(0)" class="btn" :class="{'text-bold btn-default': tabIndex === 0}">Log</a>
-        <a @click="changeTab(1)" class="btn" :class="{'text-bold btn-default': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
-        <a @click="changeTab(2)" class="btn" :class="{'text-bold btn-default': tabIndex === 2}">Notes</a>
+        <a @click="changeTab(0)" href="#log" class="btn" :class="{'text-bold btn-default': tabIndex === 0}">Log</a>
+        <a @click="changeTab(1)" href="#conflicts" class="btn" :class="{'text-bold btn-default': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
+        <a @click="changeTab(2)" href="#notes" class="btn" :class="{'text-bold btn-default': tabIndex === 2}">Notes</a>
         </div>
         <Log v-show="tabIndex === 0"
              :data-schedule="dataSchedule"
@@ -30,6 +30,16 @@
             Conflicts,
             Log,
             Notes
+        },
+
+        mounted() {
+            let tabs = ['#log', '#conflicts', '#notes'];
+            let index = tabs.indexOf(window.location.hash);
+
+            // Si le hash est présent, on met la tab appropriée
+            if(index !== -1) {
+                this.tabIndex = index;
+            }
         },
 
         data() {
