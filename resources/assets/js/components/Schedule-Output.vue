@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a @click="changeTab(0)">Log</a>
-        <a @click="changeTab(1)">Conflits ({{ conflicts.length }})</a>
+        <a @click="changeTab(0)" :class="{'text-bold': tabIndex === 0}">Log</a>
+        <a @click="changeTab(1)" :class="{'text-bold': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
         <Log v-show="tabIndex === 0"
              :data-schedule="dataSchedule"
         ></Log>
