@@ -27,13 +27,11 @@
                         {{ item.name }}
                     </td>
                     <td class="text-center">
-                        <input type="checkbox" v-model="item.active">
+                        <input type="checkbox" v-model="item.active" @change="save">
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <a class="btn btn-primary" @click="save()">Sauvegarder</a>
     </div>
 </template>
 
@@ -91,6 +89,8 @@
 
                 //Finalement, on met notre item en haut de liste
                 item.order = 0;
+
+                this.save();
             },
 
             moveUp(item) {
@@ -103,6 +103,8 @@
 
                 itemBefore.order = itemOrder;
                 item.order = itemOrder - 1;
+
+                this.save();
             },
 
             moveDown(item) {
@@ -115,6 +117,8 @@
 
                 itemAfter.order = itemOrder;
                 item.order = itemOrder + 1;
+
+                this.save();
             },
 
             moveBottom(item) {
@@ -132,6 +136,8 @@
 
                 //Finalement, on met notre item en bas
                 item.order = this.sortedDepartments.length - 1;
+
+                this.save();
             },
 
             save() {
