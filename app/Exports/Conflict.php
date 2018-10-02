@@ -84,8 +84,7 @@ class Conflict
         $row = 4;
 
         $conflicts = \App\Conflict::with('department')
-            ->where('date', '>=', $this->schedule->start_date)
-            ->where('date', '<=', $this->schedule->end_date)
+            ->where('schedule_id', $this->schedule->id)
             ->get();
 
         foreach($conflicts as $conflict) {
