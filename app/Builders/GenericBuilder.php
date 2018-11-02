@@ -230,8 +230,10 @@ class GenericBuilder extends BaseBuilder
             if ($pharmacien->workdays_per_week > 3 && !$pharmacien->is_manual) {
                 foreach($pharmacien->departments as $department)
                 {
-                    if($department->id == $departmentId)
+                    // Si c'est l'actuel departmentId et le pharmacien est actif dans ce secteur
+                    if($department->id == $departmentId && $department->pivot->active === 1) {
                         return true;
+                    }
                 }
             }
         })->pluck('id')->toArray();
