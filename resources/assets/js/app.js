@@ -15,6 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import store from './store';
+
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('rhpharma-branches', require('./components/Branches.vue'));
 Vue.component('rhpharma-calendar', require('./components/Calendar.vue'));
@@ -32,5 +34,6 @@ Vue.component('rhpharma-users', require('./components/Users.vue'));
 Vue.component('rhpharma-users-departments', require('./components/Users-Departments.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store
 });
