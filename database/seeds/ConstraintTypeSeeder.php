@@ -703,5 +703,45 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
         ]);
+
+        $this->create([
+            'name' => 'Coordo Onco fixe en AM',
+            'description' => '',
+            'code' => 'ONC/',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Coordo Onco fixe en PM',
+            'description' => '',
+            'code' => '/ONC',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Coordo Onco fixe jour',
+            'description' => '',
+            'code' => 'ONC',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
+        $this->create([
+            'name' => 'Comité de pharmaco selon dispo',
+            'description' => 'Demi journée',
+            'code' => 'CPH/',
+            'is_work' => 1,
+            'is_single_day' => 0,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
