@@ -1,6 +1,6 @@
 <template>
     <td @click="handleClick($event)"
-        :class="{ 'bg-red' : isSelected }"
+        :class="{ 'bg-red' : selected.includes(dataKey) }"
     >
         <slot name="assignedShifts"><div>&nbsp;</div></slot>
         <slot name="constraints"><div>&nbsp;</div></slot>
@@ -13,7 +13,7 @@
 
         data: () => ({
             clickCount: 0,
-            clickTimer: null
+            clickTimer: null,
         }),
 
         methods: {
@@ -26,7 +26,7 @@
                     this.clickTimer = setTimeout(() => {
                         this.clickCount = 0;
 
-                        this.$emit('select', this.dataKey)
+                        this.toggleSelect()
 
                     }, 200)
                 } else if (this.clickCount === 2) {
@@ -40,12 +40,20 @@
 
                     this.$emit('open', payload)
                 }
+            },
+            toggleSelect() {
+                let index = this.selected.indexOf(this.dataKey);
+                if(index !== -1) {
+                    this.$store.commit('calendar/removeSelected', index)
+                } else {
+                    this.$store.commit('calendar/addSelected', this.dataKey)
+                }
             }
         },
 
         computed: {
-            isSelected() {
-                return this.$parent.$data.selected.includes(this.dataKey)
+            selected() {
+                return this.$store.state.calendar.selected
             }
         }
     }

@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="col-md-10 col-md-offset-1">
-            <button>Action(0)</button>
-            <button>Clear</button>
+            <button>Action({{ selected.length }})</button>
+            <button @click="clearSelected">Clear</button>
         </div>
         <table class="table-bordered calendar">
             <calendar-header
@@ -143,6 +143,9 @@
                     this.updateAssignedShifts(e, res.data);
                 })
             },
+            clearSelected() {
+                this.$store.commit('calendar/setSelected', []);
+            },
             updateAssignedShifts(event, data) {
                 if(typeof event === 'object') {
                     let id = _.findIndex(this.users, ['id', event.user_id]);
@@ -226,6 +229,9 @@
                 }
 
                 return 1;
+            },
+            selected() {
+                return this.$store.state.calendar.selected
             }
         }
     }

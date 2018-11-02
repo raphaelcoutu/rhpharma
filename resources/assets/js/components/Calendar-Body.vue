@@ -7,7 +7,6 @@
             :class="{'alert-info': ['0','6'].includes(date.format('e'))}"
             is="calendar-cell"
             @open="$emit('openModal', $event)"
-            @select="toggleSelect"
             :data-user-id="user.id"
             :data-date="date"
             :data-key="`${user.id}_${dataFirstDay+index}`"
@@ -44,9 +43,10 @@
             CalendarCell
         },
 
-        data: () => ({
-            selected: []
-        }),
+        data() {
+            return {
+            }
+        },
 
         methods: {
             getAssignedShiftByDay(userId, date) {
@@ -85,14 +85,6 @@
                         return code;
                     }
                 }).join('-');
-            },
-            toggleSelect(key) {
-                let index = this.selected.indexOf(key);
-                if(index !== -1) {
-                    this.selected.splice(index, 1)
-                } else {
-                    this.selected.push(key)
-                }
             }
         }
     }
