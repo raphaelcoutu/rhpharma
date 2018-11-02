@@ -156,12 +156,14 @@
                 _.each(this.sortedDepartments, function (item) {
                     item.active = true;
                 });
+                this.save();
             },
 
             selectNone() {
                 _.each(this.sortedDepartments, function (item) {
                     item.active = false;
                 });
+                this.save();
             }
         },
 
