@@ -61,7 +61,7 @@ class Conflict
         $styleHeader->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $styleHeader->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
 
-        $subHeaders = ['Id', 'Départment', 'Date', 'Message'];
+        $subHeaders = ['Id', 'Départment', 'Début', 'Fin', 'Message'];
         foreach($subHeaders as $index => $subHeader) {
             $cell = $sheet->getCellByColumnAndRow($index + 1, 3);
             $cell->setValue($subHeader);
@@ -85,13 +85,17 @@ class Conflict
 
         $conflicts = \App\Conflict::with('department')
             ->where('schedule_id', $this->schedule->id)
+            ->orderByDesc('severity')
             ->get();
 
         foreach($conflicts as $conflict) {
+            $departmentName = ($conflict->department_id !== null) ? $conflict->department->name : '';
+
             $sheet->getCellByColumnAndRow(1, $row)->setValue($conflict->id);
-            $sheet->getCellByColumnAndRow(2, $row)->setValue($conflict->department->name);
-            $sheet->getCellByColumnAndRow(3, $row)->setValue($conflict->date);
-            $sheet->getCellByColumnAndRow(4, $row)->setValue($conflict->message);
+            $sheet->getCellByColumnAndRow(2, $row)->setValue($departmentName);
+            $sheet->getCellByColumnAndRow(3, $row)->setValue($conflict->start_date);
+            $sheet->getCellByColumnAndRow(4, $row)->setValue($conflict->end_date);
+            $sheet->getCellByColumnAndRow(5, $row)->setValue($conflict->message);
 
             $row++;
         }
