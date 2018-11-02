@@ -52,7 +52,14 @@
             getAssignedShiftByDay(userId, date) {
                 return _.map(_.filter(this.dataAssignedShifts, function (shift) {
                     return shift.user_id === userId && date >= new Date(shift.date) && date <= new Date(shift.date)
-                }), 'shift.code').join('-');
+                }), function(assignedShift) {
+                    let code = assignedShift.shift.code;
+                    if(!assignedShift.is_generated) {
+                        return '<span class="text-yellow">' + code + '</span>';
+                    } else {
+                        return code;
+                    }
+                }).join('-');
             },
             getConstraintsByDay(userId, date) {
                 return _.map(_.filter(this.dataConstraints, function (constraint) {
