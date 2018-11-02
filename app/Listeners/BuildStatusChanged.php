@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Builders\BuildStatus;
 use App\Events\UpdateBuildStatus;
 use App\Jobs\AnalyzeClinicalDepartments;
+use App\Jobs\AssignPreWeekendConstraint;
 use App\Jobs\BuildClinicalDepartments;
 use App\Jobs\ResetClinicalDepartments;
 use App\Schedule;
@@ -49,6 +50,10 @@ class BuildStatusChanged
 
             if($event->status === BuildStatus::Reset) {
                 (new ResetClinicalDepartments($event))->handle();
+            }
+        } else if ($event->buildStep == 'last_evening') {
+            if($event->status === BuildStatus::Build) {
+                AssignPreWeekendConstraint::dispatch($event);
             }
         }
     }
