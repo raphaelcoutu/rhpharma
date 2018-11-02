@@ -50,6 +50,8 @@
             buildStatusUpdated(event) {
                 if(event.buildStep === 'clinical') {
                     this.statuses.clinical = event.status;
+                } else if (event.buildStep === 'last_evening') {
+                    this.statuses.lastEvening = event.status;
                 }
             }
         }

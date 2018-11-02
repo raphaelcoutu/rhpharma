@@ -314,13 +314,14 @@ class Precalculation
     //TODO: change to private
     public function calculateAllocation() {
         $totalPlanning = $this->departments->mapWithKeys(function ($department) {
-            return [$department->id => $department->users->map(function ($user) {
+            return [$department->id => $department->users->where('pivot.active', 1)->map(function ($user) {
                 return $user->pivot->planning_short;
             })->sum()];
         });
 
         foreach($this->departments as $department) {
-            foreach($department->users->where('is_active', 1) as $user) {
+            foreach($department->users->where('is_active', 1)->where('pivot.active', 1) as $user) {
+
                 if($totalPlanning[$department->id] >= 0) {
                     $planningShort = $user->pivot->planning_short;
 

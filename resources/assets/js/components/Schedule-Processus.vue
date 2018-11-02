@@ -49,7 +49,14 @@
                          :class="statusIcon(dataStatuses.lastEvening)">
                     </div>
                 </td>
-                <td>Boutons</td>
+                <td>
+                    <schedule-processus-pre-weekend-constraints
+                            :data-schedule-id="dataSchedule.id"
+                            data-build-step="last_evening"
+                            :data-status="dataStatuses.last_evening"
+                            v-on:updateBuildStatus="buildStatusChanged"
+                    ></schedule-processus-pre-weekend-constraints>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -95,12 +102,14 @@
 <script>
 
     import ScheduleProcessusButtons from './Schedule-Processus-Buttons.vue';
+    import ScheduleProcessusPreWeekendConstraints from './Schedule-Processus-AssignPreWeekendConstraintsButton.vue';
 
     export default {
         props: ['dataSchedule', 'dataConstraintsCount', 'dataStatuses'],
 
         components: {
-            ScheduleProcessusButtons
+            ScheduleProcessusButtons,
+            ScheduleProcessusPreWeekendConstraints
         },
 
         data() {

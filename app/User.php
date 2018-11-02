@@ -82,7 +82,7 @@ class User extends Authenticatable
     public function departments()
     {
         return $this->belongsToMany(Department::class)
-            ->withPivot(['history', 'planning_long', 'planning_short']);
+            ->withPivot(['active', 'history', 'planning_long', 'planning_short']);
     }
 
     public function permissions()
