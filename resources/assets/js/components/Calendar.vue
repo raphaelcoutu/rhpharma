@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col-md-10 col-md-offset-1">
-            <button>Action({{ selected.length }})</button>
+            <button @click="openSelectedModal">Action({{ selected.length }})</button>
             <button @click="clearSelected">Clear</button>
         </div>
         <table class="table-bordered calendar">
@@ -10,8 +10,8 @@
                     :data-duration="duration"
                     :data-first-day="firstDay"
                     :data-weeks-count="weeksCount"
-                    v-on:firstDayChanged="firstDay = $event"
-                    v-on:weeksCountChanged="specifiedWeeksCount = $event"
+                    @firstDayChanged="firstDay = $event"
+                    @weeksCountChanged="specifiedWeeksCount = $event"
             ></calendar-header>
             <calendar-body
                     :data-assigned-shifts="assignedShifts"
@@ -20,15 +20,21 @@
                     :data-first-day="firstDay"
                     :data-users="users"
                     :data-weeks-count="weeksCount"
-                    v-on:openModal="openModal"
+                    @openModal="openUserModal"
             ></calendar-body>
         </table>
         <calendar-user-modal
-                v-if="showModal"
+                v-if="showUserModal"
                 :data-modal="dataModal"
-                @save="saveModal"
-                @close="closeModal"
+                @save="saveUserModal"
+                @close="closeUserModal"
         ></calendar-user-modal>
+        <calendar-selected-modal
+                v-if="showSelectedModal"
+                :data-modal="dataModal"
+                @save="saveSelectedModal"
+                @close="closeSelectedModal"
+        ></calendar-selected-modal>
     </div>
 </template>
 
@@ -70,6 +76,7 @@
     import CalendarHeader from './Calendar-Header'
     import CalendarBody from './Calendar-Body'
     import CalendarUserModal from './Calendar-UserModal'
+    import CalendarSelectedModal from './Calendar-SelectedModal'
 
     export default {
         props: ['dataSchedule', 'dataUsers'],
@@ -77,7 +84,8 @@
         components: {
             CalendarHeader,
             CalendarBody,
-            CalendarUserModal
+            CalendarUserModal,
+            CalendarSelectedModal
         },
 
         mounted() {
@@ -85,8 +93,8 @@
 
             let that = this;
             window.addEventListener('keyup', (event) => {
-                if(event.code === 'Escape' && this.showModal === true) {
-                    this.closeModal();
+                if(event.code === 'Escape' && this.showUserModal === true) {
+                    this.closeUserModal();
                 }
             });
 
@@ -100,7 +108,8 @@
 
         data() {
             return {
-                showModal: false,
+                showUserModal: false,
+                showSelectedModal: false,
                 dataModal: null,
                 firstDay: 0,
                 windowWidth: window.innerWidth,
@@ -111,7 +120,7 @@
         },
 
         methods: {
-            openModal(e) {
+            openUserModal(e) {
                 //Obtenir le pharmacien et tous les renseignements
                 axios.get('/api/calendar/getUserData', {
                     params : {
@@ -119,7 +128,7 @@
                         date: e.dataDate.format("YYYYMMDD")
                     }
                 }).then(res => {
-                        this.showModal = true;
+                        this.showUserModal = true;
                         this.dataModal = {
                             date: e.dataDate,
                             user: res.data.user,
@@ -129,13 +138,13 @@
                         };
                     });
             },
-            closeModal() {
-                this.showModal = false;
+            closeUserModal() {
+                this.showUserModal = false;
                 this.dataModal = null;
             },
-            saveModal(e) {
-                this.closeModal()
-                axios.post('/api/calendar', {
+            saveUserModal(e) {
+                this.closeUserModal()
+                axios.post('/api/calendar/setUserData', {
                     user_id: e.user_id,
                     date: e.date.format("YYYY-MM-DD"),
                     shifts: e.shifts
@@ -143,11 +152,43 @@
                     this.updateAssignedShifts(e, res.data);
                 })
             },
+            openSelectedModal() {
+                axios.get('/api/calendar/getShifts').then(res => {
+                    this.showSelectedModal = true;
+                    this.dataModal = {
+                        shifts: res.data
+                    }
+                })
+            },
+            saveSelectedModal(e) {
+                let arraySelected = _.map(this.selected, (i) => {
+                    let split = i.split('_');
+
+                    return {
+                        user_id: split[0],
+                        date: moment(this.dataSchedule.start_date).add(split[1], 'days').format('YYYY-MM-DD')
+                    }
+
+                });
+
+                this.closeSelectedModal();
+                axios.post('/api/calendar/setSelectedData', {
+                    selected: arraySelected,
+                    shifts: e.shifts
+                }).then(res => {
+                    this.updateAssignedShifts(arraySelected, res.data);
+                })
+            },
+            closeSelectedModal() {
+                this.showSelectedModal = false;
+                this.dataModal = null;
+            },
             clearSelected() {
                 this.$store.commit('calendar/setSelected', []);
             },
             updateAssignedShifts(event, data) {
-                if(typeof event === 'object') {
+                if(!Array.isArray(event) && event != null) {
+                    console.log('NON' + event);
                     let id = _.findIndex(this.users, ['id', event.user_id]);
 
                     let assignedShifts = _.reject(this.users[id].assigned_shifts, function (shift) {
@@ -160,10 +201,25 @@
                     _.each(data, newShift => {
                         this.users[id].assigned_shifts.push(newShift);
                     });
+                } else {
+                    // TODO Arriver à refresh les jours en lot
+                    // Clearer les jours
+                    // for(let select of event) {
+                    //     let id = _.findIndex(this.users, ['id', parseInt(select.user_id)]);
+                    //
+                    //     let assignedShifts = _.reject(this.users[id].assigned_shifts, function (shift) {
+                    //         return moment(shift.date).diff(moment(select.date)) === 0;
+                    //     });
+                    //
+                    //     this.users[id].assigned_shifts = assignedShifts;
+                    // }
+                    //
+                    // _.each(data, newShift => {
+                    //     let id = _.findIndex(this.users, ['id', parseInt(newShift.user_id)]);
+                    //
+                    //     this.users[id].assigned_shifts.push(newShift);
+                    // });
                 }
-
-                //Todo: typeof Array (pour plusieurs d'un coup!)
-
             }
         },
 

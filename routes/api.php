@@ -21,8 +21,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('branches/{id}', 'BranchesController@update');
 
     //Calendar
+    Route::get('calendar/getShifts', 'CalendarController@getShifts');
     Route::get('calendar/getUserData', 'CalendarController@getUserData');
-    Route::post('calendar', 'CalendarController@setUserData');
+    Route::post('calendar/setUserData', 'CalendarController@setUserData');
+    Route::post('calendar/setSelectedData', 'CalendarController@setSelectedData');
 
     //Conflicts
     Route::get('conflicts/{scheduleId}', 'ConflictsController@fetch');

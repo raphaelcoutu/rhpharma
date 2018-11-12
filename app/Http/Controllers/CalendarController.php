@@ -91,6 +91,39 @@ class CalendarController extends Controller
                 ->where('date', $request->date)->get();
     }
 
+    public function getShifts()
+    {
+        return Shift::orderBy('code')->get();
+    }
+
+    public function setSelectedData(Request $request)
+    {
+        foreach ($request['selected'] as $selected) {
+            AssignedShift::where('user_id', $selected['user_id'])
+                ->where('date', Carbon::parse($selected['date']))
+                ->delete();
+        }
+
+        $add = [];
+        foreach($request['shifts'] as $shift) {
+            foreach($request['selected'] as $selected) {
+                $add[] = [
+                    'user_id' => $selected['user_id'],
+                    'shift_id' => $shift,
+                    'is_generated' => 0,
+                    'is_published' => 0,
+                    'date' => $selected['date'],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+            }
+        }
+
+        AssignedShift::insert($add);
+
+        return $add;
+    }
+
     private function query($scheduleId, $departmentIds = null) {
         $schedule = Schedule::findOrFail($scheduleId);
 
