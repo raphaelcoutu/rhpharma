@@ -271,5 +271,13 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => 1,
             'department_type_id' => 3
         ]);
+
+        $this->create([
+            'name' => 'Onco-E',
+            'description' => 'Oncologie',
+            'branch_id' => 1,
+            'workplace_id' => 1,
+            'department_type_id' => 3
+        ]);
     }
 }

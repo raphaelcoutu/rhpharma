@@ -46,6 +46,7 @@ class ShiftSeeder extends Seeder
         $this->create('ON', 25, 1);
         $this->create('ON', 26, 1);
         $this->create('ON', 27, 1);
+        $this->create('ON', 28, 1);
 
         $this->create('SIM', 4, 1);
         $this->create('SIC', 5, 1);
