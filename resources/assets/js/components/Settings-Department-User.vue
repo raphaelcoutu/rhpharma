@@ -56,7 +56,7 @@
                 };
                 axios.patch('/api/settings/departmentUser', data)
                     .then(res => {
-                        console.log(res)
+                        //
                     }).catch(err => {
                         // TODO: Si erreur, on remet la valeur de planning_short initiale
                         alert('BUG')
