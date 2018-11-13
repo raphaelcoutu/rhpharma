@@ -261,8 +261,8 @@ class GenericBuilder extends BaseBuilder
     {
         // On parcours chacune des semaines
 
-        // On évite le secteur VIH, car secteur à 4 jours par semaine.
-        if($this->departmentId === 7) return;
+        // On évite le secteur VIH et ON car secteur à 4 jours par semaine.
+        if(in_array($this->departmentId, [7,24,25,26,27,28])) return;
 
         // Définir les variables pertinentes && requêtes à la BD
         $schedule = $this->precalculation->schedule;
