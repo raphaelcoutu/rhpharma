@@ -23,6 +23,7 @@
                 <td><input type="text" size="5"
                            v-model="user.pivot.planning_short"
                            @change="settingsChanged(user, 'planning')"
+                           @focus="$event.target.select()"
                 ></td>
             </tr>
             </tbody>
@@ -48,12 +49,19 @@
             settingsChanged(user, setting) {
                 let userActive = (setting === 'active') ? !user.pivot.active : user.pivot.active;
 
+                // Si une fraction est utilisée, on la calcule.
+                if(user.pivot.planning_short.includes('/')) {
+                    user.pivot.planning_short = parseInt(eval(user.pivot.planning_short) * 100);
+                }
+
                 let data = {
                     departmentId: this.department.id,
                     userId: user.id,
                     userActive: userActive,
                     userPlanning: user.pivot.planning_short
                 };
+
+
                 axios.patch('/api/settings/departmentUser', data)
                     .then(res => {
                         //
