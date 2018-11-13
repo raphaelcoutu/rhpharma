@@ -743,5 +743,15 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 1,
             'is_day_in_schedule' => 1
         ]);
+
+        $this->create([
+            'name' => 'Férié à reprendre selon dispo',
+            'description' => '',
+            'code' => 'F',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
