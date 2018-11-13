@@ -73,6 +73,15 @@ class ProductionSeeder extends Seeder
             'end_date' => Carbon::parse('2018-12-08')
         ]);
 
+        Schedule::create([
+            'name' => '2018-12-09 au 2019-02-02',
+            'branch_id' => 1,
+            'limit_date_weekends' => now(),
+            'limit_date' => now()->addDay(1),
+            'start_date' => Carbon::parse('2018-12-09'),
+            'end_date' => Carbon::parse('2019-02-02')
+        ]);
+
         // Weekends
 //        $this->createAssignedShift('2018-06-24', [46,40,31,21,50]);
 //        $this->createAssignedShift('2018-06-25', [32,31,46,21,50]);
