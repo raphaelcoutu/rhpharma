@@ -149,7 +149,8 @@ class ImportCsvCommand extends Command
             148 => 68,
             149 => 69,
             114 => 70,
-            85 => 71
+            85 => 71,
+            65 => 8
         ];
 
     }
@@ -205,6 +206,8 @@ class ImportCsvCommand extends Command
                     ];
 
                     array_push($constraints, $constraint);
+                } else {
+                    throw new \Exception("Constrainte manquante : {$typeId}");
                 }
 
                 $row++;
