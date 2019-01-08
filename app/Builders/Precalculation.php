@@ -142,14 +142,14 @@ class Precalculation
                         }
 
                         // TempFix : Si la contrainte est "Doit travailler de jour" on l'ignore
-                        if(in_array($constraint->constraint_type_id, [29,30,39,50])) {
+                        if(in_array($constraint->constraint_type_id, [16,29,30,31,39,42,49,50,51,54])) {
                             continue;
                         }
                     }
                 } else {
                     // On détecte une collision et pas de jour de précisé
                     // Donc, on retourne non disponible
-                    if(in_array($constraint->constraint_type_id, [29,30,39,50])) {
+                    if(in_array($constraint->constraint_type_id, [16,29,30,31,39,42,49,50,51,54])) {
                         continue;
                     }
 
