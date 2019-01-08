@@ -16,6 +16,13 @@ class Department extends Model
         return $query->where('branch_id', \Auth::user()->branch->id);
     }
 
+    public function scopeWithActiveUsers($query)
+    {
+        return $query->with(['users' => function($query) {
+            $query->wherePivot('active', 1);
+        }]);
+    }
+
     public function branch()
     {
         return $this->belongsTo(Branch::class);
