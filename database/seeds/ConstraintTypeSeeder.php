@@ -189,7 +189,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Comité de pharmaco libération fixe AM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et la matinée seulement (comité par exemple)',
-            'code' => 'CP/',
+            'code' => 'CPH/',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
@@ -199,7 +199,7 @@ class ConstraintTypeSeeder extends Seeder
         $this->create([
             'name' => 'Comité de pharmaco libération fixe PM',
             'description' => 'Aimerait une libération pour le comité de pharmaco et pour une date déterminée et l\'après-midi seulement (comité par exemple)',
-            'code' => '/CP',
+            'code' => '/CPH',
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
