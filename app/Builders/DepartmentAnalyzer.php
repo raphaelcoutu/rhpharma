@@ -34,7 +34,7 @@ class DepartmentAnalyzer
     {
         (new self($schedule, $departmentId))
             ->analyzeMissings()
-            ->insertConflicts();
+            ->save();
     }
 
     private function analyzeMissings()
@@ -44,45 +44,46 @@ class DepartmentAnalyzer
 
         for ($i = 0; $i < $duration; $i++) {
             $iterateDay = $this->schedule->start_date->copy()->addDays($i);
+            $newConflict = null;
 
-            if($this->shifts->contains('date', $iterateDay)) continue;
-
+            // Si le jour contient un shift
             // Si le jour n'est pas un week end
-            if(in_array($iterateDay->format('w'), ["0", "6"], true)) continue;
+            // Si le jour est un férié
+            // Si département VIH et que le vendredi est vide
+            // => On skip.
+            if(!$this->shifts->contains('date', $iterateDay) && !in_array($iterateDay->format('w'), ["0", "6"], true)
+                && !$this->holidays->contains('date', $iterateDay)
+                && !($this->departmentId === 7 && $iterateDay->dayOfWeek === 5)) {
+                $newConflict = new Conflict([
+                    'schedule_id' => $this->schedule->id,
+                    'department_id' => $this->departmentId,
+                    'severity' => 0,
+                    'start_date' => $iterateDay->toDateString(),
+                    'end_date' => null,
+                    'message' => 'Pharmacien manquant',
+                    'created_at' => new \DateTime,
+                    'updated_at' => new \DateTime
+                ]);
+            }
 
-            // Si le jour est un férié, on skip.
-            if($this->holidays->contains('date', $iterateDay)) continue;
-
-            // Si département VIH, ne rien faire pour le vendredi s'il manque quelqu'un
-            if($this->departmentId === 7 && $iterateDay->dayOfWeek === 5) continue;
-
-            $newConflict = new Conflict([
-                'schedule_id' => $this->schedule->id,
-                'department_id' => $this->departmentId,
-                'severity' => 0,
-                'start_date' => $iterateDay->toDateString(),
-                'end_date' => null,
-                'message' => 'Pharmacien manquant',
-                'created_at' => new \DateTime,
-                'updated_at' => new \DateTime
-            ]);
-
-            // Si le range est vide, on commence par le remplir
-            if($conflictRange->isEmpty()) {
+            // Si le range est vide et qu'on a un conflit => on remplit
+            // Si le range n'est pas vide et qu'on a un conflit => on remplit encore
+            if (($newConflict != null && $conflictRange->isEmpty())
+            || ($newConflict != null && $conflictRange->isNotEmpty() && $conflictRange->last()->start_date->diffInDays($iterateDay) <= 1)) {
                 $conflictRange->push($newConflict);
-            } else if($conflictRange->isNotEmpty() && $conflictRange->last()->start_date->diffInDays($iterateDay) <= 1) {
-                $conflictRange->push($newConflict);
-            } else {
+            }
+
+            // Si le range n'est pas vide et qu'on a plus d'erreur, on push les conflits
+            else if ($newConflict == null && $conflictRange->isNotEmpty()) {
                 // On choisi le premier conflit et on lui ajoute une date de fin.
                 $conflict = $conflictRange->first();
                 if($conflictRange->count() > 1) {
                     $conflict->end_date = $conflictRange->last()->start_date;
-
                     $conflict->severity = 1;
+                }
 
-                    if($conflictRange->count() > 3) {
-                        $conflict->severity = 2;
-                    }
+                if($conflictRange->count() > 3) {
+                    $conflict->severity = 2;
                 }
 
                 $this->conflicts->push($conflict);
@@ -94,7 +95,7 @@ class DepartmentAnalyzer
         return $this;
     }
 
-    private function insertConflicts()
+    private function save()
     {
         Conflict::insert($this->conflicts->toArray());
     }
