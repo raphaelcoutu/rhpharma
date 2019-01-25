@@ -1,9 +1,10 @@
 <template>
     <div>
         <div class="bg-light-grey">
-        <a @click="changeTab(0)" href="#log" class="btn" :class="{'text-bold btn-default': tabIndex === 0}">Log</a>
-        <a @click="changeTab(1)" href="#conflicts" class="btn" :class="{'text-bold btn-default': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
-        <a @click="changeTab(2)" href="#notes" class="btn" :class="{'text-bold btn-default': tabIndex === 2}">Notes</a>
+            <a @click="changeTab(0)" href="#log" class="btn" :class="{'text-bold btn-default': tabIndex === 0}">Log</a>
+            <a @click="changeTab(1)" href="#conflicts" class="btn" :class="{'text-bold btn-default': tabIndex === 1}">Conflits ({{ conflicts.length }})</a>
+            <a @click="changeTab(2)" href="#notes" class="btn" :class="{'text-bold btn-default': tabIndex === 2}">Notes</a>
+            <a @click="changeTab(3)" href="#stats-departments" class="btn" :class="{'text-bold btn-default': tabIndex === 3}">Stats-Départements</a>
         </div>
         <Log v-show="tabIndex === 0"
              :data-schedule="dataSchedule"
@@ -15,6 +16,9 @@
         <Notes v-show="tabIndex === 2"
                :data-schedule="dataSchedule"
         ></Notes>
+        <Stats-Departments v-show="tabIndex === 3"
+               :data-schedule="dataSchedule"
+        ></Stats-Departments>
     </div>
 </template>
 
@@ -22,6 +26,7 @@
     import Conflicts from './Schedule-Conflicts.vue'
     import Log from './Schedule-Log'
     import Notes from './Schedule-Notes'
+    import StatsDepartments from './Schedule-Stats-Departments'
 
     export default {
         props: ['dataSchedule', 'dataConflicts', 'dataStatuses'],
@@ -29,11 +34,12 @@
         components: {
             Conflicts,
             Log,
-            Notes
+            Notes,
+            StatsDepartments
         },
 
         mounted() {
-            let tabs = ['#log', '#conflicts', '#notes'];
+            let tabs = ['#log', '#conflicts', '#notes', '#stats-departments'];
             let index = tabs.indexOf(window.location.hash);
 
             // Si le hash est présent, on met la tab appropriée

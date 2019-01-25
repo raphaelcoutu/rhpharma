@@ -14,52 +14,56 @@
 
 Route::group(['middleware' => 'auth'], function () {
 
-    //Branches
+    // Branches
     Route::get('branches', 'BranchesController@fetch');
     Route::post('branches/store', 'BranchesController@store');
     Route::get('branches/{id}', 'BranchesController@edit');
     Route::patch('branches/{id}', 'BranchesController@update');
 
-    //Calendar
+    // Calendar
     Route::get('calendar/getShifts', 'CalendarController@getShifts');
     Route::get('calendar/getUserData', 'CalendarController@getUserData');
     Route::post('calendar/setUserData', 'CalendarController@setUserData');
     Route::post('calendar/setSelectedData', 'CalendarController@setSelectedData');
 
-    //Conflicts
+    // Conflicts
     Route::get('conflicts/{scheduleId}', 'ConflictsController@fetch');
 
-    //Constraints
+    // Constraints
     Route::get('constraints/fixed', 'ConstraintsController@fetchFixed');
     Route::get('constraints/availability', 'ConstraintsController@fetchAvailability');
     Route::get('constraints/{id}/edit', 'ConstraintsController@edit');
     Route::post('constraints/store', 'ConstraintsController@store');
     Route::put('constraints/{id}/update', 'ConstraintsController@update');
 
-    //ConstraintTypes
+    // ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@fetch');
 
-    //ConstraintValidator
+    // ConstraintValidator
     Route::put('constraintsValidator/{id}', 'ConstraintsValidatorController@update');
 
-    //Holidays
+    // Holidays
     Route::get('holidays', 'HolidaysController@fetch');
     Route::get('holidays/{id}', 'HolidaysController@edit');
     Route::post('holidays/store', 'HolidaysController@store');
     Route::patch('holidays/{id}', 'HolidaysController@update');
 
-    //Schedule
+    // Schedule
     Route::post('schedules/updateStatus', 'BuildController@updateStatus');
     Route::put('schedules/{id}/updateNotes', 'SchedulesController@updateNotes');
 
-    //Settings
+    // Schedule-Stats-Departments
+    Route::get('scheduleStatDepartment/{scheduleId}', 'ScheduleStatDepartmentController@show');
+    Route::get('scheduleStatDepartment/{scheduleId}/create', 'ScheduleStatDepartmentController@create');
+
+    // Settings
     Route::patch('settings/departments', 'SettingsController@updateDepartments');
     Route::patch('settings/triplets', 'SettingsController@updateTriplets');
 
-    //Settings-Department-User
+    // Settings-Department-User
     Route::patch('settings/departmentUser', 'SettingsController@updateDepartmentUser');
 
-    //Users-Departments
+    // Users-Departments
     Route::get('usersDepartments/{id}', 'UsersDepartmentsController@fetch');
     Route::post('usersDepartments/{id}/store', 'UsersDepartmentsController@store');
     Route::delete('usersDepartments/{id}', 'UsersDepartmentsController@destroy');
