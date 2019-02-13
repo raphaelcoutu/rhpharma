@@ -193,6 +193,7 @@ class Calendar
         }
         $boldText = $richText->createTextRun($afterAsterisk);
         $boldText->getFont()->getColor()->setARGB('CC1F1A');
+        $boldText->getFont()->setBold(true);
         $boldText->getFont()->setName('Arial');
         $boldText->getFont()->setSize(9);
         $cell->setValue($richText);
