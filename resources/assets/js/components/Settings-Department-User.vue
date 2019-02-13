@@ -50,7 +50,7 @@
                 let userActive = (setting === 'active') ? !user.pivot.active : user.pivot.active;
 
                 // Si une fraction est utilisée, on la calcule.
-                if(user.pivot.planning_short.includes('/')) {
+                if(user.pivot.planning_short.toString().includes('/')) {
                     user.pivot.planning_short = parseInt(eval(user.pivot.planning_short) * 100);
                 }
 

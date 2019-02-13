@@ -18,20 +18,20 @@ window.Vue = require('vue');
 import store from './store';
 
 // Vue.component('example', require('./components/Example.vue'));
-Vue.component('rhpharma-branches', require('./components/Branches.vue'));
-Vue.component('rhpharma-calendar', require('./components/Calendar.vue'));
-Vue.component('rhpharma-constraints', require('./components/Constraints.vue'));
-Vue.component('rhpharma-constraints-count', require('./components/Constraints-Count.vue'));
-Vue.component('rhpharma-constraints-validator', require('./components/Constraints-Validator.vue'));
-Vue.component('rhpharma-departments', require('./components/Departments.vue'));
-Vue.component('rhpharma-holidays', require('./components/Holidays.vue'));
-Vue.component('rhpharma-schedule', require('./components/Schedule.vue'));
-Vue.component('rhpharma-settings-department-user', require('./components/Settings-Department-User'));
-Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue'));
-Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue'));
-Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue'));
-Vue.component('rhpharma-users', require('./components/Users.vue'));
-Vue.component('rhpharma-users-departments', require('./components/Users-Departments.vue'));
+Vue.component('rhpharma-branches', require('./components/Branches.vue').default);
+Vue.component('rhpharma-calendar', require('./components/Calendar.vue').default);
+Vue.component('rhpharma-constraints', require('./components/Constraints.vue').default);
+Vue.component('rhpharma-constraints-count', require('./components/Constraints-Count.vue').default);
+Vue.component('rhpharma-constraints-validator', require('./components/Constraints-Validator.vue').default);
+Vue.component('rhpharma-departments', require('./components/Departments.vue').default);
+Vue.component('rhpharma-holidays', require('./components/Holidays.vue').default);
+Vue.component('rhpharma-schedule', require('./components/Schedule.vue').default);
+Vue.component('rhpharma-settings-department-user', require('./components/Settings-Department-User.vue').default);
+Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue').default);
+Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue').default);
+Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue').default);
+Vue.component('rhpharma-users', require('./components/Users.vue').default);
+Vue.component('rhpharma-users-departments', require('./components/Users-Departments.vue').default);
 
 const app = new Vue({
     el: '#app',

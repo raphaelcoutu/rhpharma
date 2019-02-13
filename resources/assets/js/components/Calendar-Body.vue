@@ -3,6 +3,7 @@
     <tr v-for="user in dataUsers">
         <td>{{ user.lastname }}, {{ user.firstname }} ({{user.workdays_per_week}})</td>
         <td v-for="(date, index) in dataDates"
+            :key="`${user.id}_${dataFirstDay+index}`"
             class="noselect"
             :class="{'alert-info': ['0','6'].includes(date.format('e'))}"
             is="calendar-cell"
