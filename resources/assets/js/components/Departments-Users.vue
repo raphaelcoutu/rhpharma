@@ -103,7 +103,7 @@
             },
 
             removeDepartment(id) {
-                axios.delete('/api/usersDepartments/' + this.userId, {
+                axios.delete('/api/departmentsUsers/' + this.userId, {
                     params:{department_id: id}
                 }).then(res => {
                     this.refreshData();
@@ -111,7 +111,7 @@
             },
 
             refreshData() {
-                axios.get('/api/usersDepartments/' + this.userId)
+                axios.get('/api/departmentsUsers/' + this.userId)
                     .then(res => {
                         this.departments = res.data;
                     }).catch(err => {
@@ -120,7 +120,7 @@
             },
 
             saveDepartment() {
-                axios.post('/api/usersDepartments/'+ this.userId +'/store', this.form)
+                axios.post('/api/departmentsUsers/'+ this.userId +'/store', this.form)
                     .then(res => {
                         this.refreshData();
                         this.resetForm();

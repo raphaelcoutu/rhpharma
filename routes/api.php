@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('settings/departmentUser', 'SettingsController@updateDepartmentUser');
 
     // Users-Departments
-    Route::get('usersDepartments/{id}', 'UsersDepartmentsController@fetch');
-    Route::post('usersDepartments/{id}/store', 'UsersDepartmentsController@store');
-    Route::delete('usersDepartments/{id}', 'UsersDepartmentsController@destroy');
+    Route::get('departmentsUsers/{id}', 'DepartmentsUsersController@fetch');
+    Route::post('departmentsUsers/{id}/store', 'DepartmentsUsersController@store');
+    Route::delete('departmentsUsers/{id}', 'DepartmentsUsersController@destroy');
 });
