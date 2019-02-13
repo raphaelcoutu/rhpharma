@@ -58,7 +58,7 @@ class AssignPreWeekendConstraint implements ShouldQueue
                     'user_id' => $as->user_id,
                     'start_datetime' => $as->date->addDays(-1)->setTime(12,30),
                     'end_datetime' => $as->date->addDays(-1)->setTime(22,00),
-                    'constraint_type_id' => 48,
+                    'constraint_type_id' => 72,
                     'weight' => 1,
                     'comment' => '**AUTO GENERATED**',
                     'status' => 1,
@@ -68,23 +68,9 @@ class AssignPreWeekendConstraint implements ShouldQueue
                 ]);
             });
 
-        // ConstraintTypeIds de '12' et '1214' (40, 48)
-        $existingConstraints = Constraint::inDateInterval($this->schedule->start_date, $this->schedule->end_date)
-            ->whereIn('user_id', $constraintsToAdd->pluck('user_id'))
-            ->whereIn('constraint_type_id', [40, 48])
-            ->get();
-
-        $constraintsToAdd = $constraintsToAdd->reject(function ($constraint) use ($existingConstraints) {
-            foreach($existingConstraints as $ec) {
-                if($constraint->user_id === $ec->user_id) {
-                    if($constraint->end_datetime->equalTo($ec->end_datetime)) {
-                        return true;
-                    }
-                }
-            };
-            return false;
-        });
-
+        // Enlever les constraintes [VS] existantes + insérer les nouvelles
+        Constraint::inDateInterval($this->schedule->start_date, $this->schedule->end_date)
+            ->where('constraint_type_id', 72)->delete();
         Constraint::insert($constraintsToAdd->toArray());
 
         event(new BuildMessageGenerated($this->schedule, 'Constraintes pré-weekend ajoutées. ('.$constraintsToAdd->count().')'));

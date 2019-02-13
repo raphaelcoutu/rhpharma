@@ -753,5 +753,15 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 1,
             'is_day_in_schedule' => 1
         ]);
+
+        $this->create([
+            'name' => 'Vendredi soir',
+            'description' => 'Généré par le logiciel : doit faire le soir',
+            'code' => 'VS',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }
