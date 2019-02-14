@@ -16,12 +16,13 @@ class SettingsConstraintTypesController extends Controller
 
     public function update(Request $request)
     {
-        $id = $request['id'];
-        $status = $request['status'];
-
-        $constraintType = ConstraintType::find($id);
-        $constraintType->status = $status;
-        $constraintType->save();
+        if(!$request->massUpdate) {
+            $constraintType = ConstraintType::find($request->data['id']);
+            $constraintType->status = $request->data['status'];
+            $constraintType->save();
+        } else {
+            ConstraintType::where('status','!=', 2)->update(['status' => 2]);
+        }
 
         return "OK";
     }

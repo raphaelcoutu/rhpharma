@@ -9,11 +9,11 @@
             <tr>
                 <th>Type de contrainte</th>
                 <th>Description</th>
-                <th>Status</th>
+                <th>Status <button class="btn btn-xs btn-default pull-right" @click="setActive">Tous Actifs</button></th>
             </tr>
             </thead>
-            <tbody v-if="constraintTypes.length > 0">
-                <tr v-for="type in constraintTypes">
+            <tbody v-if="filteredConstraintTypes.length > 0">
+                <tr v-for="type in filteredConstraintTypes">
                     <td>{{ type.code }}</td>
                     <td>{{ type.name }}</td>
                     <td>
@@ -44,14 +44,15 @@
         data() {
             return {
                 search: '',
+                constraintTypes: this.dataConstraintTypes
             }
         },
 
         computed: {
-            constraintTypes() {
+            filteredConstraintTypes() {
                 let search = this.search;
 
-                return _(this.dataConstraintTypes)
+                return _(this.constraintTypes)
                     .filter(type => {
                         if(this.search !== "") {
                             return type.code.toLowerCase().includes(this.search.toLowerCase())
@@ -70,12 +71,27 @@
             },
 
             statusChanged(type) {
-                let payload = {
+                let data = {
                     id: type.id,
                     status: type.status
                 };
 
-                axios.patch('/api/settings/constraintTypes', payload)
+                this.update(data, false);
+            },
+
+            setActive() {
+                _(this.constraintTypes).each(type => {
+                    type.status = 2;
+                });
+
+                this.update({}, true);
+            },
+
+            update(data, massUpdate) {
+                axios.patch('/api/settings/constraintTypes', {
+                    massUpdate,
+                    data
+                })
                     .then(res => console.log(res))
                     .catch(err => console.log(err));
             }
