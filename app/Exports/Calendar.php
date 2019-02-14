@@ -18,6 +18,10 @@ class Calendar
     protected $users;
 
     protected $spreadsheet;
+    protected $rowStart;
+    protected $colStart;
+
+    protected $constraints;
 
     public function __construct(Carbon $startDate, Carbon $endDate, Collection $users)
     {
@@ -25,6 +29,10 @@ class Calendar
         $this->startDate = $startDate;
         $this->endDate = $endDate->setTime(23,59,59);
         $this->users = $users;
+        $this->constraints = collect([]);
+
+        $this->rowStart = 3;
+        $this->colStart = 3;
 
         $this->create();
     }
@@ -91,31 +99,29 @@ class Calendar
 
     private function addUsers()
     {
-        $rowStart = 3;
-        $colStart = 3;
         $sheet = $this->spreadsheet->getActiveSheet();
 
         // Mettre les bordures sur les cases
         $duration = $this->endDate->diffInDays($this->startDate);
-        $lastColumn = $sheet->getCellByColumnAndRow($colStart + $duration, $rowStart)->getColumn();
+        $lastColumn = $sheet->getCellByColumnAndRow($this->colStart + $duration, $this->rowStart)->getColumn();
 
-        $rowStyle = $sheet->getStyle('B' . ($rowStart) . ':' . $lastColumn . ($this->users->count()+$rowStart-1));
+        $rowStyle = $sheet->getStyle('B' . ($this->rowStart) . ':' . $lastColumn . ($this->users->count()+$this->rowStart-1));
         $rowStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
         foreach($this->users as $index => $user) {
             // Set la hauteur de la rangée
-            $sheet->getRowDimension($rowStart + $index)->setRowHeight(17);
+            $sheet->getRowDimension($this->rowStart + $index)->setRowHeight(17);
 
-            $cell = $sheet->getCellByColumnAndRow(2, $index + $rowStart);
+            $cell = $sheet->getCellByColumnAndRow(2, $index + $this->rowStart);
             $cell->setValue(mb_strtoupper($user->lastname) . ', ' . mb_strtoupper($user->firstname));
             $cell->getStyle()->getFont()->setSize(7);
             $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
             foreach ($user->assignedShifts as $assignedShift) {
                 if($assignedShift->date->gte($this->startDate) && $assignedShift->date->lte($this->endDate)) {
-                    $col = $assignedShift->date->diffInDays($this->startDate) + $colStart;
+                    $col = $assignedShift->date->diffInDays($this->startDate) + $this->colStart;
 
-                    $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
+                    $cell = $sheet->getCellByColumnAndRow($col, $index + $this->rowStart);
                     $cell->getStyle()->getFont()->setSize(9);
                     $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
                     $cell->getStyle()->getAlignment()->setShrinkToFit(true);
@@ -134,6 +140,9 @@ class Calendar
                 // Ne pas afficher les constraintes selon dispo sur le calendrier
                 if($constraint->constraintType->is_group_constraint == 1) continue;
 
+                if($constraint->constraintType->status === 0
+                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) continue;
+
                 if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                     $this->startDate, $this->endDate)) {
 
@@ -151,55 +160,78 @@ class Calendar
 
                     for ($i = 0; $i < $constraintDuration; $i++) {
                         $iterateDay = $constraintAdjStartDate->copy()->addDays($i);
-                        $col = $iterateDay->diffInDays($this->startDate) + $colStart;
+                        $col = $iterateDay->diffInDays($this->startDate) + $this->colStart;
 
-                        $cell = $sheet->getCellByColumnAndRow($col, $index + $rowStart);
+                        $cell = $sheet->getCellByColumnAndRow($col, $index + $this->rowStart);
 
                         if ($constraint->day !== NULL) {
                             // Si la contrainte contient un jour spécisé, on l'inscrit seulement dans celui-ci
-                            if($iterateDay->dayOfWeek === $constraint->day) {
-                                $this->addConstraintValue($cell, $constraint);
+                            if ($iterateDay->dayOfWeek === $constraint->day) {
+                                $key = $index + $this->rowStart . '__' . $col;
+                                $this->constraints->push([
+                                    'key' => $key,
+                                    'row' => $index + $this->rowStart,
+                                    'col' => $col,
+                                    'constraint' => $constraint->constraintType->code
+                                ]);
+
                             }
                         } else {
-                           $this->addConstraintValue($cell, $constraint);
+                            $key = $index + $this->rowStart . '__' . $col;
+                            $this->constraints->push([
+                                'key' => $key,
+                                'row' => $index + $this->rowStart,
+                                'col' => $col,
+                                'constraint' => $constraint->constraintType->code
+                            ]);
                         }
                     }
                 }
             }
         }
+
+        $this->printConstraints();
     }
 
-    private function addConstraintValue($cell, $constraint)
+    private function printConstraints()
     {
-        $value = ($cell->getValue()) ?? "";
-        $asteriskPos = strpos($value, "*");
 
-        $value = ($asteriskPos === false) ? $value . "*" : $value;
-        if ($value !== "*" && $value{-1} !== "*") {
-            $value .= "-";
-        }
+        $sheet = $this->spreadsheet->getActiveSheet();
+        $groupedConstraints = $this->constraints->groupBy('key');
 
-        $value .= $constraint->constraintType->code;
-        $cell->getStyle()
-            ->getFill()->setFillType(Fill::FILL_SOLID)
-            ->getStartColor()->setRGB('b7dee8');
+        $groupedConstraints->each(function ($key) use ($sheet) {
+            $col = $key[0]['col'];
+            $row = $key[0]['row'];
 
-        $richText = new RichText();
-        $splitValue = explode("*", $value);
-        $beforeAsterisk = $splitValue[0];
-        $afterAsterisk = $splitValue[1];
-        if($beforeAsterisk != "") {
-            $richText->createText($beforeAsterisk . '-');
-        }
-        $boldText = $richText->createTextRun($afterAsterisk);
-        $boldText->getFont()->getColor()->setARGB('CC1F1A');
-        $boldText->getFont()->setBold(true);
-        $boldText->getFont()->setName('Arial');
-        $boldText->getFont()->setSize(9);
-        $cell->setValue($richText);
-        $cell->getStyle()->getFont()->setSize(9);
-        $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
-        $cell->getStyle()->getAlignment()->setShrinkToFit(true);
+            $cell = $sheet->getCellByColumnAndRow($col, $row);
+            $value = trim($cell->getValue());
+            if($value !== "" && $value !== null) $value .= "-";
+
+            $richText = new RichText();
+            $richText->createText($value);
+
+            for ($i = 0; $i < count($key); $i++) {
+                $boldText = $richText->createTextRun(($key[$i]['constraint']));
+                $boldText->getFont()->getColor()->setARGB('CC1F1A');
+                $boldText->getFont()->setBold(true);
+                $boldText->getFont()->setName('Arial');
+                $boldText->getFont()->setSize(9);
+
+                if($i !== count($key) - 1) {
+                    $boldText = $richText->createTextRun("-");
+                    $boldText->getFont()->setName('Arial');
+                    $boldText->getFont()->setSize(9);
+                }
+            }
+
+            $cell->setValue($richText);
+            $cell->getStyle()->getFont()->setSize(9);
+            $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+            $cell->getStyle()->getAlignment()->setShrinkToFit(true);
+            $cell->getStyle()
+                ->getFill()->setFillType(Fill::FILL_SOLID)
+                ->getStartColor()->setRGB('b7dee8');
+        });
     }
 
     public function getSpreadsheet()
