@@ -16,10 +16,12 @@
                 <span v-html="getAssignedShiftByDay(user.id, date)"></span>
             </div>
             <div slot="constraints"
-                 class="text-danger"
-                 v-if="getConstraintsByDay(user.id, date)"
+                 v-if="getConstraintsByDay(user.id, date).length > 0"
             >
-                {{ getConstraintsByDay(user.id, date) }}
+                <span v-for="(constraint, index) in getConstraintsByDay(user.id, date)"
+                      :class="{'text-danger' : constraint.isActive}"
+                >{{ constraint.code }}<span v-if="index !== (getConstraintsByDay(user.id, date).length - 1)">-</span>
+                </span>
             </div>
         </td>
     </tr>
@@ -63,7 +65,7 @@
                 }).join('-');
             },
             getConstraintsByDay(userId, date) {
-                return _.map(_.filter(this.dataConstraints, function (constraint) {
+                return _(this.dataConstraints).filter(function (constraint) {
                     let dateStart = parseInt(date.format('x'));
                     let dateEnd = dateStart + 86400000 - 1;
                     let constraintStart = new Date(constraint.start_datetime).getTime();
@@ -78,14 +80,19 @@
                             return true;
                         }
                     }
-                }), function (constraint) {
-                    let code = constraint.constraint_type.code;
-                    if(constraint.weight) {
-                        return '['+code+']';
-                    } else {
-                        return code;
-                    }
-                }).join('-');
+                }).map(function (constraint) {
+                    let code = (constraint.weight)
+                        ? `[${constraint.constraint_type.code}]`
+                        : `${constraint.constraint_type.code}`;
+
+                    let isActive = (constraint.constraint_type.status === 2
+                        || (constraint.constraint_type.status === 1 && constraint.weight === 1));
+
+                    return {
+                        code,
+                        isActive
+                    };
+                }).orderBy(['isActive'], ['desc']).value();
             }
         }
     }

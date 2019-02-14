@@ -37,7 +37,7 @@ class Precalculation
         $this->clean();
 
         //Récupérer les chiffres déjà assignés pour l'horaire en cours
-        $this->assignedShifts = AssignedShift::where('date', '>=', $this->schedule->start_date)->where('date', '<=', $this->schedule->end_date)->get();
+        $this->assignedShifts = AssignedShift::inDateInterval($this->schedule->start_date, $this->schedule->end_date)->get();
 
         // Récupérer les pharmaciens avec constraintes associées et les shifts déjà assignés (fériés, fin de semaines, etc..)
         $this->pharmaciens = User::with(['constraints' => function ($query) {
@@ -131,6 +131,10 @@ class Precalculation
                 $startDateTime, $endDateTime)) {
                 //Si la contrainte est selon dispo, on ignore
                 if($constraint->constraintType->is_group_constraint == 1) continue;
+
+                // Si la contraintType est inactive ou strong only, on ignore
+                if($constraint->constraintType->status === 0
+                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) continue;
 
                 // On regarde si la contrainte contient un jour en particulier
                 if($constraint->day !== null) {
