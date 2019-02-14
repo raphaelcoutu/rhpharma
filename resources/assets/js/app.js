@@ -27,6 +27,7 @@ Vue.component('rhpharma-departments', require('./components/Departments.vue').de
 Vue.component('rhpharma-users-departments', require('./components/Departments-Users.vue').default);
 Vue.component('rhpharma-holidays', require('./components/Holidays.vue').default);
 Vue.component('rhpharma-schedule', require('./components/Schedule.vue').default);
+Vue.component('rhpharma-settings-constraint-types', require('./components/Settings-ConstraintTypes.vue').default);
 Vue.component('rhpharma-settings-department-user', require('./components/Settings-Department-User.vue').default);
 Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue').default);
 Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue').default);

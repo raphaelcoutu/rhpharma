@@ -11,10 +11,11 @@
                     <div class="pull-right">
                         <div class="btn-group">
                             <a class="btn btn-default" href="{{ route('settings.departments') }}"><i class="fa fa-gear"></i> Secteurs</a>
+                            <a class="btn btn-default" href="{{ route('settings.constraintTypes') }}"><i class="fa fa-gear"></i> Types de contraintes</a>
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Calendrier <span class="caret"></span>
                             </button>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu dropdown-menu-right">
                                 @include('calendar.dropdown')
                             </ul>
                         </div>

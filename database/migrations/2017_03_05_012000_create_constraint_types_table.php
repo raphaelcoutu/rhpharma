@@ -18,6 +18,7 @@ class CreateConstraintTypesTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('code', 5);
+            $table->unsignedTinyInteger('status')->default(2); // 0: off, 1: strong, 2: on
             $table->boolean('is_work');
             $table->boolean('is_single_day');
             $table->boolean('is_group_constraint');

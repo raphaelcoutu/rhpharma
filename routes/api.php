@@ -60,6 +60,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('settings/departments', 'SettingsController@updateDepartments');
     Route::patch('settings/triplets', 'SettingsController@updateTriplets');
 
+    // Settings-ConstraintTypes
+    Route::patch('settings/constraintTypes', 'SettingsConstraintTypesController@update');
+
     // Settings-Department-User
     Route::patch('settings/departmentUser', 'SettingsController@updateDepartmentUser');
 
