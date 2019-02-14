@@ -7,9 +7,9 @@
         <table class="table">
             <thead>
             <tr>
-                <th>Type de contrainte</th>
+                <th @click="orderBy('code')">Type de contrainte</th>
                 <th>Description</th>
-                <th>Status <button class="btn btn-xs btn-default pull-right" @click="setActive">Tous Actifs</button></th>
+                <th @click="orderBy('status')">Status <button class="btn btn-xs btn-default pull-right" @click="setActive">Tous Actifs</button></th>
             </tr>
             </thead>
             <tbody v-if="filteredConstraintTypes.length > 0">
@@ -44,6 +44,8 @@
         data() {
             return {
                 search: '',
+                orderColumn: 'code',
+                sortOrder: 'asc',
                 constraintTypes: this.dataConstraintTypes
             }
         },
@@ -59,7 +61,7 @@
                         } else {
                             return true;
                         }
-                    }).sortBy('code')
+                    }).orderBy(this.orderColumn, this.sortOrder)
                     .value();
             }
         },
@@ -94,7 +96,17 @@
                 })
                     .then(res => console.log(res))
                     .catch(err => console.log(err));
+            },
+
+            orderBy(orderColumn) {
+                if(this.orderColumn === orderColumn) {
+                    this.sortOrder = (this.sortOrder === 'asc') ? 'desc' : 'asc';
+                } else {
+                    this.orderColumn = orderColumn;
+                    this.sortOrder = 'asc';
+                }
             }
+
         }
     }
 </script>
