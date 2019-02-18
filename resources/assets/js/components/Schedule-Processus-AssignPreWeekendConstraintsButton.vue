@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="dataStatus !== 3">
-            <button class="btn btn-sm btn-success" @click="updateStatus(3)">Assigner les VS</button>
+            <button class="btn btn-sm btn-success" @click="updateStatus(3)"><slot></slot></button>
         </div>
         <div v-else>
             Processus en cours...Veuillez patienter.

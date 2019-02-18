@@ -7,6 +7,7 @@ use App\Events\UpdateBuildStatus;
 use App\Jobs\AnalyzeClinicalDepartments;
 use App\Jobs\AssignPreWeekendConstraint;
 use App\Jobs\BuildClinicalDepartments;
+use App\Jobs\CompleteWeekendsAndDaysOff;
 use App\Jobs\ResetClinicalDepartments;
 use App\Schedule;
 
@@ -55,6 +56,11 @@ class BuildStatusChanged
             if($event->status === BuildStatus::Build) {
                 AssignPreWeekendConstraint::dispatch($event);
             }
+        } else if ($event->buildStep == 'weekends') {
+            if($event->status === BuildStatus::Build) {
+                CompleteWeekendsAndDaysOff::dispatch($event);
+            }
+
         }
     }
 }

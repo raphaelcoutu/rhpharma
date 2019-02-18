@@ -40,7 +40,13 @@
                          :class="statusIcon(dataStatuses.weekends)">
                     </div>
                 </td>
-                <td>Boutons</td>
+                <td>
+                    <schedule-processus-pre-weekend-constraints
+                        :data-schedule-id="dataSchedule.id"
+                        data-build-step="weekends"
+                        :data-status="dataStatuses.weekends"
+                        v-on:updateBuildStatus="buildStatusChanged"
+                >Compléter weekends + congés</schedule-processus-pre-weekend-constraints></td>
             </tr>
             <tr>
                 <td>Assigner les derniers soirs de semaine</td>
@@ -55,7 +61,7 @@
                             data-build-step="last_evening"
                             :data-status="dataStatuses.last_evening"
                             v-on:updateBuildStatus="buildStatusChanged"
-                    ></schedule-processus-pre-weekend-constraints>
+                    >Assigner les VS</schedule-processus-pre-weekend-constraints>
                 </td>
             </tr>
             <tr>
