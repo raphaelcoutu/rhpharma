@@ -21,7 +21,7 @@
     }
 
     #shifts {
-        height:100px;
+        height: 200px;
         overflow-y: auto;
     }
 </style>

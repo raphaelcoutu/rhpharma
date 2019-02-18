@@ -24,25 +24,34 @@
                                     ref="userModalShifts"
                             ></user-modal-shifts>
                         </div>
+                    </div>
+                    <div class="m-body-center">
                         <div>
                             <h4>Contraintes</h4>
                             <div v-if="dataModal.constraints.length > 0">
-                            <li v-for="constraint in dataModal.constraints">
-                                {{ constraint.constraint_type.name }} <span v-if="constraint.day">- {{ dayOfWeek(constraint.day) }}</span>
-                                <div style="padding-left:5px;font-size: small">
-                                    ({{ constraint.start_datetime}}  - {{ constraint.end_datetime}})
-                                </div>
-                            </li>
+                                <li @click="selectConstraint(constraint)"
+                                    v-for="constraint in dataModal.constraints"
+                                    class="pointer"
+                                >
+                                    <span :class="{'text-bold': constraint === selectedConstraint }">
+                                        {{ constraint.constraint_type.name }}
+                                        <span v-if="constraint.day">- {{ dayOfWeek(constraint.day) }}</span>
+                                    </span>
+                                </li>
                             </div>
                             <div v-else>
                                 <p><i>Aucune contrainte.</i></p>
                             </div>
                         </div>
                     </div>
-                    <div class="m-body-center">
-                        <p>default body</p>
-                    </div>
                     <div class="m-body-right">
+                        <h4>Description de contrainte</h4>
+                        <div v-if="selectedConstraint">
+                            <div><strong>Début:</strong> {{ selectedConstraint.start_datetime}}</div>
+                            <div class="mb-20"><strong>Fin:</strong> {{ selectedConstraint.start_datetime}}</div>
+                            <div><strong>Commentaire:</strong></div>
+                            {{ selectedConstraint.comment }}
+                        </div>
 
                     </div>
                 </div>
@@ -182,7 +191,8 @@
 
         data() {
             return {
-                isTransparent: false
+                isTransparent: false,
+                selectedConstraint: null
             }
         },
 
@@ -198,6 +208,9 @@
             dayOfWeek(value) {
                 let weekDays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
                 return weekDays[value];
+            },
+            selectConstraint(constraint) {
+                this.selectedConstraint = constraint;
             }
         }
     }
