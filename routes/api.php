@@ -42,6 +42,11 @@ Route::group(['middleware' => 'auth'], function () {
     // ConstraintValidator
     Route::put('constraintsValidator/{id}', 'ConstraintsValidatorController@update');
 
+    // Departments-Users
+    Route::get('departmentUsers/{id}', 'DepartmentsUsersController@fetch');
+    Route::post('departmentUsers/{id}/store', 'DepartmentsUsersController@store');
+    Route::delete('departmentUsers/{id}', 'DepartmentsUsersController@destroy');
+
     // Holidays
     Route::get('holidays', 'HolidaysController@fetch');
     Route::get('holidays/{id}', 'HolidaysController@edit');
@@ -65,9 +70,4 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Settings-Department-User
     Route::patch('settings/departmentUser', 'SettingsController@updateDepartmentUser');
-
-    // Users-Departments
-    Route::get('settingsDepartmentUsers/{id}', 'SettingsDepartmentUsersController@fetch');
-    Route::post('settingsDepartmentUsers/{id}/store', 'SettingsDepartmentUsersController@store');
-    Route::delete('settingsDepartmentUsers/{id}', 'SettingsDepartmentUsersController@destroy');
 });

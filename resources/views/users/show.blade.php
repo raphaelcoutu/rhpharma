@@ -58,11 +58,11 @@
                 @if(Request::segment(1) != 'profile')
                 <h3>Secteurs cliniques</h3>
 
-                <rhpharma-users-departments
+                <rhpharma-departments-users
                         :user-id="{{ $user->id }}"
                         :departments-prop="{{ $user->departments }}"
                         :departments-list="{{ $departments }}"
-                ></rhpharma-users-departments>
+                ></rhpharma-departments-users>
 
                 <h3>Permissions</h3>
 

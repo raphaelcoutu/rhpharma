@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 
-class SettingsDepartmentsUsersController extends Controller
+class DepartmentsUsersController extends Controller
 {
     public function fetch($id)
     {
@@ -21,7 +21,6 @@ class SettingsDepartmentsUsersController extends Controller
             'history' => 'required|numeric|min:0|max:99.99',
             'planning_long' => 'required|numeric|min:0|max:99.99',
             'planning_short' => 'required|numeric|min:0|max:99.99'
-
         ]);
 
         User::findOrFail($id)->departments()->syncWithoutDetaching([
@@ -29,6 +28,7 @@ class SettingsDepartmentsUsersController extends Controller
                 'history' => $request['history'],
                 'planning_long' => $request['planning_long'],
                 'planning_short' => $request['planning_short'],
+                'active' => true
             ]
         ]);
     }
