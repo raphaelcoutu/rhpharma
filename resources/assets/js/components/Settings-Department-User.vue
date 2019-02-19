@@ -12,7 +12,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in users">
+            <tr v-for="user in sortedUsers">
                 <td>{{ user.firstname }} {{ user.lastname }}</td>
                 <td><input type="checkbox"
                            v-model="user.pivot.active"
@@ -44,6 +44,12 @@
             department: null,
             users: null
         }),
+
+        computed: {
+            sortedUsers() {
+                return _.sortBy(this.users, 'lastname');
+            }
+        },
 
         methods: {
             settingsChanged(user, setting) {
