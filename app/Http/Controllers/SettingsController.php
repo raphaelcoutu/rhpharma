@@ -22,10 +22,11 @@ class SettingsController extends Controller
 
     public function departments()
     {
-        $departments = Department::with('users')
-            ->whereHas('departmentType', function ($departmentType) {
-                $departmentType->whereIn('name', ['Clinique','Oncologie']);
-            })->orderBy('name')->get();
+        $departments = Department::with(['users' => function ($query) {
+            $query->where('is_active', 1);
+        }])->whereHas('departmentType', function ($departmentType) {
+            $departmentType->whereIn('name', ['Clinique','Oncologie']);
+        })->orderBy('name')->get();
 
         return view('settings.departments', compact('departments'));
     }
