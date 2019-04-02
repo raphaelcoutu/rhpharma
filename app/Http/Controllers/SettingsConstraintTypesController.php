@@ -9,7 +9,7 @@ class SettingsConstraintTypesController extends Controller
 {
     public function index()
     {
-        $constraintTypes = ConstraintType::all();
+        $constraintTypes = ConstraintType::where('is_group_constraint', 0)->get();
 
         return view('settings.constraintTypes', compact('constraintTypes'));
     }
