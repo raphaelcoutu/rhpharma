@@ -90,6 +90,15 @@ class ProductionSeeder extends Seeder
             'start_date' => Carbon::parse('2019-02-03'),
             'end_date' => Carbon::parse('2019-03-16')
         ]);
+
+        Schedule::create([
+            'name' => '2019-03-17 au 2019-05-11',
+            'branch_id' => 1,
+            'limit_date_weekends' => now(),
+            'limit_date' => now()->addDay(1),
+            'start_date' => Carbon::parse('2019-03-17'),
+            'end_date' => Carbon::parse('2019-05-11')
+        ]);
     }
 
     private function createDayOff(string $date, array $userIds)
