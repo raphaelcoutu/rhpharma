@@ -24,14 +24,7 @@ abstract class BaseBuilder
     }
 
     protected function optimizedSampling($ids, $weeksCount) {
-        $nbGroup = ceil($weeksCount / $this->weeksPerGroup);
-
-        $combinaisons = [];
-
-        for($i = 0; $i < $nbGroup; $i++) {
-            $count = ($i != $nbGroup -1) ? $this->weeksPerGroup : $weeksCount - ($i*$this->weeksPerGroup);
-            $combinaisons[] = $this->sampling($ids, $count);
-        }
+        $combinaisons = $this->sampling($ids, $weeksCount);
 
         return $combinaisons;
     }

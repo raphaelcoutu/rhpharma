@@ -4,7 +4,6 @@ namespace App\Builders;
 
 
 use App\AssignedShift;
-use App\Department;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
@@ -55,58 +54,51 @@ class GenericBuilder extends BaseBuilder
     {
         $allocatedWeeks = $this->precalculation->getAllocatedWeeks($this->departmentId);
 
-        for($group = 0; $group < count($this->combinaisons); $group++) {
-            $this->calculateScores($group);
+        $this->calculateScores();
 
-            foreach ($this->combinaisons[$group] as &$combinaison) {
-                foreach ($combinaison['count'] as $pharmId => $count) {
+        foreach ($this->combinaisons as &$combinaison) {
+            foreach ($combinaison['count'] as $pharmId => $count) {
 
-                        $diff = $allocatedWeeks[$pharmId] - $count;
+                    $diff = $allocatedWeeks[$pharmId] - $count;
 
-                        if ($diff >= 0) {
-                            // Différentiel à allouer supérieur ou égal à la combine
-                            $combinaison['score'] += $count * 5;
-                        } else {
-                            // Différentiel à allouer inférieur à la combine
-                            $combinaison['score'] += $diff * 10;
-                        }
-                }
+                    if ($diff >= 0) {
+                        // Différentiel à allouer supérieur ou égal à la combine
+                        $combinaison['score'] += $count * 5;
+                    } else {
+                        // Différentiel à allouer inférieur à la combine
+                        $combinaison['score'] += $diff * 10;
+                    }
+            }
+        }
+
+        //todo: screen les dernières semaines pour déterminer le bonus
+        //TODO: aller voir les dernières semaines dans la base de donnée
+
+        // Trier les séquences par scores desc.
+        $this->sortByScores();
+
+        if (count($this->combinaisons) != 0) {
+            $this->selectedCombinaison = $this->combinaisons[0];
+            // S'il y a un pharmacien ajouté manuellement, vérifier s'il existe dans une séquence
+            for ($i = 0; $i < $this->weeksPerGroup; $i++) {
+                $this->manualWeeks->each(function ($week) use ($i) {
+                    if($i == $week) {
+                        $temp = explode(",", $this->selectedCombinaison["sequence"]);
+                        $temp[$i] = null;
+
+                        $this->selectedCombinaison["sequence"] = implode(",", $temp);
+                    }
+                });
             }
 
-            if($group == 0) {
-                //todo: screen les dernières semaines pour déterminer le bonus
-                //TODO: aller voir les dernières semaines dans la base de donnée
-
-            } else {
-                $this->bonusMalusPrecedingGroup($group);
+            //Retirer les semaines allouées des allocated
+            foreach ($this->selectedCombinaison['count'] as $pharmId => $count) {
+                $allocatedWeeks[$pharmId] -= $count;
             }
 
-            // Trier les séquences par scores desc.
-            $this->sortByScores($group);
-
-            if (count($this->combinaisons[$group]) != 0) {
-                $this->selectedCombinaison = $this->combinaisons[$group][0];
-                // S'il y a un pharmacien ajouté manuellement, vérifier s'il existe dans une séquence
-                for ($i = 0; $i < $this->weeksPerGroup; $i++) {
-                    $this->manualWeeks->each(function ($week) use ($i, $group) {
-                        if(($i + $this->weeksPerGroup * $group) == $week) {
-                            $temp = explode(",", $this->selectedCombinaison["sequence"]);
-                            $temp[$i] = null;
-
-                            $this->selectedCombinaison["sequence"] = implode(",", $temp);
-                        }
-                    });
-                }
-
-                //Retirer les semaines allouées des allocated
-                foreach ($this->selectedCombinaison['count'] as $pharmId => $count) {
-                    $allocatedWeeks[$pharmId] -= $count;
-                }
-
-                $this->precalculation->assignWeekSequence($this->departmentId, $group, $this->selectedCombinaison['sequence']);
-            } else {
-                Log::debug("No more pharmacist available to assign. [Department = {$this->departmentId}]");
-            }
+            $this->precalculation->assignWeekSequence($this->departmentId, $this->selectedCombinaison['sequence']);
+        } else {
+            Log::debug("No more pharmacist available to assign. [Department = {$this->departmentId}]");
         }
     }
 
@@ -151,39 +143,37 @@ class GenericBuilder extends BaseBuilder
 
     private function removeUsedSequence()
     {
-        for($group = 0; $group < count($this->combinaisons); $group++) {
-            $combinaisonsToUnset = [];
-            for ($i = 0; $i < count($this->combinaisons[$group]); $i++) {
-                $splitSequence = explode(',', $this->combinaisons[$group][$i]['sequence']);
-                if (!empty($this->precalculation->scheduleWeeks)) {
-                    foreach ($this->precalculation->scheduleWeeks as $department) {
-                        for ($week = 0; $week < count($splitSequence); $week++) {
-                            if (isset($department[($group * $this->weeksPerGroup) + $week])
-                                && $department[($group * $this->weeksPerGroup) + $week] == $splitSequence[$week]) {
-                                $combinaisonsToUnset[] = $i;
-                            }
+        $combinaisonsToUnset = [];
+        for ($i = 0; $i < count($this->combinaisons); $i++) {
+            $splitSequence = explode(',', $this->combinaisons[$i]['sequence']);
+            if (!empty($this->precalculation->scheduleWeeks)) {
+                foreach ($this->precalculation->scheduleWeeks as $department) {
+                    for ($week = 0; $week < count($splitSequence); $week++) {
+                        if (isset($department[$week])
+                            && $department[$week] == $splitSequence[$week]) {
+                            $combinaisonsToUnset[] = $i;
                         }
                     }
                 }
             }
-
-            $combinaisonsToUnset = array_unique($combinaisonsToUnset);
-
-            foreach ($combinaisonsToUnset as $item) {
-                unset($this->combinaisons[$group][$item]);
-            }
-
-            // Reset index
-            $this->combinaisons[$group] = array_values($this->combinaisons[$group]);
         }
+
+        $combinaisonsToUnset = array_unique($combinaisonsToUnset);
+
+        foreach ($combinaisonsToUnset as $item) {
+            unset($this->combinaisons[$item]);
+        }
+
+        // Reset index
+        $this->combinaisons = array_values($this->combinaisons);
     }
 
-    private function calculateScores($group)
+    private function calculateScores()
     {
-        for ($i = 0; $i < count($this->combinaisons[$group]); $i++) {
-            $sequence = explode(',', $this->combinaisons[$group][$i]["sequence"]);
+        for ($i = 0; $i < count($this->combinaisons); $i++) {
+            $sequence = explode(',', $this->combinaisons[$i]["sequence"]);
             $result = 0;
-            $week = $group*$this->weeksPerGroup;
+            $week = 0;
 
             $lastSeq = 0;
             $consecutiveCount = 1;
@@ -210,15 +200,15 @@ class GenericBuilder extends BaseBuilder
                 $week++;
             }
 
-            $this->combinaisons[$group][$i]["count"] = array_count_values($sequence);
-            $this->combinaisons[$group][$i]["score"] = $result;
+            $this->combinaisons[$i]["count"] = array_count_values($sequence);
+            $this->combinaisons[$i]["score"] = $result;
         }
 
     }
 
-    private function sortByScores($group)
+    private function sortByScores()
     {
-        usort($this->combinaisons[$group], function ($a, $b) {
+        usort($this->combinaisons, function ($a, $b) {
             return $b['score'] <=> $a['score'];
         });
     }

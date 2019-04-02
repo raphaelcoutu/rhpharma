@@ -82,7 +82,7 @@ class BuildClinicalDepartments implements ShouldQueue
             ->where('active', '=', 'true')
             ->pluck('id')
             ->each(function ($departmentId) {
-                set_time_limit(30);
+                set_time_limit(600);
                 $status = Schedule::find($this->event->scheduleId)->status_clinical_departments;
 
                 if($status === BuildStatus::Build) {

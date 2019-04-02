@@ -165,7 +165,7 @@ class Precalculation
         return true;
     }
 
-    public function assignWeekSequence($departmentId, $group, $sequence)
+    public function assignWeekSequence($departmentId, $sequence)
     {
         $splitSequence = explode(',', $sequence);
         foreach($splitSequence as $seq) {
@@ -187,7 +187,7 @@ class Precalculation
             if(is_null($pharmacienId) || $pharmacienId == "") continue;
 
             for($days = 1; $days <= 5; $days++) {
-                $i = $days+7*($weeks+$group*$this->weeksPerGroup);
+                $i = $days+7*$weeks;
                 $realDate = $this->schedule->start_date->addDays($i);
 
                 // Si c'est une journée férié, on passe au suivant.
