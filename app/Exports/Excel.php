@@ -80,7 +80,7 @@ class Excel
             // Création des différents horaires en xlsx
             foreach ($this->calendars as $index => $calendar) {
                 $writer = new Xlsx($calendar->getSpreadsheet());
-                $tmpFiles[$index] = sys_get_temp_dir() . 'laravel-calendar'. $index .'_' . $timestamp . '.xlsx';
+                $tmpFiles[$index] = sys_get_temp_dir() . '/laravel-calendar'. $index .'_' . $timestamp . '.xlsx';
 
                 $writer->save($tmpFiles[$index]);
 
@@ -93,7 +93,7 @@ class Excel
             $liberations = new Liberation($this->schedule, $this->users);
             $writer = new Xlsx($liberations->getSpreadsheet());
 
-            $tmpFiles['liberations'] = sys_get_temp_dir() . 'liberations_' . $timestamp . '.xlsx';
+            $tmpFiles['liberations'] = sys_get_temp_dir() . '/liberations_' . $timestamp . '.xlsx';
             $writer->save($tmpFiles['liberations']);
             $zip->addFile($tmpFiles['liberations'], 'Liberations_' . $timestamp . '.xlsx');
             $liberations->clear();
@@ -102,7 +102,7 @@ class Excel
             $conflicts = new Conflict($this->schedule);
             $writer = new Xlsx($conflicts->getSpreadsheet());
 
-            $tmpFiles['conflits'] = sys_get_temp_dir() . 'conflits_' . $timestamp . '.xlsx';
+            $tmpFiles['conflits'] = sys_get_temp_dir() . '/conflits_' . $timestamp . '.xlsx';
             $writer->save($tmpFiles['conflits']);
             $zip->addFile($tmpFiles['conflits'], 'Conflits_' . $timestamp . '.xlsx');
             $conflicts->clear();
