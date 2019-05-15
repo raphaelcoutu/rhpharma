@@ -11,6 +11,8 @@ class GenericBuilder extends BaseBuilder
     private $bonus;
     private $malus;
 
+    private $weekCount;
+
     private $selectedCombinaison;
 
     public function __construct(Precalculation $precalculation, $departmentId)
@@ -19,7 +21,7 @@ class GenericBuilder extends BaseBuilder
 
         $start = microtime(true);
 
-        $weeksCount = $precalculation->getWeeksCount();
+        $this->weeksCount = $precalculation->getWeeksCount();
 
         $this->getBonusMalus();
 
@@ -34,7 +36,7 @@ class GenericBuilder extends BaseBuilder
         // On calcule le score de disponibilité par pharmacien par semaine [1 => [20,20,20], 4 => [...]]
         $this->scores = $this->precalculation->calculateScore($ids, $departmentId);
 
-        $this->combinaisons = $this->optimizedSampling($ids, $weeksCount);
+        $this->combinaisons = $this->optimizedSampling($ids, $this->weeksCount);
         //todo: ajouter le dernier pharmacien à faire la semaine ICI
         $this->removeUsedSequence();
 
@@ -80,7 +82,7 @@ class GenericBuilder extends BaseBuilder
         if (count($this->combinaisons) != 0) {
             $this->selectedCombinaison = $this->combinaisons[0];
             // S'il y a un pharmacien ajouté manuellement, vérifier s'il existe dans une séquence
-            for ($i = 0; $i < $this->weeksPerGroup; $i++) {
+            for ($i = 0; $i < $this->weeksCount; $i++) {
                 $this->manualWeeks->each(function ($week) use ($i) {
                     if($i == $week) {
                         $temp = explode(",", $this->selectedCombinaison["sequence"]);
@@ -239,7 +241,11 @@ class GenericBuilder extends BaseBuilder
 
     private function getManualWeeks()
     {
-        return AssignedShift::whereHas('shift', function ($query) {
+        $startDate = $this->precalculation->schedule->start_date;
+        $endDate = $this->precalculation->schedule->end_date;
+
+        return AssignedShift::InDateInterval($startDate, $endDate)
+        ->whereHas('shift', function ($query) {
             $query->where('department_id', $this->departmentId);
         })->get()
             ->map(function ($shift) {
