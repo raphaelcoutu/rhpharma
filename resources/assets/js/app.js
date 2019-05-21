@@ -20,6 +20,7 @@ import store from './store';
 // Vue.component('example', require('./components/Example.vue'));
 Vue.component('rhpharma-branches', require('./components/Branches.vue').default);
 Vue.component('rhpharma-calendar', require('./components/Calendar.vue').default);
+Vue.component('rhpharma-constraint-importer', require('./components/ConstraintImporter.vue').default);
 Vue.component('rhpharma-constraints', require('./components/Constraints.vue').default);
 Vue.component('rhpharma-constraints-count', require('./components/Constraints-Count.vue').default);
 Vue.component('rhpharma-constraints-validator', require('./components/Constraints-Validator.vue').default);

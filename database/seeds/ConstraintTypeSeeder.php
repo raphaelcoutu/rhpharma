@@ -675,7 +675,7 @@ class ConstraintTypeSeeder extends Seeder
         ]);
 
         $this->create([
-            'name' => 'Congé sans solde 4 semaines',
+            'name' => 'Congé sans solde complet de 4 semaines et moins',
             'description' => '',
             'code' => 'AA',
             'is_work' => 0,
@@ -763,5 +763,27 @@ class ConstraintTypeSeeder extends Seeder
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 1
         ]);
+
+        $this->create([
+            'name' => 'Congé sans solde complet de plus de 4 semaines',
+            'description' => 'congé sans solde complet',
+            'code' => 'CSS',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 0
+        ]);
+
+        $this->create([
+            'name' => 'PGTM selon dispo',
+            'description' => 'Demande de demi-journée PGTM selon disponibilité',
+            'code' => 'PG/',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
+
+
     }
 }

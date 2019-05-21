@@ -65,6 +65,10 @@ Route::group(['middleware' => 'auth'], function () {
     //Holidays
     Route::get('holidays', 'HolidaysController@index')->name('holidays.index');
 
+    //ConstraintImporter
+    Route::get('constraintImporter', 'ConstraintImporterController@index')->name('constraintImporter.index');
+    Route::get('constraintImporter/import{start?}{end?}', 'ConstraintImporterController@import')->name('constraintImporter.import');
+
     //ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@index')->name('constraintTypes.index');
     Route::get('constraintTypes/create', 'ConstraintTypesController@create')->name('constraintTypes.create');

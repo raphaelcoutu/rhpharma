@@ -21,7 +21,12 @@
                     <i>Icone</i>
                 </td>
                 <td>
-                    <a :href="validateUrl" class="btn btn-default">Valider les contraintes</a>
+                    <p>
+                        <a href="/constraintImporter" class="btn btn-sm btn-primary">Importer les contraintes Azure</a>
+                    </p>
+                    <p>
+                        <a :href="validateUrl" class="btn btn-sm btn-default">Valider les contraintes</a>
+                    </p>
                 </td>
             </tr>
             <tr>
