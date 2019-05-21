@@ -174,10 +174,10 @@ class ConstraintImporterController extends Controller
 
                 // On doit regarder dans la variable "day" ou "day1"...
 
-                if($row['Day'] !== "") {
+                if($row['Day'] !== null) {
                     $day = $row['Day'];
 
-                } else if($row['Day1'] !== "") {
+                } else if($row['Day1'] !== null) {
                     $day = $row['Day1'];
                 } else {
                     $day = null;
