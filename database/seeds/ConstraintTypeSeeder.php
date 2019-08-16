@@ -784,6 +784,16 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
+        $this->create([
+            'name' => 'Congé de paternité',
+            'description' => '',
+            'code' => 'PG',
+            'is_work' => 0,
+            'is_single_day' => 0,
+            'is_group_constraint' => 0,
+            'is_day_in_schedule' => 1
+        ]);
+
 
     }
 }
