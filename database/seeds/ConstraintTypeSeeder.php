@@ -794,6 +794,14 @@ class ConstraintTypeSeeder extends Seeder
             'is_day_in_schedule' => 1
         ]);
 
-
+        $this->create([
+            'name' => 'Ariane selon dispo',
+            'description' => '',
+            'code' => 'AR',
+            'is_work' => 1,
+            'is_single_day' => 1,
+            'is_group_constraint' => 1,
+            'is_day_in_schedule' => 1
+        ]);
     }
 }

@@ -134,7 +134,8 @@ class ConstraintImporterController extends Controller
         131 => 2,
         122 => 73,
         115 => 74,
-        60 => 75
+        60 => 75,
+        101 => 76,
     ];
 
     public function index()
