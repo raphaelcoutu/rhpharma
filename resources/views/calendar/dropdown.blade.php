@@ -2,7 +2,7 @@
 <li role="separator" class="divider"></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 12]) }}">C.I.M.</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 1]) }}">Coumadin</a></li>
-<li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 33]) }}">Trajectoire patients</a></li>
+<li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 33]) }}">Cowansville</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 23]) }}">Douleur pelvienne</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 10]) }}">Insuffisance cardiaque</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 2]) }}">Médecine interne</a></li>
