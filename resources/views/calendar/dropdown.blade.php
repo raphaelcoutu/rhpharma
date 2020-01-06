@@ -2,6 +2,7 @@
 <li role="separator" class="divider"></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 12]) }}">C.I.M.</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 1]) }}">Coumadin</a></li>
+<li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 33]) }}">Trajectoire patients</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 23]) }}">Douleur pelvienne</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 10]) }}">Insuffisance cardiaque</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 2]) }}">Médecine interne</a></li>
@@ -13,6 +14,7 @@
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 8]) }}">SIPA</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => "4,5,6"]) }}">Soins intensifs</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 11]) }}">Soins palliatifs</a></li>
+<li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 32]) }}">Trajectoire patient</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 16]) }}">Urgence</a></li>
 <li><a href="{{ route('calendar.showByDepartment', ['schedule' => $schedule->id, 'department' => 7]) }}">VIH</a></li>
 
