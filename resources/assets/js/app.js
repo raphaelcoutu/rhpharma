@@ -32,6 +32,8 @@ Vue.component('rhpharma-settings-constraint-types', require('./components/Settin
 Vue.component('rhpharma-settings-department-user', require('./components/Settings-Department-User.vue').default);
 Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue').default);
 Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue').default);
+Vue.component('rhpharma-shifts', require('./components/Shifts.vue').default);
+Vue.component('rhpharma-shift-types', require('./components/ShiftTypes.vue').default);
 Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue').default);
 Vue.component('rhpharma-users', require('./components/Users.vue').default);
 

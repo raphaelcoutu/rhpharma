@@ -84,6 +84,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('calendar/{schedule}', 'CalendarController@show')->name('calendar.show');
     Route::get('calendar/{schedule}/byDepartment/{department}', 'CalendarController@showByDepartment')->name('calendar.showByDepartment');
 
+    //Shifts
+    Route::get('shifts', 'ShiftsController@index')->name('shifts.index');
+    Route::get('shifts/create', 'ShiftsController@create')->name('shifts.create');
+    Route::post('shifts', 'ShiftsController@store')->name('shifts.store');
+    Route::get('shifts/{shift}/edit', 'ShiftsController@edit')->name('shifts.edit');
+    Route::post('shifts/{shift}', 'ShiftsController@update')->name('shifts.update');
+
+    //ShiftTypes
+    Route::get('shiftTypes', 'ShiftTypesController@index')->name('shiftTypes.index');
+    Route::get('shiftTypes/create', 'ShiftTypesController@create')->name('shiftTypes.create');
+    Route::post('shiftTypes', 'ShiftTypesController@store')->name('shiftTypes.store');
+    Route::get('shiftTypes/{shiftType}/edit', 'ShiftTypesController@edit')->name('shiftTypes.edit');
+    Route::post('shiftTypes/{shiftType}', 'ShiftTypesController@update')->name('shiftTypes.update');
+
     //Settings
     Route::get('settings', 'SettingsController@index')->name('settings.index');
     Route::get('settings/constraintTypes', 'SettingsConstraintTypesController@index')->name('settings.constraintTypes');

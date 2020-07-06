@@ -6,6 +6,8 @@
     Auth::user()->can('read', App\Role::class) ||
     Auth::user()->can('read', App\Schedule::class ||
     Auth::user()->can('read', App\ConstraintType::class) ||
+    Auth::user()->can('read', App\Shift::class) ||
+    Auth::user()->can('read', App\ShiftType::class) ||
     Auth::user()->can('read', App\Holiday::class))
     )
 <li class="dropdown">
@@ -45,6 +47,13 @@
                 <a href="{{ route('departments.index') }}">Gestion des secteurs</a></li>
             </li>
         @endcan
+
+        @can('read', App\Shift::class)
+            <li>
+                <a href="{{ route('shifts.index') }}">Gestion des shifts</a></li>
+            </li>
+        @endcan
+
         @can('read', App\Schedule::class)
             <li>
                 <a href="{{ route('schedules.index') }}">Gestion des horaires</a></li>
@@ -54,6 +63,12 @@
         @can('read', App\ConstraintType::class)
             <li>
                 <a href="{{ route('constraintTypes.index') }}">Gestion des types de contraintes</a></li>
+            </li>
+        @endcan
+
+        @can('read', App\ShiftType::class)
+            <li>
+                <a href="{{ route('shiftTypes.index') }}">Gestion des types de shifts</a></li>
             </li>
         @endcan
 
