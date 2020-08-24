@@ -152,8 +152,7 @@ class ImportCsvCommand extends Command
             114 => 70,
             85 => 71,
             65 => 8,
-            131 => 2,
-            150 => 77
+            131 => 2
         ];
 
     }
