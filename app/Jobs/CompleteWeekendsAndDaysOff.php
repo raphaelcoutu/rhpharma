@@ -156,11 +156,22 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
 
     private function getDaysOffWithShift($shift)
     {
+//        5 Pharmaciens
+//        $daysOffByShift = [
+//            2 => [Carbon::MONDAY,Carbon::TUESDAY],
+//            3 => [Carbon::THURSDAY, Carbon::FRIDAY],
+//            4 => [Carbon::THURSDAY, Carbon::FRIDAY],
+//            5 => [Carbon::MONDAY,Carbon::TUESDAY],
+//            8 => [Carbon::THURSDAY, Carbon::FRIDAY]
+//        ];
+
+        // 6 Pharmaciens
         $daysOffByShift = [
-            2 => [Carbon::MONDAY,Carbon::TUESDAY],
-            3 => [Carbon::THURSDAY, Carbon::FRIDAY],
+            2 => [Carbon::THURSDAY, Carbon::FRIDAY],
+            3 => [Carbon::MONDAY,Carbon::TUESDAY],
             4 => [Carbon::THURSDAY, Carbon::FRIDAY],
-            5 => [Carbon::MONDAY,Carbon::TUESDAY],
+            5 => [Carbon::THURSDAY, Carbon::FRIDAY],
+            42 => [Carbon::MONDAY,Carbon::TUESDAY],
             8 => [Carbon::THURSDAY, Carbon::FRIDAY]
         ];
 
@@ -170,11 +181,22 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
 
     private function convertShift($shift_id, $reverse = false)
     {
+//        5 Pharmaciens
+//        $conversion = [
+//            2 => 4,
+//            3 => 2,
+//            4 => 3,
+//            5 => 8,
+//            8 => 5
+//        ];
+
+        // 6 Pharmaciens
         $conversion = [
             2 => 4,
-            3 => 2,
-            4 => 3,
+            3 => 3,
+            4 => 2,
             5 => 8,
+            42 => 42,
             8 => 5
         ];
 
