@@ -17,8 +17,8 @@ class DepartmentsController extends Controller
     {
         $this->authorize('read', Department::class);
 
-        $departments = Department::select(['id', 'name', 'description', 'workplace_id'])
-            ->ownBranch()->with('workplace')->orderBy('name')->get();
+        $departments = Department::select(['id', 'name', 'description', 'department_type_id', 'workplace_id'])
+            ->ownBranch()->with(['workplace', 'departmentType'])->orderBy('name')->get();
 
         return view('departments.index', compact('departments'));
     }

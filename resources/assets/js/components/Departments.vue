@@ -18,6 +18,7 @@
                     columns: [
                         {id: 'name', title: 'Secteur', sortable: true},
                         {id: 'description', title: 'Description', sortable: false},
+                        {id: 'department_type.name', title: 'Type', sortable: false},
                         {id: 'workplace.name', title: 'Lieu', sortable: true},
                         {title: 'Actions', slot:'actions'},
                     ],
