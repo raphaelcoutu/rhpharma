@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AssignedShift;
+use App\Department;
 use App\Schedule;
 use App\Shift;
 use App\User;
@@ -146,9 +147,12 @@ class CalendarController extends Controller
 
         $users = $users->orderBy('lastname')->orderBy('firstname')->get();
 
+        $departments = Department::orderBy('name')->get();
+
         return [
             'schedule' => $schedule,
-            'users' => $users
+            'users' => $users,
+            'departments' => $departments
         ];
     }
 }

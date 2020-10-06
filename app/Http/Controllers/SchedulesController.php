@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constraint;
+use App\Department;
 use App\Http\Requests\ScheduleRequest;
 use App\Schedule;
 use Illuminate\Http\Request;
@@ -78,9 +79,11 @@ class SchedulesController extends Controller
 
         $schedule = Schedule::with('conflicts.department')->findOrFail($id);
 
+        $departments = Department::orderBy('name')->get();
+
         $constraints_count = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
 
-        return view('schedules.show', compact('schedule','constraints_count'));
+        return view('schedules.show', compact('schedule','constraints_count', 'departments'));
     }
 
     /**
