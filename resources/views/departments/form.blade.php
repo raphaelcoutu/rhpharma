@@ -33,6 +33,36 @@
     </div>
 
     <div class="form-group">
+        <label for="department_type_id" class="col-md-3 control-label">Type:</label>
+        <div class="col-md-3 {{ $errors->first('department_type_id') ? 'has-error' : '' }}">
+            <select id="department_type_id" name="department_type_id" class="form-control">
+                @if(isset($model) && is_null(old('workplace_id')))
+                    <option value="1" {{ $model->department_type_id == 1 ? 'selected' : '' }}>
+                        Clinique
+                    </option>
+                    <option value="2" {{ $model->department_type_id == 2 ? 'selected' : '' }}>
+                        Gestion
+                    </option>
+                    <option value="3" {{ $model->department_type_id == 3 ? 'selected' : '' }}>
+                        Oncologie
+                    </option>
+                @else
+                    <option value="1" {{ old('department_type_id') == 1 ? 'selected' : '' }}>
+                        Clinique
+                    </option>
+                    <option value="2" {{ old('department_type_id') == 2 ? 'selected' : '' }}>
+                        Gestion
+                    </option>
+                    <option value="3" {{ old('department_type_id') == 3 ? 'selected' : '' }}>
+                        Oncologie
+                    </option>
+                @endif
+            </select>
+            <span class="help-block">{{ $errors->first('department_type_id') }}</span>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="workplace_id" class="col-md-3 control-label">Lieu de travail:</label>
         <div class="col-md-3 {{ $errors->first('workplace_id') ? 'has-error' : '' }}">
             <select id="workplace_id" name="workplace_id" class="form-control">
