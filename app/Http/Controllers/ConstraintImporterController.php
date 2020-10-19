@@ -229,8 +229,8 @@ class ConstraintImporterController extends Controller
     {
         $time_start = microtime(true);
 
-        $conn = new PDO('sqlsrv:server='.env('AZURE_HOST').';Database='.env('AZURE_DATABASE'),
-            env('AZURE_USERNAME'), env('AZURE_PASSWORD'));
+        $conn = new PDO('sqlsrv:server='.config('azure.host').';Database='.config('azure.database'),
+            config('azure.username'), config('azure.password'));
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
         $tsql = "SELECT U.Id as User_id, U.FirstName, U.LastName, 
