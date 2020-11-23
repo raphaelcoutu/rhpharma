@@ -64,7 +64,8 @@ class ConstraintImporterController extends Controller
         1084 => 53,
         1085 => 54,
         1086 => 55,
-        1087 => 56
+        1087 => 56,
+        1088 => 57,
     ];
     private $constraintsIds = [
         67 => 32,
@@ -144,6 +145,7 @@ class ConstraintImporterController extends Controller
         90 => 17,
         128 => 23,
         132 => 3,
+        151 => 79
     ];
 
     public function index()
