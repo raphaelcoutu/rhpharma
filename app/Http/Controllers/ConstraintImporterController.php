@@ -66,6 +66,7 @@ class ConstraintImporterController extends Controller
         1086 => 55,
         1087 => 56,
         1088 => 57,
+        1089 => 58,
     ];
     private $constraintsIds = [
         67 => 32,
