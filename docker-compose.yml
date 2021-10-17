@@ -2,7 +2,7 @@ version: '3'
 services:
   app:
     build:
-      context: ./docker/app
+      context: ./docker/app/7.3
       dockerfile: Dockerfile
     image: rhpharma/app
     ports:
