@@ -28,7 +28,6 @@ class UserRequest extends FormRequest
             'lastname' => 'required|alpha_dash',
             'email' => 'required|email|unique:users,email,'.$this->get('id'),
             'workdays_per_week' => 'required|digits:1',
-            'seniority' => 'required',
             'is_active' => 'required'
         ];
     }
