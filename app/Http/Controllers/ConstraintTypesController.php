@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ConstraintType;
+use App\Http\Requests\ConstraintTypeRequest;
 use Illuminate\Http\Request;
 
 class ConstraintTypesController extends Controller
@@ -16,7 +17,7 @@ class ConstraintTypesController extends Controller
     {
         $this->authorize('read', ConstraintType::class);
 
-        $constraintTypes = ConstraintType::ownBranch()->get();
+        $constraintTypes = ConstraintType::ownBranch()->orderBy('name')->get();
 
         return view('constraintTypes.index', compact('constraintTypes'));
     }
@@ -29,7 +30,7 @@ class ConstraintTypesController extends Controller
     public function create()
     {
         $this->authorize('write', ConstraintType::class);
-        
+
         return view('constraintTypes.create');
     }
 
@@ -39,17 +40,8 @@ class ConstraintTypesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ConstraintTypeRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'code' => 'required',
-            'is_work' => 'required',
-            'is_single_day' => 'required',
-            'is_group_constraint' => 'required',
-            'is_day_in_schedule' => 'required',
-        ]);
-        
         $request['branch_id'] = \Auth::user()->branch->id;
 
         ConstraintType::create($request->all());
@@ -74,9 +66,9 @@ class ConstraintTypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ConstraintType $constraintType)
     {
-        //
+        return view('constraintTypes.edit', compact('constraintType'));
     }
 
     /**
@@ -86,9 +78,12 @@ class ConstraintTypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ConstraintTypeRequest $request, $id)
     {
-        //
+        $constraintType = ConstraintType::findOrFail($id);
+        $constraintType->update($request->all());
+
+        return redirect('constraintTypes');
     }
 
     /**

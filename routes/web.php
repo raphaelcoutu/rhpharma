@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('users', 'UsersController@store')->name('users.store');
     Route::put('users/{user}', 'UsersController@update')->name('users.update');
     Route::get('profile', 'UsersController@profile')->name('profile');
-    
+
     //Roles
     Route::get('roles', 'RolesController@index')->name('roles.index');
 
@@ -72,7 +72,9 @@ Route::group(['middleware' => 'auth'], function () {
     //ConstraintTypes
     Route::get('constraintTypes', 'ConstraintTypesController@index')->name('constraintTypes.index');
     Route::get('constraintTypes/create', 'ConstraintTypesController@create')->name('constraintTypes.create');
+    Route::get('constraintTypes/{constraintType}/edit', 'ConstraintTypesController@edit')->name('constraintTypes.edit');
     Route::post('constraintTypes', 'ConstraintTypesController@store')->name('constraintTypes.store');
+    Route::put('constraintTypes/{constraintType}', 'ConstraintTypesController@update')->name('constraintTypes.update');
 
     Route::get('constraints', 'ConstraintsController@index')->name('constraints.index');
 

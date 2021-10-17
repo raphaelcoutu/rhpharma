@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ConstraintType extends Model
 {
     protected $fillable = [
+        'azure_id',
         'name',
         'description',
         'code',

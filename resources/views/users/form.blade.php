@@ -47,7 +47,7 @@
                 <option value="3" {{ old('workdays_per_week', isset($user) ? $user->workdays_per_week : '') == '3' ? 'selected' : '' }}>3 jours</option>
                 <option value="2" {{ old('workdays_per_week', isset($user) ? $user->workdays_per_week : '') == '2' ? 'selected' : '' }}>2 jours</option>
                 <option value="1" {{ old('workdays_per_week', isset($user) ? $user->workdays_per_week : '') == '1' ? 'selected' : '' }}>1 jour</option>
-            </select> 
+            </select>
             <span class="help-block">{{ $errors->first('workdays_per_week') }}</span>
         </div>
 
@@ -60,7 +60,7 @@
 
     <div class="form-group">
         <label for="is_active" class="col-md-3 control-label">Actif:</label>
-        <div class="col-md-9 {{ $errors->first('is_active') ? 'has-error' : '' }}">
+        <div class="col-md-3 {{ $errors->first('is_active') ? 'has-error' : '' }}">
             <label class="radio-inline">
                 <input type="radio" name="is_active" value="1" {{ old('is_active', isset($user) ? $user->is_active : '') == '1' ? 'checked' : '' }}>Oui
             </label>
@@ -68,6 +68,12 @@
                 <input type="radio" name="is_active" value="0" {{ old('is_active', isset($user) ? $user->is_active : '') == '0' ? 'checked' : '' }}>Non
             </label>
             <span class="help-block">{{ $errors->first('is_active') }}</span>
+        </div>
+
+        <label for="azure_id" class="col-md-3 control-label">ID Azure:</label>
+        <div class="col-md-3 {{ $errors->first('azure_id') ? 'has-error' : '' }}">
+            <input type="text" id="azure_id" name="azure_id" class="form-control" value="{{ old('azure_id', isset($user) ? $user->azure_id : '') }}">
+            <span class="help-block">{{ $errors->first('azure_id') }}</span>
         </div>
     </div>
 

@@ -20,6 +20,20 @@
                                 <div class="col-md-12">
                                     <div class="alert alert-danger">
                                         {{ session('error') }}
+                                        @if(session('missingUsers'))
+                                        <ul>
+                                            @foreach (session('missingUsers') as $user)
+                                            <li><strong>Azure Id:</strong> {{ $user['Id'] }}<br>{{ $user['LastName'] }}, {{ $user['FirstName'] }}</li>
+                                            @endforeach
+                                        </ul>
+                                        @endif
+                                        @if(session('missingConstraintTypes'))
+                                        <ul>
+                                            @foreach (session('missingConstraintTypes') as $type)
+                                            <li><strong>Azure Id:</strong> {{ $type['Id'] }}<br><strong>Nom:</strong> {{ $type['Name'] }}<br><strong>Description:</strong> {{ $type['Description'] }}</li>
+                                            @endforeach
+                                        </ul>
+                                        @endif
                                         <p>Contactez Raphaël (pagette 5115).</p>
                                     </div>
                                 </div>
