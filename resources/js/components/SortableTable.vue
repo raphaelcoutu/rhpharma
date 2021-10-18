@@ -91,12 +91,15 @@
 
             extractData(row, col) {
 
+                // On regarde seulement un niveau, car pas nécessaire d'aller plus loin pour l'instant.
                 if(col.indexOf('.') !== -1) {
                     let splitByDot = col.split('.');
                     let item = row;
 
                     for(let split of splitByDot) {
-                        item = item[split];
+                        if(item) {
+                            item = item[split];
+                        }
                     }
                     return item;
                 }

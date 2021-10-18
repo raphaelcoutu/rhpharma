@@ -11,6 +11,16 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
      * Bootstrap any application services.
      *
      * @return void
@@ -73,15 +83,5 @@ class AppServiceProvider extends ServiceProvider
             $jour_francais = $parameters[0] == 'sunday' ? 'dimanche' : 'samedi';
             return str_replace(':day', $jour_francais, $message);
         });
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }
