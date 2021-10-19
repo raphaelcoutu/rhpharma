@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use App\Constraint;
 use App\Schedule;
 use Carbon\Carbon;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ConstraintTest extends TestCase
