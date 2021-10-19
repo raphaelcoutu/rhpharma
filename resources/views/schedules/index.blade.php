@@ -22,7 +22,7 @@
                         <tbody>
                         @foreach($schedules as $schedule)
                             <tr>
-                                <td>{{ $schedule->name }} <a href="{{ route('schedules.edit', $schedule->id) }}"><i class="fa fa-pencil"></i></a></td>
+                                <td>{{ $schedule->name }} <a href="{{ route('schedules.edit', ['schedule' => $schedule->id]) }}"><i class="fa fa-pencil"></i></a></td>
                                 <td>{{ $schedule->start_date_string }}</td>
                                 <td>{{ $schedule->end_date_string }}</td>
                                 <td>
@@ -39,7 +39,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('calendar.show', ['id' => $schedule->id]) }}" class="btn btn-default">
+                                        <a href="{{ route('calendar.show', ['schedule' => $schedule->id]) }}" class="btn btn-default">
                                             <i class="fa fa-eye"></i> Calendrier
                                         </a>
                                         <a href="{{ route('schedules.show', $schedule->id) }}" class="btn btn-success">

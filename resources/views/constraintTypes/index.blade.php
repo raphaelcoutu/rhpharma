@@ -36,7 +36,7 @@
                                     <td><a href="#" class="btn btn-default"><i class="fa fa-eye"></i></a></td>
                                     <td>{{ $type->is_group_constraint ? 'Oui' : 'Non' }}</td>
                                     <td>{{ $type->is_day_in_schedule ? 'Oui' : 'Non' }}</td>
-                                    <td><a href="{{ route('constraintTypes.edit', ['id' => $type->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                                    <td><a href="{{ route('constraintTypes.edit', ['constraintType' => $type->id]) }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                                 </tr>
                             @endforeach
                         @else
