@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\Constraint;
-use App\Schedule;
+use App\Models\Constraint;
+use App\Models\Schedule;
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;

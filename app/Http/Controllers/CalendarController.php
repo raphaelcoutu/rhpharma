@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\AssignedShift;
-use App\Department;
-use App\Schedule;
-use App\Shift;
-use App\User;
+use App\Models\AssignedShift;
+use App\Models\Department;
+use App\Models\Schedule;
+use App\Models\Shift;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 

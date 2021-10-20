@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShiftTypeRequest;
-use App\ShiftType;
+use App\Models\ShiftType;
 
 class ShiftTypesController extends Controller
 {

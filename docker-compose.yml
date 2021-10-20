@@ -2,9 +2,9 @@ version: '3'
 services:
   app:
     build:
-      context: ./docker/app/7.3
+      context: ./docker/app/7.4
       dockerfile: Dockerfile
-    image: rhpharma/app
+    image: rhpharma/app:7.4
     ports:
       - "8080:80"
     networks:

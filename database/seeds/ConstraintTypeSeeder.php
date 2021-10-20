@@ -1,7 +1,9 @@
 <?php
 
-use App\ConstraintType;
-use App\Criterion;
+namespace Database\Seeders;
+
+use App\Models\ConstraintType;
+use App\Models\Criterion;
 use Illuminate\Database\Seeder;
 
 class ConstraintTypeSeeder extends Seeder

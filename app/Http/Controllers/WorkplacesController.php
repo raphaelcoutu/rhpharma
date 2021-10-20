@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Workplace;
+use App\Models\Workplace;
 use Illuminate\Http\Request;
 
 class WorkplacesController extends Controller
@@ -69,7 +69,7 @@ class WorkplacesController extends Controller
         $workplace = Workplace::with(['departments' => function($query) {
             $query->ownBranch();
         }])->findOrFail($id);
-        
+
         return view('workplaces.show', compact('workplace'));
     }
 

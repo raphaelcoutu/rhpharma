@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Constraint;
-use App\Department;
+use App\Models\Constraint;
+use App\Models\Department;
 use App\Http\Requests\ScheduleRequest;
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class SchedulesController extends Controller
@@ -36,7 +36,7 @@ class SchedulesController extends Controller
 
             $constraints_in_schedule[$schedule->id] = $collision;
         }
-        
+
         return view('schedules.index', compact('schedules', 'constraints_in_schedule'));
     }
 

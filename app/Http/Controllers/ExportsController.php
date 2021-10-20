@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Exports\Excel;
-use App\Schedule;
-use App\User;
+use App\Models\Schedule;
+use App\Models\User;
 
 class ExportsController extends Controller
 {

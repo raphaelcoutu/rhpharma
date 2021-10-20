@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Department;
-use App\Setting;
-use App\Triplet;
+use App\Models\Department;
+use App\Models\Setting;
+use App\Models\Triplet;
 use Illuminate\Http\Request;
 
 class SettingsController extends Controller

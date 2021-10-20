@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Schedule;
+use App\Models\Schedule;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;

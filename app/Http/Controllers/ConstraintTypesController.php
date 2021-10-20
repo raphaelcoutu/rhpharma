@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ConstraintType;
+use App\Models\ConstraintType;
 use App\Http\Requests\ConstraintTypeRequest;
 use Illuminate\Http\Request;
 

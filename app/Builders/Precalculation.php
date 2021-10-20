@@ -2,12 +2,12 @@
 
 namespace App\Builders;
 
-use App\AssignedShift;
-use App\Department;
-use App\Holiday;
-use App\Schedule;
-use App\Shift;
-use App\User;
+use App\Models\AssignedShift;
+use App\Models\Department;
+use App\Models\Holiday;
+use App\Models\Schedule;
+use App\Models\Shift;
+use App\Models\User;
 use Carbon\Carbon;
 
 class Precalculation

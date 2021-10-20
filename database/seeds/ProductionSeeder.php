@@ -1,10 +1,12 @@
 <?php
 
-use App\AssignedShift;
-use App\Constraint;
-use App\Holiday;
-use App\Schedule;
-use App\Setting;
+namespace Database\Seeders;
+
+use App\Models\AssignedShift;
+use App\Models\Constraint;
+use App\Models\Holiday;
+use App\Models\Schedule;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 

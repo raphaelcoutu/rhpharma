@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
-use App\Department;
+use App\Models\Branch;
+use App\Models\Department;
 use App\Http\Requests\UserRequest;
-use App\User;
+use App\Models\User;
 
 class UsersController extends Controller
 {

@@ -3,7 +3,7 @@
 namespace App\Builders;
 
 
-use App\AssignedShift;
+use App\Models\AssignedShift;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder

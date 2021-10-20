@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constraint;
-use App\Schedule;
+use App\Models\Constraint;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class ConstraintsValidatorController extends Controller

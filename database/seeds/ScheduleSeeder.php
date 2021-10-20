@@ -1,6 +1,8 @@
 <?php
 
-use App\Schedule;
+namespace Database\Seeders;
+
+use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 

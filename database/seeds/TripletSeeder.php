@@ -1,6 +1,8 @@
 <?php
 
-use App\Triplet;
+namespace Database\Seeders;
+
+use App\Models\Triplet;
 use Illuminate\Database\Seeder;
 
 class TripletSeeder extends Seeder

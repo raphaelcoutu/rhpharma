@@ -2,10 +2,10 @@
 
 namespace app\Builders;
 
-use App\AssignedShift;
-use App\Conflict;
-use App\Holiday;
-use App\Schedule;
+use App\Models\AssignedShift;
+use App\Models\Conflict;
+use App\Models\Holiday;
+use App\Models\Schedule;
 
 class DepartmentAnalyzer
 {

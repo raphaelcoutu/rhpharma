@@ -1,6 +1,8 @@
 <?php
 
-use App\ShiftType;
+namespace Database\Seeders;
+
+use App\Models\ShiftType;
 use Illuminate\Database\Seeder;
 
 class ShiftTypeSeeder extends Seeder

@@ -2,10 +2,10 @@
 
 namespace App\Builders;
 
-use App\AssignedShift;
-use App\Conflict;
-use App\Schedule;
-use App\User;
+use App\Models\AssignedShift;
+use App\Models\Conflict;
+use App\Models\Schedule;
+use App\Models\User;
 
 class UserAnalyzer
 {

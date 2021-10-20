@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Conflict;
+use App\Models\Conflict;
 
 class ConflictsController extends Controller
 {

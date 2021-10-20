@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Permission;
-use App\User;
+use App\Models\Permission;
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

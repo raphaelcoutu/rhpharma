@@ -1,6 +1,8 @@
 <?php
 
-use App\DepartmentType;
+namespace Database\Seeders;
+
+use App\Models\DepartmentType;
 use Illuminate\Database\Seeder;
 
 class DepartmentTypeSeeder extends Seeder

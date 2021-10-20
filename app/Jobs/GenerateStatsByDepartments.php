@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\AssignedShift;
-use App\Department;
+use App\Models\AssignedShift;
+use App\Models\Department;
 use App\Events\StatsByDepartmentsGenerated;
-use App\Schedule;
-use App\Statistic;
+use App\Models\Schedule;
+use App\Models\Statistic;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

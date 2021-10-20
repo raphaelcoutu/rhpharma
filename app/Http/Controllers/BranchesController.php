@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Branch;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchesController extends Controller

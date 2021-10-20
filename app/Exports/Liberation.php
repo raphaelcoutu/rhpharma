@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;

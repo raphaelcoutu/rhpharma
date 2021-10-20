@@ -1,7 +1,9 @@
 <?php
 
-use App\Department;
-use App\Workplace;
+namespace Database\Seeders;
+
+use App\Models\Department;
+use App\Models\Workplace;
 use Illuminate\Database\Seeder;
 
 class WorkplaceDepartmentSeeder extends Seeder

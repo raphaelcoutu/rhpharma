@@ -1,7 +1,9 @@
 <?php
 
-use App\AssignedShift;
-use App\Schedule;
+namespace Database\Seeders;
+
+use App\Models\AssignedShift;
+use App\Models\Schedule;
 use Illuminate\Database\Seeder;
 
 class AssignedShiftSeeder extends Seeder

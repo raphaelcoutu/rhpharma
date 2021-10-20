@@ -3,7 +3,7 @@
 namespace App\Builders;
 
 
-use App\Constraint;
+use App\Models\Constraint;
 
 class ConstraintConverter
 {

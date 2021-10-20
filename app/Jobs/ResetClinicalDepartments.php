@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\AssignedShift;
-use App\Conflict;
+use App\Models\AssignedShift;
+use App\Models\Conflict;
 use App\Events\BuildMessageGenerated;
 use App\Events\UpdateBuildStatus;
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

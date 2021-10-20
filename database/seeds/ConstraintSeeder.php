@@ -1,8 +1,10 @@
 <?php
 
-use App\Constraint;
-use App\Schedule;
-use App\User;
+namespace Database\Seeders;
+
+use App\Models\Constraint;
+use App\Models\Schedule;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 

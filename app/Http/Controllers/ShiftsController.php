@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 
-use App\Department;
+use App\Models\Department;
 use App\Http\Requests\ShiftRequest;
-use App\Shift;
-use App\ShiftType;
+use App\Models\Shift;
+use App\Models\ShiftType;
 
 class ShiftsController extends Controller
 {

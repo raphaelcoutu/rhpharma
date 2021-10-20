@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 
 use PDO;
-use App\User;
-use App\Constraint;
-use App\ConstraintType;
+use App\Models\User;
+use App\Models\Constraint;
+use App\Models\ConstraintType;
 use Illuminate\Http\Request;
 
 class ConstraintImporterController extends Controller
