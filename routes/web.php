@@ -7,16 +7,20 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ShiftsController;
 use App\Http\Controllers\ExportsController;
+use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\HolidaysController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SchedulesController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ShiftTypesController;
 use App\Http\Controllers\WorkplacesController;
 use App\Http\Controllers\ConstraintsController;
 use App\Http\Controllers\DepartmentsController;
 use App\Http\Controllers\ConstraintTypesController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ConstraintImporterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\ConstraintsValidatorController;
 use App\Http\Controllers\SettingsConstraintTypesController;
 
@@ -34,15 +38,15 @@ use App\Http\Controllers\SettingsConstraintTypesController;
 Route::get('/', [HomeController::class, 'index']);
 
 // Authentication Routes...
-// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-// Route::post('login', 'Auth\LoginController@login');
-// Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Password Reset Routes...
-// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-// Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 
 Route::group(['middleware' => 'auth'], function () {
 
