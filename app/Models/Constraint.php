@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Constraint extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     protected $dates = ['start_datetime', 'end_datetime'];

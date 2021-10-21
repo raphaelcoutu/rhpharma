@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Department extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['name', 'description', 'department_type_id', 'workplace_id', 'branch_id',
         'bonus_weeks', 'bonus_pts', 'malus_weeks', 'malus_pts',
         'monday_am', 'monday_pm', 'tuesday_am', 'tuesday_pm', 'wednesday_am', 'wednesday_pm',
