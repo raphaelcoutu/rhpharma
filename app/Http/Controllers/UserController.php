@@ -7,7 +7,7 @@ use App\Models\Department;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.

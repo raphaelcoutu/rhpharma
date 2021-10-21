@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Department;
-use App\Http\Requests\DepartmentRequest;
-use App\Models\Workplace;
+use App\Http\Requests\ShiftTypeRequest;
+use App\Models\ShiftType;
 
-class DepartmentsController extends Controller
+class ShiftTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +14,11 @@ class DepartmentsController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', Department::class);
+        $this->authorize('read', ShiftType::class);
 
-        $departments = Department::select(['id', 'name', 'description', 'department_type_id', 'workplace_id'])
-            ->ownBranch()->with(['workplace', 'departmentType'])->orderBy('name')->get();
+        $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get();
 
-        return view('departments.index', compact('departments'));
+        return view('shiftTypes.index', compact('shiftTypes'));
     }
 
     /**
@@ -30,8 +28,7 @@ class DepartmentsController extends Controller
      */
     public function create()
     {
-        $workplaces = Workplace::all();
-        return view('departments.create', compact('workplaces'));
+        return view('shiftTypes.create');
     }
 
     /**
@@ -40,11 +37,11 @@ class DepartmentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(DepartmentRequest $request)
+    public function store(ShiftTypeRequest $request)
     {
-        Department::create($request->all());
+        ShiftType::create($request->all());
 
-        return redirect('departments');
+        return redirect('shiftTypes');
     }
 
     /**
@@ -64,16 +61,11 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ShiftType $shiftType)
     {
-        $this->authorize('write', Department::class);
+        $this->authorize('write', ShiftType::class);
 
-        $department = Department::with(['shifts.shiftType', 'users' => function ($query) {
-            $query->where('is_active', 1);
-        }])->findOrFail($id);
-        $workplaces = Workplace::all();
-
-        return view('departments.edit', ['department' => $department, 'workplaces' => $workplaces]);
+        return view('shiftTypes.edit', ['shiftType' => $shiftType]);
     }
 
     /**
@@ -83,11 +75,11 @@ class DepartmentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(DepartmentRequest $request, Department $department)
+    public function update(ShiftTypeRequest $request, ShiftType $shiftType)
     {
-        $department->update($request->all());
+        $shiftType->update($request->all());
 
-        return redirect('departments');
+        return redirect('shiftTypes');
     }
 
     /**

@@ -3,26 +3,17 @@
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\UsersController;
-use App\Http\Controllers\ShiftsController;
-use App\Http\Controllers\ExportsController;
-use App\Http\Controllers\BranchesController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\HolidaysController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\SchedulesController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\BranchController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\WorkplaceController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ShiftTypesController;
-use App\Http\Controllers\WorkplacesController;
-use App\Http\Controllers\ConstraintsController;
-use App\Http\Controllers\DepartmentsController;
-use App\Http\Controllers\ConstraintTypesController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ConstraintImporterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\ConstraintsValidatorController;
-use App\Http\Controllers\SettingsConstraintTypesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,56 +42,56 @@ Route::post('password/reset', [ResetPasswordController::class, 'reset']);
 Route::group(['middleware' => 'auth'], function () {
 
     //Branches
-    Route::get('branches', [BranchesController::class, 'index'])->name('branches.index');
+    Route::get('branches', [BranchController::class, 'index'])->name('branches.index');
 
     //Users
-    Route::get('users', [UsersController::class, 'index'])->name('users.index');
-    Route::get('users/create', [UsersController::class, 'create'])->name('users.create');
-    Route::get('users/{user}', [UsersController::class, 'show'])->name('users.show');
-    Route::get('users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
-    Route::post('users', [UsersController::class, 'store'])->name('users.store');
-    Route::put('users/{user}', [UsersController::class, 'update'])->name('users.update');
-    Route::get('profile', [UsersController::class, 'profile'])->name('profile');
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::post('users', [UserController::class, 'store'])->name('users.store');
+    Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::get('profile', [UserController::class, 'profile'])->name('profile');
 
     //Roles
-    Route::get('roles', [RolesController::class, 'index'])->name('roles.index');
+    Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
 
     //Workplaces
-    Route::get('workplaces', [WorkplacesController::class, 'index'])->name('workplaces.index');
-    Route::get('workplaces/create', [WorkplacesController::class, 'create'])->name('workplaces.create');
-    Route::post('workplaces', [WorkplacesController::class, 'store'])->name('workplaces.store');
-    Route::get('workplaces/{workplace}', [WorkplacesController::class, 'show'])->name('workplaces.show');
+    Route::get('workplaces', [WorkplaceController::class, 'index'])->name('workplaces.index');
+    Route::get('workplaces/create', [WorkplaceController::class, 'create'])->name('workplaces.create');
+    Route::post('workplaces', [WorkplaceController::class, 'store'])->name('workplaces.store');
+    Route::get('workplaces/{workplace}', [WorkplaceController::class, 'show'])->name('workplaces.show');
 
     //Departments
-    Route::get('departments', [DepartmentsController::class, 'index'])->name('departments.index');
-    Route::get('departments/create', [DepartmentsController::class, 'create'])->name('departments.create');
-    Route::post('departments', [DepartmentsController::class, 'store'])->name('departments.store');
-    Route::get('departments/{department}/edit', [DepartmentsController::class, 'edit'])->name('departments.edit');
-    Route::post('departments/{department}', [DepartmentsController::class, 'update'])->name('departments.update');
+    Route::get('departments', [DepartmentController::class, 'index'])->name('departments.index');
+    Route::get('departments/create', [DepartmentController::class, 'create'])->name('departments.create');
+    Route::post('departments', [DepartmentController::class, 'store'])->name('departments.store');
+    Route::get('departments/{department}/edit', [DepartmentController::class, 'edit'])->name('departments.edit');
+    Route::post('departments/{department}', [DepartmentController::class, 'update'])->name('departments.update');
 
     //Schedules
-    Route::get('schedules', [SchedulesController::class, 'index'])->name('schedules.index');
-    Route::get('schedules/create', [SchedulesController::class, 'create'])->name('schedules.create');
-    Route::get('schedules/{schedule}', [SchedulesController::class, 'show'])->name('schedules.show');
-    Route::get('schedules/{schedule}/edit', [SchedulesController::class, 'edit'])->name('schedules.edit');
-    Route::post('schedules', [SchedulesController::class, 'store'])->name('schedules.store');
-    Route::put('schedules/{schedule}', [SchedulesController::class, 'update'])->name('schedules.update');
+    Route::get('schedules', [ScheduleController::class, 'index'])->name('schedules.index');
+    Route::get('schedules/create', [ScheduleController::class, 'create'])->name('schedules.create');
+    Route::get('schedules/{schedule}', [ScheduleController::class, 'show'])->name('schedules.show');
+    Route::get('schedules/{schedule}/edit', [ScheduleController::class, 'edit'])->name('schedules.edit');
+    Route::post('schedules', [ScheduleController::class, 'store'])->name('schedules.store');
+    Route::put('schedules/{schedule}', [ScheduleController::class, 'update'])->name('schedules.update');
 
     //Holidays
-    Route::get('holidays', [HolidaysController::class, 'index'])->name('holidays.index');
+    Route::get('holidays', [HolidayController::class, 'index'])->name('holidays.index');
 
     //ConstraintImporter
     Route::get('constraintImporter', [ConstraintImporterController::class, 'index'])->name('constraintImporter.index');
     Route::get('constraintImporter/import{start?}{end?}', [ConstraintImporterController::class, 'import'])->name('constraintImporter.import');
 
     //ConstraintTypes
-    Route::get('constraintTypes', [ConstraintTypesController::class, 'index'])->name('constraintTypes.index');
-    Route::get('constraintTypes/create', [ConstraintTypesController::class, 'create'])->name('constraintTypes.create');
-    Route::get('constraintTypes/{constraintType}/edit', [ConstraintTypesController::class, 'edit'])->name('constraintTypes.edit');
-    Route::post('constraintTypes', [ConstraintTypesController::class, 'store'])->name('constraintTypes.store');
-    Route::put('constraintTypes/{constraintType}', [ConstraintTypesController::class, 'update'])->name('constraintTypes.update');
+    Route::get('constraintTypes', [ConstraintTypeController::class, 'index'])->name('constraintTypes.index');
+    Route::get('constraintTypes/create', [ConstraintTypeController::class, 'create'])->name('constraintTypes.create');
+    Route::get('constraintTypes/{constraintType}/edit', [ConstraintTypeController::class, 'edit'])->name('constraintTypes.edit');
+    Route::post('constraintTypes', [ConstraintTypeController::class, 'store'])->name('constraintTypes.store');
+    Route::put('constraintTypes/{constraintType}', [ConstraintTypeController::class, 'update'])->name('constraintTypes.update');
 
-    Route::get('constraints', [ConstraintsController::class, 'index'])->name('constraints.index');
+    Route::get('constraints', [ConstraintController::class, 'index'])->name('constraints.index');
 
     //ConstraintsValidator
     Route::get('constraintsValidator', [ConstraintsValidatorController::class, 'index'])->name('constraintsValidator.index');
@@ -111,26 +102,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('calendar/{schedule}/byDepartment/{department}', [CalendarController::class, 'showByDepartment'])->name('calendar.showByDepartment');
 
     //Shifts
-    Route::get('shifts', [ShiftsController::class, 'index'])->name('shifts.index');
-    Route::get('shifts/create', [ShiftsController::class, 'create'])->name('shifts.create');
-    Route::post('shifts', [ShiftsController::class, 'store'])->name('shifts.store');
-    Route::get('shifts/{shift}/edit', [ShiftsController::class, 'edit'])->name('shifts.edit');
-    Route::post('shifts/{shift}', [ShiftsController::class, 'update'])->name('shifts.update');
+    Route::get('shifts', [ShiftController::class, 'index'])->name('shifts.index');
+    Route::get('shifts/create', [ShiftController::class, 'create'])->name('shifts.create');
+    Route::post('shifts', [ShiftController::class, 'store'])->name('shifts.store');
+    Route::get('shifts/{shift}/edit', [ShiftController::class, 'edit'])->name('shifts.edit');
+    Route::post('shifts/{shift}', [ShiftController::class, 'update'])->name('shifts.update');
 
     //ShiftTypes
-    Route::get('shiftTypes', [ShiftTypesController::class, 'index'])->name('shiftTypes.index');
-    Route::get('shiftTypes/create', [ShiftTypesController::class, 'create'])->name('shiftTypes.create');
-    Route::post('shiftTypes', [ShiftTypesController::class, 'store'])->name('shiftTypes.store');
-    Route::get('shiftTypes/{shiftType}/edit', [ShiftTypesController::class, 'edit'])->name('shiftTypes.edit');
-    Route::post('shiftTypes/{shiftType}', [ShiftTypesController::class, 'update'])->name('shiftTypes.update');
+    Route::get('shiftTypes', [ShiftTypeController::class, 'index'])->name('shiftTypes.index');
+    Route::get('shiftTypes/create', [ShiftTypeController::class, 'create'])->name('shiftTypes.create');
+    Route::post('shiftTypes', [ShiftTypeController::class, 'store'])->name('shiftTypes.store');
+    Route::get('shiftTypes/{shiftType}/edit', [ShiftTypeController::class, 'edit'])->name('shiftTypes.edit');
+    Route::post('shiftTypes/{shiftType}', [ShiftTypeController::class, 'update'])->name('shiftTypes.update');
 
     //Settings
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::get('settings/constraintTypes', [SettingsConstraintTypesController::class, 'index'])->name('settings.constraintTypes');
-    Route::get('settings/departments', [SettingsController::class, 'departments'])->name('settings.departments');
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('settings/constraintTypes', [SettingConstraintTypeController::class, 'index'])->name('settings.constraintTypes');
+    Route::get('settings/departments', [SettingController::class, 'departments'])->name('settings.departments');
 
     //Exports
-    Route::get('export/{schedule}', [ExportsController::class, 'export'])->name('export');
+    Route::get('export/{schedule}', [ExportController::class, 'export'])->name('export');
 
     if(App::environment('local')) {
         Route::get('build/{scheduleId}', function ($scheduleId) {

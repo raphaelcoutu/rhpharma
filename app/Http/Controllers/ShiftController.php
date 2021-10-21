@@ -8,7 +8,7 @@ use App\Http\Requests\ShiftRequest;
 use App\Models\Shift;
 use App\Models\ShiftType;
 
-class ShiftsController extends Controller
+class ShiftController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -8,7 +8,7 @@ use App\Http\Requests\ScheduleRequest;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
-class SchedulesController extends Controller
+class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.

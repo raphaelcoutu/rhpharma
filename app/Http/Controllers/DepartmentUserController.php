@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class DepartmentsUsersController extends Controller
+class DepartmentUserController extends Controller
 {
     public function fetch($id)
     {

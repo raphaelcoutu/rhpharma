@@ -6,7 +6,7 @@ use App\Models\ConstraintType;
 use App\Http\Requests\ConstraintTypeRequest;
 use Illuminate\Http\Request;
 
-class ConstraintTypesController extends Controller
+class ConstraintTypeController extends Controller
 {
     /**
      * Display a listing of the resource.

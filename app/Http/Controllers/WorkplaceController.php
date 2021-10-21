@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ShiftTypeRequest;
-use App\Models\ShiftType;
+use App\Models\Workplace;
+use Illuminate\Http\Request;
 
-class ShiftTypesController extends Controller
+class WorkplaceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,13 @@ class ShiftTypesController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', ShiftType::class);
+        $this->authorize('read', Workplace::class);
 
-        $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get();
+        $workplaces = Workplace::withCount(['departments' => function($query) {
+            $query->ownBranch();
+        }])->get();
 
-        return view('shiftTypes.index', compact('shiftTypes'));
+        return view('workplaces.index', compact('workplaces'));
     }
 
     /**
@@ -28,7 +30,7 @@ class ShiftTypesController extends Controller
      */
     public function create()
     {
-        return view('shiftTypes.create');
+        return view('workplaces.create');
     }
 
     /**
@@ -37,11 +39,23 @@ class ShiftTypesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ShiftTypeRequest $request)
+    public function store(Request $request)
     {
-        ShiftType::create($request->all());
+        $this->authorize('write', Workplace::class);
 
-        return redirect('shiftTypes');
+        $this->validate($request, [
+            'name' => 'required|unique:workplaces',
+            'code' => 'required|unique:workplaces',
+            'address' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'country' => 'required',
+            'postal_code' => 'required'
+        ]);
+
+        Workplace::create($request->all());
+
+        return redirect('workplaces');
     }
 
     /**
@@ -52,7 +66,11 @@ class ShiftTypesController extends Controller
      */
     public function show($id)
     {
-        //
+        $workplace = Workplace::with(['departments' => function($query) {
+            $query->ownBranch();
+        }])->findOrFail($id);
+
+        return view('workplaces.show', compact('workplace'));
     }
 
     /**
@@ -61,11 +79,9 @@ class ShiftTypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ShiftType $shiftType)
+    public function edit($id)
     {
-        $this->authorize('write', ShiftType::class);
-
-        return view('shiftTypes.edit', ['shiftType' => $shiftType]);
+        //
     }
 
     /**
@@ -75,11 +91,9 @@ class ShiftTypesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ShiftTypeRequest $request, ShiftType $shiftType)
+    public function update(Request $request, $id)
     {
-        $shiftType->update($request->all());
-
-        return redirect('shiftTypes');
+        //
     }
 
     /**

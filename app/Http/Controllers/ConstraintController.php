@@ -9,7 +9,7 @@ use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ConstraintsController extends Controller
+class ConstraintController extends Controller
 {
     /**
      * Display a listing of the resource.

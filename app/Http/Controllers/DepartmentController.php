@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Http\Requests\DepartmentRequest;
 use App\Models\Workplace;
-use Illuminate\Http\Request;
 
-class WorkplacesController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,13 +15,12 @@ class WorkplacesController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', Workplace::class);
+        $this->authorize('read', Department::class);
 
-        $workplaces = Workplace::withCount(['departments' => function($query) {
-            $query->ownBranch();
-        }])->get();
+        $departments = Department::select(['id', 'name', 'description', 'department_type_id', 'workplace_id'])
+            ->ownBranch()->with(['workplace', 'departmentType'])->orderBy('name')->get();
 
-        return view('workplaces.index', compact('workplaces'));
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -30,7 +30,8 @@ class WorkplacesController extends Controller
      */
     public function create()
     {
-        return view('workplaces.create');
+        $workplaces = Workplace::all();
+        return view('departments.create', compact('workplaces'));
     }
 
     /**
@@ -39,23 +40,11 @@ class WorkplacesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DepartmentRequest $request)
     {
-        $this->authorize('write', Workplace::class);
+        Department::create($request->all());
 
-        $this->validate($request, [
-            'name' => 'required|unique:workplaces',
-            'code' => 'required|unique:workplaces',
-            'address' => 'required',
-            'city' => 'required',
-            'province' => 'required',
-            'country' => 'required',
-            'postal_code' => 'required'
-        ]);
-
-        Workplace::create($request->all());
-
-        return redirect('workplaces');
+        return redirect('departments');
     }
 
     /**
@@ -66,11 +55,7 @@ class WorkplacesController extends Controller
      */
     public function show($id)
     {
-        $workplace = Workplace::with(['departments' => function($query) {
-            $query->ownBranch();
-        }])->findOrFail($id);
-
-        return view('workplaces.show', compact('workplace'));
+        //
     }
 
     /**
@@ -81,7 +66,14 @@ class WorkplacesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('write', Department::class);
+
+        $department = Department::with(['shifts.shiftType', 'users' => function ($query) {
+            $query->where('is_active', 1);
+        }])->findOrFail($id);
+        $workplaces = Workplace::all();
+
+        return view('departments.edit', ['department' => $department, 'workplaces' => $workplaces]);
     }
 
     /**
@@ -91,9 +83,11 @@ class WorkplacesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DepartmentRequest $request, Department $department)
     {
-        //
+        $department->update($request->all());
+
+        return redirect('departments');
     }
 
     /**

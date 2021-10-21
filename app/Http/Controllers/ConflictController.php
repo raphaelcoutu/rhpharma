@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Conflict;
 
-class ConflictsController extends Controller
+class ConflictController extends Controller
 {
     public function fetch($scheduleId)
     {

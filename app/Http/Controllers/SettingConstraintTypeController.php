@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ConstraintType;
 use Illuminate\Http\Request;
 
-class SettingsConstraintTypesController extends Controller
+class SettingConstraintTypeController extends Controller
 {
     public function index()
     {

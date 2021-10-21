@@ -6,7 +6,7 @@ use App\Exports\Excel;
 use App\Models\Schedule;
 use App\Models\User;
 
-class ExportsController extends Controller
+class ExportController extends Controller
 {
     public function export(Schedule $schedule)
     {

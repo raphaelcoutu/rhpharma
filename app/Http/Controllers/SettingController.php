@@ -7,7 +7,7 @@ use App\Models\Setting;
 use App\Models\Triplet;
 use Illuminate\Http\Request;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     public function index()
     {

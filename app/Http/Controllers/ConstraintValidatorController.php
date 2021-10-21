@@ -6,7 +6,7 @@ use App\Models\Constraint;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
-class ConstraintsValidatorController extends Controller
+class ConstraintValidatorController extends Controller
 {
     /**
      * List all constraints to validate

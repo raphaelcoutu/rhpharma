@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
-use App\Models\Role;
+use App\Models\Holiday;
 use Illuminate\Http\Request;
 
-class RolesController extends Controller
+class HolidayController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,16 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        $this->authorize('read', Holiday::class);
 
-        $permissions = Permission::all();
+        $holidays = Holiday::byDate()->get();
 
-        return view('roles.index', compact('roles', 'permissions'));
+        return view('holidays.index', compact('holidays'));
+    }
+
+    public function fetch()
+    {
+        return Holiday::byDate()->get();
     }
 
     /**
@@ -40,16 +44,21 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'description' => 'required',
+            'date' => 'required'
+        ]);
+
+        Holiday::create($request->all());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Roles  $roles
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Roles $roles)
+    public function show($id)
     {
         //
     }
@@ -57,33 +66,35 @@ class RolesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Roles  $roles
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Roles $roles)
+    public function edit($id)
     {
-        //
+        return Holiday::find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Roles  $roles
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Roles $roles)
+    public function update(Request $request, $id)
     {
-        //
+        // $this->validate($request, $this->rules);
+
+        Holiday::findOrFail($id)->update($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Roles  $roles
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Roles $roles)
+    public function destroy($id)
     {
         //
     }
