@@ -8,7 +8,7 @@ class BonusMalusTest extends TestCase
 {
     protected $combinaisons;
 
-    protected function setup() {
+    protected function setUp(): void {
 
         // 1 = 20, 2 = 16, 3 = 12
         $this->combinaisons = [

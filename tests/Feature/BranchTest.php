@@ -2,14 +2,47 @@
 
 namespace Tests\Feature;
 
-use App\Models\Permission;
-use App\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User;
+use App\Models\Branch;
+use App\Models\Permission;
+use Database\Seeders\PermissionSeeder;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BranchTest extends TestCase
+class BranchController extends TestCase
 {
-    //
+
+    use RefreshDatabase;
+
+    private $branch;
+
+    public function setUp(): void {
+        parent::setUp();
+
+        $this->branch = Branch::create(['name' => 'Pharmaciens']);
+
+        $this->seed(PermissionSeeder::class);
+    }
+
+    public function test_auth_user_can_see_branches()
+    {
+        $user = User::factory()->create();
+        $user->permissions()->saveMany(Permission::all());
+
+        $response = $this->actingAs($user)
+            ->get('/branches');
+
+        $response->assertStatus(200);
+        $response->assertSee('Pharmaciens');
+    }
+
+    public function test_unauth_user_get_redirected()
+    {
+        $response = $this->get('/branches');
+
+        $response->assertRedirect('/login');
+    }
+
+
 }

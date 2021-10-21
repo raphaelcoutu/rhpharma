@@ -2,12 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\Branch;
-use App\Models\Permission;
+use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Branch;
+use App\Models\Permission;
+use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 class PermissionTest extends TestCase
 {
@@ -19,27 +20,27 @@ class PermissionTest extends TestCase
     protected $atpUser;
 
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
         Branch::create(['name' => 'Pharmaciens']);
         Branch::create(['name' => 'Assistants techniques']);
 
-        foreach(\PermissionSeeder::$permissions as $perm) {
+        foreach(PermissionSeeder::$permissions as $perm) {
             Permission::create($perm);
         }
 
         $gestionnaire = Role::create(['name' => 'Gestionnaire', 'description' => 'Gestionnaire']);
         $gestionnaire->permissions()->saveMany(Permission::all());
 
-        $this->phmAdmin = factory(User::class)->create(['branch_id' => 1]);
+        $this->phmAdmin = User::factory()->create(['branch_id' => 1]);
         $this->phmAdmin->roles()->attach($gestionnaire);
-        $this->phmUser = factory(User::class)->create(['branch_id' => 1]);
+        $this->phmUser = User::factory()->create(['branch_id' => 1]);
 
-        $this->atpAdmin = factory(User::class)->create(['branch_id' => 2]);
+        $this->atpAdmin = User::factory()->create(['branch_id' => 2]);
         $this->atpAdmin->roles()->attach($gestionnaire);
-        $this->atpUser = factory(User::class)->create(['branch_id' => 2]);
+        $this->atpUser = User::factory()->create(['branch_id' => 2]);
     }
 
     public function baseTest($url)
