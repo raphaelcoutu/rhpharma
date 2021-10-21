@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,9 +16,9 @@ class UserSeeder extends Seeder
         return User::create([
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
-            'email' => $user['email'] ?? str_random(10) . '@RHPharma.com',
+            'email' => $user['email'] ?? Str::random(10) . '@RHPharma.com',
             'password' => $password ?: $password = Hash::make('password'),
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
             'workdays_per_week' => $user['workdays_per_week'] ?? 5,
             'seniority' => null,
             'is_active' => $user['is_active'] ?? 1,

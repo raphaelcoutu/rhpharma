@@ -10,9 +10,8 @@ use Database\Seeders\PermissionSeeder;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BranchController extends TestCase
+class BranchTest extends TestCase
 {
-
     use RefreshDatabase;
 
     private $branch;
@@ -43,6 +42,4 @@ class BranchController extends TestCase
 
         $response->assertRedirect('/login');
     }
-
-
 }

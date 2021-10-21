@@ -105,7 +105,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update($request->all());
 
-        return $this->show($id);
+        return redirect()->route('users.show', ['user' => $id]);
     }
 
     /**
