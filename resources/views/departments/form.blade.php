@@ -1,6 +1,7 @@
 @if(isset($model))
 <form action="{{ route('departments.update', $model->id) }}" method="POST" class="form form-horizontal">
     <input type="hidden" name="id" value="{{ $model->id }}">
+    <input type="hidden" name="_method" value="PUT">
 @else
 <form action="{{ route('departments.store') }}" method="POST" class="form form-horizontal">
 @endif
@@ -79,7 +80,7 @@
                     </option>
                     @endforeach
                 @endif
-            </select> 
+            </select>
             <span class="help-block">{{ $errors->first('workplace_id') }}</span>
         </div>
     </div>

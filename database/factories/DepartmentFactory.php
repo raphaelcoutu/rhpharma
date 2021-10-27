@@ -23,7 +23,6 @@ class DepartmentFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'code' => $this->faker->countryCode,
             'description' => '...',
             'branch_id' => '1',
             'workplace_id' => '1',
