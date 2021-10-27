@@ -64,48 +64,21 @@ class WorkplaceTest extends TestCase
     {
         $response = $this->actingAs($this->user)
             ->post('/workplaces', [
-                // RENDU ICI
+                'name' => 'CHUS HD',
+                'code' => 'HD',
+                'address' => '123 rue de l\'Hôpital',
+                'city' => 'Sherbrooke',
+                'province' => 'QC',
+                'country' => 'Canada',
+                'postal_code' => 'J1J 1J1'
             ]);
 
         $response->assertRedirect('/workplaces');
     }
 
-    public function test_auth_user_can_see_workplace_edit_form()
-    {
-        // $newUser = User::factory()->create([
-        //     'lastname' => 'Exotic',
-        //     'firstname' => 'Joe',
-        //     'email' => 'joeexotic@rhpharma.com'
-        // ]);
-
-        // $response = $this->actingAs($this->user)
-        //     ->get("/users/{$newUser->id}/edit");
-
-        // $response->assertStatus(200);
-        // $response->assertSee("Modification d'un utilisateur existant : Joe Exotic", false);
-    }
-
-
-    public function test_auth_user_can_edit_workplace()
-    {
-        // $newUser = User::factory()->create([
-        //     'lastname' => 'Exotic',
-        //     'firstname' => 'Joe',
-        //     'email' => 'joeexotic@rhpharma.com'
-        // ]);
-
-        // $response = $this->actingAs($this->user)
-        //     ->put("/users/{$newUser->id}", [
-        //         'id' => $newUser->id,
-        //         'firstname' => 'Johnny',
-        //         'lastname' => 'Exotic',
-        //         'email' => 'joeexotic@rhpharma.com',
-        //         'workdays_per_week' => 3,
-        //         'is_active' => 1
-        //     ]);
-
-        // $response->assertRedirect("/users/{$newUser->id}");
-    }
+    // Routes n'existent pas
+    // public function test_auth_user_can_see_workplace_edit_form()
+    // public function test_auth_user_can_edit_workplace()
 
     public function test_unauth_user_get_redirected()
     {
