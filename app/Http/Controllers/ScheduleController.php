@@ -21,20 +21,21 @@ class ScheduleController extends Controller
 
         $schedules = Schedule::orderedDesc()->paginate(15);
 
-        $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
-
         $constraints_in_schedule = [];
 
-        foreach($schedules as $schedule) {
-            $collision = 0;
-            foreach ($constraints as $constraint) {
-                if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
-                    $schedule->start_date->setTime(0,0), $schedule->end_date->setTime(23,59))){
-                    $collision++;
+        if($schedules != null) {
+            $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
+            foreach($schedules as $schedule) {
+                $collision = 0;
+                foreach ($constraints as $constraint) {
+                    if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+                        $schedule->start_date->setTime(0,0), $schedule->end_date->setTime(23,59))){
+                        $collision++;
+                    }
                 }
-            }
 
-            $constraints_in_schedule[$schedule->id] = $collision;
+                $constraints_in_schedule[$schedule->id] = $collision;
+            }
         }
 
         return view('schedules.index', compact('schedules', 'constraints_in_schedule'));
