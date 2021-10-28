@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Branch;
+use App\Models\Schedule;
 use App\Models\Workplace;
 use App\Models\Department;
 use App\Models\Permission;
@@ -30,8 +31,10 @@ class ScheduleTest extends TestCase
         $this->user->permissions()->saveMany(Permission::all());
     }
 
-    public function test_auth_user_can_see_departments()
+    public function test_auth_user_can_see_schedules()
     {
+        Schedule::factory()->create();
+
         $response = $this->actingAs($this->user)
             ->get('/schedules');
 
@@ -39,34 +42,30 @@ class ScheduleTest extends TestCase
         $response->assertSee('Horaires');
     }
 
-    // public function test_auth_user_can_see_department_create_form()
-    // {
-    //     $response = $this->actingAs($this->user)
-    //         ->get("/departments/create");
+    public function test_auth_user_can_see_schedules_create_form()
+    {
+        $response = $this->actingAs($this->user)
+            ->get("/schedules/create");
 
-    //     $response->assertStatus(200);
-    // }
+        $response->assertStatus(200);
+    }
 
     // public function test_auth_user_can_create_department()
     // {
     //     $response = $this->actingAs($this->user)
-    //         ->post('/departments', [
-    //             'name' => 'Soins intensifs',
-    //             'workplace_id' => $this->workplace->id,
-    //             'bonus_weeks' => 2,
-    //             'bonus_pts' => 4,
-    //             'malus_weeks' => 3,
-    //             'malus_pts' => 8,
-    //             'monday_am' => 2,
-    //             'monday_pm' => 2,
-    //             'tuesday_am' => 2,
-    //             'tuesday_pm' => 2,
-    //             'wednesday_am' => 2,
-    //             'wednesday_pm' => 2,
-    //             'thursday_am' => 2,
-    //             'thursday_pm' => 2,
-    //             'friday_am' => 2,
-    //             'friday_pm' => 2
+    //         ->post('/schedules', [
+    //             'name' => 'Prochain horaire',
+    //             'branch_id' => $this->workplace->id,
+    //             'limit_date_weekends' => Carbon::now()->previous('Friday'),
+    //             'limit_date' => Carbon::now()->previous('Friday'),
+    //             'start_date' => Carbon::now()->next('Sunday'),
+    //             'end_date' => Carbon::now()->addWeeks(4)->next('Saturday')->setTime(23,59,59),
+    //             'branch_id' => 1,
+    //             'status_holidays' => BuildStatus::Standby,
+    //             'status_weekends' => BuildStatus::Standby,
+    //             'status_last_evening' => BuildStatus::Standby,
+    //             'status_clinical_departments' => BuildStatus::Standby,
+    //             'notes' => null,
     //         ]);
 
     //     $response->assertRedirect('/departments');

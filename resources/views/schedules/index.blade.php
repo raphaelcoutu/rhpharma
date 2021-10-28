@@ -26,7 +26,7 @@
                                 <td>{{ $schedule->start_date_string }}</td>
                                 <td>{{ $schedule->end_date_string }}</td>
                                 <td>
-                                    @if($constraints_in_schedule[$schedule->id] > 0)
+                                    @if(isset($constraints_in_schedule[$schedule->id]) && $constraints_in_schedule[$schedule->id] > 0)
                                         <i class="fa fa-exclamation-triangle text-warning fa-2x"
                                            data-toggle="tooltip" title="Il reste {{ $constraints_in_schedule[$schedule->id] }} contrainte(s) à valider"></i>
                                     @else

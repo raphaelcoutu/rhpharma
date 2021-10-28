@@ -23,7 +23,7 @@ class ScheduleController extends Controller
 
         $constraints_in_schedule = [];
 
-        if($schedules != null) {
+        if(!$schedules->empty()) {
             $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
             foreach($schedules as $schedule) {
                 $collision = 0;
