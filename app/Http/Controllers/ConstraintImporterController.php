@@ -32,7 +32,7 @@ class ConstraintImporterController extends Controller
         $missingConstraintTypesIds = [];
 
         $users = User::select('id', 'azure_id')->get();
-        $missingUsersIds = [];
+        $missingUsers = [];
 
         foreach($rows as $row) {
             $constraintType = $constraintTypes->firstWhere('azure_id', $row['ConstraintType_id']);
@@ -71,7 +71,11 @@ class ConstraintImporterController extends Controller
 
                     array_push($constraintsToAdd, $row);
                 } else {
-                    array_push($missingUsersIds, intval($row['User_id']));
+                    array_push($missingUsers, [
+                        'Id' => intval($row['User_id']),
+                        'FirstName' => $row['FirstName'],
+                        'LastName' => $row['LastName']
+                    ]);
                 }
             } else {
                 array_push($missingConstraintTypesIds, intval($row['ConstraintType_id']));
@@ -90,13 +94,18 @@ class ConstraintImporterController extends Controller
         }
 
         // Si l'array de missingUsers n'est pas null, on redirige vers erreur
-        if (!empty($missingUsersIds)) {
+        if (!empty($missingUsers)) {
 
-            $missingUsers = $this->azureRepository->usersByIds($missingUsersIds);
+            $unique_array = [];
+            foreach($missingUsers as $element) {
+                $hash = $element['Id'];
+                $unique_array[$hash] = $element;
+            }
+            $uniqueMissingUsers = array_values($unique_array);
 
             return redirect()->route('constraintImporter.index')
                     ->with('error', "ERREUR: Utilisateur(s) non associé(s)")
-                    ->with('missingUsers', $missingUsers);
+                    ->with('missingUsers', $uniqueMissingUsers);
         }
 
         Constraint::getQuery()->delete();
