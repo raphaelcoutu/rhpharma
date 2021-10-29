@@ -7,10 +7,16 @@ use PDO;
 use App\Models\User;
 use App\Models\Constraint;
 use App\Models\ConstraintType;
+use App\Services\AzureRepository;
 use Illuminate\Http\Request;
 
 class ConstraintImporterController extends Controller
 {
+    public function __construct(AzureRepository $azureRepository)
+    {
+        $this->azureRepository = $azureRepository;
+    }
+
     public function index()
     {
         return view('constraintImporter.index');
@@ -18,7 +24,7 @@ class ConstraintImporterController extends Controller
 
     public function import(Request $request)
     {
-        $rows = $this->queryConstraints($request['start'], $request['end']);
+        $rows = $this->azureRepository->constraints($request['start'], $request['end']);
 
         $constraintsToAdd = [];
 
@@ -76,7 +82,7 @@ class ConstraintImporterController extends Controller
         // Si l'array de missingConstraintTypes n'est pas null, on redirige vers erreur
         if (!empty($missingConstraintTypesIds)) {
 
-            $missingConstraintTypes = $this->getConstraintTypesByAzureIds($missingConstraintTypesIds);
+            $missingConstraintTypes = $this->azureRepository->constraintTypesByIds($missingConstraintTypesIds);
 
             return redirect()->route('constraintImporter.index')
                     ->with('error', "ERREUR: Type(s) de contrainte non associée(s)")
@@ -86,7 +92,7 @@ class ConstraintImporterController extends Controller
         // Si l'array de missingUsers n'est pas null, on redirige vers erreur
         if (!empty($missingUsersIds)) {
 
-            $missingUsers = $this->getUsersByAzureIds($missingUsersIds);
+            $missingUsers = $this->azureRepository->usersByIds($missingUsersIds);
 
             return redirect()->route('constraintImporter.index')
                     ->with('error', "ERREUR: Utilisateur(s) non associé(s)")
@@ -98,66 +104,5 @@ class ConstraintImporterController extends Controller
 
         return redirect()->route('constraintImporter.index')
             ->with('status', 'Contraintes importées! ('. count($constraintsToAdd) . ')');
-    }
-
-    private function queryConstraints($startDate, $endDate)
-    {
-        $time_start = microtime(true);
-
-        $conn = new PDO('sqlsrv:server='.config('azure.host').';Database='.config('azure.database'),
-            config('azure.username'), config('azure.password'));
-        $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-        $tsql = "SELECT U.Id as User_id, U.FirstName, U.LastName,
-            C.Id as Constraint_id, C.StartDate, C.EndDate, C.Weight, C.Comment, C.Status, C.NumberOfOccurrences, C.Disposition, C.IsDayOfWeek, C.Day, C.Day1, C.Discriminator,
-            Ct.Id as ConstraintType_id, Ct.Name
-            FROM Constraints As C
-            JOIN ConstraintTypes AS Ct ON Ct.Id = C.TypeId
-            JOIN Users As U ON U.Id = C.UserId
-            WHERE ((StartDate >= ? AND EndDate <= ?) OR StartDate <= ? AND EndDate >= ?) AND TypeID <> 79
-            ORDER BY U.Lastname";
-        $getResults = $conn->prepare($tsql);
-        $getResults->execute([$startDate, $endDate, $endDate, $startDate]);
-        $results = $getResults->fetchAll(PDO::FETCH_ASSOC);
-
-        $time_end = microtime(true);
-        $execution_time = round((($time_end - $time_start)*1000),2);
-
-        return $results;
-
-    }
-
-    private function getConstraintTypesByAzureIds($ids) {
-        $conn = new PDO('sqlsrv:server='.config('azure.host').';Database='.config('azure.database'),
-            config('azure.username'), config('azure.password'));
-        $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-        $qMarks = str_repeat('?,', count($ids) -1) . '?';
-
-        $tsql = "SELECT Id, Name, Description
-            FROM ConstraintTypes As CT
-            WHERE Id IN ($qMarks)";
-        $getResult = $conn->prepare($tsql);
-        $getResult->execute($ids);
-        $result = $getResult->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-    private function getUsersByAzureIds($ids) {
-        $conn = new PDO('sqlsrv:server='.config('azure.host').';Database='.config('azure.database'),
-            config('azure.username'), config('azure.password'));
-        $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-        $qMarks = str_repeat('?,', count($ids) -1) . '?';
-
-        $tsql = "SELECT Id, FirstName, LastName
-            FROM Users As U
-            WHERE Id IN ($qMarks)";
-        $getResult = $conn->prepare($tsql);
-        $getResult->execute($ids);
-        $result = $getResult->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
     }
 }

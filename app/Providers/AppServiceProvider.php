@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use Carbon\Carbon;
+use App\Models\Schedule;
+use Illuminate\Support\Carbon;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,10 +40,10 @@ class AppServiceProvider extends ServiceProvider
                 throw new \InvalidArgumentException("Validation rule unique_interval requires at 1 parameter.");
             }
 
-            $a_start = \Carbon\Carbon::parse($validator->getData()[$parameters[0]]);
-            $a_end = \Carbon\Carbon::parse($value);
+            $a_start = Carbon::parse($validator->getData()[$parameters[0]]);
+            $a_end = Carbon::parse($value);
 
-            $schedules = \App\Schedule::select('id','start_date','end_date')->orderBy('end_date', 'desc')->limit(12)->get();
+            $schedules = Schedule::select('id','start_date','end_date')->orderBy('end_date', 'desc')->limit(12)->get();
 
             foreach ($schedules as $schedule) {
                 //Si on édit un horaire, on skip la vérification
