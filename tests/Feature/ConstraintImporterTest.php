@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
 use Mockery\MockInterface;
 
 class ConstraintImporterTest extends TestCase
@@ -50,14 +51,29 @@ class ConstraintImporterTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_mock_azure_repository()
+    public function test_import_empty_constraint()
     {
         $this->mock(AzureRepository::class, function (MockInterface $mock) {
-            $mock->shouldReceive('constraints')->andReturn([]);
+            $mock->shouldReceive('constraints')->once()->andReturn([['Constraint']]);
         });
 
-        $azure = new AzureRepository();
-        $azure->constraints($this->start_date, $this->end_date);
+        $this->followingRedirects();
+        $response = $this->actingAs($this->user)
+            ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
+
+        $response->assertStatus(200);
+        $response->assertSee('Contraintes importées! (0)');
+    }
+
+    public function test_import_unknown_constraint_type()
+    {
+        User::factory()->create(['azure_id' => 1000]);
+
+        $this->mock(AzureRepository::class, function (MockInterface $mock) {
+            $mock->shouldReceive('constraints')->once()->andReturn([]);
+        });
+
+
     }
 
     public function test_unauth_user_get_redirected()
