@@ -64,8 +64,6 @@
                         :departments-list="{{ $departments }}"
                 ></rhpharma-departments-users>
 
-                <h3>Permissions</h3>
-
                 @endif
 
                 <h3>Attributs</h3>

@@ -14,22 +14,17 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
-
     public function setUp(): void {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
     }
 
     public function test_auth_user_can_see_users()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/users');
 
         $response->assertStatus(200);
@@ -43,7 +38,7 @@ class UserTest extends TestCase
             'email' => 'joeexotic@rhpharma.com'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/users/{$newUser->id}");
 
         $response->assertStatus(200);
@@ -69,7 +64,7 @@ class UserTest extends TestCase
 
     public function test_auth_user_can_see_user_create_form()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/users/create');
 
         $response->assertStatus(200);
@@ -78,7 +73,7 @@ class UserTest extends TestCase
 
     public function test_auth_user_can_create_user()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->post('/users', [
                 'firstname' => 'Johnny',
                 'lastname' => 'Exotic',
@@ -101,7 +96,7 @@ class UserTest extends TestCase
             'email' => 'joeexotic@rhpharma.com'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/users/{$newUser->id}/edit");
 
         $response->assertStatus(200);
@@ -117,7 +112,7 @@ class UserTest extends TestCase
             'email' => 'joeexotic@rhpharma.com'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->put("/users/{$newUser->id}", [
                 'id' => $newUser->id,
                 'firstname' => 'Johnny',

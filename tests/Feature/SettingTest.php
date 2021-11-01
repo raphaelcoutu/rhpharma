@@ -18,7 +18,6 @@ class SettingTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
     private $workplace;
 
     public function setUp(): void {
@@ -26,10 +25,7 @@ class SettingTest extends TestCase
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
 
         $this->workplace = Workplace::factory()->create([
             'name' => 'CHUS HF',
@@ -51,7 +47,7 @@ class SettingTest extends TestCase
         Setting::updateOrCreate(['key' => 'departments_order'], ['value' => json_encode($values)]);
         Setting::updateOrCreate(['key' => 'triplets_order'], ['value' => json_encode([])]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/settings");
 
         $response->assertStatus(200);
@@ -61,7 +57,7 @@ class SettingTest extends TestCase
     {
         $departments = ConstraintType::factory()->count(5)->create();
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/settings/constraintTypes");
 
         $response->assertStatus(200);
@@ -71,7 +67,7 @@ class SettingTest extends TestCase
     {
         $departments = Department::factory()->count(5)->create();
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/settings/departments");
 
         $response->assertStatus(200);

@@ -77,6 +77,27 @@
         </div>
     </div>
 
+    <h3>Roles</h3>
+
+    <div class="form-group">
+        <div class="col-md-3">
+            @foreach($roles as $role)
+            <div>
+                <label>
+                    <input type="hidden" name="roles[{{ $role->id }}]" value="0">
+                    <input type="checkbox"
+                    name="roles[{{ $role->id }}]"
+                    value="1"
+                    {{ old('roles.'.$role->id, isset($user) ? $user->roles->contains('id', $role->id) : '') ? 'checked' : '' }}>
+                    {{ $role->name }}
+
+                </label>
+            </div>
+            @endforeach
+            </div>
+    </div>
+
+
     <div class="form-group">
         <div class="col-md-3 pull-right">
             <input type="submit" class="btn btn-primary" value="Enregistrer">

@@ -62,3 +62,7 @@ th.clickable, .pointer {
 }
 
 [v-cloak] > * { display:none }
+
+.permissions {
+    column-count: 2;
+}

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Branch;
 use App\Models\Permission;
@@ -18,19 +19,13 @@ class BranchTest extends TestCase
 
     public function setUp(): void {
         parent::setUp();
-
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
+        $this->createSuperUser();
     }
 
-    public function test_auth_user_can_see_branches()
-    {
-        $user = User::factory()->create();
-        $user->permissions()->saveMany(Permission::all());
-
-        $response = $this->actingAs($user)
-            ->get('/branches');
+    public function test_auth_user_can_see_branches() {
+        $response = $this->actingAs($this->superUser)->get('/branches');
 
         $response->assertStatus(200);
         $response->assertSee('Pharmaciens');

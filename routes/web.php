@@ -19,6 +19,7 @@ use App\Http\Controllers\ConstraintTypeController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ConstraintImporterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ConstraintValidatorController;
 use App\Http\Controllers\SettingConstraintTypeController;
 
 /*
@@ -61,6 +62,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Roles
     Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 
     //Workplaces
     Route::get('workplaces', [WorkplaceController::class, 'index'])->name('workplaces.index');
@@ -100,8 +104,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('constraints', [ConstraintController::class, 'index'])->name('constraints.index');
 
     //ConstraintsValidator
-    Route::get('constraintsValidator', [ConstraintsValidatorController::class, 'index'])->name('constraintsValidator.index');
-    Route::get('constraintsValidator/history', [ConstraintsValidatorController::class, 'history'])->name('constraintsValidator.history');
+    Route::get('constraintsValidator', [ConstraintValidatorController::class, 'index'])->name('constraintsValidator.index');
+    Route::get('constraintsValidator/history', [ConstraintValidatorController::class, 'history'])->name('constraintsValidator.history');
 
     //Calendar
     Route::get('calendar/{schedule}', [CalendarController::class, 'show'])->name('calendar.show');

@@ -27,12 +27,11 @@ class PermissionTest extends TestCase
         Branch::create(['name' => 'Pharmaciens']);
         Branch::create(['name' => 'Assistants techniques']);
 
-        foreach(PermissionSeeder::$permissions as $perm) {
-            Permission::create($perm);
-        }
+        $this->seed(PermissionSeeder::class);
 
         $gestionnaire = Role::create(['name' => 'Gestionnaire', 'description' => 'Gestionnaire']);
-        $gestionnaire->permissions()->saveMany(Permission::all());
+        $permissions = Permission::all()->pluck('code');
+        $gestionnaire->permissions()->sync($permissions);
 
         $this->phmAdmin = User::factory()->create(['branch_id' => 1]);
         $this->phmAdmin->roles()->attach($gestionnaire);

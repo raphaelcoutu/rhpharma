@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['code'];
+
+    protected $primaryKey = 'code';
+    public $incrementing = false;
 }

@@ -15,22 +15,17 @@ class WorkplaceTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
-
     public function setUp(): void {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
     }
 
     public function test_auth_user_can_see_workplaces()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/workplaces');
 
         $response->assertStatus(200);
@@ -44,7 +39,7 @@ class WorkplaceTest extends TestCase
             'city' => 'Sherbrooke'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/workplaces/{$workplace->id}");
 
         $response->assertStatus(200);
@@ -53,7 +48,7 @@ class WorkplaceTest extends TestCase
 
     public function test_auth_user_can_see_workplace_create_form()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/workplaces/create');
 
         $response->assertStatus(200);
@@ -62,7 +57,7 @@ class WorkplaceTest extends TestCase
 
     public function test_auth_user_can_create_workplace()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->post('/workplaces', [
                 'name' => 'CHUS HD',
                 'code' => 'HD',

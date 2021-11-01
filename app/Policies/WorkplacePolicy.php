@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\PermissionEnum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WorkplacePolicy
 {
     use HandlesAuthorization, ValidateReadWritePermissions;
 
-    private $permissionReadId = 5;
-    private $permissionWriteId = 6;
+    private $permissionReadCode = PermissionEnum::ReadWorkplaces;
+    private $permissionWriteCode = PermissionEnum::WriteWorkplaces;
 }

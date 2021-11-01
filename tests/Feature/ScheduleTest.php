@@ -19,7 +19,6 @@ class ScheduleTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
     private $workplace;
 
     public function setUp(): void {
@@ -27,17 +26,14 @@ class ScheduleTest extends TestCase
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
     }
 
     public function test_auth_user_can_see_schedules()
     {
         Schedule::factory()->create();
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/schedules');
 
         $response->assertStatus(200);
@@ -46,7 +42,7 @@ class ScheduleTest extends TestCase
 
     public function test_auth_user_can_see_schedules_create_form()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/schedules/create");
 
         $response->assertStatus(200);
@@ -54,7 +50,7 @@ class ScheduleTest extends TestCase
 
     public function test_auth_user_can_create_schedule()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->post('/schedules', [
                 'name' => 'Prochain horaire',
                 'branch_id' => $this->branch->id,
@@ -85,7 +81,7 @@ class ScheduleTest extends TestCase
             'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59)
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/schedules/{$schedule->id}/edit");
 
         $response->assertStatus(200);
@@ -101,7 +97,7 @@ class ScheduleTest extends TestCase
             'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59)
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->put("/schedules/{$schedule->id}", [
                 'id' => $schedule->id,
                 'name' => 'Prochain horaire',

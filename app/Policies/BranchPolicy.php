@@ -2,13 +2,14 @@
 
 namespace App\Policies;
 
+use App\Models\PermissionEnum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BranchPolicy
 {
     use HandlesAuthorization, ValidateReadWritePermissions;
 
-    private $permissionReadId = 1;
-    private $permissionWriteId = 2;
+    private $permissionReadCode = PermissionEnum::ReadBranches;
+    private $permissionWriteCode = PermissionEnum::WriteBranches;
 
 }

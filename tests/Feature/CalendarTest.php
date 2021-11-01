@@ -24,10 +24,7 @@ class CalendarTest extends TestCase
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
         $this->workplace = Workplace::factory()->create(['name' => 'CHUS']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
 
         $this->schedule = Schedule::factory()->create([
             'name' => 'Prochain horaire',
@@ -40,7 +37,7 @@ class CalendarTest extends TestCase
 
     public function test_auth_user_can_view_calendar()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/calendar/{$this->schedule->id}");
 
         $response->assertStatus(200);
@@ -69,7 +66,7 @@ class CalendarTest extends TestCase
         $userWithDepartmentAB = User::factory()->create(['firstname' => 'UserAB']);
         $userWithDepartmentAB->departments()->syncWithoutDetaching([$departmentA->id, $departmentB->id]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/calendar/{$this->schedule->id}/byDepartment/{$departmentA->id}");
 
         $response->assertStatus(200);
@@ -110,7 +107,7 @@ class CalendarTest extends TestCase
         $userWithDepartmentC = User::factory()->create(['firstname' => 'UserC']);
         $userWithDepartmentC->departments()->syncWithoutDetaching([$departmentC->id]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/calendar/{$this->schedule->id}/byDepartment/{$departmentA->id},{$departmentB->id}");
 
         $response->assertStatus(200);

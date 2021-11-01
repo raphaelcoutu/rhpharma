@@ -27,10 +27,7 @@ class ConstraintImporterTest extends TestCase
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
         $this->workplace = Workplace::factory()->create(['name' => 'CHUS']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
 
         $this->start_date = Carbon::now()->addWeek()->next('Sunday')->format('Y-m-d');
         $this->end_date = Carbon::now()->addWeeks(5)->next('Saturday')->format('Y-m-d');
@@ -46,7 +43,7 @@ class ConstraintImporterTest extends TestCase
 
     public function test_auth_user_can_see_importer()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/constraintImporter');
 
         $response->assertStatus(200);
@@ -59,7 +56,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->followingRedirects()
-            ->actingAs($this->user)
+            ->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(200);
@@ -78,7 +75,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->followingRedirects()
-            ->actingAs($this->user)
+            ->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(200);
@@ -96,7 +93,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->followingRedirects()
-            ->actingAs($this->user)
+            ->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(200);
@@ -118,7 +115,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this
-            ->actingAs($this->user)
+            ->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(302);

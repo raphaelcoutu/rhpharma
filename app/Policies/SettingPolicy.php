@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\PermissionEnum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SettingPolicy
 {
     use HandlesAuthorization, ValidateReadWritePermissions;
 
-    private $permissionReadId = 19;
-    private $permissionWriteId = 20;
+    private $permissionReadCode = PermissionEnum::ReadSettings;
+    private $permissionWriteCode = PermissionEnum::WriteSettings;
 }

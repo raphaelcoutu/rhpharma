@@ -24,4 +24,8 @@ abstract class PermissionEnum
     const WriteConstraints = 'WriteConstraints';
     const ReadSettings = 'ReadSettings';
     const WriteSettings = 'WriteSettings';
+    const ReadShiftTypes = 'ReadShiftTypes';
+    const WriteShiftTypes = 'WriteShiftTypes';
+    const ReadShifts = 'ReadShifts';
+    const WriteShifts = 'WriteShifts';
 }

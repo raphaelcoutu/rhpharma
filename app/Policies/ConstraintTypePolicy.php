@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\PermissionEnum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ConstraintTypePolicy
 {
     use HandlesAuthorization, ValidateReadWritePermissions;
 
-    private $permissionReadId = 13;
-    private $permissionWriteId = 14;
+    private $permissionReadCode = PermissionEnum::ReadConstraintTypes;
+    private $permissionWriteCode = PermissionEnum::WriteConstraintTypes;
 }

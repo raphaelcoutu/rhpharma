@@ -16,7 +16,6 @@ class DepartmentTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $user;
     private $workplace;
 
     public function setUp(): void {
@@ -24,10 +23,7 @@ class DepartmentTest extends TestCase
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
-        $this->seed(PermissionSeeder::class);
-
-        $this->user = User::factory()->create();
-        $this->user->permissions()->saveMany(Permission::all());
+        $this->createSuperUser();
 
         $this->workplace = Workplace::factory()->create([
             'name' => 'CHUS HF',
@@ -39,7 +35,7 @@ class DepartmentTest extends TestCase
 
     public function test_auth_user_can_see_departments()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get('/departments');
 
         $response->assertStatus(200);
@@ -48,7 +44,7 @@ class DepartmentTest extends TestCase
 
     public function test_auth_user_can_see_department_create_form()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/departments/create");
 
         $response->assertStatus(200);
@@ -56,7 +52,7 @@ class DepartmentTest extends TestCase
 
     public function test_auth_user_can_create_department()
     {
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->post('/departments', [
                 'name' => 'Soins intensifs',
                 'workplace_id' => $this->workplace->id,
@@ -87,7 +83,7 @@ class DepartmentTest extends TestCase
             'name' => 'Soins intensifs'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->get("/departments/{$department->id}/edit");
 
         $response->assertStatus(200);
@@ -99,7 +95,7 @@ class DepartmentTest extends TestCase
             'name' => 'Soins intensifs'
         ]);
 
-        $response = $this->actingAs($this->user)
+        $response = $this->actingAs($this->superUser)
             ->put("/departments/{$department->id}", [
                 'id' => $department->id,
                 'name' => 'Soins intensifs médicaux',

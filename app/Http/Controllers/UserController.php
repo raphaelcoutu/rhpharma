@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Http\Requests\UserRequest;
-use App\Models\User;
 
 class UserController extends Controller
 {
@@ -35,8 +36,9 @@ class UserController extends Controller
         $this->authorize('write', User::class);
 
         $branches = Branch::select(['id', 'name'])->get();
+        $roles = Role::all();
 
-        return view('users.create', compact('branches'));
+        return view('users.create', compact('branches', 'roles'));
     }
 
     /**
@@ -89,8 +91,9 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $branches = Branch::select(['id', 'name'])->get();
+        $roles = Role::all();
 
-        return view('users.edit', compact('user', 'branches'));
+        return view('users.edit', compact('user', 'branches', 'roles'));
     }
 
     /**
@@ -103,6 +106,13 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
+
+        $roles = collect($request->roles)->filter(function($role) {
+            return $role == 1;
+        })->keys();
+
+        $user->roles()->sync($roles);
+
         $user->update($request->all());
 
         return redirect()->route('users.show', ['user' => $id]);

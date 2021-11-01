@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
+use App\Models\PermissionEnum;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SchedulePolicy
 {
     use HandlesAuthorization, ValidateReadWritePermissions;
 
-    private $permissionReadId = 11;
-    private $permissionWriteId = 12;
+    private $permissionReadCode = PermissionEnum::ReadSchedules;
+    private $permissionWriteCode = PermissionEnum::WriteSchedules;
 }

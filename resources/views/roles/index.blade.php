@@ -22,19 +22,14 @@
                                 <td>{{ $role->name }}</td>
                                 <td>{{ $role->description }}</td>
                                 <td>
-                                    <table>
-                                        @foreach($permissions as $permission)
-                                        {!! ($loop->index % 2 == 0) ? '<tr>' : '' !!}
-                                        <td>
-                                            @include('roles.permission-checkbox', [$role, $permission])
-                                        </td>
-                                        {!! ($loop->index % 2 == 1) ? '</tr>' : '' !!}
-                                        @endforeach
-                                    </table>
+                                    <div class="permissions">
+                                    @foreach($permissions as $permission)
+                                    <div>@include('roles.permission-checkbox', [$role, $permission])</div>
+                                    @endforeach
+                                    </div>
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-default"><i class="fa fa-clone"></i></a>
-                                    <a href="#" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
+                                    <a href="{{ route('roles.edit', ['role' => $role]) }}" class="btn btn-warning"><i class="fa fa-pencil"></i></a>
                                     <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                                 </td>
                             </tr>

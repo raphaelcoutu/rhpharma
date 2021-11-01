@@ -9,27 +9,21 @@ trait ValidateReadWritePermissions
 {
     public function read(User $user)
     {
-        return $this->validate($user, $this->permissionReadId);
+        return $this->validate($user, $this->permissionReadCode);
     }
 
     public function write(User $user)
     {
-        return $this->validate($user, $this->permissionWriteId);
+        return $this->validate($user, $this->permissionWriteCode);
 
     }
 
-    private function validate($user, $id) {
+    private function validate($user, $code) {
         foreach($user->roles as $role) {
             foreach ($role->permissions as $permission) {
-                if($permission->id == $id) {
+                if($permission->code == $code) {
                     return true;
                 }
-            }
-        }
-
-        foreach ($user->permissions as $permission) {
-            if($permission->id == $id) {
-                return true;
             }
         }
 
