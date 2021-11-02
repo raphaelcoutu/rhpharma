@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ScheduleRequest;
 use App\Models\Constraint;
 use App\Models\Department;
-use App\Http\Requests\ScheduleRequest;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Branch;
-use App\Models\Schedule;
 use App\Models\Constraint;
 use App\Models\ConstraintType;
-use Illuminate\Support\Carbon;
+use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
 class ConstraintTest extends TestCase
 {

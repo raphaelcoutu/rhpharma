@@ -4,11 +4,11 @@ namespace App\Listeners;
 
 use App\Builders\BuildStatus;
 use App\Events\UpdateBuildStatus;
-use App\Models\Jobs\AnalyzeClinicalDepartments;
 use App\Jobs\AssignPreWeekendConstraint;
 use App\Jobs\BuildClinicalDepartments;
 use App\Jobs\CompleteWeekendsAndDaysOff;
 use App\Jobs\ResetClinicalDepartments;
+use App\Models\Jobs\AnalyzeClinicalDepartments;
 use App\Models\Schedule;
 
 class BuildStatusChanged

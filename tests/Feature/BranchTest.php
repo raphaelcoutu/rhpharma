@@ -2,14 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\Role;
-use App\Models\User;
 use App\Models\Branch;
-use App\Models\Permission;
-use Database\Seeders\PermissionSeeder;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class BranchTest extends TestCase
 {

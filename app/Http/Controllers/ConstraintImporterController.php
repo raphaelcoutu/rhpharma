@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 
-use PDO;
-use App\Models\User;
 use App\Models\Constraint;
 use App\Models\ConstraintType;
+use App\Models\User;
 use App\Services\AzureRepository;
 use Illuminate\Http\Request;
 

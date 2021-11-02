@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Auth\RedirectsUsers;
-use App\Http\Controllers\Auth\ThrottlesLogins;
 use Illuminate\Validation\ValidationException;
 
 trait AuthenticatesUsers

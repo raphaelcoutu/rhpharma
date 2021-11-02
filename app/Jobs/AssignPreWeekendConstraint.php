@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Models\AssignedShift;
 use App\Builders\BuildStatus;
-use App\Models\Constraint;
 use App\Events\BuildMessageGenerated;
 use App\Events\UpdateBuildStatus;
+use App\Models\AssignedShift;
+use App\Models\Constraint;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;

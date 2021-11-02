@@ -2,20 +2,18 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Branch;
-use App\Models\Schedule;
-use App\Models\Workplace;
 use App\Models\Constraint;
-use App\Models\Permission;
-use Mockery\MockInterface;
 use App\Models\ConstraintType;
-use Illuminate\Support\Carbon;
+use App\Models\Schedule;
+use App\Models\User;
+use App\Models\Workplace;
 use App\Services\AzureRepository;
-use Database\Seeders\PermissionSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Carbon;
+use Mockery\MockInterface;
+use Tests\TestCase;
 
 class ConstraintImporterTest extends TestCase
 {

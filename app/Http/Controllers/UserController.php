@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Http\Requests\UserRequest;
 use App\Models\Branch;
 use App\Models\Department;
-use App\Http\Requests\UserRequest;
+use App\Models\Role;
+use App\Models\User;
 
 class UserController extends Controller
 {

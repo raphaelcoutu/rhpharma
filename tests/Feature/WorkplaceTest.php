@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Branch;
+use App\Models\User;
 use App\Models\Workplace;
-use App\Models\Permission;
-use Database\Seeders\PermissionSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class WorkplaceTest extends TestCase
 {

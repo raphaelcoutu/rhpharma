@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use Carbon\Carbon;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DetectsIntervalCollisionTest extends TestCase
 {

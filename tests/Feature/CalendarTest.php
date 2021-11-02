@@ -2,17 +2,14 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Branch;
-use App\Models\Schedule;
-use App\Models\Workplace;
 use App\Models\Department;
-use App\Models\Permission;
-use Illuminate\Support\Carbon;
-use Database\Seeders\PermissionSeeder;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Schedule;
+use App\Models\User;
+use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
+use Tests\TestCase;
 
 class CalendarTest extends TestCase
 {

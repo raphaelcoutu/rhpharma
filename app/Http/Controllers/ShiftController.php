@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Department;
 use App\Http\Requests\ShiftRequest;
+use App\Models\Department;
 use App\Models\Shift;
 use App\Models\ShiftType;
 

@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BuildController;
 use App\Http\Controllers\BranchController;
-use App\Http\Controllers\HolidayController;
-use App\Http\Controllers\SettingController;
+use App\Http\Controllers\BuildController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ConflictController;
-use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ConstraintController;
 use App\Http\Controllers\ConstraintTypeController;
-use App\Http\Controllers\DepartmentUserController;
 use App\Http\Controllers\ConstraintValidatorController;
-use App\Http\Controllers\SettingConstraintTypeController;
+use App\Http\Controllers\DepartmentUserController;
+use App\Http\Controllers\HolidayController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ScheduleStatDepartmentController;
+use App\Http\Controllers\SettingConstraintTypeController;
+use App\Http\Controllers\SettingController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

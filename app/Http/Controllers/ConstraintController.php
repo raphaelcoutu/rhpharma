@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConstraintRequest;
 use App\Models\Constraint;
 use App\Models\ConstraintType;
-use App\Http\Requests\ConstraintRequest;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

@@ -1,27 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ConstraintController;
+use App\Http\Controllers\ConstraintImporterController;
+use App\Http\Controllers\ConstraintTypeController;
+use App\Http\Controllers\ConstraintValidatorController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HolidayController;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\WorkplaceController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\ConstraintController;
-use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\ConstraintTypeController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\ConstraintImporterController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\ConstraintValidatorController;
 use App\Http\Controllers\SettingConstraintTypeController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkplaceController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

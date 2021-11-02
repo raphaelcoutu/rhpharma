@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Events\StatsByDepartmentsGenerated;
 use App\Models\AssignedShift;
 use App\Models\Department;
-use App\Events\StatsByDepartmentsGenerated;
 use App\Models\Schedule;
 use App\Models\Statistic;
 use Carbon\Carbon;

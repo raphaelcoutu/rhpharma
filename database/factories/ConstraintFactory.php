@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Constraint;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class ConstraintFactory extends Factory
 {

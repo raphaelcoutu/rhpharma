@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConstraintType;
 use App\Http\Requests\ConstraintTypeRequest;
-use Illuminate\Http\Request;
+use App\Models\ConstraintType;
 
 class ConstraintTypeController extends Controller
 {

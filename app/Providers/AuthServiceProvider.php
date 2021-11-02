@@ -7,6 +7,13 @@ use App\Models\Constraint;
 use App\Models\ConstraintType;
 use App\Models\Department;
 use App\Models\Holiday;
+use App\Models\Role;
+use App\Models\Schedule;
+use App\Models\Setting;
+use App\Models\Shift;
+use App\Models\ShiftType;
+use App\Models\User;
+use App\Models\Workplace;
 use App\Policies\BranchPolicy;
 use App\Policies\ConstraintPolicy;
 use App\Policies\ConstraintTypePolicy;
@@ -19,13 +26,6 @@ use App\Policies\ShiftPolicy;
 use App\Policies\ShiftTypePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WorkplacePolicy;
-use App\Models\Role;
-use App\Models\Schedule;
-use App\Models\Setting;
-use App\Models\Shift;
-use App\Models\ShiftType;
-use App\Models\User;
-use App\Models\Workplace;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

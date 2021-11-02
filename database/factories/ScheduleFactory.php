@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Builders\BuildStatus;
 use App\Models\Schedule;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 class ScheduleFactory extends Factory
 {
