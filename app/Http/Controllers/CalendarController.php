@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssignedShift;
-use App\Models\Department;
-use App\Models\Schedule;
-use App\Models\Shift;
 use App\Models\User;
-use Carbon\Carbon;
+use App\Models\Shift;
+use App\Models\Schedule;
+use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Models\AssignedShift;
+use Illuminate\Support\Carbon;
 
 class CalendarController extends Controller
 {

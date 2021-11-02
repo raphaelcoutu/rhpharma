@@ -4,8 +4,8 @@ namespace App\Exports;
 
 use App\Models\Schedule;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 
 class Conflict
@@ -83,7 +83,7 @@ class Conflict
         $sheet = $this->spreadsheet->getActiveSheet();
         $row = 4;
 
-        $conflicts = \App\Conflict::with('department')
+        $conflicts = \App\Models\Conflict::with('department')
             ->where('schedule_id', $this->schedule->id)
             ->orderByDesc('severity')
             ->get();
