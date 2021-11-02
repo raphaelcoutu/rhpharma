@@ -45,6 +45,10 @@ class Form {
         return this.submit('post', url);
     }
 
+    put(url) {
+        return this.submit('put', url);
+    }
+
     patch(url) {
         return this.submit('patch', url);
     }

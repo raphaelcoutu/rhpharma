@@ -73,7 +73,7 @@
             },
 
             editBranch(id) {
-                this.form.get('api/branches/'+id)
+                this.form.get('api/branches/' + id)
                     .then((data) => {
                         this.form.id = data.id;
                         this.form.name = data.name;
@@ -83,7 +83,7 @@
             },
 
             updateBranch(id) {
-                this.form.patch('api/branches/' + id)
+                this.form.put('api/branches/' + id)
                     .then(() => {
                         this.edit = false;
                         this.showForm = false;

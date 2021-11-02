@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Permission;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Testing\TestResponse;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -14,7 +15,8 @@ abstract class TestCase extends BaseTestCase
 
     protected $superUser;
 
-    protected function createSuperUser(): void {
+    protected function createSuperUser(): void
+    {
         $this->seed(PermissionSeeder::class);
 
         $this->superUser = User::factory()->create();
@@ -23,5 +25,23 @@ abstract class TestCase extends BaseTestCase
 
         $permissions = Permission::all()->pluck('code');
         $superUserRole->permissions()->sync($permissions);
+    }
+
+    protected function getAjax($uri, $headers = []): TestResponse
+    {
+        $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+        return $this->getJson($uri, array_merge($headers, $ajaxHeader));
+    }
+
+    protected function postAjax($uri, array $data = [], array $headers = []): TestResponse
+    {
+        $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+        return $this->postJson($uri, $data, array_merge($headers, $ajaxHeader));
+    }
+
+    protected function putAjax($uri, array $data = [], array $headers = []): TestResponse
+    {
+        $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+        return $this->putJson($uri, $data, array_merge($headers, $ajaxHeader));
     }
 }
