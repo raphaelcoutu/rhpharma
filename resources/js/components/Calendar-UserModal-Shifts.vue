@@ -2,7 +2,7 @@
     <div>
         <input type="search" class="form-control" v-model="search" placeholder="Rechercher" @keyup="filterShifts" ref="searchBar">
         <div id="shifts">
-            <li v-for="shift in filteredShifts">
+            <li v-for="shift in filteredShifts" :key="shift.id">
                 <div @click="toggleActive(shift)">
                     <input type="checkbox" v-bind:checked="shift.active">  {{ shift.code}}
                 </div>
