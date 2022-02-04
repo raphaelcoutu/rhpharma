@@ -16,7 +16,7 @@
         "laravel/framework": "^8.65",
         "laravel/tinker": "^2.5",
         "phpoffice/phpspreadsheet": "^1.2",
-        "pusher/pusher-php-server": "~3.0"
+        "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",
