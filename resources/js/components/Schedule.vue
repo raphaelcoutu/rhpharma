@@ -28,7 +28,7 @@
 
         mounted() {
             Echo.channel('build-status')
-                .listen('UpdateBuildStatus', (e) => {
+                .listen('.UpdateBuildStatus', (e) => {
                     if(e.scheduleId === this.dataSchedule.id) {
                         this.buildStatusUpdated(e);
                     }

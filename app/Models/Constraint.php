@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -12,7 +13,7 @@ class Constraint extends Model
 
     protected $guarded = [];
 
-    protected $dates = ['start_datetime', 'end_datetime'];
+    protected $dates = ['start_datetime', 'end_datetime', 'created_at', 'updated_at'];
 
     public function constraintType()
     {
@@ -62,5 +63,10 @@ class Constraint extends Model
             $query->where('start_datetime', '<', $end_date->copy()->setTime(23,59))
                 ->where('end_datetime', '>', $start_date->copy()->setTime(0,0));
         });
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

@@ -25,8 +25,6 @@
         methods: {
             updateStatus(newStatus) {
                 this.event.status = newStatus;
-                console.log(this.event);
-
                 this.$emit('updateBuildStatus', this.event);
                 axios.post('/api/schedules/updateStatus', this.event);
             }

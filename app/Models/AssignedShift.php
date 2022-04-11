@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +11,7 @@ class AssignedShift extends Model
 {
     use HasFactory;
 
-    protected $dates = ['date'];
+    protected $dates = ['date', 'created_at', 'updated_at'];
 
     protected $guarded = [];
 
@@ -39,5 +40,10 @@ class AssignedShift extends Model
             $query->where('date', '>=', $start_date->setTime(0,0))
                 ->where('date', '<=', $end_date->setTime(23,59));
         });
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 }

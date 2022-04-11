@@ -38,7 +38,7 @@
 
         created() {
             Echo.channel(`schedule.${this.dataSchedule.id}`)
-                .listen('StatsByDepartmentsGenerated', this.postGenerate);
+                .listen('.StatsByDepartmentsGenerated', this.postGenerate);
         },
 
         data() {
