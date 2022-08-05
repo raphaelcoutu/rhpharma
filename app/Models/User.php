@@ -47,6 +47,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function getEmailAttribute($value) {
+        return strtolower($value);
+    }
+
     public function scopeOwnBranch($query)
     {
         return $query->where('branch_id', \Auth::user()->branch->id);
