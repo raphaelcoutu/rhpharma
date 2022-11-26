@@ -8,8 +8,8 @@
             </div>
             Sem. {{ (dataFirstDay / 7) + 1 }} - {{ (dataFirstDay / 7) + dataWeeksCount }}
             <div class="btn-group btn-group-xs">
-                <button @click="changeWeeksCount(1)" :disabled="dataDuration / 7 === dataWeeksCount || dataWeeksCount === 4" class="btn btn-default"><i class="fa fa-arrow-circle-o-up"></i></button>
-                <button @click="changeWeeksCount(-1)" :disabled="dataWeeksCount === 1" class="btn btn-default"><i class="fa fa-arrow-circle-o-down"></i></button>
+                <button @click="changeWeeksCount(1)" :disabled="dataDuration / 7 === dataWeeksCount || dataWeeksCount === 4" class="btn btn-default"><i class="fa fa-circle-up"></i></button>
+                <button @click="changeWeeksCount(-1)" :disabled="dataWeeksCount === 1" class="btn btn-default"><i class="fa fa-circle-down"></i></button>
 
             </div>
         </th>
