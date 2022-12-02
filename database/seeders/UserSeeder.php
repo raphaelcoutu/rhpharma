@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
         return User::create([
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
-            'email' => $user['email'] ?? Str::random(10) . '@RHPharma.com',
+            'email' => $user['email'] ?? Str::random(10) . '@rhpharma.com',
             'password' => $password ?: $password = Hash::make('password'),
             'remember_token' => Str::random(10),
             'workdays_per_week' => $user['workdays_per_week'] ?? 5,
@@ -37,28 +37,28 @@ class UserSeeder extends Seeder
         $phm_admin = $this->create([
             'firstname' => 'SuperUser',
             'lastname' => 'SuperUser',
-            'email' => 'phm_admin@RHPharma.com',
+            'email' => 'phm_admin@rhpharma.com',
             'is_active' => 0
             ]);
 
         /*$phm_user = $this->create([
             'firstname' => 'PHM',
             'lastname' => 'User',
-            'email' => 'phm_user@RHPharma.com',
+            'email' => 'phm_user@rhpharma.com',
             'is_active' => 0
         ]);
 
         $this->create([
             'firstname' => 'ATP',
             'lastname' => 'Admin',
-            'email' => 'atp_admin@RHPharma.com',
+            'email' => 'atp_admin@rhpharma.com',
             'branch_id' => 2
         ]);
 
         $this->create([
             'firstname' => 'ATP',
             'lastname' => 'User',
-            'email' => 'atp_user@RHPharma.com',
+            'email' => 'atp_user@rhpharma.com',
             'branch_id' => 2
         ]);*/
 
@@ -67,20 +67,20 @@ class UserSeeder extends Seeder
         $aalongpre = $this->create([
             'firstname' => 'Audrey-Anne',
             'lastname' => 'Longpré',
-            'email' => 'aalongpre@RHPharma.com',
+            'email' => 'aalongpre@rhpharma.com',
         ]);
 
         $acoulombe = $this->create([
             'firstname' => 'Alexandrine',
             'lastname' => 'Coulombe',
-            'email' => 'acoulombe@RHPharma.com',
+            'email' => 'acoulombe@rhpharma.com',
             'workdays_per_week' => 3,
         ]);
 
         $adubuc = $this->create([
             'firstname' => 'Annie',
             'lastname' => 'Dubuc',
-            'email' => 'adubuc@RHPharma.com',
+            'email' => 'adubuc@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
@@ -110,287 +110,287 @@ class UserSeeder extends Seeder
         $cleclair = $this->create([
             'firstname' => 'Christian',
             'lastname' => 'Leclair',
-            'email' => 'cleclair@RHPharma.com',
+            'email' => 'cleclair@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $cpelletier = $this->create([
             'firstname' => 'Claudia',
             'lastname' => 'Pelletier-Mayette',
-            'email' => 'cpelletier@RHPharma.com',
+            'email' => 'cpelletier@rhpharma.com',
         ]);
 
         $eboisvert = $this->create([
             'firstname' => 'Émilie',
             'lastname' => 'Boisvert',
-            'email' => 'eboivert@RHPharma.com',
+            'email' => 'eboivert@rhpharma.com',
         ]);
 
         $ebouchard = $this->create([
             'firstname' => 'Émile',
             'lastname' => 'Bouchard',
-            'email' => 'ebouchard@RHPharma.com',
+            'email' => 'ebouchard@rhpharma.com',
         ]);
 
         $edubuc = $this->create([
             'firstname' => 'Émilie',
             'lastname' => 'Dubuc',
-            'email' => 'edubuc@RHPharma.com',
+            'email' => 'edubuc@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $edufort = $this->create([
             'firstname' => 'Émilie',
             'lastname' => 'Dufort-Rouleau',
-            'email' => 'edufort@RHPharma.com',
+            'email' => 'edufort@rhpharma.com',
         ]);
 
         $gberard = $this->create([
             'firstname' => 'Ghislain',
             'lastname' => 'Bérard',
-            'email' => 'gberard@RHPharma.com',
+            'email' => 'gberard@rhpharma.com',
         ]);
 
         $gdorais = $this->create([
             'firstname' => 'Gabriel',
             'lastname' => 'Dorais',
-            'email' => 'gdorais@RHPharma.com',
+            'email' => 'gdorais@rhpharma.com',
         ]);
 
         $gduplain = $this->create([
             'firstname' => 'Geneviève',
             'lastname' => 'Duplain-Cyr',
-            'email' => 'gduplain@RHPharma.com',
+            'email' => 'gduplain@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $gferland = $this->create([
             'firstname' => 'Gabrielle',
             'lastname' => 'Ferland',
-            'email' => 'gferland@RHPharma.com',
+            'email' => 'gferland@rhpharma.com',
         ]);
 
         $glanglois = $this->create([
             'firstname' => 'Geneviève',
             'lastname' => 'Langlois',
-            'email' => 'glanglois@RHPharma.com',
+            'email' => 'glanglois@rhpharma.com',
         ]);
 
 
         $hblain = $this->create([
             'firstname' => 'Hugues',
             'lastname' => 'Blain',
-            'email' => 'hblain@RHPharma.com',
+            'email' => 'hblain@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $jcouture = $this->create([
             'firstname' => 'Jodianne',
             'lastname' => 'Couture',
-            'email' => 'jcouture@RHPharma.com',
+            'email' => 'jcouture@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
         $jdesbiens = $this->create([
             'firstname' => 'Joëlle',
             'lastname' => 'Desbiens',
-            'email' => 'jdesbiens@RHPharma.com',
+            'email' => 'jdesbiens@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
         $jdion = $this->create([
             'firstname' => 'Jocelyn',
             'lastname' => 'Dion',
-            'email' => 'jdion@RHPharma.com',
+            'email' => 'jdion@rhpharma.com',
         ]);
 
         $jduchesneau = $this->create([
             'firstname' => 'Josée',
             'lastname' => 'Duchesneau',
-            'email' => 'jduchesneau@RHPharma.com',
+            'email' => 'jduchesneau@rhpharma.com',
         ]);
 
         $jproulx = $this->create([
             'firstname' => 'Josée',
             'lastname' => 'Proulx',
-            'email' => 'jproulx@RHPharma.com',
+            'email' => 'jproulx@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
         $jleblond = $this->create([
             'firstname' => 'Julie',
             'lastname' => 'Leblond',
-            'email' => 'jleblond@RHPharma.com',
+            'email' => 'jleblond@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
         $jquenneville = $this->create([
             'firstname' => 'Julie',
             'lastname' => 'Quenneville',
-            'email' => 'jquenneville@RHPharma.com',
+            'email' => 'jquenneville@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $llegeleux = $this->create([
             'firstname' => 'Lorraine',
             'lastname' => 'Legeleux',
-            'email' => 'llegeleux@RHPharma.com',
+            'email' => 'llegeleux@rhpharma.com',
         ]);
 
         $mberteau = $this->create([
             'firstname' => 'Mathieu',
             'lastname' => 'Berteau',
-            'email' => 'mberteau@RHPharma.com',
+            'email' => 'mberteau@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $mfbeauchesne = $this->create([
             'firstname' => 'Marie-France',
             'lastname' => 'Beauchesne',
-            'email' => 'mfbeauchesne@RHPharma.com',
+            'email' => 'mfbeauchesne@rhpharma.com',
             'is_manual' => 1
         ]);
 
         $mgilbert = $this->create([
             'firstname' => 'Mélanie',
             'lastname' => 'Gilbert',
-            'email' => 'mgilbert@RHPharma.com',
+            'email' => 'mgilbert@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $mguay = $this->create([
             'firstname' => 'Marianne',
             'lastname' => 'Guay',
-            'email' => 'mguay@RHPharma.com',
+            'email' => 'mguay@rhpharma.com',
         ]);
 
         $mjlachance = $this->create([
             'firstname' => 'Marie-Josée',
             'lastname' => 'Lachance',
-            'email' => 'mjlachance@RHPharma.com',
+            'email' => 'mjlachance@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $mlacerte = $this->create([
             'firstname' => 'Mélanie',
             'lastname' => 'Lacerte',
-            'email' => 'mlacerte@RHPharma.com',
+            'email' => 'mlacerte@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $mprousseau = $this->create([
             'firstname' => 'Marie-Pierre',
             'lastname' => 'Rousseau',
-            'email' => 'mprousseau@RHPharma.com',
+            'email' => 'mprousseau@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $mturgeon = $this->create([
             'firstname' => 'Martin',
             'lastname' => 'Turgeon',
-            'email' => 'mturgeon@RHPharma.com',
+            'email' => 'mturgeon@rhpharma.com',
         ]);
 
         $ndaviau = $this->create([
             'firstname' => 'Nathalie',
             'lastname' => 'Daviau',
-            'email' => 'ndaviau@RHPharma.com',
+            'email' => 'ndaviau@rhpharma.com',
             'workdays_per_week' => 4
         ]);
 
         $ngoettel = $this->create([
             'firstname' => 'Nicolas',
             'lastname' => 'Goettel',
-            'email' => 'ngoettel@RHPharma.com',
+            'email' => 'ngoettel@rhpharma.com',
         ]);
 
         $rbournival = $this->create([
             'firstname' => 'Roxanne',
             'lastname' => 'Bournival',
-            'email' => 'rbournival@RHPharma.com',
+            'email' => 'rbournival@rhpharma.com',
         ]);
 
         $rcoutu = $this->create([
             'firstname' => 'Raphaël',
             'lastname' => 'Coutu',
-            'email' => 'rcoutu@RHPharma.com',
+            'email' => 'rcoutu@rhpharma.com',
         ]);
 
         $sbergeron = $this->create([
             'firstname' => 'Sabrina',
             'lastname' => 'Bergeron-Wolff',
-            'email' => 'sbergeron@RHPharma.com',
+            'email' => 'sbergeron@rhpharma.com',
         ]);
 
 
         $scloutier = $this->create([
             'firstname' => 'Sylvie',
             'lastname' => 'Cloutier',
-            'email' => 'scloutier@RHPharma.com',
+            'email' => 'scloutier@rhpharma.com',
         ]);
 
         $slamontagne = $this->create([
             'firstname' => 'Sophie',
             'lastname' => 'Lamontagne',
-            'email' => 'slamontagne@RHPharma.com',
+            'email' => 'slamontagne@rhpharma.com',
         ]);
 
         $sletendre = $this->create([
             'firstname' => 'Sara',
             'lastname' => 'Letendre',
-            'email' => 'sletendre@RHPharma.com',
+            'email' => 'sletendre@rhpharma.com',
         ]);
 
         $tjoly = $this->create([
             'firstname' => 'Thomas',
             'lastname' => 'Joly-Mischlich',
-            'email' => 'tjoly@RHPharma.com',
+            'email' => 'tjoly@rhpharma.com',
         ]);
 
         $vchiasson = $this->create([
             'firstname' => 'Valérie',
             'lastname' => 'Chiasson-Roussel',
-            'email' => 'vchiasson@RHPharma.com',
+            'email' => 'vchiasson@rhpharma.com',
             'workdays_per_week' => 3
         ]);
 
         $vclement = $this->create([
             'firstname' => 'Valérie',
             'lastname' => 'Clément',
-            'email' => 'vclement@RHPharma.com',
+            'email' => 'vclement@rhpharma.com',
         ]);
 
         $vlord = $this->create([
             'firstname' => 'Vicky',
             'lastname' => 'Lord',
-            'email' => 'vlord@RHPharma.com',
+            'email' => 'vlord@rhpharma.com',
         ]);
 
         $mbd = $this->create([
             'firstname' => 'Marie-Ève',
             'lastname' => 'Bédard-Dufresne',
-            'email' => 'mebedarddufresne@RHPharma.com',
+            'email' => 'mebedarddufresne@rhpharma.com',
             'workdays_per_week' => 5,
         ]);
 
         $cdr = $this->create([
             'firstname' => 'Camille',
             'lastname' => 'Dufort-Rouleau',
-            'email' => 'cdufort@RHPharma.com',
+            'email' => 'cdufort@rhpharma.com',
             'workdays_per_week' => 5,
         ]);
 
         $plr = $this->create([
             'firstname' => 'Pierre-Luc',
             'lastname' => 'Ratté',
-            'email' => 'plratte@RHPharma.com',
+            'email' => 'plratte@rhpharma.com',
             'workdays_per_week' => 5,
         ]);
 
         $ia = $this->create([
             'firstname' => 'Isabelle',
             'lastname' => 'Audet',
-            'email' => 'iaudet@RHPharma.com',
+            'email' => 'iaudet@rhpharma.com',
             'workdays_per_week' => 5,
             'is_active' => 0,
         ]);
