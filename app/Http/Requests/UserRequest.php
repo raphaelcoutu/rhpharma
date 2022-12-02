@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -26,7 +27,7 @@ class UserRequest extends FormRequest
         return [
             'firstname' => 'required|alpha_dash',
             'lastname' => 'required|alpha_dash',
-            'email' => 'required|email|unique:users,email,'.$this->get('id'),
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id)],
             'workdays_per_week' => 'required|digits:1',
             'is_active' => 'required'
         ];
