@@ -1,13 +1,11 @@
 services:
     laravel.test:
         build:
-            context: ./sail/runtimes/8.0
+            context: ./vendor/laravel/sail/runtimes/8.2
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-                NODE_VERSION: 20
-                POSTGRES_VERSION: 12
-        image: rhpharma-8.0/app
+        image: sail-8.2/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -25,6 +23,8 @@ services:
             - sail
         depends_on:
             - pgsql
+            - mailpit
+            - selenium
     pgsql:
         image: 'postgres:12'
         ports:
@@ -50,6 +50,21 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - sail
+    selenium:
+        image: seleniarm/standalone-chromium
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - '/dev/shm:/dev/shm'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
