@@ -13,7 +13,12 @@ class Constraint extends Model
 
     protected $guarded = [];
 
-    protected $dates = ['start_datetime', 'end_datetime', 'created_at', 'updated_at'];
+    protected $casts = [
+        'start_datetime' => 'datetime',
+        'end_datetime' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
 
     public function constraintType()
     {

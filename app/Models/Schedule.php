@@ -11,7 +11,12 @@ class Schedule extends Model
 
     protected $fillable = ['name', 'limit_date', 'limit_date_weekends', 'start_date', 'end_date', 'branch_id'];
 
-    protected $dates = ['start_date', 'end_date', 'limit_date', 'limit_date_weekends'];
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'limit_date' => 'date',
+        'limit_date_weekends' => 'date'
+    ];
 
     public function conflicts()
     {

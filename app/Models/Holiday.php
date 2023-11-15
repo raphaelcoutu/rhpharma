@@ -9,7 +9,9 @@ class Holiday extends Model
 {
     protected $fillable = ['description', 'date'];
 
-    protected $dates = ['date'];
+    protected $casts = [
+        'date' => 'date'
+    ];
 
     public function scopeByDate($query)
     {

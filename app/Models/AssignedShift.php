@@ -11,7 +11,11 @@ class AssignedShift extends Model
 {
     use HasFactory;
 
-    protected $dates = ['date', 'created_at', 'updated_at'];
+    protected $casts = [
+        'date' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
 
     protected $guarded = [];
 
