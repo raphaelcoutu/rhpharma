@@ -24,9 +24,9 @@
 
 <script>
     import Conflicts from './Schedule-Conflicts.vue'
-    import Log from './Schedule-Log'
-    import Notes from './Schedule-Notes'
-    import StatsDepartments from './Schedule-Stats-Departments'
+    import Log from './Schedule-Log.vue'
+    import Notes from './Schedule-Notes.vue'
+    import StatsDepartments from './Schedule-Stats-Departments.vue'
 
     export default {
         props: ['dataSchedule', 'dataConflicts', 'dataStatuses'],

@@ -5,9 +5,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+import './bootstrap';
 
-window.Vue = require('vue').default;
+import Vue from 'vue';
+window.Vue = Vue;
+
+import 'bootstrap-sass'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -16,26 +19,44 @@ window.Vue = require('vue').default;
  */
 
 import store from './store';
+import Branches from "./components/Branches.vue";
+import ConstraintImporter from "./components/ConstraintImporter.vue";
+import Constraints from "./components/Constraints.vue";
+import ConstraintsCount from "./components/Constraints-Count.vue";
+import ShiftTypes from "./components/ShiftTypes.vue";
+import ConstraintsValidator from "./components/Constraints-Validator.vue";
+import Departments from "./components/Departments.vue";
+import DepartmentsUsers from "./components/Departments-Users.vue";
+import Holidays from "./components/Holidays.vue";
+import Schedule from "./components/Schedule.vue";
+import SettingsConstraintTypes from "./components/Settings-ConstraintTypes.vue";
+import SettingsDepartmentUser from "./components/Settings-Department-User.vue";
+import SettingsDepartments from "./components/Settings-Departments.vue";
+import SettingsTriplets from "./components/Settings-Triplets.vue";
+import Shifts from "./components/Shifts.vue";
+import SortableTable from "./components/SortableTable.vue";
+import Users from "./components/Users.vue";
+import Calendar from "./components/Calendar.vue";
 
 // Vue.component('example', require('./components/Example.vue'));
-Vue.component('rhpharma-branches', require('./components/Branches.vue').default);
-Vue.component('rhpharma-calendar', require('./components/Calendar.vue').default);
-Vue.component('rhpharma-constraint-importer', require('./components/ConstraintImporter.vue').default);
-Vue.component('rhpharma-constraints', require('./components/Constraints.vue').default);
-Vue.component('rhpharma-constraints-count', require('./components/Constraints-Count.vue').default);
-Vue.component('rhpharma-constraints-validator', require('./components/Constraints-Validator.vue').default);
-Vue.component('rhpharma-departments', require('./components/Departments.vue').default);
-Vue.component('rhpharma-departments-users', require('./components/Departments-Users.vue').default);
-Vue.component('rhpharma-holidays', require('./components/Holidays.vue').default);
-Vue.component('rhpharma-schedule', require('./components/Schedule.vue').default);
-Vue.component('rhpharma-settings-constraint-types', require('./components/Settings-ConstraintTypes.vue').default);
-Vue.component('rhpharma-settings-department-user', require('./components/Settings-Department-User.vue').default);
-Vue.component('rhpharma-settings-departments', require('./components/Settings-Departments.vue').default);
-Vue.component('rhpharma-settings-triplets', require('./components/Settings-Triplets.vue').default);
-Vue.component('rhpharma-shifts', require('./components/Shifts.vue').default);
-Vue.component('rhpharma-shift-types', require('./components/ShiftTypes.vue').default);
-Vue.component('rhpharma-sortable-table', require('./components/SortableTable.vue').default);
-Vue.component('rhpharma-users', require('./components/Users.vue').default);
+Vue.component('rhpharma-branches', Branches);
+Vue.component('rhpharma-calendar', Calendar);
+Vue.component('rhpharma-constraint-importer', ConstraintImporter);
+Vue.component('rhpharma-constraints', Constraints);
+Vue.component('rhpharma-constraints-count', ConstraintsCount);
+Vue.component('rhpharma-constraints-validator', ConstraintsValidator);
+Vue.component('rhpharma-departments', Departments);
+Vue.component('rhpharma-departments-users', DepartmentsUsers);
+Vue.component('rhpharma-holidays', Holidays);
+Vue.component('rhpharma-schedule', Schedule);
+Vue.component('rhpharma-settings-constraint-types', SettingsConstraintTypes);
+Vue.component('rhpharma-settings-department-user', SettingsDepartmentUser);
+Vue.component('rhpharma-settings-departments', SettingsDepartments);
+Vue.component('rhpharma-settings-triplets', SettingsTriplets);
+Vue.component('rhpharma-shifts', Shifts);
+Vue.component('rhpharma-shift-types', ShiftTypes);
+Vue.component('rhpharma-sortable-table', SortableTable);
+Vue.component('rhpharma-users', Users);
 
 const app = new Vue({
     el: '#app',

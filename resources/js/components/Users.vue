@@ -4,10 +4,10 @@
         <input type="search" class="form-control" v-model="search" placeholder="Recherche un utilisateur" spellcheck="false">
     </div>
     <rhpharma-sortable-table :columns="sortTable.columns" :rows="sortTable.rows" :search="search">
-        <template slot="is_active" slot-scope="props">
+        <template v-slot:isActive="props">
             <td>{{ isActive(props.row) }}</td>
         </template>
-        <template slot="options" slot-scope="props">
+        <template v-slot:options="props">
             <td><a :href="`${modelUrl}/${props.id}`" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
         </template>
     </rhpharma-sortable-table>
@@ -28,7 +28,7 @@
                         {id: 'branch.name', title: 'Branche', sortable: true},
                         {id: 'workdays_per_week', title: 'Jours de travail par semaine', sortable: false},
                         {id: 'seniority', title: 'Ancienneté', sortable: false},
-                        {id: 'is_active', title: 'Actif', sortable:true, slot:'is_active'},
+                        {id: 'is_active', title: 'Actif', sortable:true, slot:'isActive'},
                         {title: 'Actions', slot:'options'},
                     ],
                     rows: this.rows,

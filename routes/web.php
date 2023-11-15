@@ -18,6 +18,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SettingConstraintTypeController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
 use Illuminate\Support\Facades\App;

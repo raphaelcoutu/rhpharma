@@ -102,13 +102,13 @@
 
 <script>
 
+    import Vue from 'vue';
     import moment from 'moment';
     import VueScrollTo from 'vue-scrollTo';
     import Flatpickr from 'vue-flatpickr-component';
     import 'flatpickr/dist/flatpickr.css';
     import Timepickr from './Timepickr.vue'
     import FilterInInterval from './../helpers/FilterInInterval';
-
 
     Vue.use(VueScrollTo);
 

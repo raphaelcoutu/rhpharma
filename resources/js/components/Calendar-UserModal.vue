@@ -180,7 +180,7 @@
 </style>
 
 <script>
-    import UserModalShifts from './Calendar-UserModal-Shifts'
+    import UserModalShifts from './Calendar-UserModal-Shifts.vue'
 
     export default {
         props: ['dataModal'],

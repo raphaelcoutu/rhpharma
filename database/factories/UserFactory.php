@@ -25,9 +25,9 @@ class UserFactory extends Factory
         static $password;
 
         return [
-            'firstname' => $this->faker->firstName(),
-            'lastname' => $this->faker->lastName(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'firstname' => fake()->firstName(),
+            'lastname' => fake()->lastName(),
+            'email' => fake()->unique()->safeEmail(),
             'password' => $password ?: $password = bcrypt('secret'),
             'remember_token' => Str::random(10),
             'workdays_per_week' => 5,

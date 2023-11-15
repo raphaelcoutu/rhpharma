@@ -11,7 +11,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/sass/app.scss'])
     <link rel="icon" type="image/png" href="/favicons/calendar.png" sizes="48x48">
 
 
@@ -32,7 +32,6 @@
         @yield('below-container')
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ mix('js/app.js') }}"></script>
+    @vite('resources/js/app.js')
 </body>
 </html>

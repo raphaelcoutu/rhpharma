@@ -15,8 +15,8 @@
 </template>
 
 <script>
-    import ScheduleProcessus from './Schedule-Processus';
-    import ScheduleOutput from './Schedule-Output';
+    import ScheduleProcessus from './Schedule-Processus.vue';
+    import ScheduleOutput from './Schedule-Output.vue';
 
     export default {
         components: {

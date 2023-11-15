@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import CalendarCell from './Calendar-Cell'
+    import CalendarCell from './Calendar-Cell.vue'
 
     export default {
 

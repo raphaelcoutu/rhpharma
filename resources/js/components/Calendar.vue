@@ -73,10 +73,10 @@
 
 <script>
     import moment from 'moment';
-    import CalendarHeader from './Calendar-Header'
-    import CalendarBody from './Calendar-Body'
-    import CalendarUserModal from './Calendar-UserModal'
-    import CalendarSelectedModal from './Calendar-SelectedModal'
+    import CalendarHeader from './Calendar-Header.vue'
+    import CalendarBody from './Calendar-Body.vue'
+    import CalendarUserModal from './Calendar-UserModal.vue'
+    import CalendarSelectedModal from './Calendar-SelectedModal.vue'
 
     export default {
         props: ['dataSchedule', 'dataUsers'],

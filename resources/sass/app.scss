@@ -6,13 +6,13 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap-sass/assets/stylesheets/bootstrap';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap';
 
 // Font-Awesome
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/brands';
-@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '@fortawesome/fontawesome-free/css/fontawesome';
+@import '@fortawesome/fontawesome-free/css/regular';
+@import '@fortawesome/fontawesome-free/css/brands';
+@import '@fortawesome/fontawesome-free/css/solid';
 
 .branchname {
   color:limegreen!important;
