@@ -66,8 +66,9 @@
             },
             getConstraintsByDay(userId, date) {
                 return _(this.dataConstraints).filter(function (constraint) {
-                    let dateStart = parseInt(date.format('x'));
-                    let dateEnd = dateStart + 86400000 - 1;
+                    let dateStart = date.valueOf();
+                    let dateEnd = date.clone().endOf('day').valueOf();
+
                     let constraintStart = new Date(constraint.start_datetime).getTime();
                     let constraintEnd = new Date(constraint.end_datetime).getTime();
 
