@@ -34,7 +34,7 @@
                                     class="pointer"
                                 >
                                     <span :class="{'text-bold': constraint === selectedConstraint }">
-                                        {{ constraint.constraint_type.name }}
+                                        {{ constraint.constraint_type.name }} ({{ constraint.constraint_type.code }})
                                         <span v-if="constraint.day">- {{ dayOfWeek(constraint.day) }}</span>
                                     </span>
                                 </li>
@@ -48,7 +48,7 @@
                         <h4>Description de contrainte</h4>
                         <div v-if="selectedConstraint">
                             <div><strong>Début:</strong> {{ selectedConstraint.start_datetime}}</div>
-                            <div class="mb-20"><strong>Fin:</strong> {{ selectedConstraint.start_datetime}}</div>
+                            <div class="mb-20"><strong>Fin:</strong> {{ selectedConstraint.end_datetime}}</div>
                             <div><strong>Commentaire:</strong></div>
                             {{ selectedConstraint.comment }}
                         </div>

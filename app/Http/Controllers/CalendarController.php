@@ -36,7 +36,7 @@ class CalendarController extends Controller
                 $constraintType->where('is_group_constraint', 0);
             });
         }, 'constraints.constraintType' => function ($query) {
-            $query->select('id', 'name');
+            $query->select(['id', 'name', 'code']);
         }, 'assignedShifts' => function ($query) use ($parsedDate) {
             $query->where('date', $parsedDate);
         }])->find($request->userId);
