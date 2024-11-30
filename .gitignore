@@ -8,9 +8,11 @@
 .env
 .env.backup
 .env.production
+.phpstorm.meta.php
 .phpunit.result.cache
 .php_cs.cache
 .php-cs-fixer.cache
+_ide_helper.php
 Homestead.json
 Homestead.yaml
 auth.json

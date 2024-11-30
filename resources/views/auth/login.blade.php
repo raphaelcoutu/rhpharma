@@ -66,7 +66,7 @@
 <div class="text-center">
     <small>
         App v{{ config('app.version') }} -
-        PHP v{{ PHP_VERSION }} -
+        PHP v{{ PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION }}
         Laravel v{{\Illuminate\Support\Facades\App::version()}}
     </small>
 </div>
