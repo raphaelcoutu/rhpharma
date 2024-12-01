@@ -34,12 +34,14 @@ import Shifts from "./components/Shifts.vue";
 import SortableTable from "./components/SortableTable.vue";
 import Users from "./components/Users.vue";
 import Calendar from "./components/Calendar.vue";
+import store from "./store/index.js";
 
 // const app = new Vue({
 //     el: '#app'
 // });
 
 const app = createApp({})
+    .use(store)
     .component("rhpharma-branches", Branches)
     .component("rhpharma-calendar", Calendar)
     .component("rhpharma-constraint-importer", ConstraintImporter)

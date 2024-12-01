@@ -1,5 +1,5 @@
 <template>
-    <td @click.left="toggleSelect" @click.right.prevent="openModal"
+    <td @click.left="toggleSelect" @contextmenu.prevent="openModal"
         :class="{ 'bg-red' : selected.includes(dataKey) }"
     >
         <slot name="assignedShifts"><div>&nbsp;</div></slot>
