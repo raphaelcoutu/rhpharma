@@ -38,9 +38,13 @@
         }
     },
     "scripts": {
+        "check-sqlsrv": "@php artisan check:sqlsrv",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "pre-install-cmd": [
+            "@check-sqlsrv"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
