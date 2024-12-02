@@ -26,11 +26,10 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <button class="btn btn-default" disabled>Visualiser</button>
                 <a
-                    :href="`/constraintImporter/import?start=${startDate}&end=${endDate}`"
+                    :href="formValid() ? `/constraintImporter/import?start=${startDate}&end=${endDate}` : null"
                     class="btn btn-success"
-                    :disabled="!formValid()"
+                    :class="{disabled: !formValid()}"
                     >Importer</a
                 >
             </div>
@@ -63,3 +62,10 @@ export default {
     },
 };
 </script>
+<style>
+.disabled {
+    pointer-events: none;
+    color:gray;
+    cursor:not-allowed;
+}
+</style>

@@ -15,30 +15,35 @@
                             </div>
                         </div>
                     @endif
-                        @if(session('error'))
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="alert alert-danger">
-                                        {{ session('error') }}
-                                        @if(session('missingUsers'))
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if(session('newUsers') || session('newConstraintTypes'))
+                                <div class="alert alert-info">
+                                    @if(session('newUsers'))
+                                        <b>Nouveaux utilisateurs:</b>
                                         <ul>
-                                            @foreach (session('missingUsers') as $user)
-                                            <li><strong>Azure Id:</strong> {{ $user['Id'] }}<br>{{ $user['LastName'] }}, {{ $user['FirstName'] }}</li>
+                                            @foreach (session('newUsers') as $user)
+                                                <li><strong>Azure Id:</strong> {{ $user['Id'] }}
+                                                    <br>{{ $user['LastName'] }}
+                                                    , {{ $user['FirstName'] }}</li>
                                             @endforeach
                                         </ul>
-                                        @endif
-                                        @if(session('missingConstraintTypes'))
+                                    @endif
+                                    @if(session('newConstraintTypes'))
+                                        <b>Nouveaux types de contraintes:</b>
                                         <ul>
-                                            @foreach (session('missingConstraintTypes') as $type)
-                                            <li><strong>Azure Id:</strong> {{ $type['Id'] }}<br><strong>Nom:</strong> {{ $type['Name'] }}<br><strong>Description:</strong> {{ $type['Description'] }}</li>
+                                            @foreach (session('newConstraintTypes') as $type)
+                                                <li><strong>Azure Id:</strong> {{ $type['Id'] }}
+                                                    <br><strong>Nom:</strong> {{ $type['Name'] }}
+                                                    <br><strong>Description:</strong> {{ $type['Description'] }}</li>
                                             @endforeach
                                         </ul>
-                                        @endif
-                                        <p>Contactez Raphaël (pagette 5115).</p>
-                                    </div>
+                                    @endif
                                 </div>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
+                    </div>
                     <rhpharma-constraint-importer></rhpharma-constraint-importer>
                 </div>
             </div>

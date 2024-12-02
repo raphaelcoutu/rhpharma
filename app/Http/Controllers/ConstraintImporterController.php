@@ -8,9 +8,13 @@ use App\Models\ConstraintType;
 use App\Models\User;
 use App\Services\AzureRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ConstraintImporterController extends Controller
 {
+    private $azureRepository;
+
     public function __construct(AzureRepository $azureRepository)
     {
         $this->azureRepository = $azureRepository;
@@ -33,24 +37,24 @@ class ConstraintImporterController extends Controller
         $users = User::select('id', 'azure_id')->get();
         $missingUsers = [];
 
-        foreach($rows as $row) {
+        foreach ($rows as $row) {
             $constraintType = $constraintTypes->firstWhere('azure_id', $row['ConstraintType_id']);
-            if($constraintType) {
+            if ($constraintType) {
                 $weight = ($row['Weight'] === "TRUE") ? 1 : (($row['Weight'] == "FALSE") ? 0 : $row['Weight']);
 
                 // On doit regarder dans la variable "day" ou "day1"...
 
-                if($row['Day'] !== null) {
+                if ($row['Day'] !== null) {
                     $day = $row['Day'];
 
-                } else if($row['Day1'] !== null) {
+                } else if ($row['Day1'] !== null) {
                     $day = $row['Day1'];
                 } else {
                     $day = null;
                 }
 
                 $user = $users->firstWhere('azure_id', $row['User_id']);
-                if($user) {
+                if ($user) {
 
                     $row = [
                         'user_id' => $user->id,
@@ -68,49 +72,73 @@ class ConstraintImporterController extends Controller
                         'updated_at' => now()
                     ];
 
-                    array_push($constraintsToAdd, $row);
+                    $constraintsToAdd[] = $row;
                 } else {
-                    array_push($missingUsers, [
+                    $missingUsers[] = [
                         'Id' => intval($row['User_id']),
                         'FirstName' => $row['FirstName'],
                         'LastName' => $row['LastName']
-                    ]);
+                    ];
                 }
             } else {
-                array_push($missingConstraintTypesIds, intval($row['ConstraintType_id']));
+                $missingConstraintTypesIds[] = intval($row['ConstraintType_id']);
             }
 
         }
 
         // Si l'array de missingConstraintTypes n'est pas null, on redirige vers erreur
+        $newConstraintTypes = [];
         if (!empty($missingConstraintTypesIds)) {
 
-            $missingConstraintTypes = $this->azureRepository->constraintTypesByIds($missingConstraintTypesIds);
+            $newConstraintTypes = $this->azureRepository->constraintTypesByIds($missingConstraintTypesIds);
 
-            return redirect()->route('constraintImporter.index')
-                    ->with('error', "ERREUR: Type(s) de contrainte non associée(s)")
-                    ->with('missingConstraintTypes', $missingConstraintTypes);
+            foreach ($newConstraintTypes as $constraintType) {
+                ConstraintType::updateOrCreate([
+                    'branch_id' => $constraintType['BranchId'],
+                    'azure_id' => $constraintType['Id'],
+                    'name' => $constraintType['Name'],
+                    'description' => $constraintType['Description'],
+                    'code' => $constraintType['Code'],
+                    'is_work' => $constraintType['IsWork'],
+                    'is_single_day' => $constraintType['IsSingleDay'],
+                    'is_group_constraint' => $constraintType['IsGroupConstraint'],
+                    'is_day_in_schedule' => $constraintType['IsDayInSchedule']
+                ]);
+            }
         }
 
         // Si l'array de missingUsers n'est pas null, on redirige vers erreur
+        $newUsers = [];
         if (!empty($missingUsers)) {
 
             $unique_array = [];
-            foreach($missingUsers as $element) {
+            foreach ($missingUsers as $element) {
                 $hash = $element['Id'];
                 $unique_array[$hash] = $element;
             }
-            $uniqueMissingUsers = array_values($unique_array);
 
-            return redirect()->route('constraintImporter.index')
-                    ->with('error', "ERREUR: Utilisateur(s) non associé(s)")
-                    ->with('missingUsers', $uniqueMissingUsers);
+            $uniqueMissingUserIds = collect(array_values($unique_array))->pluck('Id')->toArray();
+            $newUsers = $this->azureRepository->usersByIds($uniqueMissingUserIds);
+
+            foreach ($newUsers as $user) {
+                User::updateOrCreate([
+                    'azure_id' => $user['Id'],
+                    'branch_id' => $user['BranchId'],
+                    'lastname' => $user['LastName'],
+                    'firstname' => $user['FirstName'],
+                    'password' => Hash::make(Str::random(12)),
+                    'email' => $user['Email'],
+                    'workdays_per_week' => $user['WorkdaysPerWeek'],
+                ]);
+            }
         }
 
         Constraint::getQuery()->delete();
         \DB::table('constraints')->insert($constraintsToAdd);
 
         return redirect()->route('constraintImporter.index')
-            ->with('status', 'Contraintes importées! ('. count($constraintsToAdd) . ')');
+            ->with('status', 'Contraintes importées! (' . count($constraintsToAdd) . ')')
+            ->with('newUsers', $newUsers)
+            ->with('newConstraintTypes', $newConstraintTypes);
     }
 }
