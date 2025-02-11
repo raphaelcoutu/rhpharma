@@ -67,6 +67,20 @@ class AzureRepository
         return $result;
     }
 
+    function usersByIds(array $ids)
+    {
+        $qMarks = str_repeat('?,', count($ids) - 1) . '?';
+
+        $tsql = "SELECT Id, FirstName, LastName, Email, BranchId, WorkdaysPerWeek
+            FROM Users As U
+            WHERE IsActive = 'True' and DeletedOn is null and Id IN ($qMarks)";
+        $getResult = $this->conn->prepare($tsql);
+        $getResult->execute($ids);
+        $result = $getResult->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     /**
      * Return all active users from Azure database.
      *
