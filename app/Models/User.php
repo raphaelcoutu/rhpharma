@@ -40,17 +40,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    public function getEmailAttribute($value) : string
+    public function getEmailAttribute($value): string
     {
         return strtolower($value);
     }
@@ -60,18 +50,18 @@ class User extends Authenticatable
         return $query->where('branch_id', \Auth::user()->branch->id);
     }
 
-    public function getFullnameAttribute()
-    {
-        return $this->firstname . ' ' . $this->lastname;
-    }
-
     public function getInitialsAttribute()
     {
         $temp = collect(explode(' ', str_replace('-', ' ', $this->getFullnameAttribute())));
 
-        return  $temp->reduce(function ($carry, $partialName) {
+        return $temp->reduce(function ($carry, $partialName) {
             return $carry . mb_substr($partialName, 0, 1, 'utf-8');
         });
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function assignedShifts()
@@ -113,5 +103,18 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected function casts()
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }
