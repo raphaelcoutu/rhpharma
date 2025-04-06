@@ -39,7 +39,12 @@ class AppServiceProvider extends ServiceProvider
             $a_start = Carbon::parse($validator->getData()[$parameters[0]]);
             $a_end = Carbon::parse($value);
 
-            $schedules = Schedule::select('id','start_date','end_date')->orderBy('end_date', 'desc')->limit(12)->get();
+            $schedules = Schedule::select('id','start_date','end_date')
+                ->when(isset($validator->getData()['branch_id']), function ($query) use ($validator) {
+                    $query->where('branch_id', $validator->getData()[1]);
+                })
+                ->orderBy('end_date', 'desc')
+                ->limit(12)->get();
 
             foreach ($schedules as $schedule) {
                 //Si on édit un horaire, on skip la vérification
