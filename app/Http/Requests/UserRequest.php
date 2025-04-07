@@ -27,9 +27,10 @@ class UserRequest extends FormRequest
         return [
             'firstname' => 'required|alpha_dash',
             'lastname' => 'required|alpha_dash',
-            'email' => ['required', 'email', Rule::unique('users')->ignore($this->id)],
+            'email' => ['required', 'email', Rule::unique('users')->ignore($this->user)],
             'workdays_per_week' => 'required|digits:1',
-            'is_active' => 'required'
+            'is_active' => 'required',
+            'roles' => 'present|array'
         ];
     }
 }

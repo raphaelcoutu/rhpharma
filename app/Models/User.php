@@ -40,6 +40,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $with = ['branch'];
+
     public function getEmailAttribute($value): string
     {
         return strtolower($value);

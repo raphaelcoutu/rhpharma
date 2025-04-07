@@ -28,12 +28,19 @@ export default function AuthenticatedLayout({ header, children }) {
                                     href={route('home')}
                                     active={route().current('home')}
                                 >
-                                    Home
+                                    Accueil
+                                </NavLink>
+                                <NavLink
+                                    href={route('users.index')}
+                                    active={route().current('users.index')}
+                                >
+                                    Utilisateurs
                                 </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                            <div className='text-sm border rounded p-1'>{user.branch.name}</div>
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -132,7 +139,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             href={route('home')}
                             active={route().current('home')}
                         >
-                            Home
+                            Accueil
                         </ResponsiveNavLink>
                     </div>
 

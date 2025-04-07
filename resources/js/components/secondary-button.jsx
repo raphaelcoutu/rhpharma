@@ -1,4 +1,5 @@
 export default function SecondaryButton({
+    as: Component = 'button',
     type = 'button',
     className = '',
     disabled,
@@ -6,7 +7,7 @@ export default function SecondaryButton({
     ...props
 }) {
     return (
-        <button
+        <Component
             {...props}
             type={type}
             className={
@@ -17,6 +18,6 @@ export default function SecondaryButton({
             disabled={disabled}
         >
             {children}
-        </button>
+        </Component>
     );
 }

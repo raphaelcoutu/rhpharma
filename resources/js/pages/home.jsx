@@ -1,8 +1,10 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout.jsx";
+import { Head } from '@inertiajs/react';
 
 export default function Home() {
     return (
         <AuthenticatedLayout>
+        <Head title="Accueil" />
         <div className="py-12">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
