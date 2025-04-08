@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DepartmentRequest extends FormRequest
 {
@@ -16,6 +17,13 @@ class DepartmentRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'branch_id' => \Auth::user()->branch->id,
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,11 +31,16 @@ class DepartmentRequest extends FormRequest
      */
     public function rules()
     {
-        $this->request->add(['branch_id' => \Auth::user()->branch->id]);
-
         return [
-            'name' => 'required|unique:departments,name,' . $this->id . ',id,workplace_id,' . $this->workplace_id 
-                    . ',branch_id,' . $this->branch_id,
+            'name' => [
+                'required',
+                Rule::unique('departments', 'name')
+                    ->ignore($this->id)
+                    ->where('workplace_id', $this->workplace_id)
+                    ->where('branch_id', $this->branch_id)
+            ],
+            'workplace_id' => 'required',
+            'department_type_id' => 'required'
         ];
     }
 }
