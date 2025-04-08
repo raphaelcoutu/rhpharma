@@ -21,7 +21,10 @@ class UserController extends Controller
     {
         Gate::authorize('read', User::class);
 
-        $users = User::orderBy('lastname')->with('branch')->get();
+        $users = User::with('branch:id,name')
+            ->select('id', 'firstname', 'lastname', 'branch_id', 'workdays_per_week')
+            ->orderBy('lastname')
+            ->with('branch:id,name')->get();
 
         return Inertia::render('users/index', compact('users'));
 

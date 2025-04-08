@@ -14,11 +14,6 @@ import SecondaryButton from '@/components/secondary-button.jsx';
 const columnHelper = createColumnHelper()
 
 const columns = [
-    columnHelper.accessor('id', {
-        header: () => 'ID',
-        cell: info => info.renderValue(),
-        enableGlobalFilter: false
-    }),
     columnHelper.accessor('firstname', {
         header: () => 'Prénom',
         cell: info => info.getValue(),
@@ -38,7 +33,7 @@ const columns = [
     }),
 ]
 
-export default function Index({ users }) {
+export default function Index({users}) {
     const [globalFilter, setGlobalFilter] = useState('');
 
     const table = useReactTable({
@@ -69,34 +64,39 @@ export default function Index({ users }) {
                         <div className="p-6 bg-white border-b border-gray-200">
                             <div className='flex justify-between'>
                                 <TextInput className='w-1/4'
-                                    value={globalFilter ?? ''}
-                                           onChange={e => setGlobalFilter(e.target.value)}
-                                       placeholder="Rechercher"/>
-                                <SecondaryButton as={Link} href={route('users.create')}>Ajouter un utilisateur</SecondaryButton>
+                                           type="search"
+                                           value={ globalFilter ?? '' }
+                                           onChange={ e => setGlobalFilter(e.target.value) }
+                                           placeholder="Rechercher"/>
+                                <SecondaryButton as={ Link } href={ route('users.create') }>Ajouter un
+                                    utilisateur</SecondaryButton>
                             </div>
 
                             <table className='table w-full border-collapse border mt-2'>
                                 <thead>
-                                <tr className='border bg-slate-100 uppercase'>
-                                    <th className='p-2 border'>Id</th>
-                                    <th className='p-2 border'>Prénom</th>
-                                    <th className='p-2 border'>Nom</th>
-                                    <th className='p-2 border'>Branche</th>
-                                    <th className='p-2 border'># Jrs/sem</th>
-                                    <th className='p-2 border'>Action</th>
-                                </tr>
+                                    { table.getHeaderGroups().map(headerGroup => (
+                                        <tr key={ headerGroup.id } className='border bg-slate-100 uppercase'>
+                                            { headerGroup.headers.map(header => (
+                                                <th key={ header.id } className='p-2 border'>
+                                                    { header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext()) }
+                                                </th>
+                                            )) }
+                                            <th className='p-2 border'>Actions</th>
+                                        </tr>
+                                    )) }
                                 </thead>
                                 <tbody>
-                                {table.getRowModel().rows.map(row => (
-                                    <tr key={row.id} className='border'>
-                                        {row.getVisibleCells().map(cell => (
-                                            <td key={cell.id} className='p-2 border'>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </td>
-                                        ))}
-                                        <td className='p-2 border'><Link href={route('users.edit', row.original.id)}>Éditer</Link></td>
-                                    </tr>
-                                ))}
+                                    { table.getRowModel().rows.map(row => (
+                                        <tr key={ row.id } className='border'>
+                                            { row.getVisibleCells().map(cell => (
+                                                <td key={ cell.id } className='p-2 border'>
+                                                    { flexRender(cell.column.columnDef.cell, cell.getContext()) }
+                                                </td>
+                                            )) }
+                                            <td className='p-2 border'><Link
+                                                href={ route('users.edit', row.original.id) }>Éditer</Link></td>
+                                        </tr>
+                                    )) }
                                 </tbody>
                             </table>
                         </div>
