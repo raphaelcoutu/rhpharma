@@ -1,8 +1,8 @@
 import { Head, useForm } from '@inertiajs/react';
-import GuestLayout from "@/layouts/guest-layout.jsx";
-import TextInput from "@/components/text-input.jsx";
-import InputError from "@/components/input-error.jsx";
-import PrimaryButton from "@/components/primary-button.jsx";
+import GuestLayout from '@/layouts/guest-layout.jsx';
+import InputError from '@/components/input-error.jsx';
+import PrimaryButton from '@/components/primary-button.jsx';
+import { Input } from '@/components/ui/input.jsx';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -32,7 +32,7 @@ export default function ForgotPassword({ status }) {
             )}
 
             <form onSubmit={submit}>
-                <TextInput
+                <Input
                     id="email"
                     type="email"
                     name="email"

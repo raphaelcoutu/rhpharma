@@ -1,9 +1,9 @@
 import { Head, Link, useForm } from '@inertiajs/react';
-import GuestLayout from "@/layouts/guest-layout.jsx";
-import InputLabel from "@/components/input-label.jsx";
-import TextInput from "@/components/text-input.jsx";
-import InputError from "@/components/input-error.jsx";
-import PrimaryButton from "@/components/primary-button.jsx";
+import GuestLayout from '@/layouts/guest-layout.jsx';
+import InputError from '@/components/input-error.jsx';
+import PrimaryButton from '@/components/primary-button.jsx';
+import { Label } from '@/components/ui/label.jsx';
+import { Input } from '@/components/ui/input.jsx';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,13 +23,13 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Register"/>
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <Label htmlFor="name">Name</Label>
 
-                    <TextInput
+                    <Input
                         id="name"
                         name="name"
                         value={data.name}
@@ -40,13 +40,13 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.name} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <Label htmlFor="email">Email</Label>
 
-                    <TextInput
+                    <Input
                         id="email"
                         type="email"
                         name="email"
@@ -57,13 +57,13 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <Label htmlFor="password">Password</Label>
 
-                    <TextInput
+                    <Input
                         id="password"
                         type="password"
                         name="password"
@@ -74,16 +74,15 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel
+                    <Label
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                    >Confirm Password</Label>
 
-                    <TextInput
+                    <Input
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"

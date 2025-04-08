@@ -1,11 +1,11 @@
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
-import DangerButton from "@/components/danger-button.jsx";
-import Modal from "@/components/modal.jsx";
-import InputLabel from "@/components/input-label.jsx";
-import TextInput from "@/components/text-input.jsx";
-import InputError from "@/components/input-error.jsx";
-import SecondaryButton from "@/components/secondary-button.jsx";
+import DangerButton from '@/components/danger-button.jsx';
+import Modal from '@/components/modal.jsx';
+import InputError from '@/components/input-error.jsx';
+import SecondaryButton from '@/components/secondary-button.jsx';
+import { Label } from '@/components/ui/label.jsx';
+import { Input } from '@/components/ui/input.jsx';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -78,13 +78,12 @@ export default function DeleteUserForm({ className = '' }) {
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel
+                        <Label
                             htmlFor="password"
-                            value="Password"
                             className="sr-only"
-                        />
+                        >Password</Label>
 
-                        <TextInput
+                        <Input
                             id="password"
                             type="password"
                             name="password"

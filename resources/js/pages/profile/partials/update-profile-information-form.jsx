@@ -1,15 +1,15 @@
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
-import InputLabel from "@/components/input-label.jsx";
-import TextInput from "@/components/text-input.jsx";
-import InputError from "@/components/input-error.jsx";
-import PrimaryButton from "@/components/primary-button.jsx";
+import InputError from '@/components/input-error.jsx';
+import PrimaryButton from '@/components/primary-button.jsx';
+import { Input } from '@/components/ui/input.jsx';
+import { Label } from '@/components/ui/label.jsx';
 
 export default function UpdateProfileInformation({
-    mustVerifyEmail,
-    status,
-    className = '',
-}) {
+                                                     mustVerifyEmail,
+                                                     status,
+                                                     className = '',
+                                                 }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
@@ -39,9 +39,9 @@ export default function UpdateProfileInformation({
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <Label htmlFor="name">Prénom</Label>
 
-                    <TextInput
+                    <Input
                         id="name"
                         className="mt-1 block w-full"
                         value={data.firstname}
@@ -51,29 +51,28 @@ export default function UpdateProfileInformation({
                         autoComplete="firstname"
                     />
 
-                    <InputError className="mt-2" message={errors.firstname} />
+                    <InputError className="mt-2" message={errors.firstname}/>
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <Label htmlFor="name">Nom</Label>
 
-                    <TextInput
+                    <Input
                         id="name"
                         className="mt-1 block w-full"
                         value={data.lastname}
                         onChange={(e) => setData('lastname', e.target.value)}
                         required
-                        isFocused
                         autoComplete="lastname"
                     />
 
-                    <InputError className="mt-2" message={errors.lastname} />
+                    <InputError className="mt-2" message={errors.lastname}/>
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <Label htmlFor="email">Email</Label>
 
-                    <TextInput
+                    <Input
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
@@ -83,7 +82,7 @@ export default function UpdateProfileInformation({
                         autoComplete="username"
                     />
 
-                    <InputError className="mt-2" message={errors.email} />
+                    <InputError className="mt-2" message={errors.email}/>
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
