@@ -7,21 +7,23 @@ const ScheduleCell = memo(
         constraint,
         isSelected, // New prop: boolean
         onCellClick, // Will now receive the event object
+        isWeekend,
     }) => {
         const cellClasses = clsx(
-            `relative flex flex-col items-center justify-center // Changed to flex-col
-        h-14 px-1 py-1 border-b border-r border-gray-200
+            `relative flex flex-col items-center justify-center
+        px-1 py-1 border-b border-r border-gray-200
         text-xs text-center cursor-pointer
         dark:border-gray-700
         whitespace-nowrap overflow-hidden`, // Apply overflow to spans now
             {
                 "bg-blue-100 dark:bg-blue-900 ring-2 ring-blue-400 z-[5]":
                     isSelected, // Style for selected cells
+                "bg-slate-50": isWeekend && !isSelected,
                 "hover:bg-blue-50 dark:hover:bg-gray-800": !isSelected, // Hover only if not selected
             },
         );
 
-        const shiftCode = shift?.code;
+        const shiftCode = shift?.shift.code;
         const constraintCode = constraint?.code;
 
         // Tooltip shows both if present
@@ -35,7 +37,7 @@ const ScheduleCell = memo(
             >
                 {/* Render Shift Code */}
                 {shiftCode && (
-                    <span className="block font-medium text-gray-700 dark:text-gray-200 overflow-hidden text-ellipsis w-full px-0.5">
+                    <span className="block font-medium text-sm text-gray-700 dark:text-gray-200 overflow-hidden text-ellipsis w-full px-0.5">
                         {shiftCode}
                     </span>
                 )}

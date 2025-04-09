@@ -1,6 +1,6 @@
 // resources/js/Hooks/useSchedulerData.js
 import { useCallback, useMemo } from "react";
-import { parseISO, isWithinInterval, format } from "date-fns"; // Make sure date-fns is installed
+import { format, isWithinInterval, parseISO } from "date-fns"; // Make sure date-fns is installed
 
 /**
  * Pre-processes scheduler data for efficient lookup.
@@ -13,13 +13,13 @@ export function useSchedulerData(assignedShifts = [], constraints = []) {
     const shiftsByEmployeeDate = useMemo(() => {
         const map = {};
         (assignedShifts || []).forEach((shift) => {
-            if (!shift || !shift.employee_id || !shift.date) return; // Basic validation
-            if (!map[shift.employee_id]) {
-                map[shift.employee_id] = {};
+            if (!shift || !shift.user_id || !shift.date) return; // Basic validation
+            if (!map[shift.user_id]) {
+                map[shift.user_id] = {};
             }
             // Assuming one shift per employee per day for simplicity
             // Adjust if multiple shifts are possible
-            map[shift.employee_id][shift.date] = shift;
+            map[shift.user_id][format(shift.date, "yyyy-MM-dd")] = shift;
         });
         return map;
     }, [assignedShifts]);
@@ -48,11 +48,11 @@ export function useSchedulerData(assignedShifts = [], constraints = []) {
                 // const datesInRange = getDateRange(startDate, endDate);
                 // datesInRange.forEach(dateStr => { ... });
 
-                if (!map[constraint.employee_id]) {
-                    map[constraint.employee_id] = []; // Store constraints as an array per employee
+                if (!map[constraint.user_id]) {
+                    map[constraint.user_id] = []; // Store constraints as an array per employee
                 }
                 // Store the constraint object along with its interval for later checking
-                map[constraint.employee_id].push({ ...constraint, interval });
+                map[constraint.user_id].push({ ...constraint, interval });
             } catch (error) {
                 console.error(
                     "Error processing constraint date range:",
@@ -79,13 +79,13 @@ export function useSchedulerData(assignedShifts = [], constraints = []) {
         // So, this memo just organizes constraints by employee for easier filtering later.
         const organizedConstraints = {};
         (constraints || []).forEach((constraint) => {
-            if (!constraint || !constraint.employee_id) return;
-            if (!organizedConstraints[constraint.employee_id]) {
-                organizedConstraints[constraint.employee_id] = [];
+            if (!constraint || !constraint.user_id) return;
+            if (!organizedConstraints[constraint.user_id]) {
+                organizedConstraints[constraint.user_id] = [];
             }
             try {
                 // Store with pre-parsed dates for efficiency
-                organizedConstraints[constraint.employee_id].push({
+                organizedConstraints[constraint.user_id].push({
                     ...constraint,
                     startDateObj: parseISO(constraint.start_date),
                     endDateObj: parseISO(constraint.end_date),

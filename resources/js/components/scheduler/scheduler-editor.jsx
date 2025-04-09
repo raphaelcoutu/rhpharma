@@ -1,5 +1,5 @@
 // resources/js/Components/Scheduler/ScheduleEditor.jsx
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { router } from "@inertiajs/react"; // Or use the hook: import { useForm } from '@inertiajs/react';
 
 // Basic Modal Structure - Replace with ShadCN/ui Dialog or Drawer
@@ -21,7 +21,7 @@ const ScheduleEditor = ({
     useEffect(() => {
         if (cellData) {
             // Reset form when cellData changes (new cell selected)
-            setShiftCode(initialShift?.code || "");
+            setShiftCode(initialShift?.shift.code || "");
             setConstraintCode(initialConstraint?.code || "");
         } else {
             // Reset when closed

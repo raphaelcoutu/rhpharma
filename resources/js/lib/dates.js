@@ -1,5 +1,6 @@
 // resources/js/Utils/dates.js (or similar path)
-import { format, addDays, eachDayOfInterval, parseISO } from 'date-fns'; // Install: npm install date-fns
+import { addDays, eachDayOfInterval, format, parseISO } from "date-fns";
+import { fr } from "date-fns/locale";
 
 /**
  * Generates an array of date strings between startDate and endDate (inclusive)
@@ -8,12 +9,12 @@ import { format, addDays, eachDayOfInterval, parseISO } from 'date-fns'; // Inst
  * @param {string} dateFormat - The desired output format (e.g., 'yyyy-MM-dd')
  * @returns {string[]} - Array of formatted date strings
  */
-export function getDateRange(start, end, dateFormat = 'yyyy-MM-dd') {
+export function getDateRange(start, end, dateFormat = "yyyy-MM-dd") {
     try {
-        const startDate = typeof start === 'string' ? parseISO(start) : start;
-        const endDate = typeof end === 'string' ? parseISO(end) : end;
+        const startDate = typeof start === "string" ? parseISO(start) : start;
+        const endDate = typeof end === "string" ? parseISO(end) : end;
         const interval = eachDayOfInterval({ start: startDate, end: endDate });
-        return interval.map(date => format(date, dateFormat));
+        return interval.map((date) => format(date, dateFormat));
     } catch (error) {
         console.error("Error generating date range:", error);
         return [];
@@ -27,9 +28,9 @@ export function getDateRange(start, end, dateFormat = 'yyyy-MM-dd') {
  * @param {string} dateFormat - The desired output format (e.g., 'yyyy-MM-dd')
  * @returns {string[]} - Array of formatted date strings
  */
-export function getDatesFromStart(start, numDays, dateFormat = 'yyyy-MM-dd') {
+export function getDatesFromStart(start, numDays, dateFormat = "yyyy-MM-dd") {
     try {
-        const startDate = typeof start === 'string' ? parseISO(start) : start;
+        const startDate = typeof start === "string" ? parseISO(start) : start;
         const endDate = addDays(startDate, numDays - 1);
         return getDateRange(startDate, endDate, dateFormat);
     } catch (error) {
@@ -44,9 +45,9 @@ export function getDatesFromStart(start, numDays, dateFormat = 'yyyy-MM-dd') {
  * @param {string} displayFormat - e.g., 'MMM d' (Oct 26)
  * @returns {string}
  */
-export function formatDisplayDate(dateString, displayFormat = 'MMM d') {
+export function formatDisplayDate(dateString, displayFormat = "MMM d") {
     try {
-        return format(parseISO(dateString), displayFormat);
+        return format(parseISO(dateString), displayFormat, { locale: fr });
     } catch {
         return dateString; // fallback
     }
@@ -58,10 +59,10 @@ export function formatDisplayDate(dateString, displayFormat = 'MMM d') {
  * @param {string} displayFormat - e.g., 'EEE' (Wed)
  * @returns {string}
  */
-export function formatDisplayWeekday(dateString, displayFormat = 'EEE') {
+export function formatDisplayWeekday(dateString, displayFormat = "EEE") {
     try {
-        return format(parseISO(dateString), displayFormat);
+        return format(parseISO(dateString), displayFormat, { locale: fr });
     } catch {
-        return ''; // fallback
+        return ""; // fallback
     }
 }

@@ -124,7 +124,6 @@ const SchedulerView = ({
 
     // Find data for the single editing cell (memoized)
     const editingCellData = useMemo(() => {
-        // ... (logic remains the same)
         if (!editingCell)
             return { initialShift: null, initialConstraint: null };
         const { employeeId, date } = editingCell;
@@ -141,8 +140,10 @@ const SchedulerView = ({
     const gridColsStyle = `minmax(180px, 1.5fr) repeat(${dateColumns.length}, minmax(90px, 1fr))`; // Slightly wider cell min width maybe
     const numSelected = Object.keys(selectedCells).length;
 
+    const gridMaxHeight = "max-h-[75vh]"; // Example: 75% of viewport height
+
     return (
-        <div className="p-4 md:p-6">
+        <div>
             {/* Filters & Actions Section */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
                 <DepartmentFilter
@@ -162,7 +163,8 @@ const SchedulerView = ({
                                 : "opacity-100",
                         )}
                     >
-                        Edit {numSelected > 0 ? `${numSelected} ` : ""}Shifts...
+                        Edit {numSelected > 0 ? `${numSelected} ` : ""}
+                        Shifts...
                     </button>
                     {/* Add Date Range Picker/Navigation Here Later */}
                 </div>
@@ -182,19 +184,27 @@ const SchedulerView = ({
                 </p>
             )}
             {/* Schedule Grid */}
-            <div className="overflow-x-auto relative border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+            <div
+                className={clsx(
+                    "overflow-x-auto overflow-y-auto relative border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm",
+                    gridMaxHeight,
+                )}
+            >
                 <div
-                    className="grid items-stretch bg-gray-50 dark:bg-gray-800 auto-rows-max"
-                    style={{ gridTemplateColumns: gridColsStyle }}
+                    className="grid items-stretch dark:bg-gray-800 auto-rows-max"
+                    style={{
+                        gridTemplateColumns: gridColsStyle,
+                        minWidth: "min-content",
+                    }}
                 >
                     {/* Header Row (remains the same) */}
-                    <div className="sticky top-0 left-0 z-20 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 flex items-center justify-start">
+                    <div className="sticky top-0 left-0 z-30 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 flex items-center justify-start">
                         Employee
                     </div>
                     {dateColumns.map((dateString) => (
                         <div
                             key={dateString}
-                            className="sticky top-0 z-10 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-1 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-center flex flex-col justify-center"
+                            className="sticky top-0 z-20 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-1 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-center flex flex-col justify-center"
                         >
                             <div className="font-semibold text-gray-600 dark:text-gray-300">
                                 {formatDisplayDate(dateString)}

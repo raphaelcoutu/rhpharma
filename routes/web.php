@@ -21,6 +21,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
+use App\Models\AssignedShift;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
@@ -46,10 +47,19 @@ Route::get('/scheduler', function() {
         ->select('id', 'firstname', 'lastname')
         ->where('branch_id', 1)
         ->where('is_active', true)
+        ->orderBy('lastname')
+        ->get();
+
+    $schedule = \App\Models\Schedule::find(10);
+
+    $shifts = AssignedShift::with('shift')
+        ->inDateInterval($schedule->start_date, $schedule->end_date)
         ->get();
 
     return Inertia::render('scheduler', [
-        'users' => $users
+        'users' => $users,
+        'schedule' => $schedule,
+        'shifts' => $shifts,
     ]);
 });
 
