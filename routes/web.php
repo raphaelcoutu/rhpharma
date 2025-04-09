@@ -21,8 +21,10 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
+use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])
     ->middleware('auth')
     ->name('home');
+
+Route::get('/scheduler', function() {
+    $users = User::query()
+        ->select('id', 'firstname', 'lastname')
+        ->where('branch_id', 1)
+        ->where('is_active', true)
+        ->get();
+
+    return Inertia::render('scheduler', [
+        'users' => $users
+    ]);
+});
 
 Route::group(['middleware' => 'auth'], function () {
 
