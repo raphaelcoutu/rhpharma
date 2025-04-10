@@ -1,19 +1,19 @@
 // resources/js/Components/Scheduler/MultiShiftEditor.jsx
-import React, { useState, useCallback, useEffect } from "react";
-import { router } from "@inertiajs/react";
-import clsx from "clsx";
+import { router } from '@inertiajs/react';
+import clsx from 'clsx';
+import { useCallback, useEffect, useState } from 'react';
 
 // Basic Modal Structure - Replace with ShadCN/ui Dialog or Drawer
 const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
     // selectedCellsData: [{ employeeId, date }, ...]
-    const [shiftCode, setShiftCode] = useState("");
+    const [shiftCode, setShiftCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({}); // For validation errors
 
     useEffect(() => {
         // Reset form when modal opens or selection changes significantly
         if (isOpen) {
-            setShiftCode("");
+            setShiftCode('');
             setErrors({});
         }
     }, [isOpen]); // Only reset when opening/closing, not on every data change while open
@@ -37,7 +37,7 @@ const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
             };
 
             // Use a dedicated batch update route
-            router.put(route("schedule.batch-update"), payload, {
+            router.put(route('schedule.batch-update'), payload, {
                 // Replace with your actual route name
                 preserveState: true,
                 preserveScroll: true,
@@ -45,7 +45,7 @@ const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
                     onClose(); // Close editor on success
                 },
                 onError: (err) => {
-                    console.error("Batch update failed:", err);
+                    console.error('Batch update failed:', err);
                     setErrors(err); // Store validation errors
                 },
                 onFinish: () => {
@@ -67,16 +67,14 @@ const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end">
-            <div className="bg-white dark:bg-gray-800 w-full max-w-md h-full shadow-xl p-6 overflow-y-auto">
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        Edit Multiple Shifts
-                    </h2>
+        <div className="fixed inset-0 z-40 flex justify-end bg-black bg-opacity-50">
+            <div className="h-full w-full max-w-md overflow-y-auto bg-white p-6 shadow-xl dark:bg-gray-800">
+                <div className="mb-6 flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Edit Multiple Shifts</h2>
                     <button
                         onClick={handleClose}
                         disabled={isLoading}
-                        className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50"
+                        className="text-gray-400 hover:text-gray-600 disabled:opacity-50 dark:hover:text-gray-300"
                     >
                         × {/* Close Icon */}
                     </button>
@@ -84,23 +82,17 @@ const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
 
                 <div className="mb-4">
                     <p className="text-sm text-gray-600 dark:text-gray-400">
-                        Applying changes to{" "}
-                        <strong>{selectedCellsData.length}</strong> selected
-                        cell(s).
+                        Applying changes to <strong>{selectedCellsData.length}</strong> selected cell(s).
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-500">
-                        Note: This will overwrite existing shifts and may remove
-                        conflicting constraints in the selected cells. Leave the
-                        code blank to clear shifts.
+                        Note: This will overwrite existing shifts and may remove conflicting constraints in the selected cells. Leave the code blank
+                        to clear shifts.
                     </p>
                 </div>
 
                 <form onSubmit={handleSave}>
                     <div className="mb-4">
-                        <label
-                            htmlFor="multi-shift-code"
-                            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-                        >
+                        <label htmlFor="multi-shift-code" className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
                             New Shift Code
                         </label>
                         <input
@@ -111,43 +103,34 @@ const MultiShiftEditor = ({ isOpen, onClose, selectedCellsData = [] }) => {
                             placeholder="e.g., D8, N12 (leave blank to clear)"
                             disabled={isLoading}
                             className={clsx(
-                                "w-full px-3 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white disabled:opacity-50",
-                                errors.updates
-                                    ? "border-red-500"
-                                    : "border-gray-300 dark:border-gray-600", // Highlight if general batch error
+                                'w-full rounded-md border px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 disabled:opacity-50 dark:bg-gray-700 dark:text-white sm:text-sm',
+                                errors.updates ? 'border-red-500' : 'border-gray-300 dark:border-gray-600', // Highlight if general batch error
                             )}
-                            aria-describedby={
-                                errors.updates ? "multi-shift-error" : undefined
-                            }
+                            aria-describedby={errors.updates ? 'multi-shift-error' : undefined}
                         />
                         {errors.updates && ( // Display general batch update error
-                            <p
-                                className="mt-1 text-xs text-red-600 dark:text-red-400"
-                                id="multi-shift-error"
-                            >
+                            <p className="mt-1 text-xs text-red-600 dark:text-red-400" id="multi-shift-error">
                                 {errors.updates}
                             </p>
                         )}
                         {/* You might get specific errors per item, e.g., errors['updates.0.shift_code'] - more complex to display */}
                     </div>
 
-                    <div className="flex justify-end gap-3 mt-6">
+                    <div className="mt-6 flex justify-end gap-3">
                         <button
                             type="button"
                             onClick={handleClose}
                             disabled={isLoading}
-                            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-500 dark:hover:bg-gray-500 disabled:opacity-50"
+                            className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 dark:border-gray-500 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500"
                         >
                             Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={isLoading || !selectedCellsData.length}
-                            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                            {isLoading
-                                ? "Saving..."
-                                : `Apply to ${selectedCellsData.length} Cells`}
+                            {isLoading ? 'Saving...' : `Apply to ${selectedCellsData.length} Cells`}
                         </button>
                     </div>
                 </form>

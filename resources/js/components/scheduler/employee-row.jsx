@@ -1,7 +1,7 @@
 // resources/js/Components/Scheduler/EmployeeRow.jsx
-import React, { memo, useCallback } from "react";
-import ScheduleCell from "./scheduler-cell.jsx";
-import { isWeekend, parseISO } from "date-fns";
+import ScheduleCell from '@/components/scheduler/scheduler-cell';
+import { isWeekend, parseISO } from 'date-fns';
+import { memo, useCallback } from 'react';
 
 const EmployeeRow = memo(
     ({
@@ -25,8 +25,9 @@ const EmployeeRow = memo(
             <div className="contents">
                 {/* Use contents to make this part of the parent grid */}
                 {/* Employee Name Cell (Sticky) */}
-                <div className="sticky left-0 z-20 bg-white dark:bg-gray-900 border-b border-r border-gray-200 dark:border-gray-700 px-3 py-3 flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 min-h-[3.5rem]">
-                    {employee.firstname} {employee.lastname}
+                <div className="sticky left-0 z-20 flex min-h-[3.5rem] items-center border-b border-r border-gray-200 bg-white px-3 py-3 text-sm font-medium text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                    {employee.firstname}
+                    {employee.lastname}
                 </div>
                 {/* Date Cells */}
                 {dates.map((dateString) => {
@@ -43,9 +44,7 @@ const EmployeeRow = memo(
                             constraint={constraint}
                             isSelected={isSelected} // Pass selection state
                             isWeekend={isWeekendDate}
-                            onCellClick={(event) =>
-                                handleCellClick(dateString, event)
-                            } // Pass event up
+                            onCellClick={(event) => handleCellClick(dateString, event)} // Pass event up
                         />
                     );
                 })}

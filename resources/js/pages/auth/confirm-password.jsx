@@ -1,9 +1,9 @@
+import InputError from '@/components/input-error';
+import PrimaryButton from '@/components/primary-button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import GuestLayout from '@/layouts/guest-layout';
 import { Head, useForm } from '@inertiajs/react';
-import GuestLayout from '@/layouts/guest-layout.jsx';
-import InputError from '@/components/input-error.jsx';
-import PrimaryButton from '@/components/primary-button.jsx';
-import { Label } from '@/components/ui/label.jsx';
-import { Input } from '@/components/ui/input.jsx';
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -20,11 +20,10 @@ export default function ConfirmPassword() {
 
     return (
         <GuestLayout>
-            <Head title="Confirm Password"/>
+            <Head title="Confirm Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your
-                password before continuing.
+                This is a secure area of the application. Please confirm your password before continuing.
             </div>
 
             <form onSubmit={submit}>
@@ -41,7 +40,7 @@ export default function ConfirmPassword() {
                         onChange={(e) => setData('password', e.target.value)}
                     />
 
-                    <InputError message={errors.password} className="mt-2"/>
+                    <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4 flex items-center justify-end">

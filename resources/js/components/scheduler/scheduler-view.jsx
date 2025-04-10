@@ -1,25 +1,14 @@
 // resources/js/Components/Scheduler/SchedulerView.jsx
-import React, { useCallback, useMemo, useState } from "react";
-import clsx from "clsx";
-import DepartmentFilter from "@/components/scheduler/department-filter.jsx";
-import {
-    formatDisplayDate,
-    formatDisplayWeekday,
-    getDatesFromStart,
-} from "@/lib/dates.js";
-import EmployeeRow from "@/components/scheduler/employee-row.jsx";
-import MultiShiftEditor from "@/components/scheduler/multi-shift-editor.jsx";
-import { useSchedulerData } from "@/hooks/useSchedulerData.js";
-import ScheduleEditor from "@/components/scheduler/scheduler-editor.jsx";
+import DepartmentFilter from '@/components/scheduler/department-filter';
+import EmployeeRow from '@/components/scheduler/employee-row';
+import MultiShiftEditor from '@/components/scheduler/multi-shift-editor';
+import ScheduleEditor from '@/components/scheduler/scheduler-editor';
+import { useSchedulerData } from '@/hooks/useSchedulerData';
+import { formatDisplayDate, formatDisplayWeekday, getDatesFromStart } from '@/lib/dates';
+import clsx from 'clsx';
+import { useCallback, useMemo, useState } from 'react';
 
-const SchedulerView = ({
-    employees = [],
-    assignedShifts = [],
-    constraints = [],
-    departments = [],
-    initialStartDate = new Date(),
-    numDays = 14,
-}) => {
+const SchedulerView = ({ employees = [], assignedShifts = [], constraints = [], departments = [], initialStartDate = new Date(), numDays = 14 }) => {
     const [selectedDepartment, setSelectedDepartment] = useState(null);
     const [editingCell, setEditingCell] = useState(null); // For single edit: { employeeId, date }
     const [selectedCells, setSelectedCells] = useState({}); // For multi-select: { 'empId-date': true, ... }
@@ -27,15 +16,11 @@ const SchedulerView = ({
 
     // --- Data Processing Hooks ---
     const dateColumns = useMemo(() => {
-        const start =
-            initialStartDate instanceof Date
-                ? initialStartDate
-                : new Date(initialStartDate);
-        return getDatesFromStart(start, numDays, "yyyy-MM-dd");
+        const start = initialStartDate instanceof Date ? initialStartDate : new Date(initialStartDate);
+        return getDatesFromStart(start, numDays, 'yyyy-MM-dd');
     }, [initialStartDate, numDays]);
 
-    const { shiftsByEmployeeDate, findConstraintForEmployeeDate } =
-        useSchedulerData(assignedShifts, constraints);
+    const { shiftsByEmployeeDate, findConstraintForEmployeeDate } = useSchedulerData(assignedShifts, constraints);
 
     const filteredEmployees = useMemo(() => {
         // ... (filtering logic remains the same)
@@ -43,9 +28,7 @@ const SchedulerView = ({
             return employees;
         }
         return employees.filter((emp) =>
-            typeof departments[0] === "string"
-                ? emp.department === selectedDepartment
-                : emp.department_id === selectedDepartment,
+            typeof departments[0] === 'string' ? emp.department === selectedDepartment : emp.department_id === selectedDepartment,
         );
     }, [employees, selectedDepartment, departments]);
 
@@ -100,7 +83,7 @@ const SchedulerView = ({
     // Prepare data for the multi-edit modal (memoized)
     const multiEditData = useMemo(() => {
         return Object.keys(selectedCells).map((key) => {
-            const [employeeId, date] = key.split("-");
+            const [employeeId, date] = key.split('-');
             return { employeeId: parseInt(employeeId, 10), date };
         });
     }, [selectedCells]);
@@ -108,13 +91,7 @@ const SchedulerView = ({
     // --- Other Callbacks (Filter) ---
     const handleFilterChange = useCallback(
         (departmentId) => {
-            setSelectedDepartment(
-                departmentId
-                    ? typeof departments[0] === "string"
-                        ? departmentId
-                        : parseInt(departmentId, 10)
-                    : null,
-            );
+            setSelectedDepartment(departmentId ? (typeof departments[0] === 'string' ? departmentId : parseInt(departmentId, 10)) : null);
             setSelectedCells({}); // Clear selection when filter changes
             setEditingCell(null);
             setIsMultiEditorOpen(false);
@@ -124,15 +101,11 @@ const SchedulerView = ({
 
     // Find data for the single editing cell (memoized)
     const editingCellData = useMemo(() => {
-        if (!editingCell)
-            return { initialShift: null, initialConstraint: null };
+        if (!editingCell) return { initialShift: null, initialConstraint: null };
         const { employeeId, date } = editingCell;
         const shiftsMap = shiftsByEmployeeDate[employeeId] || {};
         const initialShift = shiftsMap[date] || null;
-        const initialConstraint = findConstraintForEmployeeDate(
-            employeeId,
-            date,
-        );
+        const initialConstraint = findConstraintForEmployeeDate(employeeId, date);
         return { initialShift, initialConstraint };
     }, [editingCell, shiftsByEmployeeDate, findConstraintForEmployeeDate]);
 
@@ -140,30 +113,24 @@ const SchedulerView = ({
     const gridColsStyle = `minmax(180px, 1.5fr) repeat(${dateColumns.length}, minmax(90px, 1fr))`; // Slightly wider cell min width maybe
     const numSelected = Object.keys(selectedCells).length;
 
-    const gridMaxHeight = "max-h-[75vh]"; // Example: 75% of viewport height
+    const gridMaxHeight = 'max-h-[75vh]'; // Example: 75% of viewport height
 
     return (
         <div>
             {/* Filters & Actions Section */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-                <DepartmentFilter
-                    departments={departments}
-                    selectedDepartment={selectedDepartment}
-                    onChange={handleFilterChange}
-                />
+            <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                <DepartmentFilter departments={departments} selectedDepartment={selectedDepartment} onChange={handleFilterChange} />
                 <div className="flex items-center gap-2">
                     {/* Button to trigger Multi-Shift Editor */}
                     <button
                         onClick={openMultiEditor}
                         disabled={numSelected === 0}
                         className={clsx(
-                            "px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500",
-                            numSelected === 0
-                                ? "opacity-50 cursor-not-allowed"
-                                : "opacity-100",
+                            'rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2',
+                            numSelected === 0 ? 'cursor-not-allowed opacity-50' : 'opacity-100',
                         )}
                     >
-                        Edit {numSelected > 0 ? `${numSelected} ` : ""}
+                        Edit {numSelected > 0 ? `${numSelected} ` : ''}
                         Shifts...
                     </button>
                     {/* Add Date Range Picker/Navigation Here Later */}
@@ -171,61 +138,51 @@ const SchedulerView = ({
             </div>
             {/* Instructions for multi-select */}
             {numSelected === 0 && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 italic">
-                    Hint: Use Ctrl-Click (or Cmd-Click on Mac) to select
-                    multiple cells for batch editing shifts.
+                <p className="mb-3 text-xs italic text-gray-500 dark:text-gray-400">
+                    Hint: Use Ctrl-Click (or Cmd-Click on Mac) to select multiple cells for batch editing shifts.
                 </p>
             )}
             {numSelected > 0 && (
-                <p className="text-xs text-blue-600 dark:text-blue-400 mb-3 font-medium">
-                    {numSelected} cell(s) selected. Click "Edit {numSelected}{" "}
-                    Shifts..." above or Ctrl/Cmd-Click more cells. Click a cell
-                    without Ctrl/Cmd to start single edit.
+                <p className="mb-3 text-xs font-medium text-blue-600 dark:text-blue-400">
+                    {numSelected} cell(s) selected. Click "Edit {numSelected} Shifts..." above or Ctrl/Cmd-Click more cells. Click a cell without
+                    Ctrl/Cmd to start single edit.
                 </p>
             )}
             {/* Schedule Grid */}
             <div
                 className={clsx(
-                    "overflow-x-auto overflow-y-auto relative border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm",
+                    'relative overflow-x-auto overflow-y-auto rounded-lg border border-gray-200 shadow-sm dark:border-gray-700',
                     gridMaxHeight,
                 )}
             >
                 <div
-                    className="grid items-stretch dark:bg-gray-800 auto-rows-max"
+                    className="grid auto-rows-max items-stretch dark:bg-gray-800"
                     style={{
                         gridTemplateColumns: gridColsStyle,
-                        minWidth: "min-content",
+                        minWidth: 'min-content',
                     }}
                 >
                     {/* Header Row (remains the same) */}
-                    <div className="sticky top-0 left-0 z-30 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-3 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 flex items-center justify-start">
+                    <div className="sticky left-0 top-0 z-30 flex items-center justify-start border-b border-r border-gray-300 bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
                         Employee
                     </div>
                     {dateColumns.map((dateString) => (
                         <div
                             key={dateString}
-                            className="sticky top-0 z-20 bg-gray-100 dark:bg-gray-800 border-b border-r border-gray-300 dark:border-gray-600 px-1 py-2 text-xs font-medium text-gray-500 dark:text-gray-400 text-center flex flex-col justify-center"
+                            className="sticky top-0 z-20 flex flex-col justify-center border-b border-r border-gray-300 bg-gray-100 px-1 py-2 text-center text-xs font-medium text-gray-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400"
                         >
-                            <div className="font-semibold text-gray-600 dark:text-gray-300">
-                                {formatDisplayDate(dateString)}
-                            </div>
-                            <div className="text-gray-500 dark:text-gray-400">
-                                {formatDisplayWeekday(dateString)}
-                            </div>
+                            <div className="font-semibold text-gray-600 dark:text-gray-300">{formatDisplayDate(dateString)}</div>
+                            <div className="text-gray-500 dark:text-gray-400">{formatDisplayWeekday(dateString)}</div>
                         </div>
                     ))}
 
                     {/* Employee Rows */}
                     {filteredEmployees.length > 0 ? (
                         filteredEmployees.map((employee) => {
-                            const shiftsForEmp =
-                                shiftsByEmployeeDate[employee.id] || {};
+                            const shiftsForEmp = shiftsByEmployeeDate[employee.id] || {};
                             const findConstraintForRowDate = useCallback(
                                 (dateStr) => {
-                                    return findConstraintForEmployeeDate(
-                                        employee.id,
-                                        dateStr,
-                                    );
+                                    return findConstraintForEmployeeDate(employee.id, dateStr);
                                 },
                                 [findConstraintForEmployeeDate, employee.id],
                             );
@@ -236,22 +193,20 @@ const SchedulerView = ({
                                     employee={employee}
                                     dates={dateColumns}
                                     shiftsForEmployee={shiftsForEmp}
-                                    findConstraintForDate={
-                                        findConstraintForRowDate
-                                    }
+                                    findConstraintForDate={findConstraintForRowDate}
                                     selectedCells={selectedCells} // Pass selection state object
                                     onCellSelect={handleCellSelect} // Pass updated handler
                                 />
                             );
                         })
                     ) : (
-                        <div className="col-span-full text-center py-10 text-gray-500 dark:text-gray-400">
+                        <div className="col-span-full py-10 text-center text-gray-500 dark:text-gray-400">
                             No employees found matching the selected criteria.
                         </div>
                     )}
-                </div>{" "}
+                </div>{' '}
                 {/* End Grid */}
-            </div>{" "}
+            </div>{' '}
             {/* End Scroll Container */}
             {/* Editor Modals/Drawers */}
             <ScheduleEditor // Single Cell Editor

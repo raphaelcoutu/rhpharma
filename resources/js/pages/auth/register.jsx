@@ -1,9 +1,9 @@
+import InputError from '@/components/input-error';
+import PrimaryButton from '@/components/primary-button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import GuestLayout from '@/layouts/guest-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import GuestLayout from '@/layouts/guest-layout.jsx';
-import InputError from '@/components/input-error.jsx';
-import PrimaryButton from '@/components/primary-button.jsx';
-import { Label } from '@/components/ui/label.jsx';
-import { Input } from '@/components/ui/input.jsx';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,7 +23,7 @@ export default function Register() {
 
     return (
         <GuestLayout>
-            <Head title="Register"/>
+            <Head title="Register" />
 
             <form onSubmit={submit}>
                 <div>
@@ -40,7 +40,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2"/>
+                    <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -57,7 +57,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2"/>
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
@@ -74,13 +74,11 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2"/>
+                    <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <Label
-                        htmlFor="password_confirmation"
-                    >Confirm Password</Label>
+                    <Label htmlFor="password_confirmation">Confirm Password</Label>
 
                     <Input
                         id="password_confirmation"
@@ -89,16 +87,11 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                         required
                     />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
+                    <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 <div className="mt-4 flex items-center justify-end">

@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Events\UpdateBuildStatus;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ConstraintController;
@@ -21,6 +19,7 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
+use App\Jobs\BuildClinicalDepartments;
 use App\Models\AssignedShift;
 use App\Models\User;
 use Illuminate\Support\Facades\App;
@@ -151,8 +150,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     if (App::environment('local')) {
         Route::get('build/{scheduleId}', function ($scheduleId) {
-            $event = new \App\Events\UpdateBuildStatus($scheduleId, 3, 3);
-            dispatch(new \App\Jobs\BuildClinicalDepartments($event));
+            $event = new UpdateBuildStatus($scheduleId, 3, 3);
+            dispatch(new BuildClinicalDepartments($event));
         });
     }
 });
