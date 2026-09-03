@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BranchController extends Controller
 {
@@ -19,7 +20,7 @@ class BranchController extends Controller
 
     public function index()
     {
-        $this->authorize('read', Branch::class);
+        Gate::authorize('read', Branch::class);
 
         $branches = Branch::withCount('users')->get();
 
@@ -34,7 +35,7 @@ class BranchController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules);
+        $request->validate($this->rules);
 
         Branch::create(['name' => $request->input(['name'])]);
 
@@ -47,7 +48,7 @@ class BranchController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, $this->rules);
+        $request->validate($this->rules);
 
         Branch::findOrFail($id)->update($request->all());
     }

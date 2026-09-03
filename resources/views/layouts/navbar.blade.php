@@ -22,7 +22,7 @@
                 @if(Auth::check())
                     <li><a href="#">À propos</a></li>
                     <li><a href="#">Manuel</a></li>
-                    <li><a href="{{ route('profile') }}">Profil</a></li>
+                    <li><a href="{{ route('profile.edit') }}">Profil</a></li>
                     <li><a href="{{ route('constraints.index') }}">Contraintes</a></li>
                 @endif
             </ul>
