@@ -32,7 +32,17 @@ class UserFactory extends Factory
             'workdays_per_week' => 5,
             'seniority' => 0,
             'is_active' => 1,
-            'branch_id' => 1
+            'branch_id' => 1,
         ];
+    }
+
+    /**
+     * Indicate that the user's email address has not been verified.
+     */
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'email_verified_at' => null,
+        ]);
     }
 }

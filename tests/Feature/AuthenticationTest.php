@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Branch;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +16,7 @@ class AuthenticationTest extends TestCase
 
     public function setUp(): void {
         parent::setUp();
+        Branch::create(['name' => 'Pharmaciens']);
         Schema::disableForeignKeyConstraints();
     }
 
