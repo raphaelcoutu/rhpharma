@@ -7,6 +7,7 @@ use App\Models\Constraint;
 use App\Models\Department;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ScheduleController extends Controller
 {
@@ -17,7 +18,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', Schedule::class);
+        Gate::authorize('read', Schedule::class);
 
         $schedules = Schedule::orderedDesc()->paginate(15);
 
@@ -59,7 +60,7 @@ class ScheduleController extends Controller
      */
     public function store(ScheduleRequest $request)
     {
-        $this->authorize('write', Schedule::class);
+        Gate::authorize('write', Schedule::class);
 
         $request['branch_id'] = \Auth::user()->branch->id;
 
@@ -76,7 +77,7 @@ class ScheduleController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('write', Schedule::class);
+        Gate::authorize('write', Schedule::class);
 
         $schedule = Schedule::with('conflicts.department')->findOrFail($id);
 
@@ -95,7 +96,7 @@ class ScheduleController extends Controller
      */
     public function edit($id)
     {
-        $this->authorize('write', Schedule::class);
+        Gate::authorize('write', Schedule::class);
 
         $schedule = Schedule::findOrFail($id);
 

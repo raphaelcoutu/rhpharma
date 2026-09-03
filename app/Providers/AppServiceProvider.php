@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
 
             $schedules = Schedule::select('id','start_date','end_date')
                 ->when(isset($validator->getData()['branch_id']), function ($query) use ($validator) {
-                    $query->where('branch_id', $validator->getData()[1]);
+                    $query->where('branch_id', $validator->getData()['branch_id']);
                 })
                 ->orderBy('end_date', 'desc')
                 ->limit(12)->get();
