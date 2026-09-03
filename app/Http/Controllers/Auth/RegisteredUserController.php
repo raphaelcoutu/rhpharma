@@ -36,16 +36,22 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $nameParts = preg_split('/\s+/', trim((string) $request->input('name')), 2) ?: [];
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'firstname' => $nameParts[0] ?? '',
+            'lastname' => $nameParts[1] ?? '',
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'workdays_per_week' => 5,
+            'is_active' => true,
+            'branch_id' => 1,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('home', absolute: false));
     }
 }
