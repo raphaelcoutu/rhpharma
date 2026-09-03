@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Workplace;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class WorkplaceController extends Controller
 {
@@ -14,7 +15,7 @@ class WorkplaceController extends Controller
      */
     public function index()
     {
-        $this->authorize('read', Workplace::class);
+        Gate::authorize('read', Workplace::class);
 
         $workplaces = Workplace::withCount(['departments' => function($query) {
             $query->ownBranch();
@@ -41,9 +42,9 @@ class WorkplaceController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('write', Workplace::class);
+        Gate::authorize('write', Workplace::class);
 
-        $this->validate($request, [
+        $request->validate([
             'name' => 'required|unique:workplaces',
             'code' => 'required|unique:workplaces',
             'address' => 'required',

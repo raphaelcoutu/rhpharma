@@ -71,7 +71,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $this->authorize('read', User::class);
+        Gate::authorize('read', User::class);
 
         $user = User::with('departments')->findOrFail($id);
         $departments = Department::whereIn('department_type_id', [1, 3])->orderBy('name')->get();
