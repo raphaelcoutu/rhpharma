@@ -105,6 +105,17 @@ class ScheduleTest extends TestCase
         $this->assertEquals(Carbon::now()->addWeeks(2)->next('Sunday'), Schedule::findOrFail($schedule->id)->start_date);
     }
 
+    public function test_auth_user_can_export_schedule(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $response = $this->actingAs($this->superUser)
+            ->get("/export/{$schedule->id}");
+
+        $response->assertOk();
+        $response->assertDownload();
+    }
+
     public function test_unauth_user_get_redirected()
     {
         $response = $this->get('/schedules');

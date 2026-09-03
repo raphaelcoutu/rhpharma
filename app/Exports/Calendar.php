@@ -66,7 +66,7 @@ class Calendar
     private function addHeading()
     {
         $sheet = $this->spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', $this->startDate->formatLocalized("%d %B") . ' au ' . $this->endDate->formatLocalized('%d %B'));
+        $sheet->setCellValue('A1', $this->startDate->translatedFormat('d F') . ' au ' . $this->endDate->translatedFormat('d F'));
         $sheet->setCellValueByColumnAndRow(1,2, 'Site');
         $sheet->setCellValueByColumnAndRow(2,2, 'NomPrénom');
         $sheet->getStyle('A2:B2')->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
