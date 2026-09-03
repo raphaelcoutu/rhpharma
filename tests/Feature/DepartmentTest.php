@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Branch;
 use App\Models\Department;
+use App\Models\DepartmentType;
 use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class DepartmentTest extends TestCase
@@ -34,8 +36,9 @@ class DepartmentTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get('/departments');
 
-        $response->assertStatus(200);
-        $response->assertSee('Ajouter un secteur');
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('departments/index', false)
+            ->has('departments'));
     }
 
     public function test_auth_user_can_see_department_create_form()
@@ -48,10 +51,13 @@ class DepartmentTest extends TestCase
 
     public function test_auth_user_can_create_department()
     {
+        $departmentType = DepartmentType::create(['name' => 'Clinique']);
+
         $response = $this->actingAs($this->superUser)
             ->post('/departments', [
                 'name' => 'Soins intensifs',
                 'workplace_id' => $this->workplace->id,
+                'department_type_id' => $departmentType->id,
                 'bonus_weeks' => 2,
                 'bonus_pts' => 4,
                 'malus_weeks' => 3,
@@ -87,8 +93,10 @@ class DepartmentTest extends TestCase
 
     public function test_auth_user_can_edit_department()
     {
+        $departmentType = DepartmentType::create(['name' => 'Clinique']);
         $department = Department::factory()->create([
-            'name' => 'Soins intensifs'
+            'name' => 'Soins intensifs',
+            'department_type_id' => $departmentType->id,
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -96,6 +104,7 @@ class DepartmentTest extends TestCase
                 'id' => $department->id,
                 'name' => 'Soins intensifs médicaux',
                 'workplace_id' => $this->workplace->id,
+                'department_type_id' => $departmentType->id,
                 'bonus_weeks' => 2,
                 'bonus_pts' => 4,
                 'malus_weeks' => 3,

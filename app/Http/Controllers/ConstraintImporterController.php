@@ -13,21 +13,14 @@ use Illuminate\Support\Str;
 
 class ConstraintImporterController extends Controller
 {
-    private $azureRepository;
-
-    public function __construct(AzureRepository $azureRepository)
-    {
-        $this->azureRepository = $azureRepository;
-    }
-
     public function index()
     {
         return view('constraintImporter.index');
     }
 
-    public function import(Request $request)
+    public function import(Request $request, AzureRepository $azureRepository)
     {
-        $rows = $this->azureRepository->constraints($request['start'], $request['end']);
+        $rows = $azureRepository->constraints($request['start'], $request['end']);
 
         $constraintsToAdd = [];
 
@@ -90,7 +83,7 @@ class ConstraintImporterController extends Controller
         $newConstraintTypes = [];
         if (!empty($missingConstraintTypesIds)) {
 
-            $newConstraintTypes = $this->azureRepository->constraintTypesByIds($missingConstraintTypesIds);
+            $newConstraintTypes = $azureRepository->constraintTypesByIds($missingConstraintTypesIds);
 
             foreach ($newConstraintTypes as $constraintType) {
                 ConstraintType::updateOrCreate([
@@ -117,8 +110,9 @@ class ConstraintImporterController extends Controller
                 $unique_array[$hash] = $element;
             }
 
-            $uniqueMissingUserIds = collect(array_values($unique_array))->pluck('Id')->toArray();
-            $newUsers = $this->azureRepository->usersByIds($uniqueMissingUserIds);
+            $missingUsers = array_values($unique_array);
+            $uniqueMissingUserIds = collect($missingUsers)->pluck('Id')->toArray();
+            $newUsers = $azureRepository->usersByIds($uniqueMissingUserIds);
 
             foreach ($newUsers as $user) {
                 User::updateOrCreate([
@@ -139,6 +133,7 @@ class ConstraintImporterController extends Controller
         return redirect()->route('constraintImporter.index')
             ->with('status', 'Contraintes importées! (' . count($constraintsToAdd) . ')')
             ->with('newUsers', $newUsers)
-            ->with('newConstraintTypes', $newConstraintTypes);
+            ->with('newConstraintTypes', $newConstraintTypes)
+            ->with('missingUsers', $missingUsers);
     }
 }

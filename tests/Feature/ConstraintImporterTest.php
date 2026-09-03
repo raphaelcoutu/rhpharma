@@ -95,8 +95,9 @@ class ConstraintImporterTest extends TestCase
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(200);
-        $response->assertSee('ERREUR: Type(s) de contrainte non associée(s)', false);
+        $response->assertSee('Nouveaux types de contraintes');
         $response->assertSeeText('Azure Id: 50');
+        $this->assertDatabaseHas('constraint_types', ['azure_id' => 50]);
     }
 
     public function test_import_constraint_with_missing_user()
@@ -110,6 +111,7 @@ class ConstraintImporterTest extends TestCase
                 $this->constraint(51, 1000),
                 $this->constraint(50, 1001)
             ]);
+            $mock->shouldReceive('usersByIds')->once()->with([1000, 1001])->andReturn([]);
         });
 
         $response = $this
@@ -162,9 +164,15 @@ class ConstraintImporterTest extends TestCase
         $constraintTypeId = $constraintTypeId ?? $this->faker->randomNumber(3);
 
         return [
+            'BranchId' => $this->branch->id,
             'Id' => $constraintTypeId,
             'Name' => $this->faker->sentence(5),
-            'Description' => $this->faker->sentence(5)
+            'Description' => $this->faker->sentence(5),
+            'Code' => $this->faker->word(),
+            'IsWork' => false,
+            'IsSingleDay' => false,
+            'IsGroupConstraint' => false,
+            'IsDayInSchedule' => false,
         ];
     }
 
