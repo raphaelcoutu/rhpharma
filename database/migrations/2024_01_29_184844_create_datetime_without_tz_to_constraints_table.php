@@ -24,8 +24,13 @@ class CreateDatetimeWithoutTzToConstraintsTable extends Migration
             $table->dateTime('end_datetime')->nullable();
         });
 
-        DB::statement("UPDATE constraints SET start_datetime = start_datetimetz AT TIME ZONE 'America/Montreal'");
-        DB::statement("UPDATE constraints SET end_datetime = end_datetimetz AT TIME ZONE 'America/Montreal'");
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            DB::statement('UPDATE constraints SET start_datetime = start_datetimetz');
+            DB::statement('UPDATE constraints SET end_datetime = end_datetimetz');
+        } else {
+            DB::statement("UPDATE constraints SET start_datetime = start_datetimetz AT TIME ZONE 'America/Montreal'");
+            DB::statement("UPDATE constraints SET end_datetime = end_datetimetz AT TIME ZONE 'America/Montreal'");
+        }
     }
 
     /**
