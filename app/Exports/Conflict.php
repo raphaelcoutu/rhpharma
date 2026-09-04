@@ -55,19 +55,19 @@ class Conflict
         $sheet = $this->spreadsheet->getActiveSheet();
         $startDate = $this->schedule->start_date->format("d-m-Y");
         $endDate = $this->schedule->end_date->format("d-m-Y");
-        $sheet->setCellValueByColumnAndRow(1,1, 'CONFLITS ' . $startDate . ' AU ' . $endDate);
-        $sheet->mergeCellsByColumnAndRow(1,1,4,1);
-        $styleHeader = $sheet->getStyleByColumnAndRow(1,1,4,1);
+        $sheet->setCellValue([1, 1], 'CONFLITS ' . $startDate . ' AU ' . $endDate);
+        $sheet->mergeCells([1, 1, 4, 1]);
+        $styleHeader = $sheet->getStyle([1, 1, 4, 1]);
         $styleHeader->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $styleHeader->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
 
         $subHeaders = ['Id', 'Départment', 'Début', 'Fin', 'Message'];
         foreach($subHeaders as $index => $subHeader) {
-            $cell = $sheet->getCellByColumnAndRow($index + 1, 3);
+            $cell = $sheet->getCell([$index + 1, 3]);
             $cell->setValue($subHeader);
         }
 
-        $styleSubHeader = $sheet->getStyleByColumnAndRow(1,3,10,3);
+        $styleSubHeader = $sheet->getStyle([1, 3, 10, 3]);
         $styleSubHeader->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $styleSubHeader->getFont()->setBold(true);
 
@@ -91,11 +91,11 @@ class Conflict
         foreach($conflicts as $conflict) {
             $departmentName = ($conflict->department_id !== null) ? $conflict->department->name : '';
 
-            $sheet->getCellByColumnAndRow(1, $row)->setValue($conflict->id);
-            $sheet->getCellByColumnAndRow(2, $row)->setValue($departmentName);
-            $sheet->getCellByColumnAndRow(3, $row)->setValue($conflict->start_date);
-            $sheet->getCellByColumnAndRow(4, $row)->setValue($conflict->end_date);
-            $sheet->getCellByColumnAndRow(5, $row)->setValue($conflict->message);
+            $sheet->getCell([1, $row])->setValue($conflict->id);
+            $sheet->getCell([2, $row])->setValue($departmentName);
+            $sheet->getCell([3, $row])->setValue($conflict->start_date);
+            $sheet->getCell([4, $row])->setValue($conflict->end_date);
+            $sheet->getCell([5, $row])->setValue($conflict->message);
 
             $row++;
         }

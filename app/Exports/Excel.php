@@ -24,7 +24,10 @@ class Excel
 
     private function split($schedule)
     {
-        $duration = $schedule->end_date->diffInWeeks($schedule->start_date) + 1;
+        $duration = intdiv(
+            (int) $schedule->end_date->diffInDays($schedule->start_date, true),
+            7
+        ) + 1;
         $nbCalendars = 0;
         $divideBy = 0;
 
@@ -44,8 +47,8 @@ class Excel
 
         if($nbCalendars > 1) {
             for ($i = 0; $i < $nbCalendars; $i++) {
-                $start = $this->schedule->start_date->addDays($i * $divideBy * 7);
-                $end = $this->schedule->start_date->addDays(($i+1) * $divideBy * 7 - 1);
+                $start = $this->schedule->start_date->copy()->addDays($i * $divideBy * 7);
+                $end = $this->schedule->start_date->copy()->addDays(($i+1) * $divideBy * 7 - 1);
 
                 $calendar = new Calendar($start, $end, $this->users);
 

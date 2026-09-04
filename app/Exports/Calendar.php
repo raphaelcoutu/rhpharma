@@ -50,7 +50,7 @@ class Calendar
     {
         $sheet = $this->spreadsheet;
         $sheet->getDefaultStyle()->getFont()->setName('Arial');
-        $sheet->getActiveSheet()->freezePaneByColumnAndRow(3,3);
+        $sheet->getActiveSheet()->freezePane([3, 3]);
         $sheet->getActiveSheet()->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
         $sheet->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
         $sheet->getActiveSheet()->getPageSetup()->setFitToPage(true);
@@ -67,8 +67,8 @@ class Calendar
     {
         $sheet = $this->spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', $this->startDate->translatedFormat('d F') . ' au ' . $this->endDate->translatedFormat('d F'));
-        $sheet->setCellValueByColumnAndRow(1,2, 'Site');
-        $sheet->setCellValueByColumnAndRow(2,2, 'NomPrénom');
+        $sheet->setCellValue([1, 2], 'Site');
+        $sheet->setCellValue([2, 2], 'NomPrénom');
         $sheet->getStyle('A2:B2')->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
 
         $sheet->getColumnDimension('A')->setWidth(4);
@@ -79,7 +79,7 @@ class Calendar
         for($i = 0; $i < $duration; $i++)
         {
             $sheet->getColumnDimensionByColumn($i + 3)->setWidth(7);
-            $cell = $sheet->getCellByColumnAndRow($i + 3, 2);
+            $cell = $sheet->getCell([$i + 3, 2]);
             $cell->setValue($this->startDate->copy()->addDays($i)->format('j'));
             $cellStyle = $cell->getStyle();
             $cellStyle->getFill()->setFillType(Fill::FILL_SOLID)
@@ -102,8 +102,8 @@ class Calendar
         $sheet = $this->spreadsheet->getActiveSheet();
 
         // Mettre les bordures sur les cases
-        $duration = $this->endDate->diffInDays($this->startDate);
-        $lastColumn = $sheet->getCellByColumnAndRow($this->colStart + $duration, $this->rowStart)->getColumn();
+        $duration = $this->endDate->diffInDays($this->startDate, true);
+        $lastColumn = $sheet->getCell([$this->colStart + $duration, $this->rowStart])->getColumn();
 
         $rowStyle = $sheet->getStyle('B' . ($this->rowStart) . ':' . $lastColumn . ($this->users->count()+$this->rowStart-1));
         $rowStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
@@ -112,16 +112,16 @@ class Calendar
             // Set la hauteur de la rangée
             $sheet->getRowDimension($this->rowStart + $index)->setRowHeight(17);
 
-            $cell = $sheet->getCellByColumnAndRow(2, $index + $this->rowStart);
+            $cell = $sheet->getCell([2, $index + $this->rowStart]);
             $cell->setValue(mb_strtoupper($user->lastname) . ', ' . mb_strtoupper($user->firstname));
             $cell->getStyle()->getFont()->setSize(7);
             $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
             foreach ($user->assignedShifts as $assignedShift) {
                 if($assignedShift->date->gte($this->startDate) && $assignedShift->date->lte($this->endDate)) {
-                    $col = $assignedShift->date->diffInDays($this->startDate) + $this->colStart;
+                    $col = $assignedShift->date->diffInDays($this->startDate, true) + $this->colStart;
 
-                    $cell = $sheet->getCellByColumnAndRow($col, $index + $this->rowStart);
+                    $cell = $sheet->getCell([$col, $index + $this->rowStart]);
                     $cell->getStyle()->getFont()->setSize(9);
                     $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
                     $cell->getStyle()->getAlignment()->setShrinkToFit(true);
@@ -160,9 +160,9 @@ class Calendar
 
                     for ($i = 0; $i < $constraintDuration; $i++) {
                         $iterateDay = $constraintAdjStartDate->copy()->addDays($i);
-                        $col = $iterateDay->diffInDays($this->startDate) + $this->colStart;
+                        $col = $iterateDay->diffInDays($this->startDate, true) + $this->colStart;
 
-                        $cell = $sheet->getCellByColumnAndRow($col, $index + $this->rowStart);
+                        $cell = $sheet->getCell([$col, $index + $this->rowStart]);
 
                         if ($constraint->day !== NULL) {
                             // Si la contrainte contient un jour spécisé, on l'inscrit seulement dans celui-ci
@@ -203,7 +203,7 @@ class Calendar
             $col = $key[0]['col'];
             $row = $key[0]['row'];
 
-            $cell = $sheet->getCellByColumnAndRow($col, $row);
+            $cell = $sheet->getCell([$col, $row]);
             $value = trim($cell->getValue());
             if($value !== "" && $value !== null) $value .= "-";
 
