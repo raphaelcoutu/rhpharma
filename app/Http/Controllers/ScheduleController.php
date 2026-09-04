@@ -134,6 +134,6 @@ class ScheduleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

@@ -19,7 +19,7 @@ class Calendar
 
     protected $users;
 
-    protected $spreadsheet;
+    private $spreadsheet;
 
     protected $rowStart;
 

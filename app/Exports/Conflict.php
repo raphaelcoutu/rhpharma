@@ -14,7 +14,7 @@ class Conflict
 
     protected $users;
 
-    protected $spreadsheet;
+    private $spreadsheet;
 
     public function __construct(Schedule $schedule)
     {

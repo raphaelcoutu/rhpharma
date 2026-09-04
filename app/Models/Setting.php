@@ -8,7 +8,7 @@ class Setting extends Model
 {
     protected $fillable = ['key', 'value'];
 
-    public function scopeValueByKey($query, $key)
+    public function scopeValueByKey($query, $key): mixed
     {
         return $query->where('key', $key)->firstOrFail()->value;
     }

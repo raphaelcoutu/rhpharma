@@ -87,7 +87,7 @@ class DepartmentController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -134,6 +134,6 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

@@ -5,19 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Constraint;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ConstraintValidatorController extends Controller
 {
     /**
      * List all constraints to validate
      */
+    #[Authorize('read', Constraint::class)]
     public function index()
     {
-        $this->authorize('read', Constraint::class);
-
         $schedule = null;
 
-        $constraints = Constraint::with(['constrainttype', 'user']);
+        $constraints = Constraint::with(['constraintType', 'user']);
         if (request('schedule')) {
             $schedule = Schedule::select(['id', 'start_date', 'end_date'])->findOrFail(request('schedule'));
 
@@ -32,24 +32,22 @@ class ConstraintValidatorController extends Controller
         return view('constraintsValidator.index', compact('constraints', 'schedule'));
     }
 
+    #[Authorize('write', Constraint::class)]
     public function update(Request $request, $id)
     {
-        $this->authorize('write', Constraint::class);
-
         $constraint = Constraint::findOrFail($id);
         $constraint->update($request->all());
 
         return 'OK';
     }
 
+    #[Authorize('read', Constraint::class)]
     public function history(Request $request)
     {
-        $this->authorize('read', Constraint::class);
-
         $limit = $request->limit ?? 100;
         $order = $request->order ?? 'desc';
 
-        $constraints = Constraint::with(['constrainttype', 'user', 'validator']);
+        $constraints = Constraint::with(['constraintType', 'user', 'validator']);
 
         if (isset($request->user)) {
             $constraints = $constraints->where('user_id', $request->user);

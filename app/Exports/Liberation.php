@@ -16,7 +16,7 @@ class Liberation
 
     protected $users;
 
-    protected $spreadsheet;
+    private $spreadsheet;
 
     public function __construct(Schedule $schedule, Collection $users)
     {

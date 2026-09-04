@@ -3,7 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -46,12 +50,12 @@ class User extends Authenticatable
         return strtolower($value);
     }
 
-    public function scopeOwnBranch($query)
+    public function scopeOwnBranch($query): Builder
     {
         return $query->where('branch_id', \Auth::user()->branch->id);
     }
 
-    public function getInitialsAttribute()
+    public function getInitialsAttribute(): string
     {
         $temp = collect(explode(' ', str_replace('-', ' ', $this->getFullnameAttribute())));
 
@@ -60,48 +64,48 @@ class User extends Authenticatable
         });
     }
 
-    public function getFullnameAttribute()
+    public function getFullnameAttribute(): string
     {
         return $this->firstname.' '.$this->lastname;
     }
 
-    public function assignedShifts()
+    public function assignedShifts(): HasMany
     {
         return $this->hasMany(AssignedShift::class);
     }
 
-    public function attributes()
+    public function attributes(): HasMany
     {
         return $this->hasMany(Attribute::class);
     }
 
-    public function branch()
+    public function branch(): BelongsTo
     {
         return $this->belongsTo(Branch::class);
     }
 
-    public function constraints()
+    public function constraints(): HasMany
     {
         return $this->hasMany(Constraint::class);
     }
 
-    public function constraintNotes()
+    public function constraintNotes(): BelongsToMany
     {
         return $this->belongsToMany(ConstraintNote::class);
     }
 
-    public function departments()
+    public function departments(): BelongsToMany
     {
         return $this->belongsToMany(Department::class)
             ->withPivot(['active', 'history', 'planning_long', 'planning_short']);
     }
 
-    public function permissions()
+    public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
     }
 
-    public function roles()
+    public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
     }
@@ -111,7 +115,7 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected function casts()
+    protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',

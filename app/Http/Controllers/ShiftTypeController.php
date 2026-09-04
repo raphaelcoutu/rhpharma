@@ -6,6 +6,7 @@ use App\Http\Requests\ShiftTypeRequest;
 use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ShiftTypeController extends Controller
 {
@@ -14,10 +15,9 @@ class ShiftTypeController extends Controller
      *
      * @return Response
      */
+    #[Authorize('read', ShiftType::class)]
     public function index()
     {
-        $this->authorize('read', ShiftType::class);
-
         $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get();
 
         return view('shiftTypes.index', compact('shiftTypes'));
@@ -54,7 +54,7 @@ class ShiftTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -63,10 +63,9 @@ class ShiftTypeController extends Controller
      * @param  int  $id
      * @return Response
      */
+    #[Authorize('write', ShiftType::class)]
     public function edit(ShiftType $shiftType)
     {
-        $this->authorize('write', ShiftType::class);
-
         return view('shiftTypes.edit', ['shiftType' => $shiftType]);
     }
 
@@ -92,6 +91,6 @@ class ShiftTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

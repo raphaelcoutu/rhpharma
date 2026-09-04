@@ -8,6 +8,7 @@ use App\Models\Shift;
 use App\Models\ShiftType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ShiftController extends Controller
 {
@@ -16,10 +17,9 @@ class ShiftController extends Controller
      *
      * @return Response
      */
+    #[Authorize('read', Shift::class)]
     public function index()
     {
-        $this->authorize('read', Shift::class);
-
         $shifts = Shift::with(['department', 'shiftType'])->orderBy('code')->get();
 
         return view('shifts.index', compact('shifts'));
@@ -59,7 +59,7 @@ class ShiftController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -68,10 +68,9 @@ class ShiftController extends Controller
      * @param  int  $id
      * @return Response
      */
+    #[Authorize('write', Shift::class)]
     public function edit(Shift $shift)
     {
-        $this->authorize('write', Shift::class);
-
         $departments = Department::all();
         $shiftTypes = ShiftType::all();
 
@@ -101,6 +100,6 @@ class ShiftController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Builders;
 
 use App\Models\AssignedShift;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
@@ -11,7 +12,12 @@ class GenericBuilder extends BaseBuilder
 
     private $malus;
 
-    private $weekCount;
+    private int $weeksCount;
+
+    /**
+     * @var Collection<int, int>
+     */
+    private Collection $manualWeeks;
 
     private $selectedCombinaison;
 

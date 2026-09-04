@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ConstraintType extends Model
 {
@@ -21,12 +23,12 @@ class ConstraintType extends Model
         'branch_id',
     ];
 
-    public function criteria()
+    public function criteria(): BelongsToMany
     {
         return $this->belongsToMany(Criterion::class);
     }
 
-    public function scopeOwnBranch($query)
+    public function scopeOwnBranch($query): Builder
     {
         return $query->where('branch_id', \Auth::user()->branch->id);
     }

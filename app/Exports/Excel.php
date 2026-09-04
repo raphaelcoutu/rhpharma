@@ -42,7 +42,7 @@ class Excel
             if ($duration < 3) {
                 $nbCalendars = 1;
             } else {
-                throw \Exception('Nombre de semaines à l\'horaire non divisible par 3 ou 4.');
+                throw new \Exception('Nombre de semaines à l\'horaire non divisible par 3 ou 4.');
             }
         }
 

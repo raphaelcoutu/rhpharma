@@ -16,7 +16,7 @@ class DepartmentUserController extends Controller
 
     public function store($id, Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'department_id' => 'required',
             'history' => 'required|numeric|min:0|max:99.99',
             'planning_long' => 'required|numeric|min:0|max:99.99',

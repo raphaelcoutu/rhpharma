@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
@@ -13,17 +14,17 @@ class Holiday extends Model
         'date' => 'date',
     ];
 
-    public function scopeByDate($query)
+    public function scopeByDate($query): Builder
     {
         return $query->orderBy('date', 'asc')->where('date', '>=', Carbon::today());
     }
 
-    public function scopeFrom($query, $date)
+    public function scopeFrom($query, $date): Builder
     {
         return $query->where('date', '>=', $date);
     }
 
-    public function scopeTo($query, $date)
+    public function scopeTo($query, $date): Builder
     {
         return $query->where('date', '<=', $date);
     }

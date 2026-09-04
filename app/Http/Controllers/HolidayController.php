@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class HolidayController extends Controller
 {
@@ -13,10 +14,9 @@ class HolidayController extends Controller
      *
      * @return Response
      */
+    #[Authorize('read', Holiday::class)]
     public function index()
     {
-        $this->authorize('read', Holiday::class);
-
         $holidays = Holiday::byDate()->get();
 
         return view('holidays.index', compact('holidays'));
@@ -34,7 +34,7 @@ class HolidayController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -44,12 +44,14 @@ class HolidayController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'description' => 'required',
             'date' => 'required',
         ]);
 
         Holiday::create($request->all());
+
+        return response()->noContent();
     }
 
     /**
@@ -60,7 +62,7 @@ class HolidayController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -82,9 +84,11 @@ class HolidayController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $this->validate($request, $this->rules);
+        // $request->validate($this->rules);
 
         Holiday::findOrFail($id)->update($request->all());
+
+        return response()->noContent();
     }
 
     /**
@@ -95,6 +99,6 @@ class HolidayController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

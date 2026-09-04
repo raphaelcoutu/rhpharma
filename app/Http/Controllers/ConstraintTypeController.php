@@ -6,6 +6,7 @@ use App\Http\Requests\ConstraintTypeRequest;
 use App\Models\ConstraintType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class ConstraintTypeController extends Controller
 {
@@ -14,10 +15,9 @@ class ConstraintTypeController extends Controller
      *
      * @return Response
      */
+    #[Authorize('read', ConstraintType::class)]
     public function index()
     {
-        $this->authorize('read', ConstraintType::class);
-
         $constraintTypes = ConstraintType::ownBranch()->orderBy('name')->get();
 
         return view('constraintTypes.index', compact('constraintTypes'));
@@ -28,10 +28,9 @@ class ConstraintTypeController extends Controller
      *
      * @return Response
      */
+    #[Authorize('write', ConstraintType::class)]
     public function create()
     {
-        $this->authorize('write', ConstraintType::class);
-
         return view('constraintTypes.create');
     }
 
@@ -58,7 +57,7 @@ class ConstraintTypeController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -95,6 +94,6 @@ class ConstraintTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }

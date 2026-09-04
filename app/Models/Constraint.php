@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
 class Constraint extends Model
@@ -20,46 +22,46 @@ class Constraint extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function constraintType()
+    public function constraintType(): BelongsTo
     {
         return $this->belongsTo(ConstraintType::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function validator()
+    public function validator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'validated_by');
     }
 
-    public function scopeFromLoggedInUser($query)
+    public function scopeFromLoggedInUser($query): Builder
     {
         return $query->where('user_id', \Auth::user()->id);
     }
 
-    public function scopeFixedConstraints($query)
+    public function scopeFixedConstraints($query): Builder
     {
         return $query->whereHas('constraintType', function ($query) {
             $query->where('is_group_constraint', '=', 0);
         });
     }
 
-    public function scopeAvailabilityConstraints($query)
+    public function scopeAvailabilityConstraints($query): Builder
     {
         return $query->whereHas('constraintType', function ($query) {
             $query->where('is_group_constraint', '=', 1);
         });
     }
 
-    public function scopeUnvalidated($query)
+    public function scopeUnvalidated($query): Builder
     {
         return $query->where('status', 0);
     }
 
-    public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
+    public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date): Builder
     {
         return $query->where(function ($query) use ($start_date, $end_date) {
             $query->where('start_datetime', '>=', $start_date->copy()->setTime(0, 0))
@@ -70,7 +72,7 @@ class Constraint extends Model
         });
     }
 
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }

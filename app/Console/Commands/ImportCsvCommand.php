@@ -22,6 +22,8 @@ class ImportCsvCommand extends Command
 
     protected $userIds;
 
+    protected array $constraintsIds;
+
     /**
      * Create a new command instance.
      *

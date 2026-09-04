@@ -6,12 +6,18 @@ use App\Models\AssignedShift;
 use App\Models\Conflict;
 use App\Models\Schedule;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserAnalyzer
 {
     protected $schedule;
 
     protected $shifts;
+
+    /**
+     * @var Collection<int, User>
+     */
+    private Collection $users;
 
     protected $conflicts;
 

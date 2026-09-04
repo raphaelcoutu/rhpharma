@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Department;
 use App\Models\ConstraintType;
 use App\Models\Criterion;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 
 class ConstraintTypeSeeder extends Seeder

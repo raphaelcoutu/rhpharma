@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Attributes\Controllers\Authorize;
 
 class RoleController extends Controller
 {
@@ -30,7 +31,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -40,7 +41,7 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -51,7 +52,7 @@ class RoleController extends Controller
      */
     public function show(Role $roles)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -60,10 +61,9 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return Response
      */
+    #[Authorize('write', Role::class)]
     public function edit(Role $role)
     {
-        $this->authorize('write', Role::class);
-
         $permissions = Permission::all();
 
         return view('roles.edit', compact('role', 'permissions'));
@@ -99,6 +99,6 @@ class RoleController extends Controller
      */
     public function destroy(Role $roles)
     {
-        //
+        abort(404);
     }
 }

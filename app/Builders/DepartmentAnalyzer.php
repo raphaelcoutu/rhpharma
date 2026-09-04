@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Builders;
+namespace App\Builders;
 
 use App\Models\AssignedShift;
 use App\Models\Conflict;

@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AssignedShift extends Model
 {
@@ -19,17 +21,17 @@ class AssignedShift extends Model
 
     protected $guarded = [];
 
-    public function shift()
+    public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function scopeClearSchedule($query, Schedule $schedule)
+    public function scopeClearSchedule($query, Schedule $schedule): int
     {
         return $query->where('date', '>=', $schedule->start_date)
             ->where('date', '<=', $schedule->end_date)
@@ -38,7 +40,7 @@ class AssignedShift extends Model
             ->delete();
     }
 
-    public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
+    public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date): Builder
     {
         return $query->where(function ($query) use ($start_date, $end_date) {
             $query->where('date', '>=', $start_date->setTime(0, 0))
@@ -46,7 +48,7 @@ class AssignedShift extends Model
         });
     }
 
-    protected function serializeDate(DateTimeInterface $date)
+    protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
     }
