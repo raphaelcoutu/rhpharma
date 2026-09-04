@@ -3,102 +3,48 @@
 namespace App\Http\Controllers;
 
 use App\Models\Holiday;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
 class HolidayController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     #[Authorize('read', Holiday::class)]
-    public function index()
+    public function index(): InertiaResponse
     {
-        $holidays = Holiday::byDate()->get();
-
-        return view('holidays.index', compact('holidays'));
-    }
-
-    public function fetch()
-    {
-        return Holiday::byDate()->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        abort(404);
+        return Inertia::render('holidays/index', [
+            'holidays' => fn () => Holiday::byDate()->get(),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        Holiday::create($request->validate([
             'description' => 'required',
             'date' => 'required',
-        ]);
+        ]));
 
-        Holiday::create($request->all());
-
-        return response()->noContent();
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        abort(404);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return Holiday::find($id);
+        return to_route('holidays.index');
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Holiday $holiday): RedirectResponse
     {
-        // $request->validate($this->rules);
+        $holiday->update($request->validate([
+            'description' => 'required',
+            'date' => 'required',
+        ]));
 
-        Holiday::findOrFail($id)->update($request->all());
-
-        return response()->noContent();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        abort(404);
+        return to_route('holidays.index');
     }
 }
