@@ -71,6 +71,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Branches
     Route::get('branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::post('branches/store', [BranchController::class, 'store'])->name('branches.store');
+    Route::put('branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
 
     // Users
     Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -165,14 +167,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 require __DIR__.'/auth.php';
 
-// These browser-session endpoints keep their /api paths for client compatibility.
+// Other browser-session endpoints are used by legacy client-side components.
 Route::prefix('api')->middleware('auth')->group(function () {
-    // Branches
-    Route::get('branches', [BranchController::class, 'fetch']);
-    Route::post('branches/store', [BranchController::class, 'store']);
-    Route::get('branches/{id}', [BranchController::class, 'edit']);
-    Route::put('branches/{id}', [BranchController::class, 'update']);
-
     // Calendar
     Route::get('calendar/getShifts', [CalendarController::class, 'getShifts']);
     Route::get('calendar/getUserData', [CalendarController::class, 'getUserData']);

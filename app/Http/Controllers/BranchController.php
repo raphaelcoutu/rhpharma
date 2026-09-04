@@ -3,18 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class BranchController extends Controller
 {
-    protected $rules = [
-        'name' => 'required|min:3|unique:branches',
-    ];
-
     /**
      * Display a listing of the resource.
      */
@@ -22,34 +19,35 @@ class BranchController extends Controller
     {
         Gate::authorize('read', Branch::class);
 
-        $branches = Branch::withCount('users')->get();
-
-        return Inertia::render('branches/index', compact('branches'));
+        return Inertia::render('branches/index', [
+            'branches' => fn () => Branch::withCount('users')->get(),
+        ]);
     }
 
-    public function fetch(): Collection
+    public function store(Request $request): RedirectResponse
     {
-        return Branch::withCount('users')->get();
+        Gate::authorize('write', Branch::class);
+
+        Branch::create($request->validate([
+            'name' => ['required', 'min:3', 'unique:branches'],
+        ]));
+
+        return to_route('branches.index');
     }
 
-    public function store(Request $request)
+    public function update(Request $request, Branch $branch): RedirectResponse
     {
-        $request->validate($this->rules);
+        Gate::authorize('write', Branch::class);
 
-        Branch::create(['name' => $request->input(['name'])]);
+        $branch->update($request->validate([
+            'name' => [
+                'required',
+                'min:3',
+                Rule::unique('branches')->ignore($branch),
+            ],
+        ]));
 
-    }
-
-    public function edit($id)
-    {
-        return Branch::find($id);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate($this->rules);
-
-        Branch::findOrFail($id)->update($request->all());
+        return to_route('branches.index');
     }
 
     public function destroy($id)

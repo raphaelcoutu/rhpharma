@@ -4,7 +4,7 @@ import SecondaryButton from '@/components/secondary-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import { Head, useHttp } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { ArrowDown, ArrowUp, ArrowUpDown, GitBranch, Pencil, Plus, Search, Users, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -46,26 +46,24 @@ function SortableHeader({ label, sortKey, activeSortKey, direction, onSort }) {
 }
 
 export default function Index({ branches = [] }) {
-    const [branchRows, setBranchRows] = useState(branches);
     const [search, setSearch] = useState('');
     const [sortKey, setSortKey] = useState('name');
     const [sortDirection, setSortDirection] = useState('asc');
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [editingBranch, setEditingBranch] = useState(null);
     const [requestError, setRequestError] = useState('');
-    const [isRefreshing, setIsRefreshing] = useState(false);
 
-    const { data, setData, get, post, put, processing, errors, clearErrors, resetAndClearErrors } = useHttp({ name: '' });
+    const { data, setData, post, put, processing, errors, clearErrors, reset } = useForm({ name: '' });
 
     const filteredBranches = useMemo(() => {
         const query = normalize(search.trim());
 
         if (!query) {
-            return branchRows;
+            return branches;
         }
 
-        return branchRows.filter((branch) => normalize(branch.name).includes(query));
-    }, [branchRows, search]);
+        return branches.filter((branch) => normalize(branch.name).includes(query));
+    }, [branches, search]);
 
     const sortedBranches = useMemo(() => {
         return [...filteredBranches].sort((firstBranch, secondBranch) => {
@@ -77,7 +75,7 @@ export default function Index({ branches = [] }) {
         });
     }, [filteredBranches, sortDirection, sortKey]);
 
-    const totalUsers = branchRows.reduce((total, branch) => total + Number(branch.users_count ?? 0), 0);
+    const totalUsers = branches.reduce((total, branch) => total + Number(branch.users_count ?? 0), 0);
 
     function handleSort(nextSortKey) {
         if (sortKey === nextSortKey) {
@@ -89,26 +87,9 @@ export default function Index({ branches = [] }) {
         setSortDirection('asc');
     }
 
-    async function refreshBranches() {
-        setIsRefreshing(true);
-        setRequestError('');
-
-        try {
-            const response = await get('/api/branches');
-
-            if (Array.isArray(response)) {
-                setBranchRows(response);
-            }
-        } catch {
-            setRequestError('Les branches n’ont pas pu être actualisées.');
-        } finally {
-            setIsRefreshing(false);
-        }
-    }
-
     function showCreateForm() {
-        resetAndClearErrors();
-        setData('name', '');
+        reset();
+        clearErrors();
         setEditingBranch(null);
         setRequestError('');
         setIsFormVisible(true);
@@ -123,34 +104,34 @@ export default function Index({ branches = [] }) {
     }
 
     function hideForm() {
-        resetAndClearErrors();
-        setData('name', '');
+        reset();
+        clearErrors();
         setEditingBranch(null);
         setRequestError('');
         setIsFormVisible(false);
     }
 
-    async function handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
         setRequestError('');
 
-        const submit = editingBranch ? put : post;
-        const endpoint = editingBranch ? `/api/branches/${editingBranch.id}` : '/api/branches/store';
-        let response;
+        const options = {
+            only: ['branches'],
+            preserveScroll: true,
+            onSuccess: hideForm,
+            onError: (formErrors) => {
+                if (Object.keys(formErrors).length === 0) {
+                    setRequestError('La branche n’a pas pu être enregistrée.');
+                }
+            },
+        };
 
-        try {
-            response = await submit(endpoint);
-        } catch {
-            setRequestError('La branche n’a pas pu être enregistrée.');
+        if (editingBranch) {
+            put(route('branches.update', editingBranch.id), options);
             return;
         }
 
-        if (response === undefined) {
-            return;
-        }
-
-        hideForm();
-        await refreshBranches();
+        post(route('branches.store'), options);
     }
 
     return (
@@ -183,7 +164,7 @@ export default function Index({ branches = [] }) {
                             <div className="flex items-center justify-between gap-4">
                                 <div>
                                     <p className="text-sm font-medium text-gray-500">Branches enregistrées</p>
-                                    <p className="mt-2 text-3xl font-semibold text-gray-900">{branchRows.length}</p>
+                                    <p className="mt-2 text-3xl font-semibold text-gray-900">{branches.length}</p>
                                 </div>
                                 <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
                                     <GitBranch className="h-5 w-5" />
@@ -359,7 +340,6 @@ export default function Index({ branches = [] }) {
                                 </tbody>
                             </table>
                         </div>
-                        {isRefreshing && <p className="border-t border-gray-100 px-6 py-3 text-sm text-gray-500">Actualisation...</p>}
                     </section>
                 </div>
             </div>
