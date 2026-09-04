@@ -4,46 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ShiftTypeRequest;
 use App\Models\ShiftType;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ShiftTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    #[Authorize('read', ShiftType::class)]
-    public function index()
+    public function index(): Response
     {
-        $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get();
+        Gate::authorize('read', ShiftType::class);
 
-        return view('shiftTypes.index', compact('shiftTypes'));
+        $shiftTypes = ShiftType::ownBranch()
+            ->select(['id', 'name', 'start_time', 'end_time'])
+            ->orderBy('name')
+            ->get();
+
+        return Inertia::render('shiftTypes/index', [
+            'shiftTypes' => $shiftTypes,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): Response
     {
-        return view('shiftTypes.create');
+        Gate::authorize('write', ShiftType::class);
+
+        return Inertia::render('shiftTypes/create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(ShiftTypeRequest $request)
+    public function store(ShiftTypeRequest $request): RedirectResponse
     {
-        ShiftType::create($request->all());
+        Gate::authorize('write', ShiftType::class);
 
-        return redirect('shiftTypes');
+        ShiftType::create([
+            ...$request->validated(),
+            'branch_id' => $request->user()->branch->id,
+        ]);
+
+        return redirect()->route('shiftTypes.index');
     }
 
     /**
@@ -61,26 +68,28 @@ class ShiftTypeController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
      */
-    #[Authorize('write', ShiftType::class)]
-    public function edit(ShiftType $shiftType)
+    public function edit(ShiftType $shiftType): Response
     {
-        return view('shiftTypes.edit', ['shiftType' => $shiftType]);
+        Gate::authorize('write', ShiftType::class);
+        $shiftType = ShiftType::ownBranch()->findOrFail($shiftType->id);
+
+        return Inertia::render('shiftTypes/edit', [
+            'shiftType' => $shiftType,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(ShiftTypeRequest $request, ShiftType $shiftType)
+    public function update(ShiftTypeRequest $request, ShiftType $shiftType): RedirectResponse
     {
-        $shiftType->update($request->all());
+        Gate::authorize('write', ShiftType::class);
+        $shiftType = ShiftType::ownBranch()->findOrFail($shiftType->id);
 
-        return redirect('shiftTypes');
+        $shiftType->update($request->validated());
+
+        return redirect()->route('shiftTypes.index');
     }
 
     /**

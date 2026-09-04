@@ -48,6 +48,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Lieux de travail
                                 </NavLink>
+                                <NavLink
+                                    href={route('shiftTypes.index')}
+                                    active={route().current('shiftTypes.*')}
+                                >
+                                    Types de shifts
+                                </NavLink>
                             </div>
                         </div>
 
@@ -158,6 +164,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('workplaces.*')}
                         >
                             Lieux de travail
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('shiftTypes.index')}
+                            active={route().current('shiftTypes.*')}
+                        >
+                            Types de shifts
                         </ResponsiveNavLink>
                     </div>
 

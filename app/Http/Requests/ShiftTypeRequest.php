@@ -8,27 +8,21 @@ class ShiftTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        $this->request->add(['branch_id' => \Auth::user()->branch->id]);
-
         return [
-            'name' => 'required',
-            'start_time' => 'required|date_format:"H:i:s"',
-            'end_time' => 'required|date_format:"H:i:s"',
+            'name' => ['required', 'string'],
+            'start_time' => ['required', 'date_format:H:i:s'],
+            'end_time' => ['required', 'date_format:H:i:s'],
         ];
     }
 }
