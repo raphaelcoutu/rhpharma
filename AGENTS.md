@@ -194,3 +194,12 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 - IMPORTANT: Activate `inertia-react-development` when working with Inertia React client-side patterns.
 
 </laravel-boost-guidelines>
+
+## Demo account
+
+Use the demo account for browser testing.
+
+Email: agent@example.test
+Password: @i-agent-Password!
+
+If account is not available, you can use `php artisan db:seed --class AgentUserSeeder.php` to provision database.
