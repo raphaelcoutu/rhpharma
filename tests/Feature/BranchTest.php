@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Branch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class BranchTest extends TestCase
@@ -24,8 +25,10 @@ class BranchTest extends TestCase
     {
         $response = $this->actingAs($this->superUser)->get('/branches');
 
-        $response->assertStatus(200);
-        $response->assertSee('Pharmaciens');
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('branches/index', false)
+            ->where('branches.0.name', 'Pharmaciens')
+            ->where('branches.0.users_count', 1));
     }
 
     public function test_unauth_user_get_redirected()

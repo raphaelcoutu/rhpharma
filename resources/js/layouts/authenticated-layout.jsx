@@ -31,6 +31,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Accueil
                                 </NavLink>
                                 <NavLink
+                                    href={route('branches.index')}
+                                    active={route().current('branches.index')}
+                                >
+                                    Branches
+                                </NavLink>
+                                <NavLink
                                     href={route('users.index')}
                                     active={route().current('users.index')}
                                 >
@@ -158,6 +164,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('home')}
                         >
                             Accueil
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('branches.index')}
+                            active={route().current('branches.index')}
+                        >
+                            Branches
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             href={route('workplaces.index')}

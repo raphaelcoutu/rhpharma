@@ -31,6 +31,7 @@ class BranchApiTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertJsonPath('0.name', 'Pharmaciens');
+        $response->assertJsonPath('0.users_count', 1);
     }
 
     public function test_get_branch()
