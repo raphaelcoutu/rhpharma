@@ -63,9 +63,9 @@ class CalendarController extends Controller
         $shiftsToAdd = collect($request->shifts)->whereNotIn(null, $intersect);
         $actualShiftsToRemove = $actualShifts->whereNotIn(null, $intersect);
 
-        if($shiftsToAdd->count() > 0) {
+        if ($shiftsToAdd->count() > 0) {
             $add = [];
-            foreach($shiftsToAdd as $shift) {
+            foreach ($shiftsToAdd as $shift) {
                 $add[] = [
                     'user_id' => $request->user_id,
                     'shift_id' => $shift,
@@ -80,7 +80,7 @@ class CalendarController extends Controller
             AssignedShift::insert($add);
         }
 
-        if($actualShiftsToRemove->count() > 0) {
+        if ($actualShiftsToRemove->count() > 0) {
             AssignedShift::where('user_id', $request->user_id)
                 ->where('date', $request->date)
                 ->whereIn('shift_id', $actualShiftsToRemove)
@@ -89,7 +89,7 @@ class CalendarController extends Controller
 
         return AssignedShift::with('shift')
             ->where('user_id', $request->user_id)
-                ->where('date', $request->date)->get();
+            ->where('date', $request->date)->get();
     }
 
     public function getShifts()
@@ -106,8 +106,8 @@ class CalendarController extends Controller
         }
 
         $add = [];
-        foreach($request['shifts'] as $shift) {
-            foreach($request['selected'] as $selected) {
+        foreach ($request['shifts'] as $shift) {
+            foreach ($request['selected'] as $selected) {
                 $add[] = [
                     'user_id' => $selected['user_id'],
                     'shift_id' => $shift,
@@ -125,12 +125,13 @@ class CalendarController extends Controller
         return $add;
     }
 
-    private function query($scheduleId, $departmentIds = null) {
+    private function query($scheduleId, $departmentIds = null)
+    {
         $schedule = Schedule::findOrFail($scheduleId);
 
-        $users = User::with(['assignedShifts' => function($query) use ($schedule) {
+        $users = User::with(['assignedShifts' => function ($query) use ($schedule) {
             $query->InDateInterval($schedule->start_date, $schedule->end_date);
-        }, 'constraints' => function($query) use ($schedule) {
+        }, 'constraints' => function ($query) use ($schedule) {
             $query->InDateInterval($schedule->start_date, $schedule->end_date)
                 ->where('status', 1)
                 ->whereHas('constraintType', function ($query) {
@@ -138,8 +139,8 @@ class CalendarController extends Controller
                 });
         }, 'assignedShifts.shift', 'constraints.constraintType'])->ownBranch()->where('is_active', 1);
 
-        if($departmentIds) {
-            $departmentIds = explode(",", $departmentIds);
+        if ($departmentIds) {
+            $departmentIds = explode(',', $departmentIds);
             $users = $users->whereHas('departments', function ($query) use ($departmentIds) {
                 $query->whereIn('department_id', $departmentIds);
             });
@@ -152,7 +153,7 @@ class CalendarController extends Controller
         return [
             'schedule' => $schedule,
             'users' => $users,
-            'departments' => $departments
+            'departments' => $departments,
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\DepartmentType;
-use App\Models\User;
 use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -15,7 +14,8 @@ class WorkplaceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -38,7 +38,7 @@ class WorkplaceTest extends TestCase
         $workplace = Workplace::factory()->create([
             'name' => 'CHUS HF',
             'address' => '12e Ave Nord',
-            'city' => 'Sherbrooke'
+            'city' => 'Sherbrooke',
         ]);
         $departmentType = DepartmentType::create(['name' => 'Clinique']);
         Department::factory()->create([
@@ -79,7 +79,7 @@ class WorkplaceTest extends TestCase
                 'city' => 'Sherbrooke',
                 'province' => 'QC',
                 'country' => 'Canada',
-                'postal_code' => 'J1J 1J1'
+                'postal_code' => 'J1J 1J1',
             ]);
 
         $response->assertRedirect('/workplaces');

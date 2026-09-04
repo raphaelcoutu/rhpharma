@@ -18,7 +18,8 @@ class ConstraintTest extends TestCase
 
     private $schedule;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $branch = Branch::create(['name' => 'Pharmaciens']);
@@ -32,8 +33,8 @@ class ConstraintTest extends TestCase
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
-         ]);
+            'is_day_in_schedule' => 0,
+        ]);
 
         $this->schedule = Schedule::create([
             'name' => 'En cours',
@@ -41,7 +42,7 @@ class ConstraintTest extends TestCase
             'limit_date_weekends' => Carbon::parse('2017-10-01'),
             'start_date' => Carbon::parse('2017-11-01'),
             'end_date' => Carbon::parse('2017-11-30'),
-            'branch_id' => $branch->id
+            'branch_id' => $branch->id,
         ]);
     }
 
@@ -51,7 +52,7 @@ class ConstraintTest extends TestCase
         $constraint_single_inside = Constraint::factory()->create([
             'start_datetime' => Carbon::parse('2017-11-15 08:00'),
             'end_datetime' => Carbon::parse('2017-11-15 16:00'),
-            ]);
+        ]);
         $constraint_range_inside = Constraint::factory()->create([
             'start_datetime' => Carbon::parse('2017-11-10 08:00'),
             'end_datetime' => Carbon::parse('2017-11-17 16:00'),
@@ -105,12 +106,12 @@ class ConstraintTest extends TestCase
     {
         $constraint_validated = Constraint::factory()->create([
             'status' => 1,
-            'validated_by' => 1
+            'validated_by' => 1,
         ]);
 
         $constraint_unvalidated = Constraint::factory()->create([
             'status' => 0,
-            'validated_by' => null
+            'validated_by' => null,
         ]);
 
         $unvalidated = Constraint::unvalidated()->get();

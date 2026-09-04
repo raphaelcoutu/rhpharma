@@ -28,7 +28,7 @@ class ShiftRequest extends FormRequest
         return [
             'code' => 'required',
             'department_id' => 'required',
-            'shift_type_id' => 'required'
+            'shift_type_id' => 'required',
         ];
     }
 }

@@ -16,7 +16,8 @@ class SettingTest extends TestCase
 
     private $workplace;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -27,7 +28,7 @@ class SettingTest extends TestCase
             'name' => 'CHUS HF',
             'code' => 'HF',
             'address' => '12e Ave Nord',
-            'city' => 'Sherbrooke'
+            'city' => 'Sherbrooke',
         ]);
     }
 
@@ -44,7 +45,7 @@ class SettingTest extends TestCase
         Setting::updateOrCreate(['key' => 'triplets_order'], ['value' => json_encode([])]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/settings");
+            ->get('/settings');
 
         $response->assertStatus(200);
     }
@@ -54,7 +55,7 @@ class SettingTest extends TestCase
         $departments = ConstraintType::factory()->count(5)->create();
 
         $response = $this->actingAs($this->superUser)
-            ->get("/settings/constraintTypes");
+            ->get('/settings/constraintTypes');
 
         $response->assertStatus(200);
     }
@@ -64,7 +65,7 @@ class SettingTest extends TestCase
         $departments = Department::factory()->count(5)->create();
 
         $response = $this->actingAs($this->superUser)
-            ->get("/settings/departments");
+            ->get('/settings/departments');
 
         $response->assertStatus(200);
     }

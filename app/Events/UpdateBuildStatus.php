@@ -10,15 +10,17 @@ use Illuminate\Queue\SerializesModels;
 
 /**
  * Class UpdateBuildStatus
- * @package App\Events
  */
 class UpdateBuildStatus implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $scheduleId;
+
     public $buildStep;
+
     public $status;
+
     public $message;
 
     /**
@@ -43,7 +45,7 @@ class UpdateBuildStatus implements ShouldBroadcastNow
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
     public function broadcastOn()
     {

@@ -30,18 +30,21 @@ abstract class TestCase extends BaseTestCase
     protected function getAjax($uri, $headers = []): TestResponse
     {
         $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+
         return $this->getJson($uri, array_merge($headers, $ajaxHeader));
     }
 
     protected function postAjax($uri, array $data = [], array $headers = []): TestResponse
     {
         $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+
         return $this->postJson($uri, $data, array_merge($headers, $ajaxHeader));
     }
 
     protected function putAjax($uri, array $data = [], array $headers = []): TestResponse
     {
         $ajaxHeader = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+
         return $this->putJson($uri, $data, array_merge($headers, $ajaxHeader));
     }
 }

@@ -22,8 +22,6 @@ class GenerateStatsByDepartments implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @param $scheduleId
      */
     public function __construct($scheduleId)
     {
@@ -46,12 +44,12 @@ class GenerateStatsByDepartments implements ShouldQueue
         $departments = Department::with(['users'])->get();
         $stats = collect([]);
 
-        foreach([24,25,26,27,28] as $index => $onco) {
+        foreach ([24, 25, 26, 27, 28] as $index => $onco) {
             $department = $departments->firstWhere('id', $onco);
             $activeUsers = $department->users->where('pivot.active', 1);
             $departmentStats = collect([]);
 
-            foreach($activeUsers as $user) {
+            foreach ($activeUsers as $user) {
                 $hours = 0;
 
                 // Tous les shifts assignés dont l'utilisateur est $user et dont le shift est inclus au $department
@@ -59,7 +57,7 @@ class GenerateStatsByDepartments implements ShouldQueue
                     ->where('user_id', $user->id)
                     ->whereIn('shift_id', $department->shifts->pluck('id'));
 
-                foreach($departmentUserShifts as $assignedShift) {
+                foreach ($departmentUserShifts as $assignedShift) {
                     $start = Carbon::parse($assignedShift->shift->shiftType->start_time);
                     $end = Carbon::parse($assignedShift->shift->shiftType->end_time);
 
@@ -74,7 +72,7 @@ class GenerateStatsByDepartments implements ShouldQueue
         $statistic = Statistic::create([
             'schedule_id' => $this->scheduleId,
             'type' => 'department',
-            'content' => $stats->toJson()
+            'content' => $stats->toJson(),
         ]);
 
         event(new StatsByDepartmentsGenerated($this->scheduleId, $statistic->id));

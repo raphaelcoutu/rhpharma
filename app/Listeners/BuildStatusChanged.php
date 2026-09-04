@@ -26,38 +26,37 @@ class BuildStatusChanged
     /**
      * Handle the event.
      *
-     * @param  UpdateBuildStatus  $event
      * @return void
      */
     public function handle(UpdateBuildStatus $event)
     {
         $schedule = Schedule::findOrFail($event->scheduleId);
 
-        if($event->buildStep == 'clinical') {
-            //On update database (peu importe le status, tant qu'il existe!)
-            if($event->status >= 0 && $event->status <= 6) {
+        if ($event->buildStep == 'clinical') {
+            // On update database (peu importe le status, tant qu'il existe!)
+            if ($event->status >= 0 && $event->status <= 6) {
                 $schedule->status_clinical_departments = $event->status;
                 $schedule->update();
             }
 
-            if($event->status === BuildStatus::Build) {
-                //Start job
+            if ($event->status === BuildStatus::Build) {
+                // Start job
                 (new BuildClinicalDepartments($event))->handle();
             }
 
-            if($event->status === BuildStatus::Analyze) {
+            if ($event->status === BuildStatus::Analyze) {
                 (new AnalyzeClinicalDepartments($event))->handle();
             }
 
-            if($event->status === BuildStatus::Reset) {
+            if ($event->status === BuildStatus::Reset) {
                 (new ResetClinicalDepartments($event))->handle();
             }
-        } else if ($event->buildStep == 'last_evening') {
-            if($event->status === BuildStatus::Build) {
+        } elseif ($event->buildStep == 'last_evening') {
+            if ($event->status === BuildStatus::Build) {
                 AssignPreWeekendConstraint::dispatch($event);
             }
-        } else if ($event->buildStep == 'weekends') {
-            if($event->status === BuildStatus::Build) {
+        } elseif ($event->buildStep == 'weekends') {
+            if ($event->status === BuildStatus::Build) {
                 CompleteWeekendsAndDaysOff::dispatch($event);
             }
 

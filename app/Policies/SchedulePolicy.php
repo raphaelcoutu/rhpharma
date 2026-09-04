@@ -10,5 +10,6 @@ class SchedulePolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadSchedules;
+
     private $permissionWriteCode = PermissionEnum::WriteSchedules;
 }

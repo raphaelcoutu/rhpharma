@@ -10,8 +10,11 @@ use App\Models\Schedule;
 class DepartmentAnalyzer
 {
     protected $schedule;
+
     protected $departmentId;
+
     protected $holidays;
+
     protected $shifts;
 
     protected $conflicts;
@@ -51,9 +54,9 @@ class DepartmentAnalyzer
             // Si le jour est un férié
             // Si département VIH et que le vendredi est vide
             // => On skip.
-            if(!$this->shifts->contains('date', $iterateDay) && !in_array($iterateDay->format('w'), ["0", "6"], true)
-                && !$this->holidays->contains('date', $iterateDay)
-                && !($this->departmentId === 7 && $iterateDay->dayOfWeek === 5)) {
+            if (! $this->shifts->contains('date', $iterateDay) && ! in_array($iterateDay->format('w'), ['0', '6'], true)
+                && ! $this->holidays->contains('date', $iterateDay)
+                && ! ($this->departmentId === 7 && $iterateDay->dayOfWeek === 5)) {
                 $newConflict = new Conflict([
                     'schedule_id' => $this->schedule->id,
                     'department_id' => $this->departmentId,
@@ -62,7 +65,7 @@ class DepartmentAnalyzer
                     'end_date' => null,
                     'message' => 'Pharmacien manquant',
                     'created_at' => new \DateTime,
-                    'updated_at' => new \DateTime
+                    'updated_at' => new \DateTime,
                 ]);
             }
 
@@ -74,15 +77,15 @@ class DepartmentAnalyzer
             }
 
             // Si le range n'est pas vide et qu'on a plus d'erreur, on push les conflits
-            else if ($newConflict == null && $conflictRange->isNotEmpty()) {
+            elseif ($newConflict == null && $conflictRange->isNotEmpty()) {
                 // On choisi le premier conflit et on lui ajoute une date de fin.
                 $conflict = $conflictRange->first();
-                if($conflictRange->count() > 1) {
+                if ($conflictRange->count() > 1) {
                     $conflict->end_date = $conflictRange->last()->start_date;
                     $conflict->severity = 1;
                 }
 
-                if($conflictRange->count() > 3) {
+                if ($conflictRange->count() > 3) {
                     $conflict->severity = 2;
                 }
 

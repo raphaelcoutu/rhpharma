@@ -11,6 +11,6 @@ class BuildController extends Controller
     {
         event(new UpdateBuildStatus($request->scheduleId, $request->buildStep, $request->status));
 
-        return response("OK", 200);
+        return response('OK', 200);
     }
 }

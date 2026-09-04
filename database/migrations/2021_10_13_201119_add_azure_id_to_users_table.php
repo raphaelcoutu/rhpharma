@@ -15,9 +15,9 @@ class AddAzureIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedInteger('azure_id')
-                    ->nullable()
-                    ->unique()
-                    ->after('id');
+                ->nullable()
+                ->unique()
+                ->after('id');
         });
     }
 

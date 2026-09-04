@@ -17,8 +17,7 @@ class StatsByDepartmentsGenerated implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param $scheduleId
-     * @param $statisticId
+     * @param  $statisticId
      */
     public function __construct($scheduleId)
     {
@@ -28,7 +27,7 @@ class StatsByDepartmentsGenerated implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
     public function broadcastOn()
     {

@@ -10,5 +10,6 @@ class ShiftPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadShifts;
+
     private $permissionWriteCode = PermissionEnum::WriteShifts;
 }

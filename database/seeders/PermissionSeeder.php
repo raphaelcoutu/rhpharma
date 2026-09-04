@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    static $permissions = [
+    public static $permissions = [
         ['code' => 'ReadBranches'],
         ['code' => 'WriteBranches'],
         ['code' => 'ReadUsers'],
@@ -41,7 +41,7 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        foreach(self::$permissions as $perm) {
+        foreach (self::$permissions as $perm) {
             $p = Permission::create($perm);
         }
     }

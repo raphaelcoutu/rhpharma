@@ -19,7 +19,8 @@ class ConstraintImporterTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -35,7 +36,7 @@ class ConstraintImporterTest extends TestCase
             'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
             'limit_date' => Carbon::now()->addWeek()->next('Friday'),
             'start_date' => Carbon::parse($this->start_date),
-            'end_date' => Carbon::parse($this->end_date)->setTime(23,59,59)
+            'end_date' => Carbon::parse($this->end_date)->setTime(23, 59, 59),
         ]);
     }
 
@@ -68,7 +69,7 @@ class ConstraintImporterTest extends TestCase
 
         $this->mock(AzureRepository::class, function (MockInterface $mock) {
             $mock->shouldReceive('constraints')->once()->andReturn([
-                $this->constraint(50, 1000)
+                $this->constraint(50, 1000),
             ]);
         });
 
@@ -109,7 +110,7 @@ class ConstraintImporterTest extends TestCase
             $mock->shouldReceive('constraints')->once()->andReturn([
                 $this->constraint(50, 1000),
                 $this->constraint(51, 1000),
-                $this->constraint(50, 1001)
+                $this->constraint(50, 1001),
             ]);
             $mock->shouldReceive('usersByIds')->once()->with([1000, 1001])->andReturn([]);
         });
@@ -119,14 +120,14 @@ class ConstraintImporterTest extends TestCase
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(302);
-        $response->assertSessionHas('missingUsers', function($missingUsers) {
+        $response->assertSessionHas('missingUsers', function ($missingUsers) {
             return count($missingUsers) == 2;
         });
     }
 
     public function test_unauth_user_get_redirected()
     {
-        $response = $this->get("/constraintImporter");
+        $response = $this->get('/constraintImporter');
 
         $response->assertRedirect('/login');
     }
@@ -144,7 +145,7 @@ class ConstraintImporterTest extends TestCase
             'LastName' => $lastName,
             'Constraint_id' => $this->faker->randomNumber(4),
             'StartDate' => Carbon::now()->addWeek()->format('Y-m-d H:i:s.u'),
-            'EndDate' => Carbon::now()->addWeek()->setTime(23,59,59)->format('Y-m-d H:i:s.u'),
+            'EndDate' => Carbon::now()->addWeek()->setTime(23, 59, 59)->format('Y-m-d H:i:s.u'),
             'Weight' => false,
             'Comment' => '',
             'Status' => 1,
@@ -155,7 +156,7 @@ class ConstraintImporterTest extends TestCase
             'Day1' => null,
             'Discriminator' => 'Constraint',
             'ConstraintType_id' => $constraintTypeId,
-            'Name' => $this->faker->sentence(4)
+            'Name' => $this->faker->sentence(4),
         ];
     }
 
@@ -183,7 +184,7 @@ class ConstraintImporterTest extends TestCase
         return [
             'Id' => $this->faker->randomNumber(5),
             'FirstName' => $this->faker->firstName(),
-            'LastName' => $this->faker->lastName()
+            'LastName' => $this->faker->lastName(),
         ];
     }
 }

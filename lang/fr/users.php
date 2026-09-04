@@ -3,6 +3,6 @@
 return [
 
     'title' => 'Utilisateurs',
-    'add_user' => 'Ajouter un utilisateur'
+    'add_user' => 'Ajouter un utilisateur',
 
 ];

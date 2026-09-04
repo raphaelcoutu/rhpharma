@@ -2,13 +2,13 @@
 
 namespace App\Builders;
 
-
 use App\Models\AssignedShift;
 use Illuminate\Support\Facades\Log;
 
 class GenericBuilder extends BaseBuilder
 {
     private $bonus;
+
     private $malus;
 
     private $weekCount;
@@ -37,7 +37,7 @@ class GenericBuilder extends BaseBuilder
         $this->scores = $this->precalculation->calculateScore($ids, $departmentId);
 
         $this->combinaisons = $this->optimizedSampling($ids, $this->weeksCount);
-        //todo: ajouter le dernier pharmacien à faire la semaine ICI
+        // todo: ajouter le dernier pharmacien à faire la semaine ICI
         $this->removeUsedSequence();
 
         $this->selectSequence();
@@ -45,8 +45,8 @@ class GenericBuilder extends BaseBuilder
         // Correction pour les 4 jours par semaine
         $this->partialTimeCorrection();
 
-        Log::debug('Department Id : ' . $departmentId . ' - Memory usage ' . round(memory_get_usage() / pow(1024,2),2) . ' Mo'
-            . ' (' . round(microtime(true) - $start, 2) . 's)');
+        Log::debug('Department Id : '.$departmentId.' - Memory usage '.round(memory_get_usage() / pow(1024, 2), 2).' Mo'
+            .' ('.round(microtime(true) - $start, 2).'s)');
 
         // Comment For Debug Only:
         $this->combinaisons = [];
@@ -61,20 +61,20 @@ class GenericBuilder extends BaseBuilder
         foreach ($this->combinaisons as &$combinaison) {
             foreach ($combinaison['count'] as $pharmId => $count) {
 
-                    $diff = $allocatedWeeks[$pharmId] - $count;
+                $diff = $allocatedWeeks[$pharmId] - $count;
 
-                    if ($diff >= 0) {
-                        // Différentiel à allouer supérieur ou égal à la combine
-                        $combinaison['score'] += $count * 5;
-                    } else {
-                        // Différentiel à allouer inférieur à la combine
-                        $combinaison['score'] += $diff * 10;
-                    }
+                if ($diff >= 0) {
+                    // Différentiel à allouer supérieur ou égal à la combine
+                    $combinaison['score'] += $count * 5;
+                } else {
+                    // Différentiel à allouer inférieur à la combine
+                    $combinaison['score'] += $diff * 10;
+                }
             }
         }
 
-        //todo: screen les dernières semaines pour déterminer le bonus
-        //TODO: aller voir les dernières semaines dans la base de donnée
+        // todo: screen les dernières semaines pour déterminer le bonus
+        // TODO: aller voir les dernières semaines dans la base de donnée
 
         // Trier les séquences par scores desc.
         $this->sortByScores();
@@ -84,16 +84,16 @@ class GenericBuilder extends BaseBuilder
             // S'il y a un pharmacien ajouté manuellement, vérifier s'il existe dans une séquence
             for ($i = 0; $i < $this->weeksCount; $i++) {
                 $this->manualWeeks->each(function ($week) use ($i) {
-                    if($i == $week) {
-                        $temp = explode(",", $this->selectedCombinaison["sequence"]);
+                    if ($i == $week) {
+                        $temp = explode(',', $this->selectedCombinaison['sequence']);
                         $temp[$i] = null;
 
-                        $this->selectedCombinaison["sequence"] = implode(",", $temp);
+                        $this->selectedCombinaison['sequence'] = implode(',', $temp);
                     }
                 });
             }
 
-            //Retirer les semaines allouées des allocated
+            // Retirer les semaines allouées des allocated
             foreach ($this->selectedCombinaison['count'] as $pharmId => $count) {
                 $allocatedWeeks[$pharmId] -= $count;
             }
@@ -106,15 +106,15 @@ class GenericBuilder extends BaseBuilder
 
     private function bonusMalusPrecedingGroup($group)
     {
-        for($i = 0; $i < count($this->combinaisons[$group]); $i++) {
+        for ($i = 0; $i < count($this->combinaisons[$group]); $i++) {
 
             // Nombre de séquences consécutives (au début de nouvelle séquence)
             $split = explode(',', $this->combinaisons[$group][$i]['sequence']);
             $first = $split[0];
 
             $consecutive = 1;
-            for($j = 1; $j < count($split); $j++) {
-                if($split[$j] == $first) {
+            for ($j = 1; $j < count($split); $j++) {
+                if ($split[$j] == $first) {
                     $consecutive++;
                 } else {
                     break;
@@ -122,10 +122,12 @@ class GenericBuilder extends BaseBuilder
             }
 
             // Nombre de séquences consécutives (à la fin de séquence précédente)
-            if(!isset($this->precalculation->scheduleWeeks[$this->departmentId])) continue;
+            if (! isset($this->precalculation->scheduleWeeks[$this->departmentId])) {
+                continue;
+            }
             $lastSequence = $this->precalculation->scheduleWeeks[$this->departmentId];
-            for($j = count($lastSequence) - 1; $j >= 0; $j--) {
-                if($lastSequence[$j] == $first) {
+            for ($j = count($lastSequence) - 1; $j >= 0; $j--) {
+                if ($lastSequence[$j] == $first) {
                     $consecutive++;
                 } else {
 
@@ -136,10 +138,12 @@ class GenericBuilder extends BaseBuilder
             // Pour debug only:
             $this->combinaisons[$group][$i]['consecutive'] = $consecutive;
 
-            if($consecutive >= $this->bonus['weeks'])
+            if ($consecutive >= $this->bonus['weeks']) {
                 $this->combinaisons[$group][$i]['score'] += $this->bonus['pts'];
-            if($consecutive >= $this->malus['weeks'])
+            }
+            if ($consecutive >= $this->malus['weeks']) {
                 $this->combinaisons[$group][$i]['score'] -= $this->malus['pts'];
+            }
         }
     }
 
@@ -148,7 +152,7 @@ class GenericBuilder extends BaseBuilder
         $combinaisonsToUnset = [];
         for ($i = 0; $i < count($this->combinaisons); $i++) {
             $splitSequence = explode(',', $this->combinaisons[$i]['sequence']);
-            if (!empty($this->precalculation->scheduleWeeks)) {
+            if (! empty($this->precalculation->scheduleWeeks)) {
                 foreach ($this->precalculation->scheduleWeeks as $department) {
                     for ($week = 0; $week < count($splitSequence); $week++) {
                         if (isset($department[$week])
@@ -173,7 +177,7 @@ class GenericBuilder extends BaseBuilder
     private function calculateScores()
     {
         for ($i = 0; $i < count($this->combinaisons); $i++) {
-            $sequence = explode(',', $this->combinaisons[$i]["sequence"]);
+            $sequence = explode(',', $this->combinaisons[$i]['sequence']);
             $result = 0;
             $week = 0;
 
@@ -194,7 +198,7 @@ class GenericBuilder extends BaseBuilder
                     }
 
                 } else {
-                    //Ici on ce n'est plus le même pharmacien, donc on reset le décompte
+                    // Ici on ce n'est plus le même pharmacien, donc on reset le décompte
                     $lastSeq = $id;
                     $consecutiveCount = 1;
                 }
@@ -202,8 +206,8 @@ class GenericBuilder extends BaseBuilder
                 $week++;
             }
 
-            $this->combinaisons[$i]["count"] = array_count_values($sequence);
-            $this->combinaisons[$i]["score"] = $result;
+            $this->combinaisons[$i]['count'] = array_count_values($sequence);
+            $this->combinaisons[$i]['score'] = $result;
         }
 
     }
@@ -219,11 +223,10 @@ class GenericBuilder extends BaseBuilder
     {
         // On sélectionne les pharmaciens (> 3 jours/sem) qui font parti de ce secteur
         return $this->precalculation->pharmaciens->filter(function ($pharmacien) use ($departmentId) {
-            if ($pharmacien->workdays_per_week > 3 && !$pharmacien->is_manual) {
-                foreach($pharmacien->departments as $department)
-                {
+            if ($pharmacien->workdays_per_week > 3 && ! $pharmacien->is_manual) {
+                foreach ($pharmacien->departments as $department) {
                     // Si c'est l'actuel departmentId et le pharmacien est actif dans ce secteur
-                    if($department->id == $departmentId && $department->pivot->active === 1) {
+                    if ($department->id == $departmentId && $department->pivot->active === 1) {
                         return true;
                     }
                 }
@@ -245,9 +248,9 @@ class GenericBuilder extends BaseBuilder
         $endDate = $this->precalculation->schedule->end_date;
 
         return AssignedShift::InDateInterval($startDate, $endDate)
-        ->whereHas('shift', function ($query) {
-            $query->where('department_id', $this->departmentId);
-        })->get()
+            ->whereHas('shift', function ($query) {
+                $query->where('department_id', $this->departmentId);
+            })->get()
             ->map(function ($shift) {
                 return $shift['week'] = $shift->date->diffInWeeks($this->precalculation->schedule->start_date);
             })->unique();
@@ -258,7 +261,9 @@ class GenericBuilder extends BaseBuilder
         // On parcours chacune des semaines
 
         // On évite le secteur VIH et ON car secteur à 4 jours par semaine.
-        if(in_array($this->departmentId, [7,24,25,26,27,28])) return;
+        if (in_array($this->departmentId, [7, 24, 25, 26, 27, 28])) {
+            return;
+        }
 
         // Définir les variables pertinentes && requêtes à la BD
         $schedule = $this->precalculation->schedule;
@@ -284,7 +289,9 @@ class GenericBuilder extends BaseBuilder
             $nextAssignedShift = $departmentAssignedShifts->where('date', $nextWorkday)->first();
 
             // Si le pharmacien n'est pas à 4 jours/sem, on passe à la prochaine semaine.
-            if(!$firstAssignedShift || $firstAssignedShift->user->workdays_per_week !== 4) continue;
+            if (! $firstAssignedShift || $firstAssignedShift->user->workdays_per_week !== 4) {
+                continue;
+            }
 
             // On regarde le nombre de jours attribué à notre pharmacien 4 jr/sem. (utile plus loin)
             $userAssignedShifts = $assignedShifts->where('user_id', $firstAssignedShift->user->id)
@@ -293,17 +300,19 @@ class GenericBuilder extends BaseBuilder
 
             // PARTIE : DÉBUT DE LA SEMAINE
             // Si on a été capable de savoir à qui appartient la semaine
-            if($firstAssignedShift) {
+            if ($firstAssignedShift) {
 
                 // On regarde qui était le pharmacien le vendredi avant (s'il y en avait un)
                 // et si ce pharmacien n'est pas lui-même
                 // Puis, s'il est disponible, on le prend.
-                if($previousAssignedShift && $firstAssignedShift->user->id !== $previousAssignedShift->user->id) {
+                if ($previousAssignedShift && $firstAssignedShift->user->id !== $previousAssignedShift->user->id) {
                     $previousUser = $previousAssignedShift->user;
                     $firstWorkdayInt = $schedule->start_date->diffInDays($firstWorkday);
 
                     // On regarde s'il est disponible
-                    if(!$this->precalculation->isAvailableBetween($previousUser->id, $firstWorkdayInt, '08:00', '16:30')) continue;
+                    if (! $this->precalculation->isAvailableBetween($previousUser->id, $firstWorkdayInt, '08:00', '16:30')) {
+                        continue;
+                    }
 
                     // On regarde les jours attribué à la personne (samedi à dimanche)
                     $previousUserAssignedShifts = $assignedShifts->where('user_id', $previousUser->id)
@@ -312,13 +321,15 @@ class GenericBuilder extends BaseBuilder
 
                     // Si le nombre de jours est inférieur à son nombre dispo par semaine:
                     // On fait l'échange de shift et on passe à la prochaine itération (pour pas lui enlever le vendredi)
-                    if($previousUserAssignedShifts->count() < $previousUser->workdays_per_week) {
+                    if ($previousUserAssignedShifts->count() < $previousUser->workdays_per_week) {
 
                         // Cas où on aurait un CPSS en lundi. Donc, horaire "fitte" pour notre 4jr/sem
                         // mais il manque une journée à notre secteur!
-                        if($userAssignedShifts->count() <= 4) {
+                        if ($userAssignedShifts->count() <= 4) {
                             // Déterminer que le jour manquant est vraiment le lundi.
-                            if($firstWorkday->dayOfWeek !== 2) continue;
+                            if ($firstWorkday->dayOfWeek !== 2) {
+                                continue;
+                            }
 
                             $newShift = AssignedShift::create([
                                 'user_id' => $previousUser->id,
@@ -336,6 +347,7 @@ class GenericBuilder extends BaseBuilder
                             $firstAssignedShift->save();
 
                             $this->precalculation->pharmaciens->firstWhere('id', $previousUser->id)->assignedShifts->push($firstAssignedShift);
+
                             continue;
                         }
                     }
@@ -344,24 +356,27 @@ class GenericBuilder extends BaseBuilder
 
             // PARTIE : FIN DE LA SEMAINE
             // Si on a été capable de savoir à qui appartient la semaine
-            if($lastAssignedShift) {
-                if($nextAssignedShift && $lastAssignedShift->user->id !== $nextAssignedShift->user->id) {
+            if ($lastAssignedShift) {
+                if ($nextAssignedShift && $lastAssignedShift->user->id !== $nextAssignedShift->user->id) {
                     $nextUser = $nextAssignedShift->user;
                     $lastWorkdayInt = $schedule->start_date->diffInDays($lastWorkday);
 
                     // On regarde s'il a une contrainte
-                    if(!$this->precalculation->isAvailableBetween($nextUser->id, $lastWorkdayInt, '08:00', '16:30')) continue;
+                    if (! $this->precalculation->isAvailableBetween($nextUser->id, $lastWorkdayInt, '08:00', '16:30')) {
+                        continue;
+                    }
 
                     // On regarde les jours attribué à la personne
                     $nextUserAssignedShifts = $assignedShifts->where('user_id', $nextUser->id)
                         ->where('date', '>=', $lastAssignedShift->date->startOfWeek()->addDays(-1))
                         ->where('date', '<=', $lastAssignedShift->date->endOfWeek()->addDays(-1));
 
-                    if($nextUserAssignedShifts->count() < $nextUser->workdays_per_week) {
+                    if ($nextUserAssignedShifts->count() < $nextUser->workdays_per_week) {
                         $lastAssignedShift->user_id = $nextUser->id;
                         $lastAssignedShift->save();
 
                         $this->precalculation->pharmaciens->firstWhere('id', $nextUser->id)->assignedShifts->push($lastAssignedShift);
+
                         continue;
                     }
 

@@ -15,9 +15,9 @@ class AddAzureIdToConstraintTypesTable extends Migration
     {
         Schema::table('constraint_types', function (Blueprint $table) {
             $table->unsignedInteger('azure_id')
-                    ->nullable()
-                    ->unique()
-                    ->after('id');
+                ->nullable()
+                ->unique()
+                ->after('id');
         });
     }
 

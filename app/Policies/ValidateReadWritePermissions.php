@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-
 use App\Models\User;
 
 trait ValidateReadWritePermissions
@@ -18,10 +17,11 @@ trait ValidateReadWritePermissions
 
     }
 
-    private function validate($user, $code) {
-        foreach($user->roles as $role) {
+    private function validate($user, $code)
+    {
+        foreach ($user->roles as $role) {
             foreach ($role->permissions as $permission) {
-                if($permission->code == $code) {
+                if ($permission->code == $code) {
                     return true;
                 }
             }
@@ -29,5 +29,4 @@ trait ValidateReadWritePermissions
 
         return false;
     }
-
 }

@@ -10,5 +10,6 @@ class UserPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadUsers;
+
     private $permissionWriteCode = PermissionEnum::WriteUsers;
 }

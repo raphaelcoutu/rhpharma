@@ -16,7 +16,8 @@ class DepartmentTest extends TestCase
 
     private $workplace;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -27,7 +28,7 @@ class DepartmentTest extends TestCase
             'name' => 'CHUS HF',
             'code' => 'HF',
             'address' => '12e Ave Nord',
-            'city' => 'Sherbrooke'
+            'city' => 'Sherbrooke',
         ]);
     }
 
@@ -44,7 +45,7 @@ class DepartmentTest extends TestCase
     public function test_auth_user_can_see_department_create_form()
     {
         $response = $this->actingAs($this->superUser)
-            ->get("/departments/create");
+            ->get('/departments/create');
 
         $response->assertStatus(200);
     }
@@ -71,7 +72,7 @@ class DepartmentTest extends TestCase
                 'thursday_am' => 2,
                 'thursday_pm' => 2,
                 'friday_am' => 2,
-                'friday_pm' => 2
+                'friday_pm' => 2,
             ]);
 
         $response->assertRedirect('/departments');
@@ -82,7 +83,7 @@ class DepartmentTest extends TestCase
     public function test_auth_user_can_see_department_edit_form()
     {
         $department = Department::factory()->create([
-            'name' => 'Soins intensifs'
+            'name' => 'Soins intensifs',
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -118,10 +119,10 @@ class DepartmentTest extends TestCase
                 'thursday_am' => 2,
                 'thursday_pm' => 2,
                 'friday_am' => 2,
-                'friday_pm' => 2
+                'friday_pm' => 2,
             ]);
 
-        $response->assertRedirect("/departments");
+        $response->assertRedirect('/departments');
     }
 
     public function test_unauth_user_get_redirected()

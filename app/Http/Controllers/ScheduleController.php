@@ -7,6 +7,7 @@ use App\Models\Constraint;
 use App\Models\Department;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 
 class ScheduleController extends Controller
@@ -14,7 +15,7 @@ class ScheduleController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -24,13 +25,13 @@ class ScheduleController extends Controller
 
         $constraints_in_schedule = [];
 
-        if(!$schedules->empty()) {
+        if (! $schedules->empty()) {
             $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
-            foreach($schedules as $schedule) {
+            foreach ($schedules as $schedule) {
                 $collision = 0;
                 foreach ($constraints as $constraint) {
-                    if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
-                        $schedule->start_date->setTime(0,0), $schedule->end_date->setTime(23,59))){
+                    if (detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+                        $schedule->start_date->setTime(0, 0), $schedule->end_date->setTime(23, 59))) {
                         $collision++;
                     }
                 }
@@ -45,7 +46,7 @@ class ScheduleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -55,8 +56,8 @@ class ScheduleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(ScheduleRequest $request)
     {
@@ -73,7 +74,7 @@ class ScheduleController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -85,14 +86,14 @@ class ScheduleController extends Controller
 
         $constraints_count = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
 
-        return view('schedules.show', compact('schedule','constraints_count', 'departments'));
+        return view('schedules.show', compact('schedule', 'constraints_count', 'departments'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -106,9 +107,9 @@ class ScheduleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(ScheduleRequest $request, $id)
     {
@@ -129,7 +130,7 @@ class ScheduleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

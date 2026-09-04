@@ -8,13 +8,14 @@ use App\Models\ConstraintType;
 use App\Models\Schedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ConstraintController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -24,10 +25,8 @@ class ConstraintController extends Controller
         $fixedConstraints = Constraint::with('constraintType')->fixedConstraints()
             ->fromLoggedInUser()->orderBy('end_datetime', 'desc')->limit(50)->get();
 
-
         $availabilityConstraints = Constraint::with('constraintType')->availabilityConstraints()
             ->fromLoggedInUser()->orderBy('end_datetime', 'desc')->limit(50)->get();
-
 
         return view('constraints.index',
             compact('schedules', 'constraintTypes', 'availabilityConstraints', 'fixedConstraints')
@@ -49,7 +48,7 @@ class ConstraintController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -59,8 +58,8 @@ class ConstraintController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  Request  $request
+     * @return Response
      */
     public function store(ConstraintRequest $request)
     {
@@ -73,7 +72,7 @@ class ConstraintController extends Controller
             'comment' => $request->get('comment'),
             'status' => 0,
             'validated_by' => null,
-            'number_of_occurrences' => null
+            'number_of_occurrences' => null,
         ]);
 
         $constraint->save();
@@ -86,7 +85,7 @@ class ConstraintController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -97,7 +96,7 @@ class ConstraintController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
@@ -107,9 +106,8 @@ class ConstraintController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -123,7 +121,7 @@ class ConstraintController extends Controller
             'comment' => $request->get('comment'),
             'status' => 0,
             'validated_by' => null,
-            'number_of_occurrences' => null
+            'number_of_occurrences' => null,
         ]);
 
         return $constraint;
@@ -133,7 +131,7 @@ class ConstraintController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {

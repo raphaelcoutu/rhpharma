@@ -12,14 +12,16 @@ class BranchTest extends TestCase
 
     private $branch;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
 
         $this->createSuperUser();
     }
 
-    public function test_auth_user_can_see_branches() {
+    public function test_auth_user_can_see_branches()
+    {
         $response = $this->actingAs($this->superUser)->get('/branches');
 
         $response->assertStatus(200);

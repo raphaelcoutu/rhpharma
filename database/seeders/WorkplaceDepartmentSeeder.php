@@ -29,9 +29,10 @@ class WorkplaceDepartmentSeeder extends Seeder
             'thursday_am' => $department['thursday_am'] ?? 2,
             'thursday_pm' => $department['thursday_pm'] ?? 2,
             'friday_am' => $department['friday_am'] ?? 2,
-            'friday_pm' => $department['friday_pm'] ?? 2
+            'friday_pm' => $department['friday_pm'] ?? 2,
         ]);
     }
+
     /**
      * Run the database seeds.
      *
@@ -46,7 +47,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'city' => 'Sherbrooke',
             'province' => 'Québec',
             'country' => 'Canada',
-            'postal_code' => 'J1H 5N4'
+            'postal_code' => 'J1H 5N4',
         ]);
 
         Workplace::create([
@@ -56,11 +57,11 @@ class WorkplaceDepartmentSeeder extends Seeder
             'city' => 'Sherbrooke',
             'province' => 'Québec',
             'country' => 'Canada',
-            'postal_code' => 'J1G 2E8'
+            'postal_code' => 'J1G 2E8',
         ]);
 
         Workplace::create([
-            'name' => 'Gestion'
+            'name' => 'Gestion',
         ]);
 
         $this->create([
@@ -83,7 +84,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
 
         $this->create([
@@ -117,7 +118,6 @@ class WorkplaceDepartmentSeeder extends Seeder
             'workplace_id' => 2,
             'department_type_id' => 1,
         ]);
-
 
         $this->create([
             'name' => 'SIPA',
@@ -217,7 +217,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Gestion des absences',
             'branch_id' => 1,
             'workplace_id' => 3,
-            'department_type_id' => 2
+            'department_type_id' => 2,
         ]);
 
         $this->create([
@@ -225,21 +225,21 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Insuffisance rénale',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 1
+            'department_type_id' => 1,
         ]);
 
         $this->create([
             'name' => 'PGTM',
             'description' => '',
             'branch_id' => 1,
-            'workplace_id' => 1
+            'workplace_id' => 1,
         ]);
 
         $this->create([
             'name' => 'Douleur pelvienne',
             'description' => '',
             'branch_id' => 1,
-            'workplace_id' => 2
+            'workplace_id' => 2,
         ]);
 
         $this->create([
@@ -247,7 +247,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
 
         $this->create([
@@ -255,7 +255,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
 
         $this->create([
@@ -263,7 +263,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
 
         $this->create([
@@ -271,7 +271,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
 
         $this->create([
@@ -279,7 +279,7 @@ class WorkplaceDepartmentSeeder extends Seeder
             'description' => 'Oncologie',
             'branch_id' => 1,
             'workplace_id' => 1,
-            'department_type_id' => 3
+            'department_type_id' => 3,
         ]);
     }
 }

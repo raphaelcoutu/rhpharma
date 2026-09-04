@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 
 class BranchController extends Controller
@@ -11,11 +12,10 @@ class BranchController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-
     protected $rules = [
-        'name' => 'required|min:3|unique:branches'
+        'name' => 'required|min:3|unique:branches',
     ];
 
     public function index()
@@ -31,7 +31,6 @@ class BranchController extends Controller
     {
         return Branch::all();
     }
-
 
     public function store(Request $request)
     {

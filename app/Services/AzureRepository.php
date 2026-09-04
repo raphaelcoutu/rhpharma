@@ -10,24 +10,23 @@ class AzureRepository
 
     public function __construct()
     {
-        $this->conn = new PDO('sqlsrv:server=' . config('azure.host') . ';Database=' . config('azure.database'),
+        $this->conn = new PDO('sqlsrv:server='.config('azure.host').';Database='.config('azure.database'),
             config('azure.username'), config('azure.password'));
         $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-
-    function constraints($startDate, $endDate)
+    public function constraints($startDate, $endDate)
     {
         $time_start = microtime(true);
 
-        $tsql = "SELECT U.Id as User_id, U.FirstName, U.LastName,
+        $tsql = 'SELECT U.Id as User_id, U.FirstName, U.LastName,
             C.Id as Constraint_id, C.StartDate, C.EndDate, C.Weight, C.Comment, C.Status, C.NumberOfOccurrences, C.Disposition, C.IsDayOfWeek, C.Day, C.Day1, C.Discriminator,
             Ct.Id as ConstraintType_id, Ct.Name
             FROM Constraints As C
             JOIN ConstraintTypes AS Ct ON Ct.Id = C.TypeId
             JOIN Users As U ON U.Id = C.UserId
             WHERE ((StartDate >= ? AND EndDate <= ?) OR StartDate <= ? AND EndDate >= ?) AND TypeID <> 79
-            ORDER BY U.Lastname";
+            ORDER BY U.Lastname';
         $getResults = $this->conn->prepare($tsql);
         $getResults->execute([$startDate, $endDate, $endDate, $startDate]);
         $results = $getResults->fetchAll(PDO::FETCH_ASSOC);
@@ -38,9 +37,9 @@ class AzureRepository
         return $results;
     }
 
-    function constraintTypesByIds($ids)
+    public function constraintTypesByIds($ids)
     {
-        $qMarks = str_repeat('?,', count($ids) - 1) . '?';
+        $qMarks = str_repeat('?,', count($ids) - 1).'?';
 
         $tsql = "SELECT Id, BranchId, Name, Description, Code, IsWork, IsSingleDay, IsGroupConstraint, IsDayInSchedule
             FROM ConstraintTypes As CT
@@ -54,22 +53,23 @@ class AzureRepository
 
     /**
      * Return all active constraint types from Azure database.
+     *
      * @return array
      */
-    function constraintTypes()
+    public function constraintTypes()
     {
-        $tsql = "SELECT Id, BranchId, Name, Description, Code, IsWork, IsSingleDay, IsGroupConstraint, IsDayInSchedule
+        $tsql = 'SELECT Id, BranchId, Name, Description, Code, IsWork, IsSingleDay, IsGroupConstraint, IsDayInSchedule
             FROM ConstraintTypes
-            WHERE DeletedOn is null";
+            WHERE DeletedOn is null';
         $getResult = $this->conn->query($tsql);
         $result = $getResult->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
     }
 
-    function usersByIds(array $ids)
+    public function usersByIds(array $ids)
     {
-        $qMarks = str_repeat('?,', count($ids) - 1) . '?';
+        $qMarks = str_repeat('?,', count($ids) - 1).'?';
 
         $tsql = "SELECT Id, FirstName, LastName, Email, BranchId, WorkdaysPerWeek
             FROM Users As U
@@ -86,7 +86,7 @@ class AzureRepository
      *
      * @return array
      */
-    function users()
+    public function users()
     {
         $tsql = "SELECT Id, FirstName, LastName, Email, BranchId, WorkdaysPerWeek
             FROM Users As U

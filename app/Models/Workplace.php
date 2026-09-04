@@ -10,7 +10,7 @@ class Workplace extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'address', 'city', 'province', 'country', 'postal_code', 'code'
+        'name', 'address', 'city', 'province', 'country', 'postal_code', 'code',
     ];
 
     public function departments()

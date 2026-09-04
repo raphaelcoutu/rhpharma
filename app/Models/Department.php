@@ -21,7 +21,7 @@ class Department extends Model
 
     public function scopeWithActiveUsers($query)
     {
-        return $query->with(['users' => function($query) {
+        return $query->with(['users' => function ($query) {
             $query->wherePivot('active', 1);
         }]);
     }

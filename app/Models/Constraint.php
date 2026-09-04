@@ -17,7 +17,7 @@ class Constraint extends Model
         'start_datetime' => 'datetime',
         'end_datetime' => 'datetime',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
 
     public function constraintType()
@@ -42,16 +42,16 @@ class Constraint extends Model
 
     public function scopeFixedConstraints($query)
     {
-        return $query->whereHas('constraintType', function($query) {
-                $query->where('is_group_constraint', '=',0);
-            });
+        return $query->whereHas('constraintType', function ($query) {
+            $query->where('is_group_constraint', '=', 0);
+        });
     }
 
     public function scopeAvailabilityConstraints($query)
     {
-        return $query->whereHas('constraintType', function($query) {
-                $query->where('is_group_constraint', '=',1);
-            });
+        return $query->whereHas('constraintType', function ($query) {
+            $query->where('is_group_constraint', '=', 1);
+        });
     }
 
     public function scopeUnvalidated($query)
@@ -62,11 +62,11 @@ class Constraint extends Model
     public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
     {
         return $query->where(function ($query) use ($start_date, $end_date) {
-            $query->where('start_datetime', '>=', $start_date->copy()->setTime(0,0))
-            ->where('start_datetime', '<=', $end_date->copy()->setTime(23,59));
+            $query->where('start_datetime', '>=', $start_date->copy()->setTime(0, 0))
+                ->where('start_datetime', '<=', $end_date->copy()->setTime(23, 59));
         })->orWhere(function ($query) use ($start_date, $end_date) {
-            $query->where('start_datetime', '<', $end_date->copy()->setTime(23,59))
-                ->where('end_datetime', '>', $start_date->copy()->setTime(0,0));
+            $query->where('start_datetime', '<', $end_date->copy()->setTime(23, 59))
+                ->where('end_datetime', '>', $start_date->copy()->setTime(0, 0));
         });
     }
 

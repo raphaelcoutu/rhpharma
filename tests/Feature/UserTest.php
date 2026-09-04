@@ -12,7 +12,8 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -33,7 +34,7 @@ class UserTest extends TestCase
         $newUser = User::factory()->create([
             'lastname' => 'Exotic',
             'firstname' => 'Joe',
-            'email' => 'joeexotic@rhpharma.com'
+            'email' => 'joeexotic@rhpharma.com',
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -49,11 +50,11 @@ class UserTest extends TestCase
         $newUser = User::factory()->create([
             'lastname' => 'Exotic',
             'firstname' => 'Joe',
-            'email' => 'joeexotic@rhpharma.com'
+            'email' => 'joeexotic@rhpharma.com',
         ]);
 
         $response = $this->actingAs($newUser)
-            ->get("/profile");
+            ->get('/profile');
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('profile/edit', false)
@@ -85,7 +86,7 @@ class UserTest extends TestCase
                 'seniority' => '2020-01-01',
                 'is_active' => 1,
                 'azure_id' => 1050,
-                'roles' => []
+                'roles' => [],
             ]);
 
         $response->assertRedirect('/users');
@@ -101,7 +102,7 @@ class UserTest extends TestCase
         $newUser = User::factory()->create([
             'lastname' => 'Exotic',
             'firstname' => 'Joe',
-            'email' => 'joeexotic@rhpharma.com'
+            'email' => 'joeexotic@rhpharma.com',
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -116,13 +117,12 @@ class UserTest extends TestCase
             ->has('roles'));
     }
 
-
     public function test_auth_user_can_edit_user()
     {
         $newUser = User::factory()->create([
             'lastname' => 'Exotic',
             'firstname' => 'Joe',
-            'email' => 'joeexotic@rhpharma.com'
+            'email' => 'joeexotic@rhpharma.com',
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -133,7 +133,7 @@ class UserTest extends TestCase
                 'email' => 'joeexotic@rhpharma.com',
                 'workdays_per_week' => 3,
                 'is_active' => 1,
-                'roles' => []
+                'roles' => [],
             ]);
 
         $response->assertRedirect('/users');

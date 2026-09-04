@@ -50,15 +50,15 @@ class AnalyzeClinicalDepartments implements ShouldQueue
 
         collect(json_decode(Setting::valueByKey('departments_order')))
             ->where('active', '=', 'true')->pluck('id')->each(function ($departmentId) use ($schedule) {
-                    DepartmentAnalyzer::run($schedule, $departmentId);
+                DepartmentAnalyzer::run($schedule, $departmentId);
             });
 
         UserAnalyzer::run($schedule);
 
         $end = number_format(microtime(true) - $start, 2);
-        Log::debug('AnalyzeJob : finishes (' . $end . 's)');
+        Log::debug('AnalyzeJob : finishes ('.$end.'s)');
 
-        event(new BuildMessageGenerated($schedule, 'Analyse est terminée (' . $end . 's)'));
+        event(new BuildMessageGenerated($schedule, 'Analyse est terminée ('.$end.'s)'));
         event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Success));
     }
 }

@@ -18,8 +18,8 @@ class ConstraintValidatorController extends Controller
         $schedule = null;
 
         $constraints = Constraint::with(['constrainttype', 'user']);
-        if(request('schedule')) {
-            $schedule = Schedule::select(['id','start_date', 'end_date'])->findOrFail(request('schedule'));
+        if (request('schedule')) {
+            $schedule = Schedule::select(['id', 'start_date', 'end_date'])->findOrFail(request('schedule'));
 
             $constraints = $constraints->inInterval($schedule->start_date, $schedule->end_date);
         }
@@ -38,7 +38,8 @@ class ConstraintValidatorController extends Controller
 
         $constraint = Constraint::findOrFail($id);
         $constraint->update($request->all());
-        return "OK";
+
+        return 'OK';
     }
 
     public function history(Request $request)
@@ -50,18 +51,19 @@ class ConstraintValidatorController extends Controller
 
         $constraints = Constraint::with(['constrainttype', 'user', 'validator']);
 
-        if(isset($request->user)) {
+        if (isset($request->user)) {
             $constraints = $constraints->where('user_id', $request->user);
         }
 
-        if(isset($request->status)) {
+        if (isset($request->status)) {
             $constraints = $constraints->where('status', $request->status);
         } else {
             $constraints = $constraints->where('status', '!=', 0);
         }
 
-        if(isset($request->validator))
+        if (isset($request->validator)) {
             $constraints = $constraints->where('validated_by', $request->validator);
+        }
 
         $constraints = $constraints->orderBy('updated_at', $order)
             ->limit($limit)

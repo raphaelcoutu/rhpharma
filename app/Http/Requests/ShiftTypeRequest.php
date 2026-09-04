@@ -28,7 +28,7 @@ class ShiftTypeRequest extends FormRequest
         return [
             'name' => 'required',
             'start_time' => 'required|date_format:"H:i:s"',
-            'end_time' => 'required|date_format:"H:i:s"'
+            'end_time' => 'required|date_format:"H:i:s"',
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Department;
 use App\Models\ConstraintType;
 use App\Models\Criterion;
 use Illuminate\Database\Seeder;
@@ -18,9 +19,10 @@ class ConstraintTypeSeeder extends Seeder
             'is_single_day' => $type['is_single_day'],
             'is_group_constraint' => $type['is_group_constraint'] ?? 0,
             'is_day_in_schedule' => $type['is_day_in_schedule'] ?? 0,
-            'branch_id' => $type['branch_id'] ?? 1
+            'branch_id' => $type['branch_id'] ?? 1,
         ]);
     }
+
     /**
      * Run the database seeds.
      *
@@ -35,7 +37,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -45,7 +47,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -55,7 +57,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -65,7 +67,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -75,7 +77,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -85,7 +87,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -95,7 +97,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -105,7 +107,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -115,7 +117,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -125,7 +127,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -135,7 +137,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -145,7 +147,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -155,7 +157,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -165,7 +167,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -175,7 +177,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -185,7 +187,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -195,7 +197,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -205,7 +207,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -215,7 +217,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -225,7 +227,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -235,7 +237,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -245,7 +247,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -255,7 +257,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -265,7 +267,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -275,7 +277,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -285,7 +287,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -295,7 +297,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -305,7 +307,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -315,10 +317,9 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ])->criteria()
-            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class]));
-
+            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => Department::class]));
 
         $this->create([
             'name' => 'Travailler de jour (avant 17h)',
@@ -327,9 +328,9 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ])->criteria()
-            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class]));
+            ->attach(Criterion::create(['criterionable_id' => 1, 'criterionable_type' => Department::class]));
 
         $this->create([
             'name' => 'Travailler de jour (avant 17h30)',
@@ -338,7 +339,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -348,7 +349,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -358,7 +359,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -368,7 +369,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -378,7 +379,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -388,7 +389,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -398,7 +399,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -408,7 +409,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -418,7 +419,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -428,7 +429,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -438,7 +439,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -448,7 +449,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -458,7 +459,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -468,7 +469,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -478,7 +479,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -488,7 +489,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -498,7 +499,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -508,7 +509,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -518,12 +519,12 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ])->criteria()
             ->attach([
-                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => Department::class])->id,
             ]);
 
         $this->create([
@@ -533,12 +534,12 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ])->criteria()
             ->attach([
-                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => Department::class])->id,
             ]);
 
         $this->create([
@@ -548,12 +549,12 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ])->criteria()
             ->attach([
-                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => \App\Department::class])->id,
-                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => \App\Department::class])->id
+                Criterion::create(['criterionable_id' => 1, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 18, 'criterionable_type' => Department::class])->id,
+                Criterion::create(['criterionable_id' => 19, 'criterionable_type' => Department::class])->id,
             ]);
 
         $this->create([
@@ -563,7 +564,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -573,7 +574,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -583,7 +584,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -593,7 +594,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -603,7 +604,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -613,7 +614,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -623,7 +624,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -633,7 +634,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -643,7 +644,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -653,7 +654,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -663,7 +664,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 0,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -673,7 +674,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -683,7 +684,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -693,7 +694,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -703,7 +704,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -713,7 +714,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -723,7 +724,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -733,7 +734,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -743,7 +744,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 0,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -753,7 +754,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -763,7 +764,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -773,7 +774,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 0
+            'is_day_in_schedule' => 0,
         ]);
 
         $this->create([
@@ -783,7 +784,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -793,7 +794,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 0,
             'is_single_day' => 0,
             'is_group_constraint' => 0,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
 
         $this->create([
@@ -803,7 +804,7 @@ class ConstraintTypeSeeder extends Seeder
             'is_work' => 1,
             'is_single_day' => 1,
             'is_group_constraint' => 1,
-            'is_day_in_schedule' => 1
+            'is_day_in_schedule' => 1,
         ]);
     }
 }

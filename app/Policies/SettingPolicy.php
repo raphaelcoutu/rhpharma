@@ -10,5 +10,6 @@ class SettingPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadSettings;
+
     private $permissionWriteCode = PermissionEnum::WriteSettings;
 }

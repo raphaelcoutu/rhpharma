@@ -87,7 +87,7 @@ class ImportCsvCommand extends Command
         $this->constraintsIds = [
             67 => 32,
             53 => 33,
-            //79 (Travailler FDS)
+            // 79 (Travailler FDS)
             62 => 5,
             61 => 4,
             68 => 29,
@@ -152,7 +152,7 @@ class ImportCsvCommand extends Command
             114 => 70,
             85 => 71,
             65 => 8,
-            131 => 2
+            131 => 2,
         ];
 
     }
@@ -166,26 +166,28 @@ class ImportCsvCommand extends Command
     {
         $constraints = [];
 
-        ini_set('auto_detect_line_endings',TRUE);
+        ini_set('auto_detect_line_endings', true);
         $row = 1;
-        if (($handle = fopen($this->argument('file'), "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, null, $this->option('separator'))) !== FALSE) {
+        if (($handle = fopen($this->argument('file'), 'r')) !== false) {
+            while (($data = fgetcsv($handle, null, $this->option('separator'))) !== false) {
                 // On enlève le header
-                if($row == 1) {
-                    $row++; continue;
+                if ($row == 1) {
+                    $row++;
+
+                    continue;
                 }
 
                 $typeId = $data[15];
 
-                if(array_key_exists($typeId, $this->constraintsIds)) {
-                    $weight = ($data[6] === "TRUE") ? 1 : (($data[6] == "FALSE") ? 0 : $data[6]);
+                if (array_key_exists($typeId, $this->constraintsIds)) {
+                    $weight = ($data[6] === 'TRUE') ? 1 : (($data[6] == 'FALSE') ? 0 : $data[6]);
 
                     // On doit regarder dans la variable "day" ou "day1"...
 
-                    if($data[12] !== "") {
+                    if ($data[12] !== '') {
                         $day = $data[12];
 
-                    } else if($data[13] !== "") {
+                    } elseif ($data[13] !== '') {
                         $day = $data[13];
                     } else {
                         $day = null;
@@ -200,11 +202,11 @@ class ImportCsvCommand extends Command
                         'status' => $data[8],
                         'comment' => $data[7],
                         'validated_by' => 1,
-                        'number_of_occurrences' => ($data[9] !== "") ? $data[9] : null,
+                        'number_of_occurrences' => ($data[9] !== '') ? $data[9] : null,
                         'day' => $day,
-                        'disposition' => ($data[10] !== "") ? $data[10] : null,
+                        'disposition' => ($data[10] !== '') ? $data[10] : null,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ];
 
                     array_push($constraints, $constraint);
@@ -216,10 +218,10 @@ class ImportCsvCommand extends Command
             }
             fclose($handle);
         }
-        ini_set('auto_detect_line_endings', FALSE);
+        ini_set('auto_detect_line_endings', false);
 
         \DB::table('constraints')->insert($constraints);
 
-        $this->info('Done. ' . count($constraints) . ' contraintes importées.');
+        $this->info('Done. '.count($constraints).' contraintes importées.');
     }
 }

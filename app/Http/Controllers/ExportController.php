@@ -14,7 +14,7 @@ class ExportController extends Controller
             $query->InDateInterval($schedule->start_date, $schedule->end_date)->where('status', 1);
         }, 'assignedShifts' => function ($query) use ($schedule) {
             $query->InDateInterval($schedule->start_date, $schedule->end_date);
-        },'constraints.constraintType', 'assignedShifts.shift'])
+        }, 'constraints.constraintType', 'assignedShifts.shift'])
             ->ownBranch()
             ->where('is_active', 1)
             ->orderBy('lastname')

@@ -14,7 +14,7 @@ class ShiftSeeder extends Seeder
             'description' => '',
             'shift_type_id' => $shiftTypeId,
             'department_id' => $departmentId,
-            'is_default' => $default
+            'is_default' => $default,
         ]);
     }
 
@@ -25,7 +25,7 @@ class ShiftSeeder extends Seeder
      */
     public function run()
     {
-        //Distribution HF = 18, Distribution HD = 19
+        // Distribution HF = 18, Distribution HD = 19
 
         $this->create('C', 20, 10);
 
@@ -76,7 +76,7 @@ class ShiftSeeder extends Seeder
 
         $this->create('URHD', 17, 1);
 
-        $this->create('IR', 21,1);
+        $this->create('IR', 21, 1);
 
         $this->create('DP', 23, 1);
     }

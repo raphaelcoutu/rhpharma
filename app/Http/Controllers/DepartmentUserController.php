@@ -20,7 +20,7 @@ class DepartmentUserController extends Controller
             'department_id' => 'required',
             'history' => 'required|numeric|min:0|max:99.99',
             'planning_long' => 'required|numeric|min:0|max:99.99',
-            'planning_short' => 'required|numeric|min:0|max:99.99'
+            'planning_short' => 'required|numeric|min:0|max:99.99',
         ]);
 
         User::findOrFail($id)->departments()->syncWithoutDetaching([
@@ -28,8 +28,8 @@ class DepartmentUserController extends Controller
                 'history' => $request['history'],
                 'planning_long' => $request['planning_long'],
                 'planning_short' => $request['planning_short'],
-                'active' => true
-            ]
+                'active' => true,
+            ],
         ]);
     }
 

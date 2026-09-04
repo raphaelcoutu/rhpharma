@@ -27,7 +27,7 @@ class ConstraintRequest extends FormRequest
             'constraint_type_id' => 'required',
             'start_datetime' => 'required|date|after:today',
             'end_datetime' => 'required|date|after:start_datetime',
-            'weight' => 'required'
+            'weight' => 'required',
         ];
     }
 
@@ -35,7 +35,7 @@ class ConstraintRequest extends FormRequest
     {
         return [
             'constraint_type_id.required' => 'Le champ Type de contrainte est obligatoire.',
-            'start_datetime.after' => 'Le champ :attribute doit être une date postérieure à aujourd\'hui.'
+            'start_datetime.after' => 'Le champ :attribute doit être une date postérieure à aujourd\'hui.',
         ];
     }
 }

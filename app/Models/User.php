@@ -26,7 +26,7 @@ class User extends Authenticatable
         'is_active',
         'seniority',
         'branch_id',
-        'is_manual'
+        'is_manual',
     ];
 
     /**
@@ -56,13 +56,13 @@ class User extends Authenticatable
         $temp = collect(explode(' ', str_replace('-', ' ', $this->getFullnameAttribute())));
 
         return $temp->reduce(function ($carry, $partialName) {
-            return $carry . mb_substr($partialName, 0, 1, 'utf-8');
+            return $carry.mb_substr($partialName, 0, 1, 'utf-8');
         });
     }
 
     public function getFullnameAttribute()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     public function assignedShifts()

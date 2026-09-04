@@ -10,5 +10,6 @@ class RolePolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadRoles;
+
     private $permissionWriteCode = PermissionEnum::WriteRoles;
 }

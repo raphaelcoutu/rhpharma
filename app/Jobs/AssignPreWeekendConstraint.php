@@ -56,15 +56,15 @@ class AssignPreWeekendConstraint implements ShouldQueue
             ->map(function ($as) {
                 return new Constraint([
                     'user_id' => $as->user_id,
-                    'start_datetime' => $as->date->addDays(-1)->setTime(12,30),
-                    'end_datetime' => $as->date->addDays(-1)->setTime(22,00),
+                    'start_datetime' => $as->date->addDays(-1)->setTime(12, 30),
+                    'end_datetime' => $as->date->addDays(-1)->setTime(22, 00),
                     'constraint_type_id' => 72,
                     'weight' => 1,
                     'comment' => '**AUTO GENERATED**',
                     'status' => 1,
                     'validated_by' => 1,
                     'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
+                    'updated_at' => Carbon::now(),
                 ]);
             });
 

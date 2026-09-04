@@ -12,9 +12,10 @@ class BranchApiTest extends TestCase
     use RefreshDatabase;
 
     private $branch;
+
     private $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

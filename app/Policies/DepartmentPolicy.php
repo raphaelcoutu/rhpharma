@@ -10,5 +10,6 @@ class DepartmentPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadDepartments;
+
     private $permissionWriteCode = PermissionEnum::WriteDepartments;
 }

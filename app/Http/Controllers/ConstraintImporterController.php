@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Constraint;
 use App\Models\ConstraintType;
 use App\Models\User;
@@ -33,14 +32,14 @@ class ConstraintImporterController extends Controller
         foreach ($rows as $row) {
             $constraintType = $constraintTypes->firstWhere('azure_id', $row['ConstraintType_id']);
             if ($constraintType) {
-                $weight = ($row['Weight'] === "TRUE") ? 1 : (($row['Weight'] == "FALSE") ? 0 : $row['Weight']);
+                $weight = ($row['Weight'] === 'TRUE') ? 1 : (($row['Weight'] == 'FALSE') ? 0 : $row['Weight']);
 
                 // On doit regarder dans la variable "day" ou "day1"...
 
                 if ($row['Day'] !== null) {
                     $day = $row['Day'];
 
-                } else if ($row['Day1'] !== null) {
+                } elseif ($row['Day1'] !== null) {
                     $day = $row['Day1'];
                 } else {
                     $day = null;
@@ -58,11 +57,11 @@ class ConstraintImporterController extends Controller
                         'status' => $row['Status'],
                         'comment' => $row['Comment'],
                         'validated_by' => 1,
-                        'number_of_occurrences' => ($row['NumberOfOccurrences'] !== "") ? $row['NumberOfOccurrences'] : null,
+                        'number_of_occurrences' => ($row['NumberOfOccurrences'] !== '') ? $row['NumberOfOccurrences'] : null,
                         'day' => $day,
-                        'disposition' => ($row['Disposition'] !== "") ? $row['Disposition'] : null,
+                        'disposition' => ($row['Disposition'] !== '') ? $row['Disposition'] : null,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ];
 
                     $constraintsToAdd[] = $row;
@@ -70,7 +69,7 @@ class ConstraintImporterController extends Controller
                     $missingUsers[] = [
                         'Id' => intval($row['User_id']),
                         'FirstName' => $row['FirstName'],
-                        'LastName' => $row['LastName']
+                        'LastName' => $row['LastName'],
                     ];
                 }
             } else {
@@ -81,7 +80,7 @@ class ConstraintImporterController extends Controller
 
         // Si l'array de missingConstraintTypes n'est pas null, on redirige vers erreur
         $newConstraintTypes = [];
-        if (!empty($missingConstraintTypesIds)) {
+        if (! empty($missingConstraintTypesIds)) {
 
             $newConstraintTypes = $azureRepository->constraintTypesByIds($missingConstraintTypesIds);
 
@@ -95,14 +94,14 @@ class ConstraintImporterController extends Controller
                     'is_work' => $constraintType['IsWork'],
                     'is_single_day' => $constraintType['IsSingleDay'],
                     'is_group_constraint' => $constraintType['IsGroupConstraint'],
-                    'is_day_in_schedule' => $constraintType['IsDayInSchedule']
+                    'is_day_in_schedule' => $constraintType['IsDayInSchedule'],
                 ]);
             }
         }
 
         // Si l'array de missingUsers n'est pas null, on redirige vers erreur
         $newUsers = [];
-        if (!empty($missingUsers)) {
+        if (! empty($missingUsers)) {
 
             $unique_array = [];
             foreach ($missingUsers as $element) {
@@ -131,7 +130,7 @@ class ConstraintImporterController extends Controller
         \DB::table('constraints')->insert($constraintsToAdd);
 
         return redirect()->route('constraintImporter.index')
-            ->with('status', 'Contraintes importées! (' . count($constraintsToAdd) . ')')
+            ->with('status', 'Contraintes importées! ('.count($constraintsToAdd).')')
             ->with('newUsers', $newUsers)
             ->with('newConstraintTypes', $newConstraintTypes)
             ->with('missingUsers', $missingUsers);

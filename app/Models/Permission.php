@@ -9,5 +9,6 @@ class Permission extends Model
     protected $fillable = ['code'];
 
     protected $primaryKey = 'code';
+
     public $incrementing = false;
 }

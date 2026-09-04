@@ -37,10 +37,10 @@ class DepartmentRequest extends FormRequest
                 Rule::unique('departments', 'name')
                     ->ignore($this->id)
                     ->where('workplace_id', $this->workplace_id)
-                    ->where('branch_id', $this->branch_id)
+                    ->where('branch_id', $this->branch_id),
             ],
             'workplace_id' => 'required',
-            'department_type_id' => 'required'
+            'department_type_id' => 'required',
         ];
     }
 }

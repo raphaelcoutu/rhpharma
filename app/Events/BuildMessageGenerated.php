@@ -14,15 +14,13 @@ class BuildMessageGenerated implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $timestamp;
+
     public $schedule;
+
     public $message;
 
     /**
      * Create a new event instance.
-     *
-     * @param Schedule $schedule
-     * @param $message
-     * @param bool $clear
      */
     public function __construct(Schedule $schedule, $message, bool $clear = false)
     {
@@ -34,7 +32,7 @@ class BuildMessageGenerated implements ShouldBroadcastNow
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
     public function broadcastOn()
     {

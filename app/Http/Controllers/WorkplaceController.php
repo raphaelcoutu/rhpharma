@@ -15,8 +15,6 @@ class WorkplaceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Inertia\Response
      */
     public function index(): Response
     {
@@ -31,8 +29,6 @@ class WorkplaceController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Inertia\Response
      */
     public function create(): Response
     {
@@ -43,9 +39,6 @@ class WorkplaceController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request): RedirectResponse
     {
@@ -68,8 +61,6 @@ class WorkplaceController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @return \Inertia\Response
      */
     public function show(Workplace $workplace): Response
     {
@@ -96,7 +87,6 @@ class WorkplaceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

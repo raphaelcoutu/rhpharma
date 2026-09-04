@@ -27,7 +27,8 @@ class ScheduleTest extends TestCase
 
     private $workplace;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -49,7 +50,7 @@ class ScheduleTest extends TestCase
     public function test_auth_user_can_see_schedules_create_form()
     {
         $response = $this->actingAs($this->superUser)
-            ->get("/schedules/create");
+            ->get('/schedules/create');
 
         $response->assertStatus(200);
     }
@@ -63,7 +64,7 @@ class ScheduleTest extends TestCase
                 'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
                 'limit_date' => Carbon::now()->addWeek()->next('Friday'),
                 'start_date' => Carbon::now()->addWeek()->next('Sunday'),
-                'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59),
+                'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23, 59, 59),
                 'branch_id' => 1,
                 'status_holidays' => BuildStatus::Standby,
                 'status_weekends' => BuildStatus::Standby,
@@ -84,7 +85,7 @@ class ScheduleTest extends TestCase
             'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
             'limit_date' => Carbon::now()->addWeek()->next('Friday'),
             'start_date' => Carbon::now()->addWeek()->next('Sunday'),
-            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59)
+            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23, 59, 59),
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -100,7 +101,7 @@ class ScheduleTest extends TestCase
             'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
             'limit_date' => Carbon::now()->addWeek()->next('Friday'),
             'start_date' => Carbon::now()->addWeek()->next('Sunday'),
-            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59)
+            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23, 59, 59),
         ]);
 
         $response = $this->actingAs($this->superUser)
@@ -110,10 +111,10 @@ class ScheduleTest extends TestCase
                 'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
                 'limit_date' => Carbon::now()->addWeeks(2)->next('Friday'),
                 'start_date' => Carbon::now()->addWeeks(2)->next('Sunday'),
-                'end_date' => Carbon::now()->addWeeks(7)->next('Saturday')->setTime(23,59,59)
+                'end_date' => Carbon::now()->addWeeks(7)->next('Saturday')->setTime(23, 59, 59),
             ]);
 
-        $response->assertRedirect("/schedules");
+        $response->assertRedirect('/schedules');
         $this->assertEquals(Carbon::now()->addWeeks(2)->next('Sunday'), Schedule::findOrFail($schedule->id)->start_date);
     }
 
@@ -142,7 +143,7 @@ class ScheduleTest extends TestCase
         $response->assertDownload();
 
         $archivePath = $response->baseResponse->getFile()->getPathname();
-        $archive = new ZipArchive();
+        $archive = new ZipArchive;
 
         try {
             $this->assertSame(true, $archive->open($archivePath));
@@ -260,7 +261,7 @@ class ScheduleTest extends TestCase
         $response->assertDownload();
 
         $archivePath = $response->baseResponse->getFile()->getPathname();
-        $archive = new ZipArchive();
+        $archive = new ZipArchive;
 
         try {
             $this->assertSame(true, $archive->open($archivePath));

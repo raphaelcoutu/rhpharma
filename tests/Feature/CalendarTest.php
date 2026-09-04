@@ -15,7 +15,8 @@ class CalendarTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function setUp(): void {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
@@ -28,7 +29,7 @@ class CalendarTest extends TestCase
             'limit_date_weekends' => Carbon::now()->addWeek()->next('Friday'),
             'limit_date' => Carbon::now()->addWeek()->next('Friday'),
             'start_date' => Carbon::now()->addWeek()->next('Sunday'),
-            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23,59,59)
+            'end_date' => Carbon::now()->addWeeks(5)->next('Saturday')->setTime(23, 59, 59),
         ]);
     }
 
@@ -45,13 +46,13 @@ class CalendarTest extends TestCase
         $departmentA = Department::factory()->create([
             'name' => 'Department A',
             'branch_id' => $this->branch->id,
-            'workplace_id' => $this->workplace->id
+            'workplace_id' => $this->workplace->id,
         ]);
 
         $departmentB = Department::factory()->create([
             'name' => 'Department B',
             'branch_id' => $this->branch->id,
-            'workplace_id' => $this->workplace->id
+            'workplace_id' => $this->workplace->id,
         ]);
 
         $userWithDepartmentA = User::factory()->create(['firstname' => 'UserA']);
@@ -77,19 +78,19 @@ class CalendarTest extends TestCase
         $departmentA = Department::factory()->create([
             'name' => 'Department A',
             'branch_id' => $this->branch->id,
-            'workplace_id' => $this->workplace->id
+            'workplace_id' => $this->workplace->id,
         ]);
 
         $departmentB = Department::factory()->create([
             'name' => 'Department B',
             'branch_id' => $this->branch->id,
-            'workplace_id' => $this->workplace->id
+            'workplace_id' => $this->workplace->id,
         ]);
 
         $departmentC = Department::factory()->create([
             'name' => 'Department C',
             'branch_id' => $this->branch->id,
-            'workplace_id' => $this->workplace->id
+            'workplace_id' => $this->workplace->id,
         ]);
 
         $userWithDepartmentA = User::factory()->create(['firstname' => 'UserA']);

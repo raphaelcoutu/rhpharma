@@ -29,7 +29,7 @@ class ConstraintTypeFactory extends Factory
             'is_single_day' => $this->faker->boolean(50),
             'is_group_constraint' => 0,
             'is_day_in_schedule' => 0,
-            'branch_id' => 1
+            'branch_id' => 1,
         ];
     }
 }

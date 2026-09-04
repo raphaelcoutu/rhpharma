@@ -9,7 +9,8 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     #[Test]
-    public function it_should_return_the_users_initials() {
+    public function it_should_return_the_users_initials()
+    {
         $simpleUser = User::factory()->make(['firstname' => 'Raphaël', 'lastname' => 'Coutu']);
         $complexUser = User::factory()->make(['firstname' => 'Émile - Ève', 'lastname' => 'Coutu-Dufresne']);
 

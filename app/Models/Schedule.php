@@ -15,7 +15,7 @@ class Schedule extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'limit_date' => 'date',
-        'limit_date_weekends' => 'date'
+        'limit_date_weekends' => 'date',
     ];
 
     public function conflicts()

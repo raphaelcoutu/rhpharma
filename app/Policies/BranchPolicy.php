@@ -10,6 +10,6 @@ class BranchPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadBranches;
-    private $permissionWriteCode = PermissionEnum::WriteBranches;
 
+    private $permissionWriteCode = PermissionEnum::WriteBranches;
 }

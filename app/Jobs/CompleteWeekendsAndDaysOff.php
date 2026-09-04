@@ -53,16 +53,16 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             ->get();
         $shiftsToAdd = collect();
 
-        foreach($assignedShifts as $shift) {
+        foreach ($assignedShifts as $shift) {
             // Si on est samedi, on s'assure d'avoir un dimanche
-            if($shift->date->dayOfWeek === 6) {
+            if ($shift->date->dayOfWeek === 6) {
 
                 $nextDate = $shift->date->addDay(1);
                 $nextDayExists = $assignedShifts->where('date', $nextDate)
                     ->where('user_id', $shift->user_id)
                     ->count();
 
-                if(!$nextDayExists && $nextDate->lte($this->schedule->end_date)) {
+                if (! $nextDayExists && $nextDate->lte($this->schedule->end_date)) {
                     $newShift = new AssignedShift([
                         'user_id' => $shift->user_id,
                         'shift_id' => $this->convertShift($shift->shift_id),
@@ -70,7 +70,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
                         'is_published' => true,
                         'date' => $nextDate,
                         'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'updated_at' => Carbon::now(),
                     ]);
 
                     $shiftsToAdd->push($newShift);
@@ -78,13 +78,13 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             }
 
             // Si on est dimanche, on s'assure d'avoir un samedi
-            else if($shift->date->dayOfWeek === 0) {
+            elseif ($shift->date->dayOfWeek === 0) {
                 $previousDate = $shift->date->addDay(-1);
                 $previousDayExists = $assignedShifts->where('date', $previousDate)
                     ->where('user_id', $shift->user_id)
                     ->count();
 
-                if(!$previousDayExists && $previousDate->gte($this->schedule->start_date)) {
+                if (! $previousDayExists && $previousDate->gte($this->schedule->start_date)) {
                     $newShift = new AssignedShift([
                         'user_id' => $shift->user_id,
                         'shift_id' => $this->convertShift($shift->shift_id, $reverse = true),
@@ -92,7 +92,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
                         'is_published' => true,
                         'date' => $previousDate,
                         'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'updated_at' => Carbon::now(),
                     ]);
 
                     logger()->info($previousDate);
@@ -104,7 +104,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             // On place les congés si on a pas déjà des congés dans la semaine
         }
 
-        if($shiftsToAdd->count()) {
+        if ($shiftsToAdd->count()) {
             AssignedShift::insert($shiftsToAdd->toArray());
         }
 
@@ -117,7 +117,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             ->get();
         $daysOffToAdd = collect();
 
-        foreach($assignedShifts as $shift) {
+        foreach ($assignedShifts as $shift) {
             // Si on est dimanche, on s'assure d'avoir un dimanche
             if ($shift->date->dayOfWeek === 0) {
 
@@ -128,8 +128,8 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
                     ->where('date', '<', $shift->date->addDay(6))
                     ->count();
 
-                if($daysOffCount === 0) {
-                    foreach($this->getDaysOffWithShift($shift->shift_id) as $dayOfWeek) {
+                if ($daysOffCount === 0) {
+                    foreach ($this->getDaysOffWithShift($shift->shift_id) as $dayOfWeek) {
                         $newDayOff = new AssignedShift([
                             'user_id' => $shift->user_id,
                             'shift_id' => 1,
@@ -137,7 +137,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
                             'is_published' => true,
                             'date' => $shift->date->copy()->next($dayOfWeek),
                             'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now()
+                            'updated_at' => Carbon::now(),
                         ]);
 
                         $daysOffToAdd->push($newDayOff);
@@ -147,7 +147,7 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             }
         }
 
-        if($daysOffToAdd->count()) {
+        if ($daysOffToAdd->count()) {
             AssignedShift::insert($daysOffToAdd->toArray());
         }
 
@@ -156,39 +156,38 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
 
     private function getDaysOffWithShift($shift)
     {
-//        5 Pharmaciens
-//        $daysOffByShift = [
-//            2 => [Carbon::MONDAY,Carbon::TUESDAY],
-//            3 => [Carbon::THURSDAY, Carbon::FRIDAY],
-//            4 => [Carbon::THURSDAY, Carbon::FRIDAY],
-//            5 => [Carbon::MONDAY,Carbon::TUESDAY],
-//            8 => [Carbon::THURSDAY, Carbon::FRIDAY]
-//        ];
+        //        5 Pharmaciens
+        //        $daysOffByShift = [
+        //            2 => [Carbon::MONDAY,Carbon::TUESDAY],
+        //            3 => [Carbon::THURSDAY, Carbon::FRIDAY],
+        //            4 => [Carbon::THURSDAY, Carbon::FRIDAY],
+        //            5 => [Carbon::MONDAY,Carbon::TUESDAY],
+        //            8 => [Carbon::THURSDAY, Carbon::FRIDAY]
+        //        ];
 
         // 6 Pharmaciens
         $daysOffByShift = [
             2 => [Carbon::THURSDAY, Carbon::FRIDAY],
-            3 => [Carbon::MONDAY,Carbon::TUESDAY],
+            3 => [Carbon::MONDAY, Carbon::TUESDAY],
             4 => [Carbon::THURSDAY, Carbon::FRIDAY],
             5 => [Carbon::THURSDAY, Carbon::FRIDAY],
-            42 => [Carbon::MONDAY,Carbon::TUESDAY],
-            8 => [Carbon::THURSDAY, Carbon::FRIDAY]
+            42 => [Carbon::MONDAY, Carbon::TUESDAY],
+            8 => [Carbon::THURSDAY, Carbon::FRIDAY],
         ];
 
         return $daysOffByShift[$shift];
     }
 
-
     private function convertShift($shift_id, $reverse = false)
     {
-//        5 Pharmaciens
-//        $conversion = [
-//            2 => 4,
-//            3 => 2,
-//            4 => 3,
-//            5 => 8,
-//            8 => 5
-//        ];
+        //        5 Pharmaciens
+        //        $conversion = [
+        //            2 => 4,
+        //            3 => 2,
+        //            4 => 3,
+        //            5 => 8,
+        //            8 => 5
+        //        ];
 
         // 6 Pharmaciens
         $conversion = [
@@ -197,9 +196,9 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
             4 => 2,
             5 => 8,
             42 => 42,
-            8 => 5
+            8 => 5,
         ];
 
-        return (!$reverse) ? $conversion[$shift_id] : array_search($shift_id, $conversion);
+        return (! $reverse) ? $conversion[$shift_id] : array_search($shift_id, $conversion);
     }
 }

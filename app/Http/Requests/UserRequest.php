@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('users')->ignore($this->user)],
             'workdays_per_week' => 'required|digits:1',
             'is_active' => 'required',
-            'roles' => 'present|array'
+            'roles' => 'present|array',
         ];
     }
 }

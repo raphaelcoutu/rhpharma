@@ -11,7 +11,7 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $departments = Department::whereIn('department_type_id', [1,3])->select(['id', 'name'])->get();
+        $departments = Department::whereIn('department_type_id', [1, 3])->select(['id', 'name'])->get();
 
         $triplets = Triplet::all();
 
@@ -25,18 +25,19 @@ class SettingController extends Controller
         $departments = Department::with(['users' => function ($query) {
             $query->where('is_active', 1);
         }])->whereHas('departmentType', function ($departmentType) {
-            $departmentType->whereIn('name', ['Clinique','Oncologie']);
+            $departmentType->whereIn('name', ['Clinique', 'Oncologie']);
         })->orderBy('name')->get();
 
         return view('settings.departments', compact('departments'));
     }
 
-    public function updateDepartments(Request $request) {
+    public function updateDepartments(Request $request)
+    {
         $setting = Setting::where('key', 'departments_order')->firstOrFail();
 
         $setting->update(['value' => json_encode($request->all())]);
 
-        return "OK";
+        return 'OK';
     }
 
     public function updateDepartmentUser(Request $request)
@@ -50,14 +51,15 @@ class SettingController extends Controller
         $department->users()
             ->updateExistingPivot($userId, ['active' => $userActive, 'planning_short' => $userPlanning]);
 
-        return "OK";
+        return 'OK';
     }
 
-    public function updateTriplets(Request $request) {
+    public function updateTriplets(Request $request)
+    {
         $setting = Setting::where('key', 'triplets_order')->firstOrFail();
 
         $setting->update(['value' => json_encode($request->all())]);
 
-        return "OK";
+        return 'OK';
     }
 }

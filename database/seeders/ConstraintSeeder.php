@@ -21,7 +21,7 @@ class ConstraintSeeder extends Seeder
             'comment' => '',
             'status' => $constraint['status'] ?? 1,
             'validated_by' => $constraint['validated_by'] ?? null,
-            'number_of_occurrences' => $constraint['number_of_occurences'] ?? null
+            'number_of_occurrences' => $constraint['number_of_occurences'] ?? null,
         ]);
     }
 
@@ -39,76 +39,76 @@ class ConstraintSeeder extends Seeder
         $RC = User::whereFirstname('Raphaël')->first();
         $SL = User::whereLastname('Letendre')->first();
 
-        //SU - validé (vieil horaire)
+        // SU - validé (vieil horaire)
         $this->create([
             'user_id' => 1,
-            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
-            'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14,0),
+            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8, 0),
+            'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14, 0),
             'constraint_type_id' => 2,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
-        //SU - non validé (vieil horaire)
+        // SU - non validé (vieil horaire)
         $this->create([
             'user_id' => 1,
-            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
-            'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14,0),
+            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8, 0),
+            'end_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(14, 0),
             'constraint_type_id' => 2,
             'status' => 0,
-            'validated_by' => null
+            'validated_by' => null,
         ]);
 
-        //SU - validé superpose (vieil horaire)
+        // SU - validé superpose (vieil horaire)
         $this->create([
             'user_id' => 1,
-            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8,0),
-            'end_datetime' => $pastScheduleStartDate->copy()->addDays(20)->setTime(14,0),
+            'start_datetime' => $pastScheduleStartDate->copy()->addDays(1)->setTime(8, 0),
+            'end_datetime' => $pastScheduleStartDate->copy()->addDays(20)->setTime(14, 0),
             'constraint_type_id' => 2,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
-        //MJL Jour
+        // MJL Jour
         $this->create([
             'user_id' => $MJL->id,
-            'start_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(8,0),
-            'end_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(14,0),
+            'start_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(8, 0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(1)->setTime(14, 0),
             'constraint_type_id' => 2,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
-        //MJL AM
+        // MJL AM
         $this->create([
             'user_id' => $MJL->id,
-            'start_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(8,0),
-            'end_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(14,0),
+            'start_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(8, 0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(9)->setTime(14, 0),
             'constraint_type_id' => 2,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
-        //MJL PM
+        // MJL PM
         $this->create([
             'user_id' => $MJL->id,
-            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
-            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
+            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8, 0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14, 0),
             'constraint_type_id' => 2,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
-        //RC JOUR (vendredi sem2)
+        // RC JOUR (vendredi sem2)
         $this->create([
             'user_id' => $RC->id,
-            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8,0),
-            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14,0),
+            'start_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(8, 0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(12)->setTime(14, 0),
             'constraint_type_id' => 1,
-            'validated_by' => $SL->id
+            'validated_by' => $SL->id,
         ]);
 
         $this->create([
-           'user_id' => $RC->id,
-            'start_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(8,0),
-            'end_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(16,0),
+            'user_id' => $RC->id,
+            'start_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(8, 0),
+            'end_datetime' => $scheduleStartDate->copy()->addDays(25)->setTime(16, 0),
             'constraint_type_id' => 1,
-            'status' => 0
+            'status' => 0,
         ]);
     }
 }

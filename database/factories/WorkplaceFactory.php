@@ -27,7 +27,7 @@ class WorkplaceFactory extends Factory
             'city' => $this->faker->city(),
             'province' => $this->faker->name,
             'postal_code' => 'A1B 2C3',
-            'code' => $this->faker->stateAbbr()
+            'code' => $this->faker->stateAbbr(),
         ];
     }
 }

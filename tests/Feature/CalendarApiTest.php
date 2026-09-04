@@ -15,13 +15,13 @@ class CalendarApiTest extends TestCase
 
     private $user;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->branch = Branch::create(['name' => 'Pharmaciens']);
         $this->user = User::factory()->create([
-            'is_active' => 1
+            'is_active' => 1,
         ]);
 
         Schedule::factory()->create([
@@ -34,7 +34,7 @@ class CalendarApiTest extends TestCase
     {
         $request = [
             'userId' => 1,
-            'date' => 20211101
+            'date' => 20211101,
         ];
 
         $response = $this->actingAs($this->user)

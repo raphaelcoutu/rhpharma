@@ -28,7 +28,7 @@ class ScheduleRequest extends FormRequest
             'limit_date_weekends' => 'required|date',
             'limit_date' => 'required|date|after:today',
             'start_date' => 'required|date|after:constraint_limit_date|day:sunday',
-            'end_date' => 'required|date|after:start_date|unique_interval:start_date|day:saturday'
+            'end_date' => 'required|date|after:start_date|unique_interval:start_date|day:saturday',
         ];
     }
 

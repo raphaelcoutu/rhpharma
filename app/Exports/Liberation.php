@@ -13,13 +13,14 @@ use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 class Liberation
 {
     protected $schedule;
+
     protected $users;
 
     protected $spreadsheet;
 
     public function __construct(Schedule $schedule, Collection $users)
     {
-        $this->spreadsheet = new Spreadsheet();
+        $this->spreadsheet = new Spreadsheet;
         $this->schedule = $schedule;
         $this->users = $users;
 
@@ -56,16 +57,16 @@ class Liberation
     private function addHeading()
     {
         $sheet = $this->spreadsheet->getActiveSheet();
-        $startDate = $this->schedule->start_date->format("d-m-Y");
-        $endDate = $this->schedule->end_date->format("d-m-Y");
-        $sheet->setCellValue([1, 1], 'CONTRAINTES SELON DISPONIBILITÉ DU ' . $startDate . ' AU ' . $endDate);
+        $startDate = $this->schedule->start_date->format('d-m-Y');
+        $endDate = $this->schedule->end_date->format('d-m-Y');
+        $sheet->setCellValue([1, 1], 'CONTRAINTES SELON DISPONIBILITÉ DU '.$startDate.' AU '.$endDate);
         $sheet->mergeCells([1, 1, 10, 1]);
         $styleHeader = $sheet->getStyle([1, 1, 10, 1]);
         $styleHeader->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $styleHeader->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
+        $styleHeader->getBorders()->getBottom()->setBorderStyle(Border::BORDER_DOUBLE);
 
         $subHeaders = ['Nom', 'Prénom', 'Type', '# Fois', 'Journée', 'Disposition', 'Début', 'Fin', 'Importance', 'Raison'];
-        foreach($subHeaders as $index => $subHeader) {
+        foreach ($subHeaders as $index => $subHeader) {
             $cell = $sheet->getCell([$index + 1, 3]);
             $cell->setValue($subHeader);
         }
@@ -93,18 +94,18 @@ class Liberation
         $row = 4;
 
         foreach ($this->users as $user) {
-            foreach($user->constraints->where('constraintType.is_group_constraint', 1) as $constraint) {
+            foreach ($user->constraints->where('constraintType.is_group_constraint', 1) as $constraint) {
                 $sheet->getCell([1, $row])->setValue($user->lastname);
                 $sheet->getCell([2, $row])->setValue($user->firstname);
                 $sheet->getCell([3, $row])->setValue($constraint->constraintType->code);
                 $sheet->getCell([4, $row])->setValue($constraint->number_of_occurrences);
 
-                if($constraint->day !== NULL) {
+                if ($constraint->day !== null) {
                     $weekDays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
                     $sheet->getCell([5, $row])->setValue($weekDays[$constraint->day]);
                 }
 
-                if($constraint->disposition !== NULL) {
+                if ($constraint->disposition !== null) {
                     $dispositions = ['Peu importe', 'Consécutifs', 'Séparés'];
                     $sheet->getCell([6, $row])->setValue($dispositions[$constraint->disposition]);
                 }
@@ -120,7 +121,7 @@ class Liberation
                     ->getStyle()->getAlignment()->setWrapText(true);
 
                 // Coloration alternée des rangées
-                if($row % 2 == 0) {
+                if ($row % 2 == 0) {
                     $sheet->getStyle([1, $row, 10, $row])->getFill()
                         ->setFillType(Fill::FILL_SOLID)
                         ->getStartColor()->setRGB('BCDEFA');
@@ -130,6 +131,4 @@ class Liberation
             }
         }
     }
-
-
 }

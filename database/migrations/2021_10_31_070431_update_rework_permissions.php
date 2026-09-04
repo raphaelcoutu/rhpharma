@@ -24,7 +24,7 @@ class UpdateReworkPermissions extends Migration
             $table->timestamps();
         });
 
-        Schema::create('permission_role', function(Blueprint $table) {
+        Schema::create('permission_role', function (Blueprint $table) {
             $table->unsignedInteger('role_id');
             $table->string('permission_code');
 
@@ -46,13 +46,13 @@ class UpdateReworkPermissions extends Migration
         Schema::drop('permission_role');
         Schema::drop('permissions');
 
-        Schema::create('permissions', function(Blueprint $table) {
+        Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->timestamps();
         });
 
-        Schema::create('permission_role', function(Blueprint $table) {
+        Schema::create('permission_role', function (Blueprint $table) {
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('permission_id');
 
@@ -62,7 +62,6 @@ class UpdateReworkPermissions extends Migration
             $table->foreign('permission_id')->references('id')->on('permissions');
             $table->foreign('role_id')->references('id')->on('roles');
         });
-
 
         Schema::create('permission_user', function (Blueprint $table) {
             $table->unsignedInteger('permission_id');
@@ -98,7 +97,7 @@ class UpdateReworkPermissions extends Migration
             ['name' => 'WriteSettings'],
         ];
 
-        foreach($oldPermissions as $perm) {
+        foreach ($oldPermissions as $perm) {
             $p = Permission::create($perm);
         }
     }

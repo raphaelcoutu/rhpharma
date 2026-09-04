@@ -7,5 +7,5 @@ return [
 
     'username' => env('AZURE_USERNAME'),
 
-    'password' => env('AZURE_PASSWORD')
+    'password' => env('AZURE_PASSWORD'),
 ];

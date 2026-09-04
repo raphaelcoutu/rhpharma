@@ -10,5 +10,6 @@ class WorkplacePolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadWorkplaces;
+
     private $permissionWriteCode = PermissionEnum::WriteWorkplaces;
 }

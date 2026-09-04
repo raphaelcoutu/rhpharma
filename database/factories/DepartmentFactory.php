@@ -39,7 +39,7 @@ class DepartmentFactory extends Factory
             'thursday_am' => 2,
             'thursday_pm' => 2,
             'friday_am' => 2,
-            'friday_pm' => 2
+            'friday_pm' => 2,
         ];
     }
 }

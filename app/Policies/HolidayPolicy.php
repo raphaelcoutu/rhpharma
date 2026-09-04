@@ -10,5 +10,6 @@ class HolidayPolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadHolidays;
+
     private $permissionWriteCode = PermissionEnum::WriteHolidays;
 }

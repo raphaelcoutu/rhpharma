@@ -15,18 +15,25 @@ class Precalculation
     private $weeksPerGroup = 4;
 
     private $daysTemplate;
+
     private $availability;
+
     private $scoreTable;
+
     private $allocatedWeeks;
 
     public $pharmaciens;
+
     public $departments;
 
     public $holidays;
+
     public $schedule;
+
     public $assignedShifts;
 
     public $scheduleWeeks;
+
     public $scheduleDays;
 
     public function __construct($scheduleId)
@@ -36,7 +43,7 @@ class Precalculation
 
         $this->clean();
 
-        //Récupérer les chiffres déjà assignés pour l'horaire en cours
+        // Récupérer les chiffres déjà assignés pour l'horaire en cours
         $this->assignedShifts = AssignedShift::inDateInterval($this->schedule->start_date, $this->schedule->end_date)->get();
 
         // Récupérer les pharmaciens avec constraintes associées et les shifts déjà assignés (fériés, fin de semaines, etc..)
@@ -70,26 +77,27 @@ class Precalculation
         return $end->diffInWeeks($start) + 1;
     }
 
-    public function calculateScore($ids, $departmentId) {
-        if(empty($ids)) {
+    public function calculateScore($ids, $departmentId)
+    {
+        if (empty($ids)) {
             throw new \Exception("No id in this department: {$departmentId}");
         }
 
         $scores = [];
 
-        foreach($ids as $id) {
+        foreach ($ids as $id) {
             $scoreSchedule = [];
             // Chaque semaine
-            for($i = 0; $i < $this->getWeeksCount(); $i++) {
+            for ($i = 0; $i < $this->getWeeksCount(); $i++) {
                 $scoreWeek = 0;
                 // Chaque jour
-                for($j = 0; $j < 5; $j++){
-                    $day = $i*7+(1+$j);
+                for ($j = 0; $j < 5; $j++) {
+                    $day = $i * 7 + (1 + $j);
 
-                    if($this->isAvailableBetween($id, $day, '08:00', '12:00')) {
+                    if ($this->isAvailableBetween($id, $day, '08:00', '12:00')) {
                         $scoreWeek += $this->scoreTable[$departmentId][$j][0];
                     }
-                    if($this->isAvailableBetween($id, $day, '13:00', '16:00')) {
+                    if ($this->isAvailableBetween($id, $day, '13:00', '16:00')) {
                         $scoreWeek += $this->scoreTable[$departmentId][$j][1];
                     }
                 }
@@ -108,17 +116,17 @@ class Precalculation
         $realDate = $this->schedule->start_date->addDays($day);
         $realDateString = $realDate->toDateString();
 
-        $startDateTime = \Carbon\Carbon::parse($realDateString . ' ' . $startTime);
-        $endDateTime = \Carbon\Carbon::parse($realDateString . ' ' . $endTime);
+        $startDateTime = Carbon::parse($realDateString.' '.$startTime);
+        $endDateTime = Carbon::parse($realDateString.' '.$endTime);
 
         // Détection si le pharmacien a déjà un shift assigné au même intervalle de temps
-        foreach($assignedShifts as $assignedShift) {
-            $assignedStart = Carbon::parse($assignedShift->date->toDateString() . ' '
-                . $assignedShift->shift->shiftType->start_time);
-            $assignedEnd = Carbon::parse($assignedShift->date->toDateString() . ' '
-                . $assignedShift->shift->shiftType->end_time);
+        foreach ($assignedShifts as $assignedShift) {
+            $assignedStart = Carbon::parse($assignedShift->date->toDateString().' '
+                .$assignedShift->shift->shiftType->start_time);
+            $assignedEnd = Carbon::parse($assignedShift->date->toDateString().' '
+                .$assignedShift->shift->shiftType->end_time);
 
-            if(detectsIntervalCollision($assignedStart, $assignedEnd,
+            if (detectsIntervalCollision($assignedStart, $assignedEnd,
                 $startDateTime, $endDateTime)) {
                 return false;
             }
@@ -126,34 +134,40 @@ class Precalculation
 
         // Détection si le pharmacien a une contrainte au même intervalle de temps
         // Et il faut que ce soit une contrainte fixe
-        foreach($constraints as $constraint) {
-            if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+        foreach ($constraints as $constraint) {
+            if (detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                 $startDateTime, $endDateTime)) {
-                //Si la contrainte est selon dispo, on ignore
-                if($constraint->constraintType->is_group_constraint == 1) continue;
+                // Si la contrainte est selon dispo, on ignore
+                if ($constraint->constraintType->is_group_constraint == 1) {
+                    continue;
+                }
 
                 // Si la contraintType est inactive ou strong only, on ignore
-                if($constraint->constraintType->status === 0
-                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) continue;
+                if ($constraint->constraintType->status === 0
+                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) {
+                    continue;
+                }
 
                 // On regarde si la contrainte contient un jour en particulier
-                if($constraint->day !== null) {
+                if ($constraint->day !== null) {
 
-                    if($realDate->dayOfWeek === $constraint->day) {
-                        //TODO: fix pour la contrainte de gestion
-                        if($constraint->constraintType->id === 41) {
-                            if($startTime === '12:00') return false;
+                    if ($realDate->dayOfWeek === $constraint->day) {
+                        // TODO: fix pour la contrainte de gestion
+                        if ($constraint->constraintType->id === 41) {
+                            if ($startTime === '12:00') {
+                                return false;
+                            }
                         }
 
                         // TempFix : Si la contrainte est "Doit travailler de jour" on l'ignore
-                        if(in_array($constraint->constraint_type_id, [16,29,30,31,39,42,49,50,51,54])) {
+                        if (in_array($constraint->constraint_type_id, [16, 29, 30, 31, 39, 42, 49, 50, 51, 54])) {
                             continue;
                         }
                     }
                 } else {
                     // On détecte une collision et pas de jour de précisé
                     // Donc, on retourne non disponible
-                    if(in_array($constraint->constraint_type_id, [16,29,30,31,39,42,49,50,51,54])) {
+                    if (in_array($constraint->constraint_type_id, [16, 29, 30, 31, 39, 42, 49, 50, 51, 54])) {
                         continue;
                     }
 
@@ -168,7 +182,7 @@ class Precalculation
     public function assignWeekSequence($departmentId, $sequence)
     {
         $splitSequence = explode(',', $sequence);
-        foreach($splitSequence as $seq) {
+        foreach ($splitSequence as $seq) {
             $this->scheduleWeeks[$departmentId][] = $seq;
         }
 
@@ -180,32 +194,38 @@ class Precalculation
 
         $newAssignedShifts = [];
 
-        for($weeks = 0; $weeks < count($splitSequence); $weeks++) {
+        for ($weeks = 0; $weeks < count($splitSequence); $weeks++) {
             $pharmacienId = $splitSequence[$weeks];
 
             // Si la semaine attribuée est null (semaine remplie manuellement), on sort de la fonction
-            if(is_null($pharmacienId) || $pharmacienId == "") continue;
+            if (is_null($pharmacienId) || $pharmacienId == '') {
+                continue;
+            }
 
-            for($days = 1; $days <= 5; $days++) {
-                $i = $days+7*$weeks;
+            for ($days = 1; $days <= 5; $days++) {
+                $i = $days + 7 * $weeks;
                 $realDate = $this->schedule->start_date->addDays($i);
 
                 // Si c'est une journée férié, on passe au suivant.
-                if($this->holidays->pluck('date')->contains($realDate->format('Y-m-d'))) continue;
+                if ($this->holidays->pluck('date')->contains($realDate->format('Y-m-d'))) {
+                    continue;
+                }
 
                 $day = &$this->availability[$pharmacienId]['days'][$i];
 
-                if($this->isAvailableBetween($pharmacienId, $i, '08:00', '16:30')) {
+                if ($this->isAvailableBetween($pharmacienId, $i, '08:00', '16:30')) {
                     // TODO (tout refaire la structure) : bug fix temp enlever vendredi pour SAMI
-                    if($departmentId == 7 && $realDate->dayOfWeek == 5) continue;
+                    if ($departmentId == 7 && $realDate->dayOfWeek == 5) {
+                        continue;
+                    }
                     $newAssignedShifts[] = [
                         'user_id' => $pharmacienId,
                         'shift_id' => $shiftsForDepartment->first()->id,
                         'is_generated' => 1,
                         'is_published' => 0,
                         'date' => $realDate->toDateString(),
-                        'created_at' => new \DateTime(),
-                        'updated_at' => new \DateTime()
+                        'created_at' => new \DateTime,
+                        'updated_at' => new \DateTime,
                     ];
                 }
             }
@@ -232,13 +252,13 @@ class Precalculation
     private function generateDaysTemplate()
     {
         $daysTemplate = [];
-        $number_of_days_in_schedule = $this->schedule->end_date->diffInDays($this->schedule->start_date) +1;
+        $number_of_days_in_schedule = $this->schedule->end_date->diffInDays($this->schedule->start_date) + 1;
 
         for ($i = 0; $i < $number_of_days_in_schedule; $i++) {
             $daysTemplate[$i] = [
                 'date' => $this->schedule->start_date->addDays($i),
                 'shifts' => [],
-                'constraints' => []
+                'constraints' => [],
             ];
         }
 
@@ -254,12 +274,12 @@ class Precalculation
         $this->addConstraintsToUser();
 
         $this->addAssignedShiftsToUser();
-        //TODO: filter par attributs aussi!! (maladie, vacances, maternité)
+        // TODO: filter par attributs aussi!! (maladie, vacances, maternité)
     }
 
     private function generateMainTemplate()
     {
-        foreach($this->pharmaciens as $pharmacien) {
+        foreach ($this->pharmaciens as $pharmacien) {
             $temp = [];
             $temp['workdays_per_week'] = $pharmacien->workdays_per_week;
             $temp['days'] = $this->daysTemplate;
@@ -273,7 +293,7 @@ class Precalculation
         foreach ($this->pharmaciens as $pharmacien) {
             foreach ($pharmacien->constraints as $constraint) {
                 // Si la contrainte débute avant l'horaire, on ajuste les jours. Sinon, on laisse idem.
-                if($constraint->start_datetime->lt($this->schedule->start_date)) {
+                if ($constraint->start_datetime->lt($this->schedule->start_date)) {
                     $dayInSchedule = 0;
                     $duration = $constraint->end_datetime->diffInDays($constraint->start_datetime) + 1;
                     $duration -= $this->schedule->start_date->diffInDays($constraint->start_datetime) + 1;
@@ -292,7 +312,8 @@ class Precalculation
         }
     }
 
-    private function addAssignedShiftsToUser() {
+    private function addAssignedShiftsToUser()
+    {
         $this->assignedShifts->each(function ($shift) {
             $dayInSchedule = $shift->date->diffInDays($this->schedule->start_date);
 
@@ -308,25 +329,26 @@ class Precalculation
                 [$department->tuesday_am, $department->tuesday_pm],
                 [$department->wednesday_am, $department->wednesday_pm],
                 [$department->thursday_am, $department->thursday_pm],
-                [$department->friday_am, $department->friday_pm]
+                [$department->friday_am, $department->friday_pm],
             ];
 
             $this->scoreTable[$department->id] = $departmentScore;
         });
     }
 
-    //TODO: change to private
-    public function calculateAllocation() {
+    // TODO: change to private
+    public function calculateAllocation()
+    {
         $totalPlanning = $this->departments->mapWithKeys(function ($department) {
             return [$department->id => $department->users->where('pivot.active', 1)->map(function ($user) {
                 return $user->pivot->planning_short;
             })->sum()];
         });
 
-        foreach($this->departments as $department) {
-            foreach($department->users->where('is_active', 1)->where('pivot.active', 1) as $user) {
+        foreach ($this->departments as $department) {
+            foreach ($department->users->where('is_active', 1)->where('pivot.active', 1) as $user) {
 
-                if($totalPlanning[$department->id] >= 0) {
+                if ($totalPlanning[$department->id] >= 0) {
                     $planningShort = $user->pivot->planning_short;
 
                     $allocated = floor(($planningShort + 0.01) / 100 * $this->getWeeksCount());

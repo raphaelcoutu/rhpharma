@@ -14,7 +14,7 @@ class AssignedShift extends Model
     protected $casts = [
         'date' => 'date',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
     ];
 
     protected $guarded = [];
@@ -41,8 +41,8 @@ class AssignedShift extends Model
     public function scopeInDateInterval($query, Carbon $start_date, Carbon $end_date)
     {
         return $query->where(function ($query) use ($start_date, $end_date) {
-            $query->where('date', '>=', $start_date->setTime(0,0))
-                ->where('date', '<=', $end_date->setTime(23,59));
+            $query->where('date', '>=', $start_date->setTime(0, 0))
+                ->where('date', '<=', $end_date->setTime(23, 59));
         });
     }
 

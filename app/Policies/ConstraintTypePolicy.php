@@ -10,5 +10,6 @@ class ConstraintTypePolicy
     use HandlesAuthorization, ValidateReadWritePermissions;
 
     private $permissionReadCode = PermissionEnum::ReadConstraintTypes;
+
     private $permissionWriteCode = PermissionEnum::WriteConstraintTypes;
 }

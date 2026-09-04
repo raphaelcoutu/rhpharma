@@ -35,14 +35,14 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('fr');
 
         Validator::extend('unique_interval', function ($attribute, $value, $parameters, $validator) {
-            if(count($parameters) < 1) {
-                throw new \InvalidArgumentException("Validation rule unique_interval requires at 1 parameter.");
+            if (count($parameters) < 1) {
+                throw new \InvalidArgumentException('Validation rule unique_interval requires at 1 parameter.');
             }
 
             $a_start = Carbon::parse($validator->getData()[$parameters[0]]);
             $a_end = Carbon::parse($value);
 
-            $schedules = Schedule::select('id','start_date','end_date')
+            $schedules = Schedule::select('id', 'start_date', 'end_date')
                 ->when(isset($validator->getData()['branch_id']), function ($query) use ($validator) {
                     $query->where('branch_id', $validator->getData()['branch_id']);
                 })
@@ -50,10 +50,12 @@ class AppServiceProvider extends ServiceProvider
                 ->limit(12)->get();
 
             foreach ($schedules as $schedule) {
-                //Si on édit un horaire, on skip la vérification
-                if(isset($validator->getData()['id']) && $schedule->id == $validator->getData()['id']) continue;
+                // Si on édit un horaire, on skip la vérification
+                if (isset($validator->getData()['id']) && $schedule->id == $validator->getData()['id']) {
+                    continue;
+                }
 
-                if(detectsIntervalCollision($a_start, $a_end, $schedule->start_date, $schedule->end_date)) {
+                if (detectsIntervalCollision($a_start, $a_end, $schedule->start_date, $schedule->end_date)) {
                     return false;
                 }
             }
@@ -61,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
             return true;
         });
 
-        Validator::extend('day', function($attribute, $value, $parameters, $validator) {
+        Validator::extend('day', function ($attribute, $value, $parameters, $validator) {
             // Laravel uses Carbon. Just `use Carbon\Carbon;` it
             $day = \Carbon\Carbon::parse($value)->dayOfWeek;
             switch (strtolower($parameters[0])) {
@@ -84,8 +86,9 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Validator::replacer('day', function($message, $attribute, $rule, $parameters){
+        Validator::replacer('day', function ($message, $attribute, $rule, $parameters) {
             $jour_francais = $parameters[0] == 'sunday' ? 'dimanche' : 'samedi';
+
             return str_replace(':day', $jour_francais, $message);
         });
     }

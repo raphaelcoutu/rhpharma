@@ -32,7 +32,6 @@ class CreateConstraintsTable extends Migration
             $table->foreign('constraint_type_id')->references('id')->on('constraint_types');
             $table->foreign('validated_by')->references('id')->on('users');
 
-
         });
     }
 

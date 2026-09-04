@@ -26,8 +26,11 @@ class BuildClinicalDepartments implements ShouldQueue
     public $event;
 
     private $precalculation;
+
     private $running;
+
     private $schedule;
+
     private $start;
 
     /**
@@ -64,7 +67,7 @@ class BuildClinicalDepartments implements ShouldQueue
         // - Importation des contraintes
         // - Calculer les statistiques antérieures de prévision main d'oeuvre(ou importer via page temporaire)
 
-        //Revérifier si y'a des contraintes non validé dans l'interval avant de procéder?
+        // Revérifier si y'a des contraintes non validé dans l'interval avant de procéder?
 
         // Génération d'une matrice de disponibilité du département pour toutes les demie-journées de l'horaire
         // - Durée de l'horaire
@@ -85,7 +88,7 @@ class BuildClinicalDepartments implements ShouldQueue
                 set_time_limit(600);
                 $status = Schedule::find($this->event->scheduleId)->status_clinical_departments;
 
-                if($status === BuildStatus::Build) {
+                if ($status === BuildStatus::Build) {
                     new GenericBuilder($this->precalculation, $departmentId);
                     DepartmentAnalyzer::run($this->precalculation->schedule, $departmentId);
                 } else {
@@ -98,17 +101,17 @@ class BuildClinicalDepartments implements ShouldQueue
 
         UserAnalyzer::run($this->precalculation->schedule);
 
-        if($this->running) {
+        if ($this->running) {
             if ($departments->count() == 0) {
                 $message = 'No departments found in settings.';
-                Log::warning('BuildClinicalDepartments Job: ' . $message);
+                Log::warning('BuildClinicalDepartments Job: '.$message);
                 Log::info('BuildClinicalDepartments Job: STOPPED');
                 event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Error, $message));
 
             } else {
                 $executionTime = round(microtime(true) - $this->start, 2);
-                Log::info('BuildClinicalDepartments Job: FINISHED - ' . $executionTime . ' sec');
-                event(new BuildMessageGenerated($this->schedule, 'Génération est terminée (' . $executionTime . 's)'));
+                Log::info('BuildClinicalDepartments Job: FINISHED - '.$executionTime.' sec');
+                event(new BuildMessageGenerated($this->schedule, 'Génération est terminée ('.$executionTime.'s)'));
                 event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Success));
             }
         }
@@ -116,7 +119,7 @@ class BuildClinicalDepartments implements ShouldQueue
 
     public function stopJob(int $status)
     {
-        if($status === BuildStatus::Cancel) {
+        if ($status === BuildStatus::Cancel) {
             Log::warning('BuildClinicalDepartments Job: Stopped by user.');
             event(new BuildMessageGenerated($this->schedule, 'Génération est arrêtée par utilisateur.'));
         } elseif ($status === BuildStatus::Reset) {

@@ -18,7 +18,7 @@ class ConstraintType extends Model
         'is_single_day',
         'is_group_constraint',
         'is_day_in_schedule',
-        'branch_id'
+        'branch_id',
     ];
 
     public function criteria()

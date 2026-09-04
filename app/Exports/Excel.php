@@ -10,6 +10,7 @@ use ZipArchive;
 class Excel
 {
     protected $schedule;
+
     protected $users;
 
     protected $calendars = [];
@@ -34,21 +35,21 @@ class Excel
         if ($duration % 4 === 0) {
             $nbCalendars = $duration / 4;
             $divideBy = 4;
-        } else if ($duration % 3 === 0) {
+        } elseif ($duration % 3 === 0) {
             $nbCalendars = $duration / 3;
             $divideBy = 3;
         } else {
-            if($duration < 3) {
+            if ($duration < 3) {
                 $nbCalendars = 1;
             } else {
                 throw \Exception('Nombre de semaines à l\'horaire non divisible par 3 ou 4.');
             }
         }
 
-        if($nbCalendars > 1) {
+        if ($nbCalendars > 1) {
             for ($i = 0; $i < $nbCalendars; $i++) {
                 $start = $this->schedule->start_date->copy()->addDays($i * $divideBy * 7);
-                $end = $this->schedule->start_date->copy()->addDays(($i+1) * $divideBy * 7 - 1);
+                $end = $this->schedule->start_date->copy()->addDays(($i + 1) * $divideBy * 7 - 1);
 
                 $calendar = new Calendar($start, $end, $this->users);
 
@@ -73,9 +74,9 @@ class Excel
     public function zip(string $fileName)
     {
         $zipFile = tempnam(sys_get_temp_dir(), 'laravel-zip');
-        $zip = new ZipArchive();
+        $zip = new ZipArchive;
 
-        if ($zip->open($zipFile, ZipArchive::CREATE) === TRUE) {
+        if ($zip->open($zipFile, ZipArchive::CREATE) === true) {
 
             $timestamp = date('Ymd-His');
             $tmpFiles = [];
@@ -83,11 +84,11 @@ class Excel
             // Création des différents horaires en xlsx
             foreach ($this->calendars as $index => $calendar) {
                 $writer = new Xlsx($calendar->getSpreadsheet());
-                $tmpFiles[$index] = sys_get_temp_dir() . '/laravel-calendar'. $index .'_' . $timestamp . '.xlsx';
+                $tmpFiles[$index] = sys_get_temp_dir().'/laravel-calendar'.$index.'_'.$timestamp.'.xlsx';
 
                 $writer->save($tmpFiles[$index]);
 
-                $zip->addFile($tmpFiles[$index], $fileName . '_' . $index .'_' . $timestamp . '.xlsx');
+                $zip->addFile($tmpFiles[$index], $fileName.'_'.$index.'_'.$timestamp.'.xlsx');
 
                 $calendar->clear();
             }
@@ -96,18 +97,18 @@ class Excel
             $liberations = new Liberation($this->schedule, $this->users);
             $writer = new Xlsx($liberations->getSpreadsheet());
 
-            $tmpFiles['liberations'] = sys_get_temp_dir() . '/liberations_' . $timestamp . '.xlsx';
+            $tmpFiles['liberations'] = sys_get_temp_dir().'/liberations_'.$timestamp.'.xlsx';
             $writer->save($tmpFiles['liberations']);
-            $zip->addFile($tmpFiles['liberations'], 'Liberations_' . $timestamp . '.xlsx');
+            $zip->addFile($tmpFiles['liberations'], 'Liberations_'.$timestamp.'.xlsx');
             $liberations->clear();
 
             // Ajout du fichier des conflits
             $conflicts = new Conflict($this->schedule);
             $writer = new Xlsx($conflicts->getSpreadsheet());
 
-            $tmpFiles['conflits'] = sys_get_temp_dir() . '/conflits_' . $timestamp . '.xlsx';
+            $tmpFiles['conflits'] = sys_get_temp_dir().'/conflits_'.$timestamp.'.xlsx';
             $writer->save($tmpFiles['conflits']);
-            $zip->addFile($tmpFiles['conflits'], 'Conflits_' . $timestamp . '.xlsx');
+            $zip->addFile($tmpFiles['conflits'], 'Conflits_'.$timestamp.'.xlsx');
             $conflicts->clear();
 
             $zip->close();
@@ -116,7 +117,7 @@ class Excel
                 unlink($tmpFile);
             }
 
-            return response()->download($zipFile, $fileName . '_' . $timestamp . '.zip')
+            return response()->download($zipFile, $fileName.'_'.$timestamp.'.zip')
                 ->deleteFileAfterSend(true);
         }
     }

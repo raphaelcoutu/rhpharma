@@ -16,12 +16,14 @@ class PermissionTest extends TestCase
     use RefreshDatabase;
 
     protected $phmAdmin;
+
     protected $phmUser;
+
     protected $atpAdmin;
+
     protected $atpUser;
 
-
-    public function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -45,22 +47,22 @@ class PermissionTest extends TestCase
 
     public function baseTest($url)
     {
-        //PHM-Admin
+        // PHM-Admin
         $this->actingAs($this->phmAdmin)
             ->get($url)
             ->assertStatus(200);
 
-        //PHM-User
+        // PHM-User
         $this->actingAs($this->phmUser)
             ->get($url)
             ->assertStatus(403);
 
-        //ATP-Admin
+        // ATP-Admin
         $this->actingAs($this->atpAdmin)
             ->get($url)
             ->assertStatus(200);
 
-        //ATP-Admin
+        // ATP-Admin
         $this->actingAs($this->atpUser)
             ->get($url)
             ->assertStatus(403);

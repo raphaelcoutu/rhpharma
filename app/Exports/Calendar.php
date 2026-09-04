@@ -14,20 +14,24 @@ use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 class Calendar
 {
     protected $startDate;
+
     protected $endDate;
+
     protected $users;
 
     protected $spreadsheet;
+
     protected $rowStart;
+
     protected $colStart;
 
     protected $constraints;
 
     public function __construct(Carbon $startDate, Carbon $endDate, Collection $users)
     {
-        $this->spreadsheet = new Spreadsheet();
+        $this->spreadsheet = new Spreadsheet;
         $this->startDate = $startDate;
-        $this->endDate = $endDate->setTime(23,59,59);
+        $this->endDate = $endDate->setTime(23, 59, 59);
         $this->users = $users;
         $this->constraints = collect([]);
 
@@ -66,31 +70,30 @@ class Calendar
     private function addHeading()
     {
         $sheet = $this->spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', $this->startDate->translatedFormat('d F') . ' au ' . $this->endDate->translatedFormat('d F'));
+        $sheet->setCellValue('A1', $this->startDate->translatedFormat('d F').' au '.$this->endDate->translatedFormat('d F'));
         $sheet->setCellValue([1, 2], 'Site');
         $sheet->setCellValue([2, 2], 'NomPrénom');
-        $sheet->getStyle('A2:B2')->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
+        $sheet->getStyle('A2:B2')->getBorders()->getBottom()->setBorderStyle(Border::BORDER_DOUBLE);
 
         $sheet->getColumnDimension('A')->setWidth(4);
         $sheet->getColumnDimension('B')->setWidth(20);
 
         $duration = $this->endDate->diffInDays($this->startDate) + 1;
 
-        for($i = 0; $i < $duration; $i++)
-        {
+        for ($i = 0; $i < $duration; $i++) {
             $sheet->getColumnDimensionByColumn($i + 3)->setWidth(7);
             $cell = $sheet->getCell([$i + 3, 2]);
             $cell->setValue($this->startDate->copy()->addDays($i)->format('j'));
             $cellStyle = $cell->getStyle();
             $cellStyle->getFill()->setFillType(Fill::FILL_SOLID)
                 ->getStartColor()->setRGB('DAE1E7');
-            $cellStyle->getBorders()->getBottom()->setBorderStyle(BORDER::BORDER_DOUBLE);
+            $cellStyle->getBorders()->getBottom()->setBorderStyle(Border::BORDER_DOUBLE);
             $cellStyle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
             // Coloration pour la fin de semaine
-            if($i % 7 === 0 || $i % 7 === 6) {
+            if ($i % 7 === 0 || $i % 7 === 6) {
                 $column = $cell->getColumn();
-                $sheet->getStyle($column . '2:' . $column . ($this->users->count()+2))->getFill()
+                $sheet->getStyle($column.'2:'.$column.($this->users->count() + 2))->getFill()
                     ->setFillType(Fill::FILL_SOLID)
                     ->getStartColor()->setRGB('bfbfbf');
             }
@@ -105,20 +108,20 @@ class Calendar
         $duration = $this->endDate->diffInDays($this->startDate, true);
         $lastColumn = $sheet->getCell([$this->colStart + $duration, $this->rowStart])->getColumn();
 
-        $rowStyle = $sheet->getStyle('B' . ($this->rowStart) . ':' . $lastColumn . ($this->users->count()+$this->rowStart-1));
+        $rowStyle = $sheet->getStyle('B'.($this->rowStart).':'.$lastColumn.($this->users->count() + $this->rowStart - 1));
         $rowStyle->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
 
-        foreach($this->users as $index => $user) {
+        foreach ($this->users as $index => $user) {
             // Set la hauteur de la rangée
             $sheet->getRowDimension($this->rowStart + $index)->setRowHeight(17);
 
             $cell = $sheet->getCell([2, $index + $this->rowStart]);
-            $cell->setValue(mb_strtoupper($user->lastname) . ', ' . mb_strtoupper($user->firstname));
+            $cell->setValue(mb_strtoupper($user->lastname).', '.mb_strtoupper($user->firstname));
             $cell->getStyle()->getFont()->setSize(7);
             $cell->getStyle()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
 
             foreach ($user->assignedShifts as $assignedShift) {
-                if($assignedShift->date->gte($this->startDate) && $assignedShift->date->lte($this->endDate)) {
+                if ($assignedShift->date->gte($this->startDate) && $assignedShift->date->lte($this->endDate)) {
                     $col = $assignedShift->date->diffInDays($this->startDate, true) + $this->colStart;
 
                     $cell = $sheet->getCell([$col, $index + $this->rowStart]);
@@ -128,7 +131,7 @@ class Calendar
                     $value = $cell->getValue();
                     $text = $assignedShift->shift->code;
 
-                    if($value != null) {
+                    if ($value != null) {
                         $cell->setValue($value.'-'.$text);
                     } else {
                         $cell->setValue($text);
@@ -136,14 +139,18 @@ class Calendar
                 }
             }
 
-            foreach($user->constraints as $constraint) {
+            foreach ($user->constraints as $constraint) {
                 // Ne pas afficher les constraintes selon dispo sur le calendrier
-                if($constraint->constraintType->is_group_constraint == 1) continue;
+                if ($constraint->constraintType->is_group_constraint == 1) {
+                    continue;
+                }
 
-                if($constraint->constraintType->status === 0
-                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) continue;
+                if ($constraint->constraintType->status === 0
+                    || ($constraint->constraintType->status === 1 && $constraint->weight === 0)) {
+                    continue;
+                }
 
-                if(detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
+                if (detectsIntervalCollision($constraint->start_datetime, $constraint->end_datetime,
                     $this->startDate, $this->endDate)) {
 
                     // Maintenant qu'on sait que la contrainte est dans le fichier d'horaire en cours
@@ -164,25 +171,25 @@ class Calendar
 
                         $cell = $sheet->getCell([$col, $index + $this->rowStart]);
 
-                        if ($constraint->day !== NULL) {
+                        if ($constraint->day !== null) {
                             // Si la contrainte contient un jour spécisé, on l'inscrit seulement dans celui-ci
                             if ($iterateDay->dayOfWeek === $constraint->day) {
-                                $key = $index + $this->rowStart . '__' . $col;
+                                $key = $index + $this->rowStart.'__'.$col;
                                 $this->constraints->push([
                                     'key' => $key,
                                     'row' => $index + $this->rowStart,
                                     'col' => $col,
-                                    'constraint' => $constraint->constraintType->code
+                                    'constraint' => $constraint->constraintType->code,
                                 ]);
 
                             }
                         } else {
-                            $key = $index + $this->rowStart . '__' . $col;
+                            $key = $index + $this->rowStart.'__'.$col;
                             $this->constraints->push([
                                 'key' => $key,
                                 'row' => $index + $this->rowStart,
                                 'col' => $col,
-                                'constraint' => $constraint->constraintType->code
+                                'constraint' => $constraint->constraintType->code,
                             ]);
                         }
                     }
@@ -205,9 +212,11 @@ class Calendar
 
             $cell = $sheet->getCell([$col, $row]);
             $value = trim($cell->getValue());
-            if($value !== "" && $value !== null) $value .= "-";
+            if ($value !== '' && $value !== null) {
+                $value .= '-';
+            }
 
-            $richText = new RichText();
+            $richText = new RichText;
             $richText->createText($value);
 
             for ($i = 0; $i < count($key); $i++) {
@@ -217,8 +226,8 @@ class Calendar
                 $boldText->getFont()->setName('Arial');
                 $boldText->getFont()->setSize(9);
 
-                if($i !== count($key) - 1) {
-                    $boldText = $richText->createTextRun("-");
+                if ($i !== count($key) - 1) {
+                    $boldText = $richText->createTextRun('-');
                     $boldText->getFont()->setName('Arial');
                     $boldText->getFont()->setSize(9);
                 }
