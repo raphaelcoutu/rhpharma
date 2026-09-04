@@ -4,95 +4,92 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ConstraintTypeRequest;
 use App\Models\ConstraintType;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ConstraintTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    #[Authorize('read', ConstraintType::class)]
-    public function index()
+    public function index(): Response
     {
-        $constraintTypes = ConstraintType::ownBranch()->orderBy('name')->get();
+        Gate::authorize('read', ConstraintType::class);
 
-        return view('constraintTypes.index', compact('constraintTypes'));
+        $constraintTypes = ConstraintType::ownBranch()
+            ->withCount('criteria')
+            ->orderBy('name')
+            ->get();
+
+        return Inertia::render('constraintTypes/index', [
+            'constraintTypes' => $constraintTypes,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    #[Authorize('write', ConstraintType::class)]
-    public function create()
+    public function create(): Response
     {
-        return view('constraintTypes.create');
+        Gate::authorize('write', ConstraintType::class);
+
+        return Inertia::render('constraintTypes/create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(ConstraintTypeRequest $request)
+    public function store(ConstraintTypeRequest $request): RedirectResponse
     {
-        $request['branch_id'] = \Auth::user()->branch->id;
+        Gate::authorize('write', ConstraintType::class);
 
-        ConstraintType::create($request->all());
+        ConstraintType::create([
+            ...$request->validated(),
+            'branch_id' => $request->user()->branch->id,
+        ]);
 
-        return redirect('constraintTypes');
+        return redirect()->route('constraintTypes.index');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): never
     {
         abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit(ConstraintType $constraintType)
+    public function edit(ConstraintType $constraintType): Response
     {
-        return view('constraintTypes.edit', compact('constraintType'));
+        Gate::authorize('write', ConstraintType::class);
+        $constraintType = ConstraintType::ownBranch()->findOrFail($constraintType->id);
+
+        return Inertia::render('constraintTypes/edit', [
+            'constraintType' => $constraintType,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(ConstraintTypeRequest $request, $id)
+    public function update(ConstraintTypeRequest $request, ConstraintType $constraintType): RedirectResponse
     {
-        $constraintType = ConstraintType::findOrFail($id);
-        $constraintType->update($request->all());
+        Gate::authorize('write', ConstraintType::class);
+        $constraintType = ConstraintType::ownBranch()->findOrFail($constraintType->id);
+        $constraintType->update($request->validated());
 
-        return redirect('constraintTypes');
+        return redirect()->route('constraintTypes.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id): never
     {
         abort(404);
     }
