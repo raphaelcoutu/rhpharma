@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ConstraintTest extends TestCase
@@ -44,7 +45,7 @@ class ConstraintTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_retrieve_constraint_overlapping_or_inside_defined_schedule()
     {
         $constraint_single_inside = Constraint::factory()->create([
@@ -99,7 +100,7 @@ class ConstraintTest extends TestCase
         $this->assertCount(6, $constraints_in_schedule);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_retrieve_unvalidated_constraints()
     {
         $constraint_validated = Constraint::factory()->create([

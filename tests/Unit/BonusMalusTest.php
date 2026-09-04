@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class BonusMalusTest extends TestCase
@@ -62,7 +63,7 @@ class BonusMalusTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function sequences_scores_before_bonus_malus() {
         $this->assertEquals(60, $this->combinaisons[0]['score']);
         $this->assertEquals(56, $this->combinaisons[1]['score']);
@@ -75,7 +76,7 @@ class BonusMalusTest extends TestCase
         $this->assertEquals(44, $this->combinaisons[8]['score']);
     }
 
-    /** @test */
+    #[Test]
     public function sequences_scores_after_bonus_malus() {
         $this->applyBonusMalus(['weeks' => 2, 'pts' => 10], ['weeks' => 3, 'pts' => 5]);
 

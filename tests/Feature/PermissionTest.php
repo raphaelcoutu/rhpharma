@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\PermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class PermissionTest extends TestCase
@@ -65,13 +66,13 @@ class PermissionTest extends TestCase
             ->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function validating_branches_permissions()
     {
         $this->baseTest('/branches');
     }
 
-    /** @test */
+    #[Test]
     public function validating_users_permissions()
     {
         $this->baseTest('/users');

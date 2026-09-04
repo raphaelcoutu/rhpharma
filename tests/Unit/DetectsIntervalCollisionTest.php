@@ -3,11 +3,12 @@
 namespace Tests\Unit;
 
 use Carbon\Carbon;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class DetectsIntervalCollisionTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_should_return_false_if_a_is_before_b()
     {
         $a_start = Carbon::parse('2017-10-01');
@@ -20,7 +21,7 @@ class DetectsIntervalCollisionTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_return_false_if_a_is_after_b()
     {
         $a_start = Carbon::parse('2017-12-01');
@@ -33,7 +34,7 @@ class DetectsIntervalCollisionTest extends TestCase
         $this->assertFalse($result);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_return_true_if_a_intercept_b_from_before()
     {
         $a_start = Carbon::parse('2017-10-01');
@@ -46,7 +47,7 @@ class DetectsIntervalCollisionTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_return_true_if_a_intercept_b_from_after()
     {
         $a_start = Carbon::parse('2017-11-01');
@@ -59,7 +60,7 @@ class DetectsIntervalCollisionTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_return_true_if_b_is_inside_a()
     {
         $a_start = Carbon::parse('2017-11-01');
@@ -72,7 +73,7 @@ class DetectsIntervalCollisionTest extends TestCase
         $this->assertTrue($result);
     }
 
-    /** @test */
+    #[Test]
     public function it_should_return_true_if_a_is_inside_b()
     {
         $a_start = Carbon::parse('2017-11-01');
