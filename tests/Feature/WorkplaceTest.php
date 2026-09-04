@@ -3,9 +3,12 @@
 namespace Tests\Feature;
 
 use App\Models\Branch;
+use App\Models\Department;
+use App\Models\DepartmentType;
 use App\Models\User;
 use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class WorkplaceTest extends TestCase
@@ -25,7 +28,9 @@ class WorkplaceTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get('/workplaces');
 
-        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('workplaces/index', false)
+            ->has('workplaces'));
     }
 
     public function test_auth_user_can_see_workplace()
@@ -35,12 +40,24 @@ class WorkplaceTest extends TestCase
             'address' => '12e Ave Nord',
             'city' => 'Sherbrooke'
         ]);
+        $departmentType = DepartmentType::create(['name' => 'Clinique']);
+        Department::factory()->create([
+            'name' => 'Urgence',
+            'description' => 'Secteur d\'urgence',
+            'branch_id' => $this->branch->id,
+            'workplace_id' => $workplace->id,
+            'department_type_id' => $departmentType->id,
+        ]);
 
         $response = $this->actingAs($this->superUser)
             ->get("/workplaces/{$workplace->id}");
 
-        $response->assertStatus(200);
-        $response->assertSee("Lieu : {$workplace->name}", false);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('workplaces/show', false)
+            ->where('workplace.name', $workplace->name)
+            ->has('workplace.departments', 1)
+            ->where('workplace.departments.0.description', 'Secteur d\'urgence')
+            ->where('workplace.departments.0.department_type.name', 'Clinique'));
     }
 
     public function test_auth_user_can_see_workplace_create_form()
@@ -48,8 +65,8 @@ class WorkplaceTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get('/workplaces/create');
 
-        $response->assertStatus(200);
-        $response->assertSee('Créer un nouveau lieu de travail');
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('workplaces/create', false));
     }
 
     public function test_auth_user_can_create_workplace()
@@ -66,6 +83,10 @@ class WorkplaceTest extends TestCase
             ]);
 
         $response->assertRedirect('/workplaces');
+        $this->assertDatabaseHas('workplaces', [
+            'name' => 'CHUS HD',
+            'code' => 'HD',
+        ]);
     }
 
     // Routes n'existent pas

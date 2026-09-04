@@ -42,6 +42,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Secteurs
                                 </NavLink>
+                                <NavLink
+                                    href={route('workplaces.index')}
+                                    active={route().current('workplaces.*')}
+                                >
+                                    Lieux de travail
+                                </NavLink>
                             </div>
                         </div>
 
@@ -146,6 +152,12 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('home')}
                         >
                             Accueil
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('workplaces.index')}
+                            active={route().current('workplaces.*')}
+                        >
+                            Lieux de travail
                         </ResponsiveNavLink>
                     </div>
 

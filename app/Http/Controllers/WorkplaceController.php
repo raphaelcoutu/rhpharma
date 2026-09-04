@@ -3,75 +3,83 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workplace;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class WorkplaceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): Response
     {
         Gate::authorize('read', Workplace::class);
 
-        $workplaces = Workplace::withCount(['departments' => function($query) {
+        $workplaces = Workplace::withCount(['departments' => function (Builder $query): void {
             $query->ownBranch();
-        }])->get();
+        }])->orderBy('name')->get();
 
-        return view('workplaces.index', compact('workplaces'));
+        return Inertia::render('workplaces/index', compact('workplaces'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function create()
+    public function create(): Response
     {
-        return view('workplaces.create');
+        Gate::authorize('write', Workplace::class);
+
+        return Inertia::render('workplaces/create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         Gate::authorize('write', Workplace::class);
 
-        $request->validate([
-            'name' => 'required|unique:workplaces',
-            'code' => 'required|unique:workplaces',
-            'address' => 'required',
-            'city' => 'required',
-            'province' => 'required',
-            'country' => 'required',
-            'postal_code' => 'required'
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'unique:workplaces,name'],
+            'code' => ['required', 'string', 'max:5', 'unique:workplaces,code'],
+            'address' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'province' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'postal_code' => ['required', 'string'],
         ]);
 
-        Workplace::create($request->all());
+        Workplace::create($validated);
 
-        return redirect('workplaces');
+        return redirect()->route('workplaces.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function show($id)
+    public function show(Workplace $workplace): Response
     {
-        $workplace = Workplace::with(['departments' => function($query) {
-            $query->ownBranch();
-        }])->findOrFail($id);
+        Gate::authorize('read', Workplace::class);
 
-        return view('workplaces.show', compact('workplace'));
+        $workplace->load(['departments' => function (HasMany $query): void {
+            $query->ownBranch()->with('departmentType');
+        }]);
+
+        return Inertia::render('workplaces/show', compact('workplace'));
     }
 
     /**
