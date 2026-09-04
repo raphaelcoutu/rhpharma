@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Jobs\GenerateStatsByDepartments;
+use App\Jobs\GenerateStatsByDepartments;
 use App\Models\Statistic;
 
 class ScheduleStatDepartmentController extends Controller

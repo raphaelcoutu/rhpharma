@@ -21,6 +21,7 @@
         "barryvdh/laravel-ide-helper": "^3.1",
         "fakerphp/faker": "^1.9.1",
         "fruitcake/laravel-debugbar": "^4.4",
+        "larastan/larastan": "^3.0",
         "laravel/boost": "^2.7",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2",
@@ -57,8 +58,25 @@
             "Composer\\Config::disableProcessTimeout",
             "@php artisan dev"
         ],
+        "lint": [
+            "pint --parallel"
+        ],
+        "lint:check": [
+            "pint --parallel --test"
+        ],
+        "ci:check": [
+            "Composer\\Config::disableProcessTimeout",
+            "npm run check",
+            "npm run types:check",
+            "@test"
+        ],
+        "types:check": [
+            "phpstan analyse"
+        ],
         "test": [
-            "@php artisan config:clear --ansi @no_additional_args",
+            "@php artisan config:clear --ansi",
+            "@lint:check",
+            "@types:check",
             "@php artisan test"
         ],
         "post-autoload-dump": [
