@@ -3,12 +3,23 @@ import Dropdown from '@/components/dropdown.jsx';
 import NavLink from '@/components/nav-link.jsx';
 import ResponsiveNavLink from '@/components/responsive-nav-link.jsx';
 import { Link, usePage } from '@inertiajs/react';
+import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+
+const configurationLinks = [
+    { label: 'Branches', routeName: 'branches.index', routePattern: 'branches.*' },
+    { label: 'Secteurs', routeName: 'departments.index', routePattern: 'departments.*' },
+    { label: 'Lieux de travail', routeName: 'workplaces.index', routePattern: 'workplaces.*' },
+    { label: 'Types de shifts', routeName: 'shiftTypes.index', routePattern: 'shiftTypes.*' },
+    { label: 'Jours fériés', routeName: 'holidays.index', routePattern: 'holidays.*' },
+    { label: 'Types de contraintes', routeName: 'constraintTypes.index', routePattern: 'constraintTypes.*' },
+];
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const configurationIsActive = configurationLinks.some(({ routePattern }) => route().current(routePattern));
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -26,24 +37,38 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <NavLink href={route('home')} active={route().current('home')}>
                                     Accueil
                                 </NavLink>
-                                <NavLink href={route('branches.index')} active={route().current('branches.index')}>
-                                    Branches
-                                </NavLink>
                                 <NavLink href={route('users.index')} active={route().current('users.index')}>
                                     Utilisateurs
                                 </NavLink>
-                                <NavLink href={route('departments.index')} active={route().current('departments.index')}>
-                                    Secteurs
-                                </NavLink>
-                                <NavLink href={route('workplaces.index')} active={route().current('workplaces.*')}>
-                                    Lieux de travail
-                                </NavLink>
-                                <NavLink href={route('shiftTypes.index')} active={route().current('shiftTypes.*')}>
-                                    Types de shifts
-                                </NavLink>
-                                <NavLink href={route('holidays.index')} active={route().current('holidays.*')}>
-                                    Jours fériés
-                                </NavLink>
+                                <Dropdown>
+                                    <Dropdown.Trigger className="flex h-full">
+                                        <button
+                                            type="button"
+                                            aria-haspopup="menu"
+                                            className={
+                                                'inline-flex h-full items-center gap-1 border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ' +
+                                                (configurationIsActive
+                                                    ? 'border-indigo-400 text-gray-900 focus:border-indigo-700'
+                                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700')
+                                            }
+                                        >
+                                            Configuration
+                                            <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                                        </button>
+                                    </Dropdown.Trigger>
+
+                                    <Dropdown.Content align="left">
+                                        {configurationLinks.map(({ label, routeName, routePattern }) => (
+                                            <Dropdown.Link
+                                                key={routeName}
+                                                href={route(routeName)}
+                                                className={route().current(routePattern) ? 'bg-indigo-50 text-indigo-700' : ''}
+                                            >
+                                                {label}
+                                            </Dropdown.Link>
+                                        ))}
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
                         </div>
 
@@ -115,18 +140,19 @@ export default function AuthenticatedLayout({ header, children }) {
                         <ResponsiveNavLink href={route('home')} active={route().current('home')}>
                             Accueil
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('branches.index')} active={route().current('branches.index')}>
-                            Branches
+                        <ResponsiveNavLink href={route('users.index')} active={route().current('users.index')}>
+                            Utilisateurs
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('workplaces.index')} active={route().current('workplaces.*')}>
-                            Lieux de travail
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('shiftTypes.index')} active={route().current('shiftTypes.*')}>
-                            Types de shifts
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('holidays.index')} active={route().current('holidays.*')}>
-                            Jours fériés
-                        </ResponsiveNavLink>
+                        <div className="border-t border-gray-200 pb-1 pt-4">
+                            <p className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuration</p>
+                            <div className="mt-1 space-y-1">
+                                {configurationLinks.map(({ label, routeName, routePattern }) => (
+                                    <ResponsiveNavLink key={routeName} href={route(routeName)} active={route().current(routePattern)}>
+                                        {label}
+                                    </ResponsiveNavLink>
+                                ))}
+                            </div>
+                        </div>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
