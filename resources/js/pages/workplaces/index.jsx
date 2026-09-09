@@ -136,13 +136,21 @@ export default function Index({ workplaces }) {
                                             <span className="font-medium text-gray-900">{workplace.departments_count}</span>
                                         </TableCell>
                                         <TableCell className="pr-6 text-right">
-                                            <Link
-                                                href={route('workplaces.show', workplace.id)}
-                                                className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
-                                            >
-                                                Voir les secteurs
-                                                <ChevronRight className="h-4 w-4" />
-                                            </Link>
+                                            <div className="flex items-center justify-end gap-4">
+                                                <Link
+                                                    href={route('workplaces.edit', workplace.id)}
+                                                    className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
+                                                >
+                                                    Modifier
+                                                </Link>
+                                                <Link
+                                                    href={route('workplaces.show', workplace.id)}
+                                                    className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
+                                                >
+                                                    Voir les secteurs
+                                                    <ChevronRight className="h-4 w-4" />
+                                                </Link>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}

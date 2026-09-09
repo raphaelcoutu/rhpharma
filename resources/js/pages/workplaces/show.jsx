@@ -35,10 +35,16 @@ export default function Show({ workplace }) {
                                 </p>
                             </div>
                         </div>
-                        <SecondaryButton as={Link} href={route('departments.create')} className="gap-2">
-                            <Plus className="h-4 w-4" />
-                            Ajouter un secteur
-                        </SecondaryButton>
+                        <div className="flex flex-wrap items-center gap-3">
+                            <SecondaryButton as={Link} href={route('workplaces.edit', workplace.id)} className="gap-2">
+                                <Pencil className="h-4 w-4" />
+                                Modifier
+                            </SecondaryButton>
+                            <SecondaryButton as={Link} href={route('departments.create')} className="gap-2">
+                                <Plus className="h-4 w-4" />
+                                Ajouter un secteur
+                            </SecondaryButton>
+                        </div>
                     </div>
 
                     <section className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -75,24 +76,34 @@ class WorkplaceController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Workplace $workplace): Response
     {
-        abort(404);
+        Gate::authorize('write', Workplace::class);
+
+        return Inertia::render('workplaces/edit', compact('workplace'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Workplace $workplace): RedirectResponse
     {
-        abort(404);
+        Gate::authorize('write', Workplace::class);
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', Rule::unique('workplaces', 'name')->ignore($workplace)],
+            'code' => ['required', 'string', 'max:5', Rule::unique('workplaces', 'code')->ignore($workplace)],
+            'address' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'province' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'postal_code' => ['required', 'string'],
+        ]);
+
+        $workplace->update($validated);
+
+        return redirect()->route('workplaces.index');
     }
 
     /**

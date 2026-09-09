@@ -92,6 +92,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('workplaces', [WorkplaceController::class, 'index'])->name('workplaces.index');
     Route::get('workplaces/create', [WorkplaceController::class, 'create'])->name('workplaces.create');
     Route::post('workplaces', [WorkplaceController::class, 'store'])->name('workplaces.store');
+    Route::get('workplaces/{workplace}/edit', [WorkplaceController::class, 'edit'])->name('workplaces.edit');
+    Route::put('workplaces/{workplace}', [WorkplaceController::class, 'update'])->name('workplaces.update');
     Route::get('workplaces/{workplace}', [WorkplaceController::class, 'show'])->name('workplaces.show');
 
     // Departments
