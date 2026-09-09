@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Inertia\Testing\AssertableInertia as Assert;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use Tests\TestCase;
@@ -45,6 +46,10 @@ class ScheduleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Horaires');
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('schedules/index', false)
+            ->has('schedules.data', 1)
+            ->where('schedules.data.0.id', Schedule::firstOrFail()->id));
     }
 
     public function test_auth_user_can_see_schedules_create_form()
@@ -52,7 +57,8 @@ class ScheduleTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get('/schedules/create');
 
-        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('schedules/create', false));
     }
 
     public function test_auth_user_can_create_schedule()
@@ -91,7 +97,25 @@ class ScheduleTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get("/schedules/{$schedule->id}/edit");
 
-        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('schedules/edit', false)
+            ->where('schedule.id', $schedule->id)
+            ->where('schedule.name', 'Prochain horaire'));
+    }
+
+    public function test_auth_user_can_see_schedule_generation_page(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $response = $this->actingAs($this->superUser)
+            ->get(route('schedules.show', $schedule));
+
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('schedules/show', false)
+            ->where('schedule.id', $schedule->id)
+            ->where('durationInWeeks', $schedule->duration_in_weeks)
+            ->where('constraintsCount', 0)
+            ->has('conflicts'));
     }
 
     public function test_auth_user_can_edit_schedule()
@@ -116,6 +140,20 @@ class ScheduleTest extends TestCase
 
         $response->assertRedirect('/schedules');
         $this->assertEquals(Carbon::now()->addWeeks(2)->next('Sunday'), Schedule::findOrFail($schedule->id)->start_date);
+    }
+
+    public function test_auth_user_can_update_schedule_notes(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $response = $this->actingAs($this->superUser)
+            ->putAjax("/api/schedules/{$schedule->id}/updateNotes", ['notes' => 'Préparer la validation.']);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('schedules', [
+            'id' => $schedule->id,
+            'notes' => 'Préparer la validation.',
+        ]);
     }
 
     public function test_auth_user_can_export_schedule(): void

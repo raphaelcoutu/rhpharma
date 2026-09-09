@@ -6,24 +6,24 @@ use App\Http\Requests\ScheduleRequest;
 use App\Models\Constraint;
 use App\Models\Department;
 use App\Models\Schedule;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ScheduleController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         Gate::authorize('read', Schedule::class);
 
         $schedules = Schedule::orderedDesc()->paginate(15);
 
-        $constraints_in_schedule = [];
+        $constraintsInSchedule = [];
 
         if (! $schedules->empty()) {
             $constraints = Constraint::unvalidated()->inDateInterval($schedules->last()->start_date, $schedules->first()->end_date)->get();
@@ -36,47 +36,46 @@ class ScheduleController extends Controller
                     }
                 }
 
-                $constraints_in_schedule[$schedule->id] = $collision;
+                $constraintsInSchedule[$schedule->id] = $collision;
             }
         }
 
-        return view('schedules.index', compact('schedules', 'constraints_in_schedule'));
+        return Inertia::render('schedules/index', [
+            'pageTitle' => 'Horaires',
+            'schedules' => $schedules,
+            'constraintsInSchedule' => $constraintsInSchedule,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): Response
     {
-        return view('schedules.create');
+        Gate::authorize('write', Schedule::class);
+
+        return Inertia::render('schedules/create');
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(ScheduleRequest $request)
+    public function store(ScheduleRequest $request): RedirectResponse
     {
         Gate::authorize('write', Schedule::class);
 
-        $request['branch_id'] = \Auth::user()->branch->id;
-
-        Schedule::create($request->all());
+        Schedule::create([
+            ...$request->validated(),
+            'branch_id' => $request->user()->branch->id,
+        ]);
 
         return redirect()->route('schedules.index');
     }
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function show($id)
+    public function show(int $id): Response
     {
         Gate::authorize('write', Schedule::class);
 
@@ -84,42 +83,43 @@ class ScheduleController extends Controller
 
         $departments = Department::orderBy('name')->get();
 
-        $constraints_count = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
+        $constraintsCount = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
 
-        return view('schedules.show', compact('schedule', 'constraints_count', 'departments'));
+        return Inertia::render('schedules/show', [
+            'schedule' => $schedule,
+            'durationInWeeks' => $schedule->duration_in_weeks,
+            'constraintsCount' => $constraintsCount,
+            'conflicts' => $schedule->conflicts,
+            'departments' => $departments,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): Response
     {
         Gate::authorize('write', Schedule::class);
 
         $schedule = Schedule::findOrFail($id);
 
-        return view('schedules.edit', compact('schedule'));
+        return Inertia::render('schedules/edit', compact('schedule'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(ScheduleRequest $request, $id)
+    public function update(ScheduleRequest $request, int $id): RedirectResponse
     {
+        Gate::authorize('write', Schedule::class);
+
         $schedule = Schedule::findOrFail($id);
-        $schedule->update($request->all());
+        $schedule->update($request->validated());
 
         return redirect()->route('schedules.index');
     }
 
-    public function updateNotes(Request $request, $id)
+    public function updateNotes(Request $request, int $id): void
     {
         $schedule = Schedule::findOrFail($id);
         $schedule->notes = $request->notes;

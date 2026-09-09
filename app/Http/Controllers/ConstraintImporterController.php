@@ -6,18 +6,26 @@ use App\Models\Constraint;
 use App\Models\ConstraintType;
 use App\Models\User;
 use App\Services\AzureRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ConstraintImporterController extends Controller
 {
-    public function index()
+    public function index(): Response
     {
-        return view('constraintImporter.index');
+        return Inertia::render('constraintImporter/index', [
+            'status' => session('status'),
+            'newUsers' => session('newUsers', []),
+            'newConstraintTypes' => session('newConstraintTypes', []),
+            'missingUsers' => session('missingUsers', []),
+        ]);
     }
 
-    public function import(Request $request, AzureRepository $azureRepository)
+    public function import(Request $request, AzureRepository $azureRepository): RedirectResponse
     {
         $rows = $azureRepository->constraints($request['start'], $request['end']);
 

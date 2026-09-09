@@ -12,6 +12,7 @@ use App\Services\AzureRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Carbon;
+use Inertia\Testing\AssertableInertia as Assert;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -46,6 +47,12 @@ class ConstraintImporterTest extends TestCase
             ->get('/constraintImporter');
 
         $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('constraintImporter/index', false)
+            ->where('status', null)
+            ->has('newUsers', 0)
+            ->has('newConstraintTypes', 0)
+            ->has('missingUsers', 0));
     }
 
     public function test_import_empty_constraint()
@@ -54,12 +61,11 @@ class ConstraintImporterTest extends TestCase
             $mock->shouldReceive('constraints')->once()->andReturn([]);
         });
 
-        $response = $this->followingRedirects()
-            ->actingAs($this->superUser)
+        $response = $this->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
-        $response->assertStatus(200);
-        $response->assertSee('Contraintes importées! (0)');
+        $response->assertRedirect(route('constraintImporter.index'));
+        $response->assertSessionHas('status', 'Contraintes importées! (0)');
     }
 
     public function test_import_constraint_with_existing_user()
@@ -73,12 +79,11 @@ class ConstraintImporterTest extends TestCase
             ]);
         });
 
-        $response = $this->followingRedirects()
-            ->actingAs($this->superUser)
+        $response = $this->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
-        $response->assertStatus(200);
-        $response->assertSee('Contraintes importées! (1)');
+        $response->assertRedirect(route('constraintImporter.index'));
+        $response->assertSessionHas('status', 'Contraintes importées! (1)');
         $this->assertEquals(1, Constraint::all()->count());
     }
 
@@ -91,13 +96,13 @@ class ConstraintImporterTest extends TestCase
             $mock->shouldReceive('constraintTypesByIds')->once()->andReturn([$this->constraintType(50)]);
         });
 
-        $response = $this->followingRedirects()
-            ->actingAs($this->superUser)
+        $response = $this->actingAs($this->superUser)
             ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
 
-        $response->assertStatus(200);
-        $response->assertSee('Nouveaux types de contraintes');
-        $response->assertSeeText('Azure Id: 50');
+        $response->assertRedirect(route('constraintImporter.index'));
+        $response->assertSessionHas('newConstraintTypes', function ($newConstraintTypes) {
+            return count($newConstraintTypes) === 1 && $newConstraintTypes[0]['Id'] === 50;
+        });
         $this->assertDatabaseHas('constraint_types', ['azure_id' => 50]);
     }
 

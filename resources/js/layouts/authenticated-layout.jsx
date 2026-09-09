@@ -40,6 +40,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <NavLink href={route('users.index')} active={route().current('users.index')}>
                                     Utilisateurs
                                 </NavLink>
+                                <NavLink href={route('schedules.index')} active={route().current('schedules.*')}>
+                                    Horaires
+                                </NavLink>
                                 <Dropdown>
                                     <Dropdown.Trigger className="flex h-full">
                                         <button
@@ -142,6 +145,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('users.index')} active={route().current('users.index')}>
                             Utilisateurs
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('schedules.index')} active={route().current('schedules.*')}>
+                            Horaires
                         </ResponsiveNavLink>
                         <div className="border-t border-gray-200 pb-1 pt-4">
                             <p className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuration</p>
