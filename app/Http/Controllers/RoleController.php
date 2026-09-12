@@ -6,7 +6,8 @@ use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 
 class RoleController extends Controller
 {
@@ -17,11 +18,15 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
+        Gate::authorize('read', Role::class);
+
+        $roles = Role::with('permissions')
+            ->orderBy('name')
+            ->get();
 
         $permissions = Permission::orderBy('code')->get();
 
-        return view('roles.index', compact('roles', 'permissions'));
+        return Inertia::render('roles/index', compact('roles', 'permissions'));
     }
 
     /**
@@ -61,12 +66,14 @@ class RoleController extends Controller
      * @param  \App\Role  $role
      * @return Response
      */
-    #[Authorize('write', Role::class)]
     public function edit(Role $role)
     {
-        $permissions = Permission::all();
+        Gate::authorize('write', Role::class);
 
-        return view('roles.edit', compact('role', 'permissions'));
+        $role->load('permissions');
+        $permissions = Permission::orderBy('code')->get();
+
+        return Inertia::render('roles/edit', compact('role', 'permissions'));
     }
 
     /**
@@ -77,6 +84,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        Gate::authorize('write', Role::class);
+
         $role->name = $request->name;
         $role->description = $request->description ?? '';
 

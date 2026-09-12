@@ -8,6 +8,7 @@ import { useState } from 'react';
 
 const configurationLinks = [
     { label: 'Branches', routeName: 'branches.index', routePattern: 'branches.*' },
+    { label: 'Rôles et permissions', routeName: 'roles.index', routePattern: 'roles.*' },
     { label: 'Secteurs', routeName: 'departments.index', routePattern: 'departments.*' },
     { label: 'Lieux de travail', routeName: 'workplaces.index', routePattern: 'workplaces.*' },
     { label: 'Types de shifts', routeName: 'shiftTypes.index', routePattern: 'shiftTypes.*' },
