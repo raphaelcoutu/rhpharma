@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/users/form';
 import { Head, useForm } from '@inertiajs/react';
+import { store } from '@/routes/users';
 
 export default function Create({ auth, branches, roles }) {
     const { data, setData, post, errors } = useForm({
@@ -17,7 +18,7 @@ export default function Create({ auth, branches, roles }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('users.store'));
+        post(store());
     };
 
     return (

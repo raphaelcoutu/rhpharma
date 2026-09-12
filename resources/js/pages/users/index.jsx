@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit } from '@/routes/users';
 import { createColumnHelper, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { Plus, Users } from 'lucide-react';
 import { useState } from 'react';
@@ -65,7 +66,7 @@ export default function Index({ users }) {
                                 Gérez les utilisateurs de votre branche et leurs paramètres de planification.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('users.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un utilisateur
                         </SecondaryButton>
@@ -103,7 +104,7 @@ export default function Index({ users }) {
                                                 <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                             ))}
                                             <TableCell>
-                                                <Link href={route('users.edit', row.original.id)} className="hover:underline">
+                                                <Link href={edit(row.original.id)} className="hover:underline">
                                                     Éditer
                                                 </Link>
                                             </TableCell>

@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head, useForm } from '@inertiajs/react';
+import { confirm } from '@/routes/password';
 
 export default function ConfirmPassword() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,7 +14,7 @@ export default function ConfirmPassword() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.confirm'), {
+        post(confirm(), {
             onFinish: () => reset('password'),
         });
     };

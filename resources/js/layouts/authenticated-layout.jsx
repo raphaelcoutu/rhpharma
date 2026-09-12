@@ -3,24 +3,42 @@ import Dropdown from '@/components/dropdown.jsx';
 import NavLink from '@/components/nav-link.jsx';
 import ResponsiveNavLink from '@/components/responsive-nav-link.jsx';
 import { Link, usePage } from '@inertiajs/react';
+import { home, logout } from '@/routes';
+import { index as branchesIndex } from '@/routes/branches';
+import { index as constraintTypesIndex } from '@/routes/constraintTypes';
+import { index as departmentsIndex } from '@/routes/departments';
+import { index as holidaysIndex } from '@/routes/holidays';
+import { edit as profileEdit } from '@/routes/profile';
+import { index as rolesIndex } from '@/routes/roles';
+import { index as schedulesIndex } from '@/routes/schedules';
+import { index as constraintsValidatorIndex } from '@/routes/constraintsValidator';
+import { index as shiftTypesIndex } from '@/routes/shiftTypes';
+import { index as usersIndex } from '@/routes/users';
+import { index as workplacesIndex } from '@/routes/workplaces';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
 const configurationLinks = [
-    { label: 'Branches', routeName: 'branches.index', routePattern: 'branches.*' },
-    { label: 'Rôles et permissions', routeName: 'roles.index', routePattern: 'roles.*' },
-    { label: 'Secteurs', routeName: 'departments.index', routePattern: 'departments.*' },
-    { label: 'Lieux de travail', routeName: 'workplaces.index', routePattern: 'workplaces.*' },
-    { label: 'Types de shifts', routeName: 'shiftTypes.index', routePattern: 'shiftTypes.*' },
-    { label: 'Jours fériés', routeName: 'holidays.index', routePattern: 'holidays.*' },
-    { label: 'Types de contraintes', routeName: 'constraintTypes.index', routePattern: 'constraintTypes.*' },
+    { label: 'Branches', href: branchesIndex(), pathPrefix: '/branches' },
+    { label: 'Rôles et permissions', href: rolesIndex(), pathPrefix: '/roles' },
+    { label: 'Secteurs', href: departmentsIndex(), pathPrefix: '/departments' },
+    { label: 'Lieux de travail', href: workplacesIndex(), pathPrefix: '/workplaces' },
+    { label: 'Types de shifts', href: shiftTypesIndex(), pathPrefix: '/shift-types' },
+    { label: 'Jours fériés', href: holidaysIndex(), pathPrefix: '/holidays' },
+    { label: 'Types de contraintes', href: constraintTypesIndex(), pathPrefix: '/constraint-types' },
 ];
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
+    const { props, url } = usePage();
+    const user = props.auth.user;
+    const currentPath = url.split('?')[0];
+
+    const isActive = (pathPrefix, exact = false) => {
+        return exact ? currentPath === pathPrefix : currentPath === pathPrefix || currentPath.startsWith(`${pathPrefix}/`);
+    };
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-    const configurationIsActive = configurationLinks.some(({ routePattern }) => route().current(routePattern));
+    const configurationIsActive = configurationLinks.some(({ pathPrefix }) => isActive(pathPrefix));
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -35,16 +53,16 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('home')} active={route().current('home')}>
+                                <NavLink href={home()} active={isActive('/', true)}>
                                     Accueil
                                 </NavLink>
-                                <NavLink href={route('users.index')} active={route().current('users.index')}>
+                                <NavLink href={usersIndex()} active={isActive('/users', true)}>
                                     Utilisateurs
                                 </NavLink>
-                                <NavLink href={route('schedules.index')} active={route().current('schedules.*')}>
+                                <NavLink href={schedulesIndex()} active={isActive('/schedules')}>
                                     Horaires
                                 </NavLink>
-                                <NavLink href={route('constraintsValidator.index')} active={route().current('constraintsValidator.*')}>
+                                <NavLink href={constraintsValidatorIndex()} active={isActive('/constraints-validator')}>
                                     Validation
                                 </NavLink>
                                 <Dropdown>
@@ -65,11 +83,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content align="left">
-                                        {configurationLinks.map(({ label, routeName, routePattern }) => (
+                                        {configurationLinks.map(({ label, href, pathPrefix }) => (
                                             <Dropdown.Link
-                                                key={routeName}
-                                                href={route(routeName)}
-                                                className={route().current(routePattern) ? 'bg-indigo-50 text-indigo-700' : ''}
+                                                key={pathPrefix}
+                                                href={href}
+                                                className={isActive(pathPrefix) ? 'bg-indigo-50 text-indigo-700' : ''}
                                             >
                                                 {label}
                                             </Dropdown.Link>
@@ -107,8 +125,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
+                                        <Dropdown.Link href={profileEdit()}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={logout()} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -144,23 +162,23 @@ export default function AuthenticatedLayout({ header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={route('home')} active={route().current('home')}>
+                        <ResponsiveNavLink href={home()} active={isActive('/', true)}>
                             Accueil
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('users.index')} active={route().current('users.index')}>
+                        <ResponsiveNavLink href={usersIndex()} active={isActive('/users', true)}>
                             Utilisateurs
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('schedules.index')} active={route().current('schedules.*')}>
+                        <ResponsiveNavLink href={schedulesIndex()} active={isActive('/schedules')}>
                             Horaires
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('constraintsValidator.index')} active={route().current('constraintsValidator.*')}>
+                        <ResponsiveNavLink href={constraintsValidatorIndex()} active={isActive('/constraints-validator')}>
                             Validation
                         </ResponsiveNavLink>
                         <div className="border-t border-gray-200 pb-1 pt-4">
                             <p className="px-4 text-xs font-semibold uppercase tracking-wider text-gray-400">Configuration</p>
                             <div className="mt-1 space-y-1">
-                                {configurationLinks.map(({ label, routeName, routePattern }) => (
-                                    <ResponsiveNavLink key={routeName} href={route(routeName)} active={route().current(routePattern)}>
+                                {configurationLinks.map(({ label, href, pathPrefix }) => (
+                                    <ResponsiveNavLink key={pathPrefix} href={href} active={isActive(pathPrefix)}>
                                         {label}
                                     </ResponsiveNavLink>
                                 ))}
@@ -177,8 +195,8 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            <ResponsiveNavLink href={profileEdit()}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink method="post" href={logout()} as="button">
                                 Log Out
                             </ResponsiveNavLink>
                         </div>

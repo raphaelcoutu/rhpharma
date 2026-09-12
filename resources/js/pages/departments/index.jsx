@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit } from '@/routes/departments';
 import { createColumnHelper, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { Layers3, Plus } from 'lucide-react';
 import { useState } from 'react';
@@ -64,7 +65,7 @@ export default function Index({ departments }) {
                                 Gérez les secteurs, leur type et leur lieu de travail.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('departments.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un secteur
                         </SecondaryButton>
@@ -102,7 +103,7 @@ export default function Index({ departments }) {
                                                 <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                             ))}
                                             <TableCell>
-                                                <Link href={route('departments.edit', row.original.id)} className="hover:underline">
+                                                <Link href={edit(row.original.id)} className="hover:underline">
                                                     Éditer
                                                 </Link>
                                             </TableCell>

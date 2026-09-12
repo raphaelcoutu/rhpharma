@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, useForm } from '@inertiajs/react';
+import { store, update } from '@/routes/holidays';
 import { ArrowDown, ArrowUp, ArrowUpDown, CalendarDays, Pencil, Plus, Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -169,11 +170,11 @@ export default function Index({ holidays = [] }) {
         };
 
         if (editingHoliday) {
-            patch(route('holidays.update', editingHoliday.id), options);
+            patch(update(editingHoliday.id), options);
             return;
         }
 
-        post(route('holidays.store'), options);
+        post(store(), options);
     }
 
     return (

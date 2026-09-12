@@ -1,6 +1,8 @@
 import PrimaryButton from '@/components/primary-button';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { logout } from '@/routes';
+import { send } from '@/routes/verification';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -8,7 +10,7 @@ export default function VerifyEmail({ status }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('verification.send'));
+        post(send());
     };
 
     return (
@@ -31,7 +33,7 @@ export default function VerifyEmail({ status }) {
                     <PrimaryButton disabled={processing}>Resend Verification Email</PrimaryButton>
 
                     <Link
-                        href={route('logout')}
+                        href={logout()}
                         method="post"
                         as="button"
                         className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

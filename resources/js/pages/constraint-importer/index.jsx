@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { importMethod } from '@/routes/constraintImporter';
+import { index as schedulesIndex } from '@/routes/schedules';
 import { AlertTriangle, CalendarRange, CheckCircle2, CloudDownload, LoaderCircle, Settings2, UserRound } from 'lucide-react';
 
 function getToday() {
@@ -104,7 +106,7 @@ export default function Index({ status, newUsers = [], newConstraintTypes = [], 
             return;
         }
 
-        get(route('constraintImporter.import'), {
+        get(importMethod(undefined, { query: { start: data.start, end: data.end } }), {
             preserveScroll: true,
         });
     }
@@ -126,7 +128,7 @@ export default function Index({ status, newUsers = [], newConstraintTypes = [], 
                                 Récupérez les contraintes enregistrées dans Azure pour une période donnée.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('schedules.index')}>
+                        <SecondaryButton as={Link} href={schedulesIndex()}>
                             Retour aux horaires
                         </SecondaryButton>
                     </div>

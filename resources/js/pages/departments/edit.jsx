@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/departments/form';
 import { Head, useForm } from '@inertiajs/react';
+import { update } from '@/routes/departments';
 
 export default function Edit({ department, departmentTypes, workplaces }) {
     const { data, setData, put, errors } = useForm({
@@ -12,7 +13,7 @@ export default function Edit({ department, departmentTypes, workplaces }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('departments.update', department.id));
+        put(update(department.id));
     };
 
     return (

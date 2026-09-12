@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit } from '@/routes/shiftTypes';
 import { Clock3, Pencil, Plus, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -48,7 +49,7 @@ export default function Index({ shiftTypes }) {
                                 Configurez les horaires disponibles pour les shifts de votre branche.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('shiftTypes.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un type
                         </SecondaryButton>
@@ -124,7 +125,7 @@ export default function Index({ shiftTypes }) {
                                         <TableCell className="font-mono text-sm text-gray-600">{formatTime(shiftType.end_time)}</TableCell>
                                         <TableCell className="pr-6 text-right">
                                             <Link
-                                                href={route('shiftTypes.edit', shiftType.id)}
+                                                href={edit(shiftType.id)}
                                                 className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                             >
                                                 <Pencil className="h-4 w-4" />

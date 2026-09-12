@@ -2,6 +2,7 @@ import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/workplaces/form';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { show, update } from '@/routes/workplaces';
 import { ArrowLeft, MapPin } from 'lucide-react';
 
 export default function Edit({ workplace }) {
@@ -17,7 +18,7 @@ export default function Edit({ workplace }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        put(route('workplaces.update', workplace.id));
+        put(update(workplace.id));
     };
 
     return (
@@ -27,7 +28,7 @@ export default function Edit({ workplace }) {
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8">
                     <Link
-                        href={route('workplaces.show', workplace.id)}
+                        href={show(workplace.id)}
                         className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -55,7 +56,7 @@ export default function Edit({ workplace }) {
                     </div>
 
                     <div className="flex justify-start">
-                        <SecondaryButton as={Link} href={route('workplaces.show', workplace.id)}>
+                        <SecondaryButton as={Link} href={show(workplace.id)}>
                             Annuler
                         </SecondaryButton>
                     </div>

@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { edit } from '@/routes/roles';
 import { KeyRound, Pencil, Search, ShieldCheck } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -121,7 +122,7 @@ export default function Index({ roles, permissions }) {
                                         </TableCell>
                                         <TableCell className="pr-6 text-right align-top">
                                             <Link
-                                                href={route('roles.edit', role.id)}
+                                                href={edit(role.id)}
                                                 className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                             >
                                                 <Pencil className="h-4 w-4" />

@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit } from '@/routes/constraintTypes';
 import { Check, Pencil, Plus, Search, Settings2, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -68,7 +69,7 @@ export default function Index({ constraintTypes }) {
                                 Gérez les règles utilisées pour construire et valider les horaires de votre branche.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('constraintTypes.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un type
                         </SecondaryButton>
@@ -154,7 +155,7 @@ export default function Index({ constraintTypes }) {
                                         <TableCell className="text-sm text-gray-600">{constraintType.criteria_count ?? 0}</TableCell>
                                         <TableCell className="pr-6 text-right">
                                             <Link
-                                                href={route('constraintTypes.edit', constraintType.id)}
+                                                href={edit(constraintType.id)}
                                                 className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                             >
                                                 <Pencil className="h-4 w-4" />

@@ -2,6 +2,7 @@ import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/roles/form';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { index, update } from '@/routes/roles';
 import { ArrowLeft, ShieldCheck } from 'lucide-react';
 
 export default function Edit({ role, permissions }) {
@@ -14,7 +15,7 @@ export default function Edit({ role, permissions }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        put(route('roles.update', role.id));
+        put(update(role.id));
     };
 
     return (
@@ -24,7 +25,7 @@ export default function Edit({ role, permissions }) {
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8">
                     <Link
-                        href={route('roles.index')}
+                        href={index()}
                         className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -52,7 +53,7 @@ export default function Edit({ role, permissions }) {
                     </div>
 
                     <div className="flex justify-start">
-                        <SecondaryButton as={Link} href={route('roles.index')}>
+                        <SecondaryButton as={Link} href={index()}>
                             Annuler
                         </SecondaryButton>
                     </div>

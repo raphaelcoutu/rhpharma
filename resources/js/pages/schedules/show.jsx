@@ -2,6 +2,12 @@ import Dropdown from '@/components/dropdown';
 import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link, usePoll } from '@inertiajs/react';
+import { index as constraintImporterIndex } from '@/routes/constraintImporter';
+import { index as constraintsValidatorIndex } from '@/routes/constraintsValidator';
+import { show as showCalendar, showByDepartment } from '@/routes/calendar';
+import { exportMethod } from '@/routes';
+import { constraintTypes, departments, index as settingsIndex } from '@/routes/settings';
+import { index as schedulesIndex } from '@/routes/schedules';
 import axios from 'axios';
 import {
     AlertTriangle,
@@ -146,11 +152,11 @@ function ProcessTable({ schedule, constraintsCount, statuses, onStatusChange }) 
                             </td>
                             <td className="px-5 py-5 align-top sm:px-6">
                                 <div className="flex flex-wrap gap-2">
-                                    <ActionButton onClick={() => window.location.assign(route('constraintImporter.index'))} variant="primary">
+                                    <ActionButton onClick={() => window.location.assign(constraintImporterIndex().url)} variant="primary">
                                         Importer les contraintes Azure
                                     </ActionButton>
                                     <ActionButton
-                                        onClick={() => window.location.assign(route('constraintsValidator.index', { schedule: schedule.id }))}
+                                        onClick={() => window.location.assign(constraintsValidatorIndex({ query: { schedule: schedule.id } }).url)}
                                         variant="neutral"
                                     >
                                         Valider les contraintes
@@ -238,7 +244,7 @@ function ProcessTable({ schedule, constraintsCount, statuses, onStatusChange }) 
                             </td>
                             <td className="px-5 py-5 align-top sm:px-6">
                                 <ActionButton
-                                    onClick={() => window.location.assign(route('constraintsValidator.index', { schedule: schedule.id }))}
+                                    onClick={() => window.location.assign(constraintsValidatorIndex({ query: { schedule: schedule.id } }).url)}
                                     variant="neutral"
                                 >
                                     Valider les contraintes
@@ -319,7 +325,7 @@ function ConflictsPanel({ scheduleId, conflicts, onRefresh }) {
                                 <td className="px-4 py-3">
                                     {conflict.department ? (
                                         <a
-                                            href={route('calendar.showByDepartment', { schedule: scheduleId, department: conflict.department.id })}
+                                            href={showByDepartment({ schedule: scheduleId, department: conflict.department.id })}
                                             className="font-medium text-indigo-600 hover:text-indigo-800"
                                         >
                                             {conflict.department.name} ({conflict.department.id})
@@ -621,19 +627,19 @@ export default function Show({
                                 </Dropdown.Trigger>
                                 <Dropdown.Content align="right">
                                     <a
-                                        href={route('settings.index')}
+                                        href={settingsIndex()}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Paramètres généraux
                                     </a>
                                     <a
-                                        href={route('settings.departments')}
+                                        href={departments()}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Secteurs
                                     </a>
                                     <a
-                                        href={route('settings.constraintTypes')}
+                                        href={constraintTypes()}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Types de contraintes
@@ -646,7 +652,7 @@ export default function Show({
                                 </Dropdown.Trigger>
                                 <Dropdown.Content align="right">
                                     <a
-                                        href={route('calendar.show', schedule.id)}
+                                href={showCalendar(schedule.id)}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Vue complète
@@ -654,7 +660,7 @@ export default function Show({
                                     {departments.map((department) => (
                                         <a
                                             key={department.id}
-                                            href={route('calendar.showByDepartment', { schedule: schedule.id, department: department.id })}
+                                            href={showByDepartment({ schedule: schedule.id, department: department.id })}
                                             className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                         >
                                             {department.name}
@@ -663,7 +669,7 @@ export default function Show({
                                 </Dropdown.Content>
                             </Dropdown>
                             <a
-                                href={route('export', schedule.id)}
+                                href={exportMethod(schedule.id)}
                                 className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
                             >
                                 <Download className="h-4 w-4" />
@@ -684,7 +690,7 @@ export default function Show({
                         onGenerateStatistics={generateStatistics}
                     />
 
-                    <SecondaryButton as={Link} href={route('schedules.index')}>
+                    <SecondaryButton as={Link} href={schedulesIndex()}>
                         Retour à la liste des horaires
                     </SecondaryButton>
                 </div>

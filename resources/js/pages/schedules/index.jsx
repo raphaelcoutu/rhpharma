@@ -3,6 +3,8 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit, show } from '@/routes/schedules';
+import { show as showCalendar } from '@/routes/calendar';
 import { CheckCircle2, CircleDashed, Clock3, FileWarning, LoaderCircle, Pencil, Plus, Search, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -118,7 +120,7 @@ export default function Index({ constraintsInSchedule = {}, pageTitle = 'Horaire
                                 Préparez les périodes de planification, suivez leur progression et accédez à leur calendrier.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('schedules.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un horaire
                         </SecondaryButton>
@@ -192,7 +194,7 @@ export default function Index({ constraintsInSchedule = {}, pageTitle = 'Horaire
                                                         <div className="min-w-0">
                                                             <p className="truncate font-medium text-gray-900">{schedule.name}</p>
                                                             <Link
-                                                                href={route('schedules.edit', schedule.id)}
+                                                                href={edit(schedule.id)}
                                                                 className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:text-indigo-800"
                                                             >
                                                                 <Pencil className="h-3.5 w-3.5" />
@@ -223,13 +225,13 @@ export default function Index({ constraintsInSchedule = {}, pageTitle = 'Horaire
                                                 <TableCell className="pr-6 text-right">
                                                     <div className="flex items-center justify-end gap-3">
                                                         <a
-                                                            href={route('calendar.show', schedule.id)}
+                                                                href={showCalendar(schedule.id)}
                                                             className="text-sm font-medium text-gray-600 transition hover:text-gray-900"
                                                         >
                                                             Calendrier
                                                         </a>
                                                         <Link
-                                                            href={route('schedules.show', schedule.id)}
+                                                                href={show(schedule.id)}
                                                             className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
                                                         >
                                                             Générer

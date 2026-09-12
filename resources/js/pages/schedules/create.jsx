@@ -2,6 +2,7 @@ import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/schedules/form';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { index, store } from '@/routes/schedules';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -14,7 +15,7 @@ export default function Create() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        post(route('schedules.store'));
+        post(store());
     }
 
     return (
@@ -40,7 +41,7 @@ export default function Create() {
                         />
                     </section>
 
-                    <SecondaryButton as={Link} href={route('schedules.index')}>
+                    <SecondaryButton as={Link} href={index()}>
                         Retour à la liste
                     </SecondaryButton>
                 </div>

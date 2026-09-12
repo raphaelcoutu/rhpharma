@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, useForm } from '@inertiajs/react';
+import { store as storeBranch, update as updateBranch } from '@/routes/branches';
 import { ArrowDown, ArrowUp, ArrowUpDown, GitBranch, Pencil, Plus, Search, Users, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -127,11 +128,11 @@ export default function Index({ branches = [] }) {
         };
 
         if (editingBranch) {
-            put(route('branches.update', editingBranch.id), options);
+            put(updateBranch(editingBranch.id), options);
             return;
         }
 
-        post(route('branches.store'), options);
+        post(storeBranch(), options);
     }
 
     return (

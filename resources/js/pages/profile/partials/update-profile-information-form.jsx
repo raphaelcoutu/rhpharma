@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
+import { update as updateProfile } from '@/routes/profile';
+import { send } from '@/routes/verification';
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const user = usePage().props.auth.user;
@@ -17,7 +19,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        patch(updateProfile());
     };
 
     return (
@@ -81,7 +83,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         <p className="mt-2 text-sm text-gray-800">
                             Your email address is unverified.
                             <Link
-                                href={route('verification.send')}
+                                href={send()}
                                 method="post"
                                 as="button"
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

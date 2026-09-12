@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { history, index } from '@/routes/constraintsValidator';
 import { format, parseISO } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { ArrowLeft, CheckCircle2, ClipboardCheck, UserRound, XCircle } from 'lucide-react';
@@ -46,7 +47,7 @@ function HistoryRow({ constraint }) {
                 </td>
                 <td className="px-5 py-4 align-top">
                     <Link
-                        href={route('constraintsValidator.history', { user: constraint.user?.id })}
+                        href={history({ query: { user: constraint.user?.id } })}
                         className="inline-flex items-center gap-2 font-medium text-indigo-700 hover:underline"
                     >
                         <UserRound className="h-4 w-4" aria-hidden="true" />
@@ -80,7 +81,7 @@ export default function History({ constraints = [] }) {
                             <p className="mt-2 text-sm leading-6 text-gray-500">Les 100 dernières contraintes approuvées ou refusées.</p>
                         </div>
                         <Link
-                            href={route('constraintsValidator.index')}
+                            href={index()}
                             className="inline-flex items-center gap-2 self-start rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:self-auto"
                         >
                             <ArrowLeft className="h-4 w-4" aria-hidden="true" />

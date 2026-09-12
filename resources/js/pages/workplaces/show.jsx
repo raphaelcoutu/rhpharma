@@ -2,6 +2,8 @@ import SecondaryButton from '@/components/secondary-button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create as createDepartment, edit as editDepartment } from '@/routes/departments';
+import { index, edit } from '@/routes/workplaces';
 import { ArrowLeft, Building2, MapPin, Pencil, Plus } from 'lucide-react';
 
 export default function Show({ workplace }) {
@@ -12,7 +14,7 @@ export default function Show({ workplace }) {
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
                     <Link
-                        href={route('workplaces.index')}
+                        href={index()}
                         className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -36,11 +38,11 @@ export default function Show({ workplace }) {
                             </div>
                         </div>
                         <div className="flex flex-wrap items-center gap-3">
-                            <SecondaryButton as={Link} href={route('workplaces.edit', workplace.id)} className="gap-2">
+                            <SecondaryButton as={Link} href={edit(workplace.id)} className="gap-2">
                                 <Pencil className="h-4 w-4" />
                                 Modifier
                             </SecondaryButton>
-                            <SecondaryButton as={Link} href={route('departments.create')} className="gap-2">
+                            <SecondaryButton as={Link} href={createDepartment()} className="gap-2">
                                 <Plus className="h-4 w-4" />
                                 Ajouter un secteur
                             </SecondaryButton>
@@ -73,7 +75,7 @@ export default function Show({ workplace }) {
                                         <TableCell className="text-gray-600">{department.department_type?.name ?? '—'}</TableCell>
                                         <TableCell className="pr-6 text-right">
                                             <Link
-                                                href={route('departments.edit', department.id)}
+                                                href={editDepartment(department.id)}
                                                 className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                             >
                                                 <Pencil className="h-4 w-4" />

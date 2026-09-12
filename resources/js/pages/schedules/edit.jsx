@@ -2,6 +2,7 @@ import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/schedules/form';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { index, update } from '@/routes/schedules';
 
 function dateValue(value) {
     return String(value ?? '').slice(0, 10);
@@ -18,7 +19,7 @@ export default function Edit({ schedule }) {
 
     function handleSubmit(event) {
         event.preventDefault();
-        put(route('schedules.update', schedule.id));
+        put(update(schedule.id));
     }
 
     return (
@@ -44,7 +45,7 @@ export default function Edit({ schedule }) {
                         />
                     </section>
 
-                    <SecondaryButton as={Link} href={route('schedules.index')}>
+                    <SecondaryButton as={Link} href={index()}>
                         Retour à la liste
                     </SecondaryButton>
                 </div>

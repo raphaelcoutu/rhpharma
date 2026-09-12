@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
+import { create, edit, show } from '@/routes/workplaces';
 import { Building2, ChevronRight, MapPin, Plus, Search, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
@@ -51,7 +52,7 @@ export default function Index({ workplaces }) {
                                 Gérez les établissements et les secteurs qui leur sont associés.
                             </p>
                         </div>
-                        <SecondaryButton as={Link} href={route('workplaces.create')} className="gap-2">
+                        <SecondaryButton as={Link} href={create()} className="gap-2">
                             <Plus className="h-4 w-4" />
                             Ajouter un lieu
                         </SecondaryButton>
@@ -138,13 +139,13 @@ export default function Index({ workplaces }) {
                                         <TableCell className="pr-6 text-right">
                                             <div className="flex items-center justify-end gap-4">
                                                 <Link
-                                                    href={route('workplaces.edit', workplace.id)}
+                                                    href={edit(workplace.id)}
                                                     className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                                 >
                                                     Modifier
                                                 </Link>
                                                 <Link
-                                                    href={route('workplaces.show', workplace.id)}
+                                                    href={show(workplace.id)}
                                                     className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 transition hover:text-indigo-800"
                                                 >
                                                     Voir les secteurs

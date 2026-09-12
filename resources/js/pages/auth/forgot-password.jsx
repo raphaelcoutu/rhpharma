@@ -3,6 +3,7 @@ import PrimaryButton from '@/components/primary-button';
 import { Input } from '@/components/ui/input';
 import GuestLayout from '@/layouts/guest-layout';
 import { Head, useForm } from '@inertiajs/react';
+import { email } from '@/routes/password';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -12,7 +13,7 @@ export default function ForgotPassword({ status }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.email'));
+        post(email());
     };
 
     return (

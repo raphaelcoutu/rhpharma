@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/departments/form';
 import { Head, useForm } from '@inertiajs/react';
+import { store } from '@/routes/departments';
 
 export default function Create({ auth, departmentTypes, workplaces }) {
     const { data, setData, post, errors } = useForm({
@@ -12,7 +13,7 @@ export default function Create({ auth, departmentTypes, workplaces }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('departments.store'));
+        post(store());
     };
 
     return (

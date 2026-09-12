@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/users/form';
 import { Head, useForm } from '@inertiajs/react';
+import { update } from '@/routes/users';
 
 export default function Edit({ user, branches, roles }) {
     const { data, setData, put, errors } = useForm({
@@ -17,7 +18,7 @@ export default function Edit({ user, branches, roles }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('users.update', user.id));
+        put(update(user.id));
     };
 
     return (

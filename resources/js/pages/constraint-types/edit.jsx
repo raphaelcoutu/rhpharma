@@ -2,6 +2,7 @@ import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import Form from '@/pages/constraint-types/form';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { index, update } from '@/routes/constraintTypes';
 import { ArrowLeft, Settings2 } from 'lucide-react';
 
 export default function Edit({ constraintType }) {
@@ -18,7 +19,7 @@ export default function Edit({ constraintType }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        put(route('constraintTypes.update', constraintType.id));
+        put(update(constraintType.id));
     };
 
     return (
@@ -28,7 +29,7 @@ export default function Edit({ constraintType }) {
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8">
                     <Link
-                        href={route('constraintTypes.index')}
+                        href={index()}
                         className="inline-flex items-center gap-2 text-sm font-medium text-gray-500 transition hover:text-gray-900"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -63,7 +64,7 @@ export default function Edit({ constraintType }) {
                     </div>
 
                     <div className="flex justify-start">
-                        <SecondaryButton as={Link} href={route('constraintTypes.index')}>
+                        <SecondaryButton as={Link} href={index()}>
                             Annuler
                         </SecondaryButton>
                     </div>

@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
+import { update as updatePassword } from '@/routes/password';
 
 export default function UpdatePasswordForm({ className = '' }) {
     const passwordInput = useRef();
@@ -19,7 +20,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     const updatePassword = (e) => {
         e.preventDefault();
 
-        put(route('password.update'), {
+        put(updatePassword(), {
             preserveScroll: true,
             onSuccess: () => reset(),
             onError: (errors) => {

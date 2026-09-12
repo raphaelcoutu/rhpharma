@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import { destroy as destroyProfile } from '@/routes/profile';
 
 export default function DeleteUserForm({ className = '' }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -30,7 +31,7 @@ export default function DeleteUserForm({ className = '' }) {
     const deleteUser = (e) => {
         e.preventDefault();
 
-        destroy(route('profile.destroy'), {
+        destroy(destroyProfile(), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
             onError: () => passwordInput.current.focus(),
