@@ -44,7 +44,7 @@
 
         methods: {
             departmentHref(id) {
-                return "/calendar/" + this.dataSchedule.id + "/byDepartment/" + id;
+                return "/calendar/" + this.dataSchedule.id + "/by-department/" + id;
             }
         },
 

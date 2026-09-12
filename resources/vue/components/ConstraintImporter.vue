@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-md-6">
                 <a
-                    :href="formValid() ? `/constraintImporter/import?start=${startDate}&end=${endDate}` : null"
+                    :href="formValid() ? `/constraint-importer/import?start=${startDate}&end=${endDate}` : null"
                     class="btn btn-success"
                     :class="{disabled: !formValid()}"
                     >Importer</a

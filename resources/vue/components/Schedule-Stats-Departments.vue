@@ -52,11 +52,11 @@
         methods: {
             generate() {
                 this.status = Status.Running;
-                axios.get(`/api/scheduleStatDepartment/${this.dataSchedule.id}/create`)
+                axios.get(`/api/schedule-stat-department/${this.dataSchedule.id}/create`)
             },
             postGenerate(e) {
 
-                axios.get(`/api/scheduleStatDepartment/${this.dataSchedule.id}`)
+                axios.get(`/api/schedule-stat-department/${this.dataSchedule.id}`)
                     .then(res => {
                         this.statistics = JSON.parse(res.data.content);
                         this.status = Status.Success;

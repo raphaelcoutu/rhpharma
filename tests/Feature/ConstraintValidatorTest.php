@@ -92,7 +92,7 @@ class ConstraintValidatorTest extends TestCase
         $constraint = $this->createPendingConstraint();
 
         $response = $this->actingAs($this->superUser)
-            ->putAjax("/api/constraintsValidator/{$constraint->id}", [
+            ->putAjax("/api/constraints-validator/{$constraint->id}", [
                 'status' => 1,
                 'validated_by' => $this->superUser->id,
             ]);
@@ -110,7 +110,7 @@ class ConstraintValidatorTest extends TestCase
         $constraint = $this->createPendingConstraint();
 
         $response = $this->actingAs($this->superUser)
-            ->putAjax("/api/constraintsValidator/{$constraint->id}", [
+            ->putAjax("/api/constraints-validator/{$constraint->id}", [
                 'status' => 3,
                 'validated_by' => $this->superUser->id,
             ]);

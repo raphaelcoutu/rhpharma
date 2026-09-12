@@ -117,25 +117,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('holidays/{holiday}', [HolidayController::class, 'update'])->name('holidays.update');
 
     // ConstraintImporter
-    Route::get('constraintImporter', [ConstraintImporterController::class, 'index'])->name('constraintImporter.index');
-    Route::get('constraintImporter/import{start?}{end?}', [ConstraintImporterController::class, 'import'])->name('constraintImporter.import');
+    Route::get('constraint-importer', [ConstraintImporterController::class, 'index'])->name('constraintImporter.index');
+    Route::get('constraint-importer/import{start?}{end?}', [ConstraintImporterController::class, 'import'])->name('constraintImporter.import');
 
     // ConstraintTypes
-    Route::get('constraintTypes', [ConstraintTypeController::class, 'index'])->name('constraintTypes.index');
-    Route::get('constraintTypes/create', [ConstraintTypeController::class, 'create'])->name('constraintTypes.create');
-    Route::get('constraintTypes/{constraintType}/edit', [ConstraintTypeController::class, 'edit'])->name('constraintTypes.edit');
-    Route::post('constraintTypes', [ConstraintTypeController::class, 'store'])->name('constraintTypes.store');
-    Route::put('constraintTypes/{constraintType}', [ConstraintTypeController::class, 'update'])->name('constraintTypes.update');
+    Route::get('constraint-types', [ConstraintTypeController::class, 'index'])->name('constraintTypes.index');
+    Route::get('constraint-types/create', [ConstraintTypeController::class, 'create'])->name('constraintTypes.create');
+    Route::get('constraint-types/{constraintType}/edit', [ConstraintTypeController::class, 'edit'])->name('constraintTypes.edit');
+    Route::post('constraint-types', [ConstraintTypeController::class, 'store'])->name('constraintTypes.store');
+    Route::put('constraint-types/{constraintType}', [ConstraintTypeController::class, 'update'])->name('constraintTypes.update');
 
     Route::get('constraints', [ConstraintController::class, 'index'])->name('constraints.index');
 
     // ConstraintsValidator
-    Route::get('constraintsValidator', [ConstraintValidatorController::class, 'index'])->name('constraintsValidator.index');
-    Route::get('constraintsValidator/history', [ConstraintValidatorController::class, 'history'])->name('constraintsValidator.history');
+    Route::get('constraints-validator', [ConstraintValidatorController::class, 'index'])->name('constraintsValidator.index');
+    Route::get('constraints-validator/history', [ConstraintValidatorController::class, 'history'])->name('constraintsValidator.history');
 
     // Calendar
     Route::get('calendar/{schedule}', [CalendarController::class, 'show'])->name('calendar.show');
-    Route::get('calendar/{schedule}/byDepartment/{department}', [CalendarController::class, 'showByDepartment'])->name('calendar.showByDepartment');
+    Route::get('calendar/{schedule}/by-department/{department}', [CalendarController::class, 'showByDepartment'])->name('calendar.showByDepartment');
 
     // Shifts
     Route::get('shifts', [ShiftController::class, 'index'])->name('shifts.index');
@@ -145,15 +145,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('shifts/{shift}', [ShiftController::class, 'update'])->name('shifts.update');
 
     // ShiftTypes
-    Route::get('shiftTypes', [ShiftTypeController::class, 'index'])->name('shiftTypes.index');
-    Route::get('shiftTypes/create', [ShiftTypeController::class, 'create'])->name('shiftTypes.create');
-    Route::post('shiftTypes', [ShiftTypeController::class, 'store'])->name('shiftTypes.store');
-    Route::get('shiftTypes/{shiftType}/edit', [ShiftTypeController::class, 'edit'])->name('shiftTypes.edit');
-    Route::post('shiftTypes/{shiftType}', [ShiftTypeController::class, 'update'])->name('shiftTypes.update');
+    Route::get('shift-types', [ShiftTypeController::class, 'index'])->name('shiftTypes.index');
+    Route::get('shift-types/create', [ShiftTypeController::class, 'create'])->name('shiftTypes.create');
+    Route::post('shift-types', [ShiftTypeController::class, 'store'])->name('shiftTypes.store');
+    Route::get('shift-types/{shiftType}/edit', [ShiftTypeController::class, 'edit'])->name('shiftTypes.edit');
+    Route::post('shift-types/{shiftType}', [ShiftTypeController::class, 'update'])->name('shiftTypes.update');
 
     // Settings
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::get('settings/constraintTypes', [SettingConstraintTypeController::class, 'index'])->name('settings.constraintTypes');
+    Route::get('settings/constraint-types', [SettingConstraintTypeController::class, 'index'])->name('settings.constraintTypes');
     Route::get('settings/departments', [SettingController::class, 'departments'])->name('settings.departments');
 
     // Exports
@@ -171,10 +171,10 @@ require __DIR__.'/auth.php';
 // Other browser-session endpoints are used by legacy client-side components.
 Route::prefix('api')->middleware('auth')->group(function () {
     // Calendar
-    Route::get('calendar/getShifts', [CalendarController::class, 'getShifts']);
-    Route::get('calendar/getUserData', [CalendarController::class, 'getUserData']);
-    Route::post('calendar/setUserData', [CalendarController::class, 'setUserData']);
-    Route::post('calendar/setSelectedData', [CalendarController::class, 'setSelectedData']);
+    Route::get('calendar/get-shifts', [CalendarController::class, 'getShifts']);
+    Route::get('calendar/get-user-data', [CalendarController::class, 'getUserData']);
+    Route::post('calendar/set-user-data', [CalendarController::class, 'setUserData']);
+    Route::post('calendar/set-selected-data', [CalendarController::class, 'setSelectedData']);
 
     // Conflicts
     Route::get('conflicts/{scheduleId}', [ConflictController::class, 'fetch']);
@@ -187,32 +187,32 @@ Route::prefix('api')->middleware('auth')->group(function () {
     Route::put('constraints/{id}/update', [ConstraintController::class, 'update']);
 
     // ConstraintTypes
-    Route::get('constraintTypes', [ConstraintTypeController::class, 'fetch']);
+    Route::get('constraint-types', [ConstraintTypeController::class, 'fetch']);
 
     // ConstraintValidator
-    Route::put('constraintsValidator/{id}', [ConstraintValidatorController::class, 'update']);
+    Route::put('constraints-validator/{id}', [ConstraintValidatorController::class, 'update']);
 
     // Departments-Users
-    Route::get('departmentUsers/{id}', [DepartmentUserController::class, 'fetch']);
-    Route::post('departmentUsers/{id}/store', [DepartmentUserController::class, 'store']);
-    Route::delete('departmentUsers/{id}', [DepartmentUserController::class, 'destroy']);
+    Route::get('department-users/{id}', [DepartmentUserController::class, 'fetch']);
+    Route::post('department-users/{id}/store', [DepartmentUserController::class, 'store']);
+    Route::delete('department-users/{id}', [DepartmentUserController::class, 'destroy']);
 
     // Schedule
-    Route::post('schedules/updateStatus', [BuildController::class, 'updateStatus']);
+    Route::post('schedules/update-status', [BuildController::class, 'updateStatus']);
     Route::get('schedules/{scheduleId}/status', [BuildController::class, 'status']);
-    Route::put('schedules/{id}/updateNotes', [ScheduleController::class, 'updateNotes']);
+    Route::put('schedules/{id}/update-notes', [ScheduleController::class, 'updateNotes']);
 
     // Schedule-Stats-Departments
-    Route::get('scheduleStatDepartment/{scheduleId}', [ScheduleStatDepartmentController::class, 'show']);
-    Route::get('scheduleStatDepartment/{scheduleId}/create', [ScheduleStatDepartmentController::class, 'create']);
+    Route::get('schedule-stat-department/{scheduleId}', [ScheduleStatDepartmentController::class, 'show']);
+    Route::get('schedule-stat-department/{scheduleId}/create', [ScheduleStatDepartmentController::class, 'create']);
 
     // Settings
     Route::patch('settings/departments', [SettingController::class, 'updateDepartments']);
     Route::patch('settings/triplets', [SettingController::class, 'updateTriplets']);
 
     // Settings-ConstraintTypes
-    Route::patch('settings/constraintTypes', [SettingConstraintTypeController::class, 'update']);
+    Route::patch('settings/constraint-types', [SettingConstraintTypeController::class, 'update']);
 
     // Settings-Department-User
-    Route::patch('settings/departmentUser', [SettingController::class, 'updateDepartmentUser']);
+    Route::patch('settings/department-user', [SettingController::class, 'updateDepartmentUser']);
 });

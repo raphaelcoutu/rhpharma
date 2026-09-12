@@ -45,7 +45,7 @@ class ConstraintTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->get('/constraintTypes');
+            ->get('/constraint-types');
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('constraintTypes/index', false)
@@ -58,7 +58,7 @@ class ConstraintTypeTest extends TestCase
     public function test_auth_user_can_see_constraint_type_create_form(): void
     {
         $response = $this->actingAs($this->superUser)
-            ->get('/constraintTypes/create');
+            ->get('/constraint-types/create');
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('constraintTypes/create', false));
@@ -73,7 +73,7 @@ class ConstraintTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/constraintTypes/{$constraintType->id}/edit");
+            ->get("/constraint-types/{$constraintType->id}/edit");
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('constraintTypes/edit', false)
@@ -87,7 +87,7 @@ class ConstraintTypeTest extends TestCase
         $constraintType = ConstraintType::factory()->create(['branch_id' => $otherBranch->id]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/constraintTypes/{$constraintType->id}/edit");
+            ->get("/constraint-types/{$constraintType->id}/edit");
 
         $response->assertNotFound();
     }
@@ -95,7 +95,7 @@ class ConstraintTypeTest extends TestCase
     public function test_auth_user_can_create_constraint_type(): void
     {
         $response = $this->actingAs($this->superUser)
-            ->post('/constraintTypes', [
+            ->post('/constraint-types', [
                 'azure_id' => 42,
                 'name' => 'Travail de jour',
                 'description' => 'Une règle de jour',
@@ -106,7 +106,7 @@ class ConstraintTypeTest extends TestCase
                 'is_day_in_schedule' => '1',
             ]);
 
-        $response->assertRedirect('/constraintTypes');
+        $response->assertRedirect('/constraint-types');
         $this->assertDatabaseHas('constraint_types', [
             'azure_id' => 42,
             'name' => 'Travail de jour',
@@ -124,7 +124,7 @@ class ConstraintTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->put("/constraintTypes/{$constraintType->id}", [
+            ->put("/constraint-types/{$constraintType->id}", [
                 'name' => 'Travail prolongé',
                 'description' => 'Une nouvelle règle',
                 'code' => 'TRP',
@@ -134,7 +134,7 @@ class ConstraintTypeTest extends TestCase
                 'is_day_in_schedule' => '1',
             ]);
 
-        $response->assertRedirect('/constraintTypes');
+        $response->assertRedirect('/constraint-types');
         $this->assertDatabaseHas('constraint_types', [
             'id' => $constraintType->id,
             'name' => 'Travail prolongé',
@@ -152,7 +152,7 @@ class ConstraintTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->put("/constraintTypes/{$constraintType->id}", [
+            ->put("/constraint-types/{$constraintType->id}", [
                 'name' => 'Modification interdite',
                 'description' => 'Ne doit pas être enregistrée',
                 'code' => 'NOPE',
@@ -172,8 +172,8 @@ class ConstraintTypeTest extends TestCase
     public function test_constraint_type_creation_requires_the_legacy_form_fields(): void
     {
         $response = $this->actingAs($this->superUser)
-            ->from('/constraintTypes/create')
-            ->post('/constraintTypes', []);
+            ->from('/constraint-types/create')
+            ->post('/constraint-types', []);
 
         $response->assertSessionHasErrors([
             'name',
@@ -187,7 +187,7 @@ class ConstraintTypeTest extends TestCase
 
     public function test_unauthenticated_user_is_redirected_from_constraint_types(): void
     {
-        $response = $this->get('/constraintTypes');
+        $response = $this->get('/constraint-types');
 
         $response->assertRedirect('/login');
     }

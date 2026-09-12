@@ -68,7 +68,7 @@
                 };
 
 
-                axios.patch('/api/settings/departmentUser', data)
+                axios.patch('/api/settings/department-user', data)
                     .then(res => {
                         //
                     }).catch(err => {

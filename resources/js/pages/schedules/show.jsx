@@ -362,7 +362,7 @@ function NotesPanel({ scheduleId, initialNotes }) {
         setError('');
 
         try {
-            await axios.put(`/api/schedules/${scheduleId}/updateNotes`, { notes });
+            await axios.put(`/api/schedules/${scheduleId}/update-notes`, { notes });
             setMessage('Sauvegarde effectuée avec succès.');
         } catch {
             setError('Les notes n’ont pas pu être sauvegardées.');
@@ -568,7 +568,7 @@ export default function Show({
         setStatuses((currentStatuses) => ({ ...currentStatuses, [statusKey]: status }));
 
         try {
-            await axios.post('/api/schedules/updateStatus', {
+            await axios.post('/api/schedules/update-status', {
                 scheduleId: schedule.id,
                 buildStep,
                 status,
@@ -583,7 +583,7 @@ export default function Show({
         setStatisticsStatus(3);
 
         try {
-            await axios.get(`/api/scheduleStatDepartment/${schedule.id}/create`);
+            await axios.get(`/api/schedule-stat-department/${schedule.id}/create`);
             startPolling();
         } catch {
             setStatisticsStatus(2);

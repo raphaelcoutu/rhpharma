@@ -22,7 +22,7 @@ class ScheduleStatDepartmentTest extends TestCase
         Queue::fake([GenerateStatsByDepartments::class]);
 
         $response = $this->actingAs($this->superUser)
-            ->get('/api/scheduleStatDepartment/'.$schedule->id.'/create');
+            ->get('/api/schedule-stat-department/'.$schedule->id.'/create');
 
         $response->assertStatus(202);
         Queue::assertPushed(GenerateStatsByDepartments::class, fn (GenerateStatsByDepartments $job): bool => $job->connection === null);

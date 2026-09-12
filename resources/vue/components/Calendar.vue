@@ -122,7 +122,7 @@
         methods: {
             openUserModal(e) {
                 //Obtenir le pharmacien et tous les renseignements
-                axios.get('/api/calendar/getUserData', {
+                axios.get('/api/calendar/get-user-data', {
                     params : {
                         userId: e.dataUserId,
                         date: e.dataDate.format("YYYYMMDD")
@@ -144,7 +144,7 @@
             },
             saveUserModal(e) {
                 this.closeUserModal()
-                axios.post('/api/calendar/setUserData', {
+                axios.post('/api/calendar/set-user-data', {
                     user_id: e.user_id,
                     date: e.date.format("YYYY-MM-DD"),
                     shifts: e.shifts
@@ -153,7 +153,7 @@
                 })
             },
             openSelectedModal() {
-                axios.get('/api/calendar/getShifts').then(res => {
+                axios.get('/api/calendar/get-shifts').then(res => {
                     this.showSelectedModal = true;
                     this.dataModal = {
                         shifts: res.data
@@ -172,7 +172,7 @@
                 });
 
                 this.closeSelectedModal();
-                axios.post('/api/calendar/setSelectedData', {
+                axios.post('/api/calendar/set-selected-data', {
                     selected: arraySelected,
                     shifts: e.shifts
                 }).then(res => {

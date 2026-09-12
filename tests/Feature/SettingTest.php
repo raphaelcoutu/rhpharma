@@ -55,7 +55,7 @@ class SettingTest extends TestCase
         $departments = ConstraintType::factory()->count(5)->create();
 
         $response = $this->actingAs($this->superUser)
-            ->get('/settings/constraintTypes');
+            ->get('/settings/constraint-types');
 
         $response->assertStatus(200);
     }

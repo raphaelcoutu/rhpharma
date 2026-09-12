@@ -147,7 +147,7 @@ class ScheduleTest extends TestCase
         $schedule = Schedule::factory()->create();
 
         $response = $this->actingAs($this->superUser)
-            ->putAjax("/api/schedules/{$schedule->id}/updateNotes", ['notes' => 'Préparer la validation.']);
+            ->putAjax("/api/schedules/{$schedule->id}/update-notes", ['notes' => 'Préparer la validation.']);
 
         $response->assertOk();
         $this->assertDatabaseHas('schedules', [

@@ -37,7 +37,7 @@ class ShiftTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->get('/shiftTypes');
+            ->get('/shift-types');
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('shiftTypes/index', false)
@@ -49,7 +49,7 @@ class ShiftTypeTest extends TestCase
     public function test_auth_user_can_see_shift_type_create_form(): void
     {
         $response = $this->actingAs($this->superUser)
-            ->get('/shiftTypes/create');
+            ->get('/shift-types/create');
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('shiftTypes/create', false));
@@ -65,7 +65,7 @@ class ShiftTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/shiftTypes/{$shiftType->id}/edit");
+            ->get("/shift-types/{$shiftType->id}/edit");
 
         $response->assertInertia(fn (Assert $page) => $page
             ->component('shiftTypes/edit', false)
@@ -84,7 +84,7 @@ class ShiftTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/shiftTypes/{$shiftType->id}/edit");
+            ->get("/shift-types/{$shiftType->id}/edit");
 
         $response->assertNotFound();
     }
@@ -92,13 +92,13 @@ class ShiftTypeTest extends TestCase
     public function test_auth_user_can_create_shift_type(): void
     {
         $response = $this->actingAs($this->superUser)
-            ->post('/shiftTypes', [
+            ->post('/shift-types', [
                 'name' => 'Soir',
                 'start_time' => '16:00:00',
                 'end_time' => '00:00:00',
             ]);
 
-        $response->assertRedirect('/shiftTypes');
+        $response->assertRedirect('/shift-types');
         $this->assertDatabaseHas('shift_types', [
             'name' => 'Soir',
             'start_time' => '16:00:00',
@@ -117,13 +117,13 @@ class ShiftTypeTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->superUser)
-            ->post("/shiftTypes/{$shiftType->id}", [
+            ->post("/shift-types/{$shiftType->id}", [
                 'name' => 'Jour prolongé',
                 'start_time' => '08:00:00',
                 'end_time' => '18:00:00',
             ]);
 
-        $response->assertRedirect('/shiftTypes');
+        $response->assertRedirect('/shift-types');
         $this->assertDatabaseHas('shift_types', [
             'id' => $shiftType->id,
             'name' => 'Jour prolongé',
@@ -133,7 +133,7 @@ class ShiftTypeTest extends TestCase
 
     public function test_unauthenticated_user_is_redirected_from_shift_types(): void
     {
-        $response = $this->get('/shiftTypes');
+        $response = $this->get('/shift-types');
 
         $response->assertRedirect('/login');
     }

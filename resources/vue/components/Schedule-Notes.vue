@@ -28,7 +28,7 @@
 
         methods: {
             save() {
-                axios.put('/api/schedules/'+ this.dataSchedule.id +'/updateNotes', {
+                axios.put('/api/schedules/'+ this.dataSchedule.id +'/update-notes', {
                     notes: this.notes
                 }).then(result => {
                     this.message = 'Sauvegarde effectuée avec succès.';

@@ -90,7 +90,7 @@
             },
 
             update(data, massUpdate) {
-                axios.patch('/api/settings/constraintTypes', {
+                axios.patch('/api/settings/constraint-types', {
                     massUpdate,
                     data
                 })

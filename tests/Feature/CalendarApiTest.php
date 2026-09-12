@@ -38,7 +38,7 @@ class CalendarApiTest extends TestCase
         ];
 
         $response = $this->actingAs($this->user)
-            ->getAjax("/api/calendar/getUserData?userId={$request['userId']}&date={$request['date']}");
+            ->getAjax("/api/calendar/get-user-data?userId={$request['userId']}&date={$request['date']}");
 
         $response->assertStatus(200);
         $response->assertJsonStructure(['user', 'assignedShifts', 'constraints', 'shifts']);

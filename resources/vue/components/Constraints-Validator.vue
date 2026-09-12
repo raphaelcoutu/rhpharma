@@ -104,7 +104,7 @@
                     validated_by: this.validatorIdProps
                 };
 
-                axios.put('api/constraintsValidator/'+constraint.id, data)
+                axios.put('/api/constraints-validator/'+constraint.id, data)
                     .then(res => {
                         this.constraints.splice(index, 1);
                         this.$root.$emit('constraints-count', this.constraints.length);
@@ -114,7 +114,7 @@
             },
 
             userHistoryUrl(constraint) {
-                return '/constraintsValidator/history?user=' + constraint.user.id;
+                return '/constraints-validator/history?user=' + constraint.user.id;
             },
 
             trans_weight(weight) {

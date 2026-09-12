@@ -31,7 +31,7 @@
                 this.event.status = newStatus;
 
                 this.$emit('updateBuildStatus', this.event);
-                axios.post('/api/schedules/updateStatus', this.event);
+                axios.post('/api/schedules/update-status', this.event);
             }
         }
     }

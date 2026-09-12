@@ -52,7 +52,7 @@ class BuildPollingTest extends TestCase
         Queue::fake();
 
         $response = $this->actingAs($this->superUser)
-            ->postJson('/api/schedules/updateStatus', [
+            ->postJson('/api/schedules/update-status', [
                 'scheduleId' => $this->schedule->id,
                 'buildStep' => 'weekends',
                 'status' => 3,
@@ -93,7 +93,7 @@ class BuildPollingTest extends TestCase
         Queue::fake();
 
         $response = $this->actingAs($this->superUser)
-            ->postJson('/api/schedules/updateStatus', [
+            ->postJson('/api/schedules/update-status', [
                 'scheduleId' => $this->schedule->id,
                 'buildStep' => 'clinical',
                 'status' => 5,
@@ -112,7 +112,7 @@ class BuildPollingTest extends TestCase
         Queue::fake();
 
         $response = $this->actingAs($this->superUser)
-            ->get('/api/scheduleStatDepartment/'.$this->schedule->id.'/create');
+            ->get('/api/schedule-stat-department/'.$this->schedule->id.'/create');
 
         $response->assertStatus(202);
         $this->assertDatabaseHas('schedules', [

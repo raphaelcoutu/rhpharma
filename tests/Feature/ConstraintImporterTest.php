@@ -44,7 +44,7 @@ class ConstraintImporterTest extends TestCase
     public function test_auth_user_can_see_importer()
     {
         $response = $this->actingAs($this->superUser)
-            ->get('/constraintImporter');
+            ->get('/constraint-importer');
 
         $response->assertStatus(200);
         $response->assertInertia(fn (Assert $page) => $page
@@ -62,7 +62,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->actingAs($this->superUser)
-            ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
+            ->get("/constraint-importer/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertRedirect(route('constraintImporter.index'));
         $response->assertSessionHas('status', 'Contraintes importées! (0)');
@@ -80,7 +80,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->actingAs($this->superUser)
-            ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
+            ->get("/constraint-importer/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertRedirect(route('constraintImporter.index'));
         $response->assertSessionHas('status', 'Contraintes importées! (1)');
@@ -97,7 +97,7 @@ class ConstraintImporterTest extends TestCase
         });
 
         $response = $this->actingAs($this->superUser)
-            ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
+            ->get("/constraint-importer/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertRedirect(route('constraintImporter.index'));
         $response->assertSessionHas('newConstraintTypes', function ($newConstraintTypes) {
@@ -122,7 +122,7 @@ class ConstraintImporterTest extends TestCase
 
         $response = $this
             ->actingAs($this->superUser)
-            ->get("/constraintImporter/import?start={$this->start_date}&end={$this->end_date}");
+            ->get("/constraint-importer/import?start={$this->start_date}&end={$this->end_date}");
 
         $response->assertStatus(302);
         $response->assertSessionHas('missingUsers', function ($missingUsers) {
@@ -132,7 +132,7 @@ class ConstraintImporterTest extends TestCase
 
     public function test_unauth_user_get_redirected()
     {
-        $response = $this->get('/constraintImporter');
+        $response = $this->get('/constraint-importer');
 
         $response->assertRedirect('/login');
     }

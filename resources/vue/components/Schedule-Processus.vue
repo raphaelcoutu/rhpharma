@@ -22,7 +22,7 @@
                 </td>
                 <td>
                     <p>
-                        <a href="/constraintImporter" class="btn btn-sm btn-primary">Importer les contraintes Azure</a>
+                        <a href="/constraint-importer" class="btn btn-sm btn-primary">Importer les contraintes Azure</a>
                     </p>
                     <p>
                         <a :href="validateUrl" class="btn btn-sm btn-default">Valider les contraintes</a>
@@ -125,7 +125,7 @@
 
         data() {
             return {
-                validateUrl: '/constraintsValidator?schedule=' + this.dataSchedule.id,
+                validateUrl: '/constraints-validator?schedule=' + this.dataSchedule.id,
             }
         },
 

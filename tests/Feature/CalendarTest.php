@@ -65,7 +65,7 @@ class CalendarTest extends TestCase
         $userWithDepartmentAB->departments()->syncWithoutDetaching([$departmentA->id, $departmentB->id]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/calendar/{$this->schedule->id}/byDepartment/{$departmentA->id}");
+            ->get("/calendar/{$this->schedule->id}/by-department/{$departmentA->id}");
 
         $response->assertStatus(200);
         $response->assertSee('UserA');
@@ -106,7 +106,7 @@ class CalendarTest extends TestCase
         $userWithDepartmentC->departments()->syncWithoutDetaching([$departmentC->id]);
 
         $response = $this->actingAs($this->superUser)
-            ->get("/calendar/{$this->schedule->id}/byDepartment/{$departmentA->id},{$departmentB->id}");
+            ->get("/calendar/{$this->schedule->id}/by-department/{$departmentA->id},{$departmentB->id}");
 
         $response->assertStatus(200);
         $response->assertSee('UserA');

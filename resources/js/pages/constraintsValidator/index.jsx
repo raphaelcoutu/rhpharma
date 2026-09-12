@@ -86,7 +86,7 @@ function ValidationActions({ constraint, validatorId, onValidated }) {
         setRequestError(null);
         setData({ status, validated_by: validatorId });
 
-        void put(`/api/constraintsValidator/${constraint.id}`, {
+        void put(`/api/constraints-validator/${constraint.id}`, {
             onSuccess: () => onValidated(constraint.id),
             onError: () => setRequestError('La validation n’a pas pu être enregistrée.'),
             onHttpException: () => setRequestError('La validation n’a pas pu être enregistrée.'),
