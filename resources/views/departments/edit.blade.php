@@ -20,7 +20,7 @@
                     <h3>Pharmaciens associés au secteur</h3>
                     <ul>
                         @forelse($department->users as $pharmacien)
-                            <li><a href="{{ route('users.show', $pharmacien->id) }}">{{ $pharmacien->firstname }} {{ $pharmacien->lastname }}</a></li>
+                            <li><a href="{{ route('users.edit', $pharmacien->id) }}">{{ $pharmacien->firstname }} {{ $pharmacien->lastname }}</a></li>
                         @empty
                             <li>Aucun pharmacien</li>
                         @endforelse

@@ -12,5 +12,5 @@
             </div>
         </div>
     </div>
-    <a href="{{ route('users.show', $user->id) }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Liste des utilisateurs</a>
+    <a href="{{ route('users.index') }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Liste des utilisateurs</a>
 @endsection

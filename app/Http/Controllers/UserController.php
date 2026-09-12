@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\Branch;
-use App\Models\Department;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -63,22 +62,6 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('users.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        Gate::authorize('read', User::class);
-
-        $user = User::with('departments')->findOrFail($id);
-        $departments = Department::whereIn('department_type_id', [1, 3])->orderBy('name')->get();
-
-        return view('users.show', compact('user', 'departments'));
     }
 
     /**

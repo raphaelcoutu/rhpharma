@@ -29,7 +29,7 @@ class UserTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_auth_user_can_see_user_page()
+    public function test_user_show_route_is_not_available()
     {
         $newUser = User::factory()->create([
             'lastname' => 'Exotic',
@@ -40,9 +40,7 @@ class UserTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get("/users/{$newUser->id}");
 
-        $response->assertStatus(200);
-        $response->assertSee("Visualisation d'un profil", false);
-        $response->assertSeeInOrder(['Exotic', 'Joe', 'joeexotic@rhpharma.com']);
+        $response->assertMethodNotAllowed();
     }
 
     public function test_user_can_see_is_own_profile()
