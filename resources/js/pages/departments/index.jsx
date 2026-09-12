@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
 import { Head, Link } from '@inertiajs/react';
 import { createColumnHelper, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
+import { Layers3, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 const columnHelper = createColumnHelper();
@@ -50,9 +51,25 @@ export default function Index({ departments }) {
     return (
         <AuthenticatedLayout>
             <Head title="Secteurs" />
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <h2 className="text-2xl font-bold">Liste des secteurs</h2>
+            <div className="py-10 sm:py-12">
+                <div className="mx-auto max-w-7xl space-y-8 px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <div className="flex items-center gap-3 text-indigo-600">
+                                <Layers3 className="h-5 w-5" />
+                                <span className="text-sm font-semibold uppercase tracking-wider">Organisation</span>
+                            </div>
+                            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-gray-900">Secteurs</h1>
+                            <p className="mt-2 max-w-2xl text-sm text-gray-500">
+                                Gérez les secteurs, leur type et leur lieu de travail.
+                            </p>
+                        </div>
+                        <SecondaryButton as={Link} href={route('departments.create')} className="gap-2">
+                            <Plus className="h-4 w-4" />
+                            Ajouter un secteur
+                        </SecondaryButton>
+                    </div>
+
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="border-b border-gray-200 bg-white p-6">
                             <div className="flex justify-between">
@@ -63,9 +80,6 @@ export default function Index({ departments }) {
                                     onChange={(e) => setGlobalFilter(e.target.value)}
                                     placeholder="Rechercher"
                                 />
-                                <SecondaryButton as={Link} href={route('departments.create')}>
-                                    Ajouter un secteur
-                                </SecondaryButton>
                             </div>
 
                             <Table className="mt-2 w-full">
