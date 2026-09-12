@@ -23,7 +23,7 @@ class ConstraintTypeController extends Controller
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('constraintTypes/index', [
+        return Inertia::render('constraint-types/index', [
             'constraintTypes' => $constraintTypes,
         ]);
     }
@@ -35,7 +35,7 @@ class ConstraintTypeController extends Controller
     {
         Gate::authorize('write', ConstraintType::class);
 
-        return Inertia::render('constraintTypes/create');
+        return Inertia::render('constraint-types/create');
     }
 
     /**
@@ -69,7 +69,7 @@ class ConstraintTypeController extends Controller
         Gate::authorize('write', ConstraintType::class);
         $constraintType = ConstraintType::ownBranch()->findOrFail($constraintType->id);
 
-        return Inertia::render('constraintTypes/edit', [
+        return Inertia::render('constraint-types/edit', [
             'constraintType' => $constraintType,
         ]);
     }

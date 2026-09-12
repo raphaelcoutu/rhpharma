@@ -1,24 +1,24 @@
 import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import Form from '@/pages/shiftTypes/form';
+import Form from '@/pages/shift-types/form';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Clock3 } from 'lucide-react';
 
-export default function Edit({ shiftType }) {
+export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
-        name: shiftType.name ?? '',
-        start_time: shiftType.start_time ?? '',
-        end_time: shiftType.end_time ?? '',
+        name: '',
+        start_time: '',
+        end_time: '',
     });
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        post(route('shiftTypes.update', shiftType.id));
+        post(route('shiftTypes.store'));
     };
 
     return (
         <AuthenticatedLayout>
-            <Head title="Modifier un type de shift" />
+            <Head title="Nouveau type de shift" />
 
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-4xl space-y-6 px-4 sm:px-6 lg:px-8">
@@ -35,8 +35,8 @@ export default function Edit({ shiftType }) {
                             <Clock3 className="h-6 w-6" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Modifier un type de shift</h1>
-                            <p className="mt-1 text-sm text-gray-500">Mettez à jour le nom ou les horaires de ce type de shift.</p>
+                            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Créer un type de shift</h1>
+                            <p className="mt-1 text-sm text-gray-500">Définissez le nom et les horaires de ce type de shift.</p>
                         </div>
                     </div>
 
@@ -52,7 +52,7 @@ export default function Edit({ shiftType }) {
                                 errors={errors}
                                 processing={processing}
                                 onSubmit={handleSubmit}
-                                submitLabel="Enregistrer les modifications"
+                                submitLabel="Enregistrer le type"
                             />
                         </div>
                     </div>

@@ -1,29 +1,29 @@
 import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import Form from '@/pages/constraintTypes/form';
+import Form from '@/pages/constraint-types/form';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { ArrowLeft, Settings2 } from 'lucide-react';
 
-export default function Create() {
-    const { data, setData, post, processing, errors } = useForm({
-        azure_id: '',
-        name: '',
-        description: '',
-        code: '',
-        is_work: '',
-        is_single_day: '',
-        is_group_constraint: '',
-        is_day_in_schedule: '',
+export default function Edit({ constraintType }) {
+    const { data, setData, put, processing, errors } = useForm({
+        azure_id: constraintType.azure_id ?? '',
+        name: constraintType.name ?? '',
+        description: constraintType.description ?? '',
+        code: constraintType.code ?? '',
+        is_work: String(constraintType.is_work ?? ''),
+        is_single_day: String(constraintType.is_single_day ?? ''),
+        is_group_constraint: String(constraintType.is_group_constraint ?? ''),
+        is_day_in_schedule: String(constraintType.is_day_in_schedule ?? ''),
     });
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        post(route('constraintTypes.store'));
+        put(route('constraintTypes.update', constraintType.id));
     };
 
     return (
         <AuthenticatedLayout>
-            <Head title="Nouveau type de contrainte" />
+            <Head title="Modifier un type de contrainte" />
 
             <div className="py-10 sm:py-12">
                 <div className="mx-auto max-w-5xl space-y-6 px-4 sm:px-6 lg:px-8">
@@ -40,8 +40,8 @@ export default function Create() {
                             <Settings2 className="h-6 w-6" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Créer un type de contrainte</h1>
-                            <p className="mt-1 text-sm text-gray-500">Définissez les informations et le comportement de cette règle.</p>
+                            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Modifier un type de contrainte</h1>
+                            <p className="mt-1 text-sm text-gray-500">Mettez à jour la règle « {constraintType.name} ».</p>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@ export default function Create() {
                                 errors={errors}
                                 processing={processing}
                                 onSubmit={handleSubmit}
-                                submitLabel="Enregistrer le type"
+                                submitLabel="Enregistrer les modifications"
                             />
                         </div>
                     </div>

@@ -48,7 +48,7 @@ class ConstraintTypeTest extends TestCase
             ->get('/constraint-types');
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintTypes/index', false)
+            ->component('constraint-types/index', false)
             ->has('constraintTypes', 1)
             ->where('constraintTypes.0.id', $constraintType->id)
             ->where('constraintTypes.0.name', 'Travail de jour')
@@ -61,7 +61,7 @@ class ConstraintTypeTest extends TestCase
             ->get('/constraint-types/create');
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintTypes/create', false));
+            ->component('constraint-types/create', false));
     }
 
     public function test_auth_user_can_see_constraint_type_edit_form(): void
@@ -76,7 +76,7 @@ class ConstraintTypeTest extends TestCase
             ->get("/constraint-types/{$constraintType->id}/edit");
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintTypes/edit', false)
+            ->component('constraint-types/edit', false)
             ->where('constraintType.id', $constraintType->id)
             ->where('constraintType.name', 'Travail de jour'));
     }

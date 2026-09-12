@@ -1,4 +1,4 @@
-// resources/js/Hooks/useSchedulerData.js
+// resources/js/hooks/use-scheduler-data.js
 import { useCallback, useMemo } from "react";
 import { format, isWithinInterval, parseISO } from "date-fns"; // Make sure date-fns is installed
 

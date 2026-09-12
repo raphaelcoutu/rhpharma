@@ -35,7 +35,7 @@ class ConstraintValidatorController extends Controller
             ->orderBy('start_datetime')
             ->get();
 
-        return Inertia::render('constraintsValidator/index', [
+        return Inertia::render('constraints-validator/index', [
             'constraints' => $constraints,
             'validatorId' => $request->user()->id,
             'schedule' => $schedule === null ? null : [
@@ -84,7 +84,7 @@ class ConstraintValidatorController extends Controller
             ->limit($limit)
             ->get();
 
-        return Inertia::render('constraintsValidator/history', [
+        return Inertia::render('constraints-validator/history', [
             'constraints' => $constraints,
         ]);
     }

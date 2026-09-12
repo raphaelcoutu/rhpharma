@@ -40,7 +40,7 @@ class ShiftTypeTest extends TestCase
             ->get('/shift-types');
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('shiftTypes/index', false)
+            ->component('shift-types/index', false)
             ->has('shiftTypes', 1)
             ->where('shiftTypes.0.id', $shiftType->id)
             ->where('shiftTypes.0.name', 'Jour'));
@@ -52,7 +52,7 @@ class ShiftTypeTest extends TestCase
             ->get('/shift-types/create');
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('shiftTypes/create', false));
+            ->component('shift-types/create', false));
     }
 
     public function test_auth_user_can_see_shift_type_edit_form(): void
@@ -68,7 +68,7 @@ class ShiftTypeTest extends TestCase
             ->get("/shift-types/{$shiftType->id}/edit");
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('shiftTypes/edit', false)
+            ->component('shift-types/edit', false)
             ->where('shiftType.id', $shiftType->id)
             ->where('shiftType.name', 'Jour'));
     }

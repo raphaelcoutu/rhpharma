@@ -34,7 +34,7 @@ class ConstraintValidatorTest extends TestCase
             ->get(route('constraintsValidator.index'));
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintsValidator/index', false)
+            ->component('constraints-validator/index', false)
             ->where('validatorId', $this->superUser->id)
             ->where('schedule', null)
             ->has('constraints', 1)
@@ -64,7 +64,7 @@ class ConstraintValidatorTest extends TestCase
             ->get(route('constraintsValidator.index', ['schedule' => $schedule->id]));
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintsValidator/index', false)
+            ->component('constraints-validator/index', false)
             ->where('schedule.id', $schedule->id)
             ->has('constraints', 1)
             ->where('constraints.0.id', $insideConstraint->id)
@@ -80,7 +80,7 @@ class ConstraintValidatorTest extends TestCase
             ->get(route('constraintsValidator.history', ['status' => 1]));
 
         $response->assertInertia(fn (Assert $page) => $page
-            ->component('constraintsValidator/history', false)
+            ->component('constraints-validator/history', false)
             ->has('constraints', 1)
             ->where('constraints.0.id', $approvedConstraint->id)
             ->where('constraints.0.status', 1)

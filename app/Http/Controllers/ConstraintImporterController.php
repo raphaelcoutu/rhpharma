@@ -17,7 +17,7 @@ class ConstraintImporterController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('constraintImporter/index', [
+        return Inertia::render('constraint-importer/index', [
             'status' => session('status'),
             'newUsers' => session('newUsers', []),
             'newConstraintTypes' => session('newConstraintTypes', []),

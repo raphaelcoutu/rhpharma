@@ -23,7 +23,7 @@ class ShiftTypeController extends Controller
             ->orderBy('name')
             ->get();
 
-        return Inertia::render('shiftTypes/index', [
+        return Inertia::render('shift-types/index', [
             'shiftTypes' => $shiftTypes,
         ]);
     }
@@ -35,7 +35,7 @@ class ShiftTypeController extends Controller
     {
         Gate::authorize('write', ShiftType::class);
 
-        return Inertia::render('shiftTypes/create');
+        return Inertia::render('shift-types/create');
     }
 
     /**
@@ -74,7 +74,7 @@ class ShiftTypeController extends Controller
         Gate::authorize('write', ShiftType::class);
         $shiftType = ShiftType::ownBranch()->findOrFail($shiftType->id);
 
-        return Inertia::render('shiftTypes/edit', [
+        return Inertia::render('shift-types/edit', [
             'shiftType' => $shiftType,
         ]);
     }

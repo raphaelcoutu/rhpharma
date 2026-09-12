@@ -3,7 +3,7 @@ import DepartmentFilter from '@/components/scheduler/department-filter';
 import EmployeeRow from '@/components/scheduler/employee-row';
 import MultiShiftEditor from '@/components/scheduler/multi-shift-editor';
 import ScheduleEditor from '@/components/scheduler/scheduler-editor';
-import { useSchedulerData } from '@/hooks/useSchedulerData';
+import { useSchedulerData } from '@/hooks/use-scheduler-data';
 import { formatDisplayDate, formatDisplayWeekday, getDatesFromStart } from '@/lib/dates';
 import clsx from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
