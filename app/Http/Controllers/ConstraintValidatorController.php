@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Constraint;
 use App\Models\Schedule;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ConstraintValidatorController extends Controller
 {
@@ -13,15 +17,17 @@ class ConstraintValidatorController extends Controller
      * List all constraints to validate
      */
     #[Authorize('read', Constraint::class)]
-    public function index()
+    public function index(Request $request): Response
     {
+        Gate::authorize('read', Constraint::class);
+
         $schedule = null;
 
         $constraints = Constraint::with(['constraintType', 'user']);
-        if (request('schedule')) {
-            $schedule = Schedule::select(['id', 'start_date', 'end_date'])->findOrFail(request('schedule'));
+        if ($request->filled('schedule')) {
+            $schedule = Schedule::select(['id', 'start_date', 'end_date'])->findOrFail($request->integer('schedule'));
 
-            $constraints = $constraints->inInterval($schedule->start_date, $schedule->end_date);
+            $constraints = $constraints->inDateInterval($schedule->start_date, $schedule->end_date);
         }
 
         $constraints = $constraints->where('status', 0)
@@ -29,20 +35,31 @@ class ConstraintValidatorController extends Controller
             ->orderBy('start_datetime')
             ->get();
 
-        return view('constraintsValidator.index', compact('constraints', 'schedule'));
+        return Inertia::render('constraintsValidator/index', [
+            'constraints' => $constraints,
+            'validatorId' => $request->user()->id,
+            'schedule' => $schedule === null ? null : [
+                'id' => $schedule->id,
+                'start_date' => $schedule->start_date_string,
+                'end_date' => $schedule->end_date_string,
+            ],
+        ]);
     }
 
     #[Authorize('write', Constraint::class)]
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
         $constraint = Constraint::findOrFail($id);
-        $constraint->update($request->all());
+        $constraint->update($request->validate([
+            'status' => ['required', 'integer', 'in:1,2'],
+            'validated_by' => ['required', 'integer', 'exists:users,id'],
+        ]));
 
-        return 'OK';
+        return response()->json(['status' => 'ok']);
     }
 
     #[Authorize('read', Constraint::class)]
-    public function history(Request $request)
+    public function history(Request $request): Response
     {
         $limit = $request->limit ?? 100;
         $order = $request->order ?? 'desc';
@@ -67,6 +84,8 @@ class ConstraintValidatorController extends Controller
             ->limit($limit)
             ->get();
 
-        return view('constraintsValidator.history', compact('constraints'));
+        return Inertia::render('constraintsValidator/history', [
+            'constraints' => $constraints,
+        ]);
     }
 }
