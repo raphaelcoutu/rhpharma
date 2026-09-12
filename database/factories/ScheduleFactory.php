@@ -23,12 +23,14 @@ class ScheduleFactory extends Factory
      */
     public function definition()
     {
+        $startDate = Carbon::now()->next('Sunday');
+
         return [
             'name' => $this->faker->name(),
             'limit_date_weekends' => Carbon::now()->previous('Friday'),
             'limit_date' => Carbon::now()->previous('Friday'),
-            'start_date' => Carbon::now()->next('Sunday'),
-            'end_date' => Carbon::now()->addWeeks(4)->next('Saturday')->setTime(23, 59, 59),
+            'start_date' => $startDate,
+            'end_date' => $startDate->copy()->addWeeks(4)->subDay()->setTime(23, 59, 59),
             'branch_id' => 1,
             'status_holidays' => BuildStatus::Standby,
             'status_weekends' => BuildStatus::Standby,
