@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Jobs\GenerateStatsByDepartments;
 use App\Models\Branch;
-use App\Models\User;
+use App\Models\Schedule;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
@@ -16,14 +16,15 @@ class ScheduleStatDepartmentTest extends TestCase
     public function test_authenticated_user_can_dispatch_department_statistics_job(): void
     {
         Branch::create(['name' => 'Pharmaciens']);
-        $user = User::factory()->create();
+        $this->createSuperUser();
+        $schedule = Schedule::factory()->create();
 
         Queue::fake([GenerateStatsByDepartments::class]);
 
-        $response = $this->actingAs($user)
-            ->get('/api/scheduleStatDepartment/1/create');
+        $response = $this->actingAs($this->superUser)
+            ->get('/api/scheduleStatDepartment/'.$schedule->id.'/create');
 
-        $response->assertOk();
-        Queue::assertPushed(GenerateStatsByDepartments::class, 1);
+        $response->assertStatus(202);
+        Queue::assertPushed(GenerateStatsByDepartments::class, fn (GenerateStatsByDepartments $job): bool => $job->connection === null);
     }
 }

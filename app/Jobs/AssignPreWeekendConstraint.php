@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class AssignPreWeekendConstraint implements ShouldQueue
 {
@@ -35,12 +36,7 @@ class AssignPreWeekendConstraint implements ShouldQueue
         $this->schedule = Schedule::find($this->event->scheduleId);
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $saturdays = $this->getSaturdays();
 
@@ -75,6 +71,11 @@ class AssignPreWeekendConstraint implements ShouldQueue
 
         event(new BuildMessageGenerated($this->schedule, 'Constraintes pré-weekend ajoutées. ('.$constraintsToAdd->count().')'));
         event(new UpdateBuildStatus($this->event->scheduleId, 'last_evening', BuildStatus::Success));
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        event(new UpdateBuildStatus($this->event->scheduleId, 'last_evening', BuildStatus::Error, $exception?->getMessage()));
     }
 
     private function getSaturdays()

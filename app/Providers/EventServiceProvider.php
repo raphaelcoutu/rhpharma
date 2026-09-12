@@ -2,12 +2,9 @@
 
 namespace App\Providers;
 
-use App\Events\UpdateBuildStatus;
-use App\Listeners\BuildStatusChanged;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -21,14 +18,6 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
     ];
-
-    /**
-     * Register any events for your application.
-     */
-    public function boot(): void
-    {
-        Event::listen(UpdateBuildStatus::class, BuildStatusChanged::class);
-    }
 
     /**
      * Determine if events and listeners should be automatically discovered.

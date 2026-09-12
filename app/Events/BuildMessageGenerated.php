@@ -3,39 +3,12 @@
 namespace App\Events;
 
 use App\Models\Schedule;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BuildMessageGenerated implements ShouldBroadcastNow
+class BuildMessageGenerated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, SerializesModels;
 
-    public $timestamp;
-
-    public $schedule;
-
-    public $message;
-
-    /**
-     * Create a new event instance.
-     */
-    public function __construct(Schedule $schedule, $message, bool $clear = false)
-    {
-        $this->timestamp = date('Y/m/d H:i:s');
-        $this->schedule = $schedule;
-        $this->message = $message;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new Channel('build-message');
-    }
+    public function __construct(public Schedule $schedule, public string $message) {}
 }

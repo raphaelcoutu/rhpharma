@@ -1,7 +1,7 @@
 import Dropdown from '@/components/dropdown';
 import SecondaryButton from '@/components/secondary-button';
 import AuthenticatedLayout from '@/layouts/authenticated-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePoll } from '@inertiajs/react';
 import axios from 'axios';
 import {
     AlertTriangle,
@@ -258,24 +258,8 @@ function ProcessTable({ schedule, constraintsCount, statuses, onStatusChange }) 
     );
 }
 
-function LogPanel({ scheduleId }) {
-    const [messages, setMessages] = useState([]);
+function LogPanel({ messages = [] }) {
     const messageBox = useRef(null);
-
-    useEffect(() => {
-        const channel = window.Echo?.channel('build-message');
-        const listener = (event) => {
-            if (Number(event.schedule?.id) !== Number(scheduleId)) {
-                return;
-            }
-
-            setMessages((currentMessages) => [...currentMessages, `${event.timestamp ?? ''}\t ${event.message ?? ''}`]);
-        };
-
-        channel?.listen('BuildMessageGenerated', listener);
-
-        return () => window.Echo?.leave('build-message');
-    }, [scheduleId]);
 
     useEffect(() => {
         if (messageBox.current) {
@@ -287,12 +271,16 @@ function LogPanel({ scheduleId }) {
         <div>
             <div ref={messageBox} className="h-56 overflow-auto rounded-lg border border-gray-200 bg-gray-950 p-4 font-mono text-xs text-gray-200">
                 {messages.length > 0 ? (
-                    messages.map((message, index) => <div key={`${message}-${index}`}>{message}</div>)
+                    messages.map((message) => (
+                        <div key={message.id}>
+                            {message.timestamp}	 {message.message}
+                        </div>
+                    ))
                 ) : (
                     <span>Aucun message reçu.</span>
                 )}
             </div>
-            <p className="mt-2 text-xs text-gray-500">Les nouveaux messages de génération apparaîtront ici automatiquement.</p>
+            <p className="mt-2 text-xs text-gray-500">Les messages de génération sont actualisés automatiquement.</p>
         </div>
     );
 }
@@ -417,57 +405,27 @@ function NotesPanel({ scheduleId, initialNotes }) {
     );
 }
 
-function StatisticsPanel({ scheduleId }) {
-    const [statistics, setStatistics] = useState([]);
-    const [status, setStatus] = useState('idle');
-
-    async function loadStatistics() {
-        const response = await axios.get(`/api/scheduleStatDepartment/${scheduleId}`);
-        const content = response.data?.content;
-
-        setStatistics(content ? JSON.parse(content) : []);
-        setStatus('success');
-    }
-
-    useEffect(() => {
-        const channel = window.Echo?.channel(`schedule.${scheduleId}`);
-        const listener = () => {
-            loadStatistics().catch(() => setStatus('error'));
-        };
-
-        channel?.listen('StatsByDepartmentsGenerated', listener);
-
-        return () => window.Echo?.leave(`schedule.${scheduleId}`);
-    }, [scheduleId]);
-
-    async function generateStatistics() {
-        setStatus('loading');
-
-        try {
-            await axios.get(`/api/scheduleStatDepartment/${scheduleId}/create`);
-        } catch {
-            setStatus('error');
-        }
-    }
+function StatisticsPanel({ statistics = [], statisticsStatus, onGenerate }) {
+    const status = Number(statisticsStatus);
 
     return (
         <div>
             <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-sm text-gray-500">Consultez la répartition des heures par secteur et par utilisateur.</p>
-                <ActionButton onClick={generateStatistics} disabled={status === 'loading'} variant="primary">
+                <ActionButton onClick={onGenerate} disabled={status === 3} variant="primary">
                     <BarChart3 className="h-4 w-4" />
-                    {status === 'success' ? 'Régénérer' : 'Générer les statistiques'}
+                    {status === 1 ? 'Régénérer' : 'Générer les statistiques'}
                 </ActionButton>
             </div>
 
-            {status === 'loading' && (
+            {status === 3 && (
                 <div className="mt-6 flex items-center gap-2 text-sm text-gray-500">
                     <LoaderCircle className="h-4 w-4 animate-spin text-indigo-600" />
                     Génération en cours…
                 </div>
             )}
-            {status === 'error' && <p className="mt-6 text-sm text-red-600">Les statistiques n’ont pas pu être générées.</p>}
-            {status === 'success' && statistics.length > 0 && (
+            {status === 2 && <p className="mt-6 text-sm text-red-600">Les statistiques n’ont pas pu être générées.</p>}
+            {status === 1 && statistics.length > 0 && (
                 <div className="mt-6 grid gap-4 lg:grid-cols-2">
                     {statistics.map((departmentStatistics) => (
                         <div key={departmentStatistics.department.id} className="rounded-lg border border-gray-200">
@@ -488,12 +446,12 @@ function StatisticsPanel({ scheduleId }) {
                     ))}
                 </div>
             )}
-            {status === 'success' && statistics.length === 0 && <p className="mt-6 text-sm text-gray-500">Aucune statistique disponible.</p>}
+            {status === 1 && statistics.length === 0 && <p className="mt-6 text-sm text-gray-500">Aucune statistique disponible.</p>}
         </div>
     );
 }
 
-function OutputPanel({ schedule, conflicts, onRefreshConflicts }) {
+function OutputPanel({ schedule, conflicts, onRefreshConflicts, buildMessages, statistics, statisticsStatus, onGenerateStatistics }) {
     const tabDefinitions = [
         { key: 'log', label: 'Log', icon: MessageSquareText },
         { key: 'conflicts', label: `Conflits (${conflicts.length})`, icon: AlertTriangle },
@@ -536,42 +494,66 @@ function OutputPanel({ schedule, conflicts, onRefreshConflicts }) {
                 })}
             </div>
             <div className="p-5 sm:p-6">
-                {activeTab === 'log' && <LogPanel scheduleId={schedule.id} />}
+                {activeTab === 'log' && <LogPanel messages={buildMessages} />}
                 {activeTab === 'conflicts' && <ConflictsPanel scheduleId={schedule.id} conflicts={conflicts} onRefresh={onRefreshConflicts} />}
                 {activeTab === 'notes' && <NotesPanel scheduleId={schedule.id} initialNotes={schedule.notes} />}
-                {activeTab === 'stats' && <StatisticsPanel scheduleId={schedule.id} />}
+                {activeTab === 'stats' && (
+                    <StatisticsPanel statistics={statistics} statisticsStatus={statisticsStatus} onGenerate={onGenerateStatistics} />
+                )}
             </div>
         </section>
     );
 }
 
-export default function Show({ conflicts: initialConflicts = [], constraintsCount = 0, departments = [], durationInWeeks = 0, schedule }) {
+export default function Show({
+    buildMessages = [],
+    conflicts: initialConflicts = [],
+    constraintsCount = 0,
+    departments = [],
+    durationInWeeks = 0,
+    schedule,
+    statistics = [],
+    statisticsStatus: initialStatisticsStatus = 0,
+}) {
     const [statuses, setStatuses] = useState({
         weekends: Number(schedule.status_weekends),
         lastEvening: Number(schedule.status_last_evening),
         clinical: Number(schedule.status_clinical_departments),
     });
     const [conflicts, setConflicts] = useState(initialConflicts);
+    const [statisticsStatus, setStatisticsStatus] = useState(Number(initialStatisticsStatus));
+
+    const { start: startPolling, stop: stopPolling } = usePoll(
+        2000,
+        {
+            only: ['schedule', 'buildMessages', 'statistics', 'statisticsStatus'],
+            preserveScroll: true,
+            preserveState: true,
+        },
+        { autoStart: false },
+    );
 
     useEffect(() => {
-        const channel = window.Echo?.channel('build-status');
-        const listener = (event) => {
-            if (Number(event.scheduleId) !== Number(schedule.id)) {
-                return;
-            }
+        setStatuses({
+            weekends: Number(schedule.status_weekends),
+            lastEvening: Number(schedule.status_last_evening),
+            clinical: Number(schedule.status_clinical_departments),
+        });
+    }, [schedule]);
 
-            const keyByBuildStep = { weekends: 'weekends', last_evening: 'lastEvening', clinical: 'clinical' };
-            const statusKey = keyByBuildStep[event.buildStep];
+    useEffect(() => {
+        setStatisticsStatus(Number(initialStatisticsStatus));
+    }, [initialStatisticsStatus]);
 
-            if (statusKey) {
-                setStatuses((currentStatuses) => ({ ...currentStatuses, [statusKey]: Number(event.status) }));
-            }
-        };
+    const isPollingNeeded = Object.values(statuses).some((status) => [3, 5, 6].includes(Number(status))) || statisticsStatus === 3;
 
-        channel?.listen('UpdateBuildStatus', listener);
-
-        return () => window.Echo?.leave('build-status');
-    }, [schedule.id]);
+    useEffect(() => {
+        if (isPollingNeeded) {
+            startPolling();
+        } else {
+            stopPolling();
+        }
+    }, [isPollingNeeded, startPolling, stopPolling]);
 
     async function refreshConflicts() {
         const response = await axios.get(`/api/conflicts/${schedule.id}`);
@@ -591,8 +573,21 @@ export default function Show({ conflicts: initialConflicts = [], constraintsCoun
                 buildStep,
                 status,
             });
+            startPolling();
         } catch {
             setStatuses((currentStatuses) => ({ ...currentStatuses, [statusKey]: previousStatus }));
+        }
+    }
+
+    async function generateStatistics() {
+        setStatisticsStatus(3);
+
+        try {
+            await axios.get(`/api/scheduleStatDepartment/${schedule.id}/create`);
+            startPolling();
+        } catch {
+            setStatisticsStatus(2);
+            stopPolling();
         }
     }
 
@@ -679,7 +674,15 @@ export default function Show({ conflicts: initialConflicts = [], constraintsCoun
 
                     <ProcessTable schedule={schedule} constraintsCount={Number(constraintsCount)} statuses={statuses} onStatusChange={changeStatus} />
 
-                    <OutputPanel schedule={schedule} conflicts={conflicts} onRefreshConflicts={refreshConflicts} />
+                    <OutputPanel
+                        schedule={schedule}
+                        conflicts={conflicts}
+                        onRefreshConflicts={refreshConflicts}
+                        buildMessages={buildMessages}
+                        statistics={statistics}
+                        statisticsStatus={statisticsStatus}
+                        onGenerateStatistics={generateStatistics}
+                    />
 
                     <SecondaryButton as={Link} href={route('schedules.index')}>
                         Retour à la liste des horaires

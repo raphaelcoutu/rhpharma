@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Builders\BuildStatus;
+use App\Events\BuildMessageGenerated;
 use App\Events\UpdateBuildStatus;
 use App\Jobs\AnalyzeClinicalDepartments;
 use App\Jobs\AssignPreWeekendConstraint;
@@ -14,52 +15,50 @@ use App\Models\Schedule;
 class BuildStatusChanged
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * @var array<string, string>
      */
-    public function __construct()
-    {
-        //
-    }
+    private const STATUS_COLUMNS = [
+        'weekends' => 'status_weekends',
+        'last_evening' => 'status_last_evening',
+        'clinical' => 'status_clinical_departments',
+    ];
 
-    /**
-     * Handle the event.
-     *
-     * @return void
-     */
-    public function handle(UpdateBuildStatus $event)
+    public function handle(UpdateBuildStatus $event): void
     {
         $schedule = Schedule::findOrFail($event->scheduleId);
+        $statusColumn = self::STATUS_COLUMNS[$event->buildStep] ?? null;
 
-        if ($event->buildStep == 'clinical') {
-            // On update database (peu importe le status, tant qu'il existe!)
-            if ($event->status >= 0 && $event->status <= 6) {
-                $schedule->status_clinical_departments = $event->status;
-                $schedule->update();
-            }
+        if ($statusColumn === null || $event->status < BuildStatus::Standby || $event->status > BuildStatus::Analyze) {
+            return;
+        }
 
-            if ($event->status === BuildStatus::Build) {
-                // Start job
-                (new BuildClinicalDepartments($event))->handle();
-            }
+        $schedule->forceFill([$statusColumn => $event->status])->save();
 
-            if ($event->status === BuildStatus::Analyze) {
-                (new AnalyzeClinicalDepartments($event))->handle();
-            }
+        if ($event->status === BuildStatus::Error && filled($event->message)) {
+            event(new BuildMessageGenerated($schedule, 'Erreur: '.$event->message));
+        }
 
-            if ($event->status === BuildStatus::Reset) {
-                (new ResetClinicalDepartments($event))->handle();
-            }
-        } elseif ($event->buildStep == 'last_evening') {
-            if ($event->status === BuildStatus::Build) {
-                AssignPreWeekendConstraint::dispatch($event);
-            }
-        } elseif ($event->buildStep == 'weekends') {
-            if ($event->status === BuildStatus::Build) {
-                CompleteWeekendsAndDaysOff::dispatch($event);
-            }
+        if ($event->status !== BuildStatus::Build && $event->status !== BuildStatus::Analyze && $event->status !== BuildStatus::Reset) {
+            return;
+        }
 
+        if ($event->buildStep === 'clinical') {
+            match ($event->status) {
+                BuildStatus::Build => BuildClinicalDepartments::dispatch($event),
+                BuildStatus::Analyze => AnalyzeClinicalDepartments::dispatch($event),
+                BuildStatus::Reset => ResetClinicalDepartments::dispatch($event),
+                default => null,
+            };
+
+            return;
+        }
+
+        if ($event->status === BuildStatus::Build && $event->buildStep === 'last_evening') {
+            AssignPreWeekendConstraint::dispatch($event);
+        }
+
+        if ($event->status === BuildStatus::Build && $event->buildStep === 'weekends') {
+            CompleteWeekendsAndDaysOff::dispatch($event);
         }
     }
 }

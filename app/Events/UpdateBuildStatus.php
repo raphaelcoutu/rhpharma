@@ -2,53 +2,16 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
 
-/**
- * Class UpdateBuildStatus
- */
-class UpdateBuildStatus implements ShouldBroadcastNow
+class UpdateBuildStatus
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
 
-    public $scheduleId;
-
-    public $buildStep;
-
-    public $status;
-
-    public $message;
-
-    /**
-     * Create a new event instance.
-     *
-     * Status :
-     * - 0 : En attente
-     * - 1 : Succès
-     * - 2 : Erreur
-     * - 3 : En cours
-     *
-     * @return void
-     */
-    public function __construct($scheduleId, $buildStep, $status, $message = null)
-    {
-        $this->scheduleId = $scheduleId;
-        $this->buildStep = $buildStep;
-        $this->status = $status;
-        $this->message = $message;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new Channel('build-status');
-    }
+    public function __construct(
+        public int $scheduleId,
+        public string $buildStep,
+        public int $status,
+        public ?string $message = null,
+    ) {}
 }

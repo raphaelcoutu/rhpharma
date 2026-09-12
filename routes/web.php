@@ -1,5 +1,6 @@
 <?php
 
+use App\Builders\BuildStatus;
 use App\Events\UpdateBuildStatus;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\BuildController;
@@ -23,7 +24,6 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
-use App\Jobs\BuildClinicalDepartments;
 use App\Models\AssignedShift;
 use App\Models\Schedule;
 use App\Models\User;
@@ -160,9 +160,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('export/{schedule}', [ExportController::class, 'export'])->name('export');
 
     if (App::environment('local')) {
-        Route::get('build/{scheduleId}', function ($scheduleId) {
-            $event = new UpdateBuildStatus($scheduleId, 3, 3);
-            dispatch(new BuildClinicalDepartments($event));
+        Route::get('build/{scheduleId}', function (int $scheduleId) {
+            event(new UpdateBuildStatus($scheduleId, 'clinical', BuildStatus::Build));
         });
     }
 });
@@ -200,6 +199,7 @@ Route::prefix('api')->middleware('auth')->group(function () {
 
     // Schedule
     Route::post('schedules/updateStatus', [BuildController::class, 'updateStatus']);
+    Route::get('schedules/{scheduleId}/status', [BuildController::class, 'status']);
     Route::put('schedules/{id}/updateNotes', [ScheduleController::class, 'updateNotes']);
 
     // Schedule-Stats-Departments

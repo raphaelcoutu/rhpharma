@@ -34,6 +34,7 @@ class ScheduleFactory extends Factory
             'status_weekends' => BuildStatus::Standby,
             'status_last_evening' => BuildStatus::Standby,
             'status_clinical_departments' => BuildStatus::Standby,
+            'status_statistics' => BuildStatus::Standby,
             'notes' => null,
         ];
     }

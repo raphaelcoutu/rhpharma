@@ -16,6 +16,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class AnalyzeClinicalDepartments implements ShouldQueue
 {
@@ -23,11 +24,6 @@ class AnalyzeClinicalDepartments implements ShouldQueue
 
     public $event;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct(UpdateBuildStatus $event)
     {
         $this->event = $event;
@@ -35,10 +31,8 @@ class AnalyzeClinicalDepartments implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $start = microtime(true);
         $schedule = Schedule::find($this->event->scheduleId);
@@ -60,5 +54,10 @@ class AnalyzeClinicalDepartments implements ShouldQueue
 
         event(new BuildMessageGenerated($schedule, 'Analyse est terminée ('.$end.'s)'));
         event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Success));
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Error, $exception?->getMessage()));
     }
 }

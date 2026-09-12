@@ -25,6 +25,11 @@ class Schedule extends Model
         return $this->hasMany(Conflict::class);
     }
 
+    public function buildMessages(): HasMany
+    {
+        return $this->hasMany(BuildMessage::class);
+    }
+
     public function scopeOrderedDesc($query): Builder
     {
         return $query->orderBy('end_date', 'desc')->where('branch_id', \Auth::user()->branch->id);

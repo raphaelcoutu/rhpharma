@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ScheduleRequest;
+use App\Models\BuildMessage;
 use App\Models\Constraint;
 use App\Models\Department;
 use App\Models\Schedule;
+use App\Models\Statistic;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -79,11 +81,28 @@ class ScheduleController extends Controller
     {
         Gate::authorize('write', Schedule::class);
 
-        $schedule = Schedule::with('conflicts.department')->findOrFail($id);
+        $schedule = Schedule::with('conflicts.department')
+            ->where('branch_id', auth()->user()->branch_id)
+            ->findOrFail($id);
 
         $departments = Department::orderBy('name')->get();
 
         $constraintsCount = Constraint::unvalidated()->inDateInterval($schedule->start_date, $schedule->end_date)->count();
+        $buildMessages = $schedule->buildMessages()
+            ->orderByDesc('id')
+            ->limit(100)
+            ->get()
+            ->sortBy('id')
+            ->values()
+            ->map(fn (BuildMessage $message): array => [
+                'id' => $message->id,
+                'timestamp' => $message->created_at?->format('Y/m/d H:i:s'),
+                'message' => $message->message,
+            ]);
+        $latestStatistic = Statistic::where('type', 'department')
+            ->where('schedule_id', $schedule->id)
+            ->latest('id')
+            ->first();
 
         return Inertia::render('schedules/show', [
             'schedule' => $schedule,
@@ -91,6 +110,9 @@ class ScheduleController extends Controller
             'constraintsCount' => $constraintsCount,
             'conflicts' => $schedule->conflicts,
             'departments' => $departments,
+            'buildMessages' => $buildMessages,
+            'statistics' => $latestStatistic === null ? [] : (json_decode($latestStatistic->content, true) ?: []),
+            'statisticsStatus' => $schedule->status_statistics,
         ]);
     }
 

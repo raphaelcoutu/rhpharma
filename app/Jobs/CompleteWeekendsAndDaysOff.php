@@ -13,6 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class CompleteWeekendsAndDaysOff implements ShouldQueue
 {
@@ -34,17 +35,17 @@ class CompleteWeekendsAndDaysOff implements ShouldQueue
         $this->schedule = Schedule::find($this->event->scheduleId);
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->completeWeekends();
         $this->completeDaysoff();
 
         event(new UpdateBuildStatus($this->event->scheduleId, 'weekends', BuildStatus::Success));
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        event(new UpdateBuildStatus($this->event->scheduleId, 'weekends', BuildStatus::Error, $exception?->getMessage()));
     }
 
     private function completeWeekends()

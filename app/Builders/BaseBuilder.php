@@ -4,6 +4,8 @@ namespace App\Builders;
 
 abstract class BaseBuilder
 {
+    protected int $maxCombinations = 10_000;
+
     protected $weeksPerGroup = 4;
 
     protected $precalculation;
@@ -25,47 +27,61 @@ abstract class BaseBuilder
         return $this->combinaisons;
     }
 
-    protected function optimizedSampling($ids, $weeksCount)
+    protected function optimizedSampling($ids, $weeksCount): array
     {
-        $combinaisons = $this->sampling($ids, $weeksCount);
+        $ids = array_values($ids);
 
-        return $combinaisons;
-    }
-
-    private function sampling($chars, $size, $combinations = [])
-    {
-
-        // if it's the first iteration, the first set
-        // of combinations is the same as the set of characters
-        if (empty($combinations)) {
-            $combinations = $chars;
+        if ($ids === [] || $weeksCount <= 0) {
+            return [];
         }
 
-        // we're done if we're at size 1
-        if ($size == 1) {
-            return $this->formatSampling($combinations);
-        }
+        $totalCombinations = $this->combinationCount(count($ids), $weeksCount);
+        $sampleCount = min($totalCombinations, $this->maxCombinations);
+        $lastIndex = $totalCombinations - 1;
+        $indexStep = $sampleCount > 1 ? intdiv($lastIndex, $sampleCount - 1) : 0;
+        $indexRemainder = $sampleCount > 1 ? $lastIndex % ($sampleCount - 1) : 0;
+        $combinations = [];
 
-        // initialise array to put new values in
-        $new_combinations = [];
+        for ($sampleIndex = 0; $sampleIndex < $sampleCount; $sampleIndex++) {
+            $combinationIndex = $sampleIndex * $indexStep;
 
-        // loop through existing combinations and character set to create strings
-        foreach ($combinations as $combination) {
-            foreach ($chars as $char) {
-                $new_combinations[] = $combination.','.$char;
+            if ($sampleCount > 1) {
+                $combinationIndex += intdiv($sampleIndex * $indexRemainder, $sampleCount - 1);
             }
+
+            $combinations[] = [
+                'sequence' => $this->sequenceAtIndex($ids, $weeksCount, $combinationIndex),
+            ];
         }
 
-        // call same function again for the next iteration
-        return $this->sampling($chars, $size - 1, $new_combinations);
+        return $combinations;
     }
 
-    private function formatSampling($combinaisons)
+    private function combinationCount(int $base, int $exponent): int
     {
-        for ($i = 0; $i < count($combinaisons); $i++) {
-            $combinaisons[$i] = ['sequence' => $combinaisons[$i]];
+        $count = 1;
+
+        for ($power = 0; $power < $exponent; $power++) {
+            if ($count > intdiv(PHP_INT_MAX, $base)) {
+                return PHP_INT_MAX;
+            }
+
+            $count *= $base;
         }
 
-        return $combinaisons;
+        return $count;
+    }
+
+    private function sequenceAtIndex(array $ids, int $weeksCount, int $index): string
+    {
+        $sequence = array_fill(0, $weeksCount, null);
+        $base = count($ids);
+
+        for ($week = $weeksCount - 1; $week >= 0; $week--) {
+            $sequence[$week] = $ids[$index % $base];
+            $index = intdiv($index, $base);
+        }
+
+        return implode(',', $sequence);
     }
 }

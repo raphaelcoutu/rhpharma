@@ -18,6 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class BuildClinicalDepartments implements ShouldQueue
 {
@@ -33,33 +34,25 @@ class BuildClinicalDepartments implements ShouldQueue
 
     private $start;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct(UpdateBuildStatus $event)
     {
         $this->event = $event;
-        $this->running = true;
-        $this->start = microtime(true);
-
-        // TODO: Changer ScheduleId pour Schedule dans UpdateBuildStatus.
-        $this->schedule = Schedule::find($this->event->scheduleId);
-
-        event(new BuildMessageGenerated($this->schedule, 'Génération est en préparation...'));
-        Log::debug('Precalculation - start');
-        $this->precalculation = new Precalculation($event->scheduleId);
-        Log::debug('Precalculation - end');
     }
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
+        $this->running = true;
+        $this->start = microtime(true);
+        $this->schedule = Schedule::findOrFail($this->event->scheduleId);
+
+        event(new BuildMessageGenerated($this->schedule, 'Génération est en préparation...'));
+        Log::debug('Precalculation - start');
+        $this->precalculation = new Precalculation($this->event->scheduleId);
+        Log::debug('Precalculation - end');
+
         // Précalculation
         // - Importation des jours fériés
         // - Importation des fins de semaine
@@ -117,7 +110,7 @@ class BuildClinicalDepartments implements ShouldQueue
         }
     }
 
-    public function stopJob(int $status)
+    public function stopJob(int $status): void
     {
         if ($status === BuildStatus::Cancel) {
             Log::warning('BuildClinicalDepartments Job: Stopped by user.');
@@ -125,5 +118,10 @@ class BuildClinicalDepartments implements ShouldQueue
         } elseif ($status === BuildStatus::Reset) {
             Log::warning('BuildClinicalDepartments Job: Reset by user.');
         }
+    }
+
+    public function failed(?Throwable $exception): void
+    {
+        event(new UpdateBuildStatus($this->event->scheduleId, 'clinical', BuildStatus::Error, $exception?->getMessage()));
     }
 }
