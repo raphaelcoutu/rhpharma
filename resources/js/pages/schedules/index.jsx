@@ -225,13 +225,13 @@ export default function Index({ constraintsInSchedule = {}, pageTitle = 'Horaire
                                                 <TableCell className="pr-6 text-right">
                                                     <div className="flex items-center justify-end gap-3">
                                                         <a
-                                                                href={showCalendar(schedule.id)}
+                                                                href={showCalendar(schedule.id).url}
                                                             className="text-sm font-medium text-gray-600 transition hover:text-gray-900"
                                                         >
                                                             Calendrier
                                                         </a>
                                                         <Link
-                                                                href={show(schedule.id)}
+                                                                href={show(schedule.id).url}
                                                             className="rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
                                                         >
                                                             Générer

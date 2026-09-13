@@ -24,12 +24,9 @@ use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkplaceController;
-use App\Models\AssignedShift;
 use App\Models\Schedule;
-use App\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,27 +42,6 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class, 'index'])
     ->middleware('auth')
     ->name('home');
-
-Route::get('/scheduler', function () {
-    $users = User::query()
-        ->select('id', 'firstname', 'lastname')
-        ->where('branch_id', 1)
-        ->where('is_active', true)
-        ->orderBy('lastname')
-        ->get();
-
-    $schedule = Schedule::find(10);
-
-    $shifts = AssignedShift::with('shift')
-        ->inDateInterval($schedule->start_date, $schedule->end_date)
-        ->get();
-
-    return Inertia::render('scheduler', [
-        'users' => $users,
-        'schedule' => $schedule,
-        'shifts' => $shifts,
-    ]);
-});
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -167,13 +143,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 require __DIR__.'/auth.php';
 
-// Other browser-session endpoints are used by legacy client-side components.
+// Browser-session endpoints used by calendar interactions.
 Route::prefix('api')->middleware('auth')->group(function () {
     // Calendar
-    Route::get('calendar/get-shifts', [CalendarController::class, 'getShifts']);
-    Route::get('calendar/get-user-data', [CalendarController::class, 'getUserData']);
-    Route::post('calendar/set-user-data', [CalendarController::class, 'setUserData']);
-    Route::post('calendar/set-selected-data', [CalendarController::class, 'setSelectedData']);
+    Route::get('calendar/get-shifts', [CalendarController::class, 'getShifts'])->name('calendar.api.getShifts');
+    Route::get('calendar/get-user-data', [CalendarController::class, 'getUserData'])->name('calendar.api.getUserData');
+    Route::post('calendar/set-user-data', [CalendarController::class, 'setUserData'])->name('calendar.api.setUserData');
+    Route::post('calendar/set-selected-data', [CalendarController::class, 'setSelectedData'])->name('calendar.api.setSelectedData');
 
     // Conflicts
     Route::get('conflicts/{scheduleId}', [ConflictController::class, 'fetch']);

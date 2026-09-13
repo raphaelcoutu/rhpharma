@@ -6,7 +6,11 @@ import { index as constraintImporterIndex } from '@/routes/constraintImporter';
 import { index as constraintsValidatorIndex } from '@/routes/constraintsValidator';
 import { show as showCalendar, showByDepartment } from '@/routes/calendar';
 import { exportMethod } from '@/routes';
-import { constraintTypes, departments, index as settingsIndex } from '@/routes/settings';
+import {
+    constraintTypes as constraintTypesRoute,
+    departments as departmentsRoute,
+    index as settingsIndex,
+} from '@/routes/settings';
 import { index as schedulesIndex } from '@/routes/schedules';
 import axios from 'axios';
 import {
@@ -325,7 +329,7 @@ function ConflictsPanel({ scheduleId, conflicts, onRefresh }) {
                                 <td className="px-4 py-3">
                                     {conflict.department ? (
                                         <a
-                                            href={showByDepartment({ schedule: scheduleId, department: conflict.department.id })}
+                                            href={showByDepartment({ schedule: scheduleId, department: conflict.department.id }).url}
                                             className="font-medium text-indigo-600 hover:text-indigo-800"
                                         >
                                             {conflict.department.name} ({conflict.department.id})
@@ -627,19 +631,19 @@ export default function Show({
                                 </Dropdown.Trigger>
                                 <Dropdown.Content align="right">
                                     <a
-                                        href={settingsIndex()}
+                                        href={settingsIndex().url}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Paramètres généraux
                                     </a>
                                     <a
-                                        href={departments()}
+                                        href={departmentsRoute().url}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Secteurs
                                     </a>
                                     <a
-                                        href={constraintTypes()}
+                                        href={constraintTypesRoute().url}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Types de contraintes
@@ -652,7 +656,7 @@ export default function Show({
                                 </Dropdown.Trigger>
                                 <Dropdown.Content align="right">
                                     <a
-                                href={showCalendar(schedule.id)}
+                                        href={showCalendar(schedule.id).url}
                                         className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                     >
                                         Vue complète
@@ -660,7 +664,7 @@ export default function Show({
                                     {departments.map((department) => (
                                         <a
                                             key={department.id}
-                                            href={showByDepartment({ schedule: schedule.id, department: department.id })}
+                                            href={showByDepartment({ schedule: schedule.id, department: department.id }).url}
                                             className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
                                         >
                                             {department.name}
@@ -669,7 +673,7 @@ export default function Show({
                                 </Dropdown.Content>
                             </Dropdown>
                             <a
-                                href={exportMethod(schedule.id)}
+                                href={exportMethod(schedule.id).url}
                                 className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
                             >
                                 <Download className="h-4 w-4" />
@@ -690,7 +694,7 @@ export default function Show({
                         onGenerateStatistics={generateStatistics}
                     />
 
-                    <SecondaryButton as={Link} href={schedulesIndex()}>
+                    <SecondaryButton as={Link} href={schedulesIndex().url}>
                         Retour à la liste des horaires
                     </SecondaryButton>
                 </div>

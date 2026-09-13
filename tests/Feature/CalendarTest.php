@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Workplace;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class CalendarTest extends TestCase
@@ -38,7 +39,13 @@ class CalendarTest extends TestCase
         $response = $this->actingAs($this->superUser)
             ->get("/calendar/{$this->schedule->id}");
 
-        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('calendar', false)
+            ->where('schedule.id', $this->schedule->id)
+            ->has('users')
+            ->has('departments')
+            ->has('shifts')
+            ->where('canEdit', true));
     }
 
     public function test_auth_user_can_view_calendar_by_single_department()
@@ -120,5 +127,12 @@ class CalendarTest extends TestCase
         $response = $this->get("/calendar/{$this->schedule->id}");
 
         $response->assertRedirect('/login');
+    }
+
+    public function test_scheduler_prototype_route_is_removed(): void
+    {
+        $response = $this->actingAs($this->superUser)->get('/scheduler');
+
+        $response->assertNotFound();
     }
 }
