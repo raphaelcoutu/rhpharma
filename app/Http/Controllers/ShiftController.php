@@ -6,49 +6,59 @@ use App\Http\Requests\ShiftRequest;
 use App\Models\Department;
 use App\Models\Shift;
 use App\Models\ShiftType;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Attributes\Controllers\Authorize;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ShiftController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
-    #[Authorize('read', Shift::class)]
-    public function index()
+    public function index(): Response
     {
-        $shifts = Shift::with(['department', 'shiftType'])->orderBy('code')->get();
+        Gate::authorize('read', Shift::class);
 
-        return view('shifts.index', compact('shifts'));
+        $shifts = Shift::query()
+            ->whereHas('department', function (Builder $query): void {
+                $query->where('branch_id', auth()->user()->branch_id);
+            })
+            ->with(['department:id,name', 'shiftType:id,name'])
+            ->orderBy('code')
+            ->get(['id', 'department_id', 'shift_type_id', 'code', 'description', 'is_default']);
+
+        return Inertia::render('shifts/index', compact('shifts'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): Response
     {
-        $departments = Department::all();
-        $shiftTypes = ShiftType::all();
+        Gate::authorize('write', Shift::class);
 
-        return view('shifts.create', compact('departments', 'shiftTypes'));
+        $departments = Department::ownBranch()->orderBy('name')->get(['id', 'name']);
+        $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get(['id', 'name']);
+
+        return Inertia::render('shifts/create', compact('departments', 'shiftTypes'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
      */
-    public function store(ShiftRequest $request)
+    public function store(ShiftRequest $request): RedirectResponse
     {
-        Shift::create($request->all());
+        Gate::authorize('write', Shift::class);
 
-        return redirect('shifts');
+        Shift::create([
+            ...$request->validated(),
+            'description' => '',
+            'is_default' => false,
+        ]);
+
+        return redirect()->route('shifts.index');
     }
 
     /**
@@ -66,30 +76,38 @@ class ShiftController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
      */
-    #[Authorize('write', Shift::class)]
-    public function edit(Shift $shift)
+    public function edit(Shift $shift): Response
     {
-        $departments = Department::all();
-        $shiftTypes = ShiftType::all();
+        Gate::authorize('write', Shift::class);
 
-        return view('shifts.edit', ['shift' => $shift, 'departments' => $departments,
-            'shiftTypes' => $shiftTypes]);
+        $shift = Shift::query()
+            ->whereHas('department', function (Builder $query): void {
+                $query->where('branch_id', auth()->user()->branch_id);
+            })
+            ->findOrFail($shift->id);
+        $departments = Department::ownBranch()->orderBy('name')->get(['id', 'name']);
+        $shiftTypes = ShiftType::ownBranch()->orderBy('name')->get(['id', 'name']);
+
+        return Inertia::render('shifts/edit', compact('shift', 'departments', 'shiftTypes'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
      */
-    public function update(ShiftRequest $request, Shift $shift)
+    public function update(ShiftRequest $request, Shift $shift): RedirectResponse
     {
-        $shift->update($request->all());
+        Gate::authorize('write', Shift::class);
 
-        return redirect('shifts');
+        $shift = Shift::query()
+            ->whereHas('department', function (Builder $query): void {
+                $query->where('branch_id', auth()->user()->branch_id);
+            })
+            ->findOrFail($shift->id);
+
+        $shift->update($request->validated());
+
+        return redirect()->route('shifts.index');
     }
 
     /**

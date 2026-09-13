@@ -2,19 +2,20 @@ import ApplicationLogo from '@/components/application-logo.jsx';
 import Dropdown from '@/components/dropdown.jsx';
 import NavLink from '@/components/nav-link.jsx';
 import ResponsiveNavLink from '@/components/responsive-nav-link.jsx';
-import { Link, usePage } from '@inertiajs/react';
 import { home, logout } from '@/routes';
 import { index as branchesIndex } from '@/routes/branches';
+import { index as constraintsValidatorIndex } from '@/routes/constraintsValidator';
 import { index as constraintTypesIndex } from '@/routes/constraintTypes';
 import { index as departmentsIndex } from '@/routes/departments';
 import { index as holidaysIndex } from '@/routes/holidays';
 import { edit as profileEdit } from '@/routes/profile';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as schedulesIndex } from '@/routes/schedules';
-import { index as constraintsValidatorIndex } from '@/routes/constraintsValidator';
+import { index as shiftsIndex } from '@/routes/shifts';
 import { index as shiftTypesIndex } from '@/routes/shiftTypes';
 import { index as usersIndex } from '@/routes/users';
 import { index as workplacesIndex } from '@/routes/workplaces';
+import { Link, usePage } from '@inertiajs/react';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -23,6 +24,7 @@ const configurationLinks = [
     { label: 'Rôles et permissions', href: rolesIndex(), pathPrefix: '/roles' },
     { label: 'Secteurs', href: departmentsIndex(), pathPrefix: '/departments' },
     { label: 'Lieux de travail', href: workplacesIndex(), pathPrefix: '/workplaces' },
+    { label: 'Shifts', href: shiftsIndex(), pathPrefix: '/shifts' },
     { label: 'Types de shifts', href: shiftTypesIndex(), pathPrefix: '/shift-types' },
     { label: 'Jours fériés', href: holidaysIndex(), pathPrefix: '/holidays' },
     { label: 'Types de contraintes', href: constraintTypesIndex(), pathPrefix: '/constraint-types' },
